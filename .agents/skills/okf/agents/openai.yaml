@@ -1,0 +1,6 @@
+interface:
+  display_name: "Crossplane OKF"
+  short_description: "Build source-backed OKF knowledge for Crossplane"
+  default_prompt: "Use $okf to build or update the Crossplane knowledge catalog from pinned source repositories."
+policy:
+  allow_implicit_invocation: false
