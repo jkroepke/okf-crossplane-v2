@@ -1,6 +1,6 @@
 {
   "packages": [
-    "pi-subagents"
+    "npm:pi-subagents"
   ],
   "enableSkillCommands": true,
   "subagents": {
