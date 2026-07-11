@@ -1,20 +1,21 @@
 ---
 name: okf
-description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must mention `$okf`.
+description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
+disable-model-invocation: true
 metadata:
-  version: "1.1"
+  version: "1.2"
   license: Apache-2.0
 ---
 
 # Crossplane OKF workflow
 
-Run this workflow only after the user explicitly invokes `$okf`. The skill metadata also disables implicit invocation. Do not treat a request that merely mentions OKF, Crossplane, a provider, or a function as permission to start this workflow.
+Run this workflow only after the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`. Do not treat a request that merely mentions OKF, Crossplane, a provider, or a function as permission to start this workflow.
 
-The root agent owns all writes. Subagents are bounded, read-only researchers that return evidence packets.
+The root or parent agent owns all writes. Subagents are bounded, read-only researchers that return evidence packets.
 
 ## Inputs
 
-Derive the requested scope from the text following `$okf`:
+Derive the requested scope from the explicit invocation:
 
 - source repositories or source groups
 - concepts, APIs, commands, providers, functions, documentation, examples, or resource batches
@@ -29,6 +30,16 @@ Read:
 - `references/okf-spec.md`
 
 Treat the source categories in `references/sources.yaml` as separate authority roles. Do not flatten primary source, official documentation, supporting source, and third-party example evidence into one undifferentiated source list.
+
+## Runtime adapters
+
+The workflow and evidence contracts are shared across agent runtimes:
+
+- Codex specialist definitions live in `.codex/agents/`.
+- Pi specialist definitions live in `.pi/agents/` and are loaded through `pi-subagents`.
+- Pi users may invoke the shared skill with `/skill:okf` or use the project prompt `/okf`.
+- Runtime-specific agents use the same `okf-*` role names and must preserve the same read-only evidence contract.
+- The root or parent agent remains the only writer regardless of runtime.
 
 ## Workflow
 
@@ -147,18 +158,32 @@ Use an installed OKF linter when available, but do not add or install dependenci
 
 After deterministic validation passes, use `okf-reviewer` on the changed concepts and their claim ledger. Do not invoke the reviewer while blocking validation errors remain.
 
-Fix blocking findings as the root agent, rerun targeted validation, and report remaining warnings explicitly.
+Fix blocking findings as the root or parent agent, rerun targeted validation, and report remaining warnings explicitly.
 
 ## Token and model policy
 
-- Use `gpt-5.6-luna` with low reasoning for inventory and routing.
-- Use `gpt-5.6-terra` with medium reasoning for normal source interpretation.
-- Use flagship `gpt-5.6` with high reasoning only for ambiguous Upjet-to-Terraform mappings.
+Shared rules:
+
+- Keep at most three direct research agents active at once.
 - Use one final high-reasoning review over changed concepts, not over all source repositories.
 - Prefer targeted searches, schemas, tests, documentation sections, and configured example paths over recursive repository reads.
 - Batch related third-party example repositories instead of assigning one agent per repository.
 - Return summaries and evidence references, never raw exploration output.
 - Reuse source locks, evidence packets, and unchanged concepts across runs.
+
+Codex model selection:
+
+- Use `gpt-5.6-luna` with low reasoning for inventory and routing.
+- Use `gpt-5.6-terra` with medium reasoning for normal source interpretation.
+- Use flagship `gpt-5.6` with high reasoning only for ambiguous Upjet-to-Terraform mappings.
+- Use `gpt-5.6-terra` with high reasoning for the final review.
+
+Pi model selection:
+
+- Project agents intentionally do not pin a provider-specific model identifier. They inherit the model selected for the Pi session.
+- Use the role-specific `thinking` levels declared in `.pi/agents/`.
+- Configure local or hosted models outside this repository so the workflow remains portable across Pi providers.
+- Use a stronger model or higher reasoning only for ambiguous Upjet mappings and the final evidence review.
 
 ## Completion report
 

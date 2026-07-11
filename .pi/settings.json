@@ -1,0 +1,9 @@
+{
+  "packages": [
+    "npm:pi-subagents"
+  ],
+  "enableSkillCommands": true,
+  "subagents": {
+    "disableBuiltins": true
+  }
+}
