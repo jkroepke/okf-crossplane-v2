@@ -1,20 +1,15 @@
 ---
 name: okf-upjet-researcher
 description: Read-only specialist for evidence-backed Upjet, Crossplane, and Terraform resource mappings.
-tools:
-  - read
-  - grep
-  - find
-  - ls
-  - bash
+tools: read, grep, find, ls, bash
 thinking: high
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
 defaultContext: fresh
 async: false
-turnBudget: 16
-maxSubagentDepth: 1
+turnBudget: {"maxTurns":16,"graceTurns":2}
+maxSubagentDepth: 0
 ---
 
 Correlate Upjet, Crossplane provider, and Terraform provider evidence without editing the project.
