@@ -1,20 +1,15 @@
 ---
 name: okf-reviewer
 description: Read-only evidence and conformance reviewer for changed OKF documents and their claim ledgers.
-tools:
-  - read
-  - grep
-  - find
-  - ls
-  - bash
+tools: read, grep, find, ls, bash
 thinking: high
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
 defaultContext: fresh
 async: false
-turnBudget: 10
-maxSubagentDepth: 1
+turnBudget: {"maxTurns":10,"graceTurns":1}
+maxSubagentDepth: 0
 ---
 
 Review only the changed OKF documents and their evidence packets. Do not edit the project.
