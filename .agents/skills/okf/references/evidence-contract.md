@@ -7,10 +7,11 @@ Use this compact Markdown structure:
 ```markdown
 ## Scope
 - Repository: owner/name
-- Commit: full SHA
-- Source role: primary | official-documentation | supporting | third-party-example
-- Requested area: path, package, command, API, documentation section, example, or resource batch
+- Commit: full SHA when the source is release content
+- Source role: primary | official-documentation | supporting | project-history | third-party-example
+- Requested area: path, package, command, API, documentation section, example, issue/PR theme, or resource batch
 - Selected release: stable tag, documentation series, or explicitly requested preview revision
+- Research timestamp: required for project-history evidence
 - Legacy exclusions applied: exact exclusions relevant to this packet
 
 ## Concept candidates
@@ -23,21 +24,23 @@ Use this compact Markdown structure:
 - Feature-state evidence: commit-pinned citation or `not stated`
 - Claims:
   - Claim text
-    - Class: API | behavior | documented-guidance | illustrative-pattern
-    - Evidence: commit-pinned URL with line range
-    - Source role: primary | official-documentation | supporting | third-party-example
+    - Class: API | behavior | documented-guidance | release-history | reported-limitation | proposal | illustrative-pattern
+    - Evidence: commit-pinned URL with line range, or direct issue/PR URL with snapshot metadata
+    - Source role: primary | official-documentation | supporting | project-history | third-party-example
     - Confidence: direct | corroborated | inferred
 - Schema sources:
   - path and purpose
 - Examples:
   - path, origin, and what it demonstrates
+- Project history:
+  - issue or PR number, state, human author, timestamps, selected-release relationship, and concise relevance
 - Relationships:
   - target concept and prose relationship
 - Limitations or conflicts:
   - unresolved issue, version boundary, source disagreement, repository-specific choice, or legacy-only material that was excluded
 
 ## Source inventory
-- path — authority role and reason it is relevant
+- path, issue, or pull request — authority role and reason it is relevant
 
 ## Licensing
 - copied or adapted material: none | details
@@ -45,6 +48,9 @@ Use this compact Markdown structure:
 
 ## Excluded legacy material
 - path or section — Claims | deprecated XRD v1 | legacy v1 XR semantics | explicitly labelled legacy
+
+## Excluded automation activity
+- bot or app account and excluded item count, without reproducing low-signal item details
 
 ## Unresolved
 - exact question and the missing evidence
@@ -61,6 +67,12 @@ Rules:
 - Never infer Alpha, Beta, or Stable from API version names such as `v1alpha1`, `v1beta1`, or `v1`. Cite an explicit feature-state statement or use `Not stated by selected sources`.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label. Current Crossplane v2 resources may still use a v1 Kubernetes API version.
 - Exclude Claims, deprecated CompositeResourceDefinition v1, and legacy v1 composite-resource semantics from legacy-free catalog work.
+- Project-history evidence must record the research timestamp because issue and pull-request state can change.
+- Exclude bot- and app-authored issues, pull requests, comments, and reviews from project-history evidence.
+- An open issue supports only that a problem or behavior was reported. An open or unmerged pull request supports only that a change was proposed.
+- A merged pull request establishes inclusion in a selected release only when its merge commit is proven to be contained in that release tag.
+- A closed issue does not imply that the issue was fixed. Require a linked change and selected-release containment before stating resolution.
+- Project-history evidence cannot independently establish API shape, runtime behavior, feature maturity, or recommendations. Corroborate those claims with released source, tests, schemas, or official documentation.
 - A third-party example may directly support a claim about its own implementation, but not a general claim about Crossplane behavior or recommended practice.
 - Corroborate reusable third-party patterns with primary sources or official documentation.
 - Do not include copied or adapted third-party material without verified license information and attribution requirements.
