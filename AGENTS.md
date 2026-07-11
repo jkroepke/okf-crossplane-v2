@@ -5,14 +5,15 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 ## Default behavior
 
 - Do not start the OKF generation or enrichment workflow automatically.
-- Run the workflow only when the user explicitly invokes `$okf`.
-- Keep this file limited to repository-wide rules. The workflow lives in `.agents/skills/okf/`, and specialist behavior lives in `.codex/agents/`.
+- Run the workflow only when the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`.
+- Keep this file limited to repository-wide rules. The shared workflow lives in `.agents/skills/okf/`; runtime-specific specialist definitions live in `.codex/agents/` and `.pi/agents/`.
 
 ## Ownership
 
-- The root agent owns planning, source selection, file edits, validation, commits, and pull request updates.
+- The root or parent agent owns planning, source selection, file edits, validation, commits, and pull request updates.
 - Subagents are read-only researchers. They return compact evidence packets and never edit the catalog.
 - Use at most three direct subagents at once. Do not create nested subagent trees.
+- When running in Pi, use only the project agents whose names start with `okf-`. Their tool allowlists intentionally omit editing tools and nested delegation.
 
 ## Evidence rules
 
