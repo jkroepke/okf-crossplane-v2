@@ -49,6 +49,7 @@ primary_sources:
     agent_set:
       primary: okf-function-go-templating-researcher
       sprig: okf-function-go-templating-sprig-researcher
+      project_history: okf-function-go-templating-project-history-researcher
     paths:
       - README.md
       - example
@@ -57,6 +58,7 @@ primary_sources:
       - go.mod
     supporting_sources:
       - sprig
+      - function-go-templating-project-history
     legacy_exclusions:
       - README section v1 Composite Resources (Legacy)
       - examples requiring Claims or claim references
@@ -140,6 +142,26 @@ supporting_sources:
     kind: terraform-provider
     documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
+project_history_sources:
+  - id: function-go-templating-project-history
+    repository: crossplane-contrib/function-go-templating
+    kind: github-issues-and-pull-requests
+    authority: project-history
+    agent: okf-function-go-templating-project-history-researcher
+    author_policy: humans-only
+    exclude_authors:
+      - bots
+      - apps
+      - dependabot
+      - renovate
+      - github-actions
+      - release-automation
+    windows:
+      release_changes: previous-stable-tag-to-selected-stable-tag
+      known_reports: open-items-relevant-to-selected-stable-tag
+      post_release: created-or-updated-after-selected-stable-tag
+    usage: summarize-by-user-facing-theme
+
 example_sources:
   - id: homelab-idp-crossplane-compositions
     repository: 0xayf/homelab-idp
@@ -167,3 +189,8 @@ source_policy:
   exclude_deprecated_xrd_v1: true
   treat_all_v1_api_versions_as_legacy: false
   require_dedicated_agent_set_per_function: true
+  project_history_requires_research_timestamp: true
+  project_history_excludes_bots_and_apps: true
+  project_history_can_define_released_behavior: false
+  merged_pr_requires_release_commit_containment: true
+  closed_issue_implies_fixed: false
