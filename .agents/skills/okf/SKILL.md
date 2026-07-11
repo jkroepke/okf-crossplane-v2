@@ -3,7 +3,7 @@ name: okf
 description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
 disable-model-invocation: true
 metadata:
-  version: "1.2"
+  version: "1.3"
   license: Apache-2.0
 ---
 
@@ -37,8 +37,10 @@ The workflow and evidence contracts are shared across agent runtimes:
 
 - Codex specialist definitions live in `.codex/agents/`.
 - Pi specialist definitions live in `.pi/agents/` and are loaded through `pi-subagents`.
+- Pi model configuration guidance lives in `.pi/README.md`.
 - Pi users may invoke the shared skill with `/skill:okf` or use the project prompt `/okf`.
 - Runtime-specific agents use the same `okf-*` role names and must preserve the same read-only evidence contract.
+- Every dedicated role must exist as a matching Codex and Pi agent set.
 - The root or parent agent remains the only writer regardless of runtime.
 
 ## Workflow
@@ -55,6 +57,8 @@ Resolve every selected repository to a full commit SHA before extracting knowled
 
 Never cite a moving branch in generated knowledge. A repository homepage may be used as the frontmatter `resource`, but evidence citations must be immutable.
 
+For Crossplane Core, resolve the latest stable Crossplane release first. Use Core CRDs from that release tag and the matching `crossplane/docs` `content/v<major>.<minor>/` series. Do not use `content/master/`, `content/cli/**`, or `content/v1.*` for stable Core concepts.
+
 ### 3. Scout cheaply
 
 Use `okf-source-scout` for repository classification and high-signal path discovery.
@@ -67,9 +71,19 @@ Skip scouting when existing locks and evidence already identify the relevant fil
 
 ### 4. Research only what needs semantics
 
-Use `okf-crossplane-researcher` for Crossplane core, CLI, runtime, tools, native providers, functions, SDKs, official documentation, examples, and testing tools.
+Use the narrowest matching researcher:
 
-Use `okf-upjet-researcher` only for Upjet provider concepts that require Terraform correlation. Give it an explicit provider service or managed-resource batch. Do not ask it to map an entire provider in one run.
+- `okf-crossplane-core-docs-researcher` for current stable Crossplane Core documentation, terminology, workflows, lifecycle states, and general provider or function installation guidance.
+- `okf-crossplane-core-code-researcher` for current stable Crossplane Core CRDs under `cluster/crds`.
+- `okf-function-go-templating-researcher` for `crossplane-contrib/function-go-templating`, limited by default to `README.md` and `example/**`.
+- `okf-crossplane-researcher` for CLI, runtime, SDKs, tools, native providers, testing tools, examples, and domains without a dedicated researcher.
+- `okf-upjet-researcher` only for Upjet provider concepts that require Terraform correlation. Give it an explicit provider service or managed-resource batch.
+
+Run the Core docs and Core code researchers together when a concept needs both user-facing guidance and exact served API shape.
+
+Every composition function must have its own dedicated Codex and Pi agent set. Add that bounded agent set and source profile before generating knowledge for a function that does not have one.
+
+The Crossplane CLI is a separate catalog domain and is not part of Crossplane Core.
 
 For third-party example repositories, restrict research to the configured paths. Extract concrete patterns, relationships, and use cases without treating the repository as proof of general Crossplane behavior.
 
@@ -80,9 +94,13 @@ Run independent read-heavy research in parallel, with at most three direct agent
 Use evidence according to its source role:
 
 - Primary implementation sources, API types, generated schemas, tests, and package metadata establish API shape and runtime behavior.
-- Official Crossplane documentation establishes documented terminology, guidance, supported workflows, and user-facing examples. When documentation conflicts with implementation or schemas, record the conflict and prefer implementation evidence for runtime behavior.
+- Official Crossplane documentation establishes documented terminology, guidance, supported workflows, lifecycle states, and user-facing examples. When documentation conflicts with implementation or schemas, record the conflict and prefer implementation evidence for runtime behavior.
 - Supporting sources provide background that is relevant only to their domain, such as Upjet generation or Terraform resource behavior.
 - Third-party examples are illustrative. They may establish what that repository implements, but they must not be the sole evidence for Crossplane API semantics, runtime behavior, compatibility, security properties, or recommended practices.
+
+Never infer Alpha, Beta, or Stable from an API version suffix. Use direct feature-state evidence or state `Not stated by selected sources`.
+
+Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or an explicit legacy label.
 
 Corroborate reusable patterns from third-party examples with primary sources or official documentation. Label repository-specific design choices as such.
 
@@ -98,7 +116,9 @@ Before writing Markdown, reduce the evidence packets to a claim ledger:
 - source role
 - supporting immutable citation
 - confidence: direct, corroborated, or inferred
-- version boundary
+- Crossplane release or documentation series
+- feature state and its evidence, or `Not stated by selected sources`
+- legacy exclusions applied
 - unresolved conflict or limitation
 
 Drop claims that do not improve the concept. Keep inferred claims clearly labelled in the final document or omit them.
@@ -119,6 +139,9 @@ Rules:
 - update `log.md` only with high-level knowledge changes
 - identify third-party examples as community examples and name their originating repository
 - distinguish copied examples, adapted examples, and summarized patterns
+- exclude Claims, deprecated CompositeResourceDefinition v1, legacy v1 XR semantics, and sections explicitly labelled `v1 Composite Resources (Legacy)`
+- keep current APIs that use `/v1` when they are not deprecated
+- keep Crossplane CLI content outside the Core catalog section
 
 Do not copy large documentation passages. Summarize and cite.
 
@@ -148,6 +171,12 @@ Also check:
 - cited files and line anchors resolve when network access is available
 - internal Markdown links are valid; report broken links as warnings because OKF permits them
 - no concept contains unresolved placeholders presented as facts
+- Core concepts record the selected stable release and matching documentation series
+- feature states have direct evidence and are not inferred from API version names
+- legacy-free output excludes Claims, deprecated XRD v1, legacy v1 XR semantics, and explicitly labelled legacy sections
+- current non-deprecated APIs are not excluded only because they use `/v1`
+- Crossplane CLI content is not categorized as Core
+- each function concept uses its dedicated function agent and bounded source profile
 - official documentation claims retain their version scope
 - third-party examples are labelled as illustrative and are not used alone for general behavior claims
 - copied or adapted third-party material includes verified license information and attribution
@@ -165,7 +194,7 @@ Fix blocking findings as the root or parent agent, rerun targeted validation, an
 Shared rules:
 
 - Keep at most three direct research agents active at once.
-- Use one final high-reasoning review over changed concepts, not over all source repositories.
+- Use one final evidence review over changed concepts, not over all source repositories.
 - Prefer targeted searches, schemas, tests, documentation sections, and configured example paths over recursive repository reads.
 - Batch related third-party example repositories instead of assigning one agent per repository.
 - Return summaries and evidence references, never raw exploration output.
@@ -180,10 +209,11 @@ Codex model selection:
 
 Pi model selection:
 
-- Project agents intentionally do not pin a provider-specific model identifier. They inherit the model selected for the Pi session.
-- Use the role-specific `thinking` levels declared in `.pi/agents/`.
+- Project agents intentionally do not pin a provider-specific model identifier or thinking level. They inherit the model and supported capabilities selected for the Pi session.
 - Configure local or hosted models outside this repository so the workflow remains portable across Pi providers.
-- Use a stronger model or higher reasoning only for ambiguous Upjet mappings and the final evidence review.
+- Non-thinking coding models such as Qwen3-Coder-Next can run every project agent without incompatible reasoning controls.
+- Use a stronger or different model for ambiguous Upjet mappings and the final evidence review when one is available.
+- Follow `.pi/README.md` for local Qwen3-Coder-Next configuration guidance.
 
 ## Completion report
 
@@ -191,7 +221,10 @@ Report:
 
 - concepts created, updated, or removed
 - pinned source commits used
+- selected Crossplane release and documentation series for Core work
 - source roles used for material claims
+- feature-state evidence or `Not stated by selected sources`
+- legacy material excluded
 - validation results
 - reviewer status
 - unresolved mappings, conflicts, licensing questions, and permitted broken links
