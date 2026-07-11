@@ -19,9 +19,11 @@ Release selection:
 
 1. Discover the repository's releases and tags at research time.
 2. Select the highest stable semantic-version tag. Exclude draft releases, prereleases, release candidates, beta tags, alpha tags, and moving branches.
-3. Resolve the selected tag to its full commit SHA and cite only that immutable commit.
-4. Do not assume a tag supplied in an example or in repository configuration is still current.
-5. If no stable semantic-version tag exists, report the source as unresolved. Do not silently fall back to `main`.
+3. Resolve the selected tag to its full commit SHA and record its release date.
+4. Resolve the immediately preceding stable semantic-version tag and commit when one exists.
+5. Cite released source only through immutable commits.
+6. Do not assume a tag supplied in an example or repository configuration is still current.
+7. If no stable semantic-version tag exists, report the source as unresolved. Do not silently fall back to `main`.
 
 Default source scope at the selected tag:
 
@@ -63,7 +65,8 @@ Evidence rules:
 - README guidance and examples establish user workflows and illustrate capabilities.
 - `function_maps.go` establishes the additional function names and modifications to the Sprig function map, but not general Crossplane Core behavior.
 - Delegate detailed Sprig documentation to `okf-function-go-templating-sprig-researcher` after reporting the selected function tag, commit, Sprig module version, and function-map exclusions.
-- Build capability concepts instead of creating one catalog page per example file.
+- Delegate human-authored issue and pull-request research to `okf-function-go-templating-project-history-researcher` after reporting the selected and previous stable tags, commits, release date, and identified capability areas.
+- Build capability concepts instead of creating one catalog page per example file, issue, or pull request.
 - Record all required companion files and assumptions for examples.
 - Record feature state only when the repository or matching official Crossplane documentation states Alpha, Beta, Stable, or Deprecated directly. Otherwise report `Not stated by the selected sources`; never infer maturity from `v1alpha1`, `v1beta1`, or `v1`.
 - Verify the repository license before proposing copied or adapted material. Otherwise summarize and cite.
