@@ -26,7 +26,7 @@ Read:
 - `references/sources.yaml`
 - `references/evidence-contract.md`
 - `references/okf-profile.md`
-- the current OKF v0.1 specification at `https://okf.md/spec/`
+- `references/okf-spec.md`
 
 ## Workflow
 
