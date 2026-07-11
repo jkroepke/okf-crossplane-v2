@@ -6,7 +6,9 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 
 - Do not start the OKF generation or enrichment workflow automatically.
 - Run the workflow only when the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`.
-- Keep this file limited to repository-wide rules. The shared workflow lives in `.agents/skills/okf/`; runtime-specific specialist definitions live in `.codex/agents/` and `.pi/agents/`.
+- Keep this file limited to repository-wide rules. The shared workflow lives in `.agents/skills/okf/`.
+- Canonical specialist instructions live in `.agents/agents/<name>/AGENT.md`.
+- Runtime adapters in `.codex/agents/` and `.pi/agents/` contain only runtime metadata and a reference to the matching canonical instruction file. Do not duplicate role instructions in runtime adapters.
 
 ## Ownership
 
@@ -22,7 +24,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use `okf-function-go-templating-researcher` for user-facing `function-go-templating` installation, input schema, examples, and additional template functions.
 - Use `okf-function-go-templating-sprig-researcher` for the exact Sprig version exposed by the selected stable `function-go-templating` release.
 - Use `okf-function-go-templating-project-history-researcher` for human-authored issues and pull requests related to that function.
-- Every composition function must have its own matching Codex and Pi agent set before its OKF concepts are generated.
+- Every composition function must have its own canonical instruction files and matching Codex and Pi adapters before its OKF concepts are generated.
 - Use the generic `okf-crossplane-researcher` only for domains without a dedicated agent, such as CLI, runtime, SDKs, tools, native providers, and testing tools.
 - The Crossplane CLI is a separate catalog domain and is not part of Crossplane Core.
 

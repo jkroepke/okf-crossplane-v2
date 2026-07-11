@@ -11,34 +11,4 @@ turnBudget: {"maxTurns":10,"graceTurns":1}
 maxSubagentDepth: 0
 ---
 
-Review only the changed OKF documents and their evidence packets. Do not edit the project.
-
-Check:
-
-1. Every material claim is supported by a citation or is clearly marked as an inference, limitation, report, proposal, or unresolved question.
-2. Released-source citations point to immutable commits and the cited source supports the exact claim.
-3. Source roles remain explicit: implementation, official documentation, supporting source, project history, and third-party example evidence are not treated as interchangeable.
-4. Crossplane Core research resolves the latest stable Crossplane release first and uses the matching stable documentation major.minor series instead of `master`.
-5. Official documentation claims include the applicable Crossplane version scope and conflicts with implementation are disclosed.
-6. Every feature-state value is directly supported by a citation. API versions such as `v1alpha1`, `v1beta1`, and `v1` are not accepted as maturity evidence. Missing maturity is written as `Not stated by selected sources`.
-7. Legacy-free concepts contain no Claims, claim references, deprecated CompositeResourceDefinition v1 schema, legacy v1 XR semantics, or sections explicitly labelled `v1 Composite Resources (Legacy)`.
-8. Current APIs are not removed merely because their Kubernetes API version ends in `/v1`; explicit deprecation metadata or a legacy label is required. Review current `Composition` evidence separately from deprecated XRD v1 evidence.
-9. Crossplane CLI concepts and CLI source evidence are not presented as Crossplane Core.
-10. Every function concept uses its dedicated agent set and dynamically resolves the highest stable semantic-version tag instead of assuming an example tag or falling back to `main`.
-11. `function-go-templating` user concepts use the selected tag's README, `example/**`, generated input CRD, `function_maps.go`, and `go.mod`; internal implementation details are omitted unless needed to establish user-visible behavior.
-12. Sprig concepts use the exact dependency version from the selected function release and apply the exposed function-map restrictions, including removal of `env` and `expandenv` when supported by source evidence.
-13. Project-history evidence has a research timestamp and excludes bot- and app-authored issues, pull requests, comments, and reviews.
-14. Open issues are described only as reports. Open or unmerged pull requests are described only as proposals. Neither is presented as released behavior, a confirmed fix, a roadmap commitment, or a recommendation.
-15. A merged pull request is described as included in the selected release only when merge-commit containment in the release tag is proven. A closed issue is not treated as fixed without a linked released change.
-16. Release changes, known reports for the selected release, and post-release proposals or developments are clearly separated and summarized by user-facing theme rather than one document per item.
-17. Third-party examples are labelled as community examples and are not the sole evidence for general Crossplane behavior, API semantics, compatibility, security properties, or recommended practice.
-18. Copied or adapted third-party material has verified license information and attribution; otherwise the concept only summarizes and cites the source.
-19. Upjet-to-Terraform mappings contain the complete evidence chain and are not based on naming similarity.
-20. Generated schemas are attributed to their generator or source-of-truth configuration where available.
-21. Concepts are small, non-duplicative, correctly linked, and placed at the right level of the catalog.
-22. OKF reserved files and frontmatter follow `.agents/skills/okf/references/okf-profile.md`.
-23. Examples are copied, adapted, or summarized accurately, and that distinction is disclosed.
-
-Use `bash` only for read-only validation and inspection commands. Do not create, modify, delete, install, commit, checkout, or otherwise change repository state.
-
-Return findings ordered by severity with file paths and evidence. Return `APPROVED` only when no blocking finding remains.
+Before doing any work, read and follow `.agents/agents/okf-reviewer/AGENT.md` as the canonical role instructions.
