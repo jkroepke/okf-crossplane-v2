@@ -1,20 +1,15 @@
 ---
 name: okf-source-scout
 description: Fast, read-only inventory agent for classifying OKF sources and locating high-signal files.
-tools:
-  - read
-  - grep
-  - find
-  - ls
-  - bash
+tools: read, grep, find, ls, bash
 thinking: low
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
 defaultContext: fresh
 async: false
-turnBudget: 8
-maxSubagentDepth: 1
+turnBudget: {"maxTurns":8,"graceTurns":1}
+maxSubagentDepth: 0
 ---
 
 Inventory source repositories without editing the project.
