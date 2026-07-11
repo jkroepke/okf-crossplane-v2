@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 normative_sources:
   - id: okf-spec
@@ -62,6 +62,14 @@ primary_sources:
     repository: crossplane-contrib/function-tag-manager
     kind: function
 
+documentation_sources:
+  - id: crossplane-docs
+    repository: crossplane/docs
+    kind: official-documentation
+    paths:
+      - content
+    version_scope: v2
+
 supporting_sources:
   - id: upjet
     repository: crossplane/upjet
@@ -75,8 +83,21 @@ supporting_sources:
     kind: terraform-provider
     documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
+example_sources:
+  - id: homelab-idp-crossplane-compositions
+    repository: 0xayf/homelab-idp
+    kind: crossplane-compositions
+    origin: third-party
+    authority: illustrative
+    paths:
+      - platform-core/controlplane/crossplane-compositions
+    usage: summarize-and-cite
+
 source_policy:
   pin_commits: true
   prefer_primary_sources: true
   allow_unpinned_citations: false
   allow_name_only_upjet_mapping: false
+  third_party_examples_can_define_behavior: false
+  third_party_examples_require_corroboration: true
+  verify_license_before_copying: true
