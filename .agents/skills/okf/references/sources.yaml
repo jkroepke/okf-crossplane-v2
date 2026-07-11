@@ -1,0 +1,82 @@
+version: 1
+
+normative_sources:
+  - id: okf-spec
+    url: https://okf.md/spec/
+
+reference_sources:
+  - id: okf-demo-catalog
+    repository: GoogleCloudPlatform/knowledge-catalog
+    paths:
+      - toolbox/mdcode/demo/okf/catalog
+
+primary_sources:
+  - id: crossplane
+    repository: crossplane/crossplane
+    kind: crossplane-core
+  - id: crossplane-cli
+    repository: crossplane/cli
+    kind: cli
+  - id: crossplane-runtime
+    repository: crossplane/crossplane-runtime
+    kind: provider-sdk
+  - id: crossplane-tools
+    repository: crossplane/crossplane-tools
+    kind: development-tools
+  - id: function-sdk-go
+    repository: crossplane/function-sdk-go
+    kind: function-sdk
+  - id: function-kro
+    repository: crossplane-contrib/function-kro
+    kind: function
+  - id: function-go-templating
+    repository: crossplane-contrib/function-go-templating
+    kind: function
+  - id: xprin
+    repository: crossplane-contrib/xprin
+    kind: composition-test-tool
+  - id: function-sequencer
+    repository: crossplane-contrib/function-sequencer
+    kind: function
+  - id: function-auto-ready
+    repository: crossplane-contrib/function-auto-ready
+    kind: function
+  - id: provider-kubernetes
+    repository: crossplane-contrib/provider-kubernetes
+    kind: native-provider
+  - id: provider-helm
+    repository: crossplane-contrib/provider-helm
+    kind: native-provider
+  - id: function-patch-and-transform
+    repository: crossplane-contrib/function-patch-and-transform
+    kind: function
+  - id: provider-upjet-aws
+    repository: crossplane-contrib/provider-upjet-aws
+    kind: upjet-provider
+    terraform_source: terraform-provider-aws
+  - id: provider-upjet-azure
+    repository: crossplane-contrib/provider-upjet-azure
+    kind: upjet-provider
+    terraform_source: terraform-provider-azurerm
+  - id: function-tag-manager
+    repository: crossplane-contrib/function-tag-manager
+    kind: function
+
+supporting_sources:
+  - id: upjet
+    repository: crossplane/upjet
+    kind: upjet-framework
+  - id: terraform-provider-aws
+    repository: hashicorp/terraform-provider-aws
+    kind: terraform-provider
+    documentation: https://registry.terraform.io/providers/hashicorp/aws/latest/docs
+  - id: terraform-provider-azurerm
+    repository: hashicorp/terraform-provider-azurerm
+    kind: terraform-provider
+    documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+
+source_policy:
+  pin_commits: true
+  prefer_primary_sources: true
+  allow_unpinned_citations: false
+  allow_name_only_upjet_mapping: false
