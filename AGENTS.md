@@ -16,7 +16,11 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 
 ## Evidence rules
 
-- Treat source code, generated schemas, tests, examples, package metadata, and official documentation as evidence in that order of relevance to the claim.
+- Use source code, API types, generated schemas, tests, and package metadata to establish API shape and runtime behavior.
+- Use official Crossplane documentation to establish documented terminology, guidance, supported workflows, and versioned user-facing examples.
+- Treat third-party examples as illustrative. They may describe their own implementation but must not be the sole evidence for general Crossplane behavior or recommended practice.
+- Corroborate reusable third-party patterns with primary sources or official documentation.
+- Verify licensing and attribution before copying or adapting third-party material. Otherwise summarize and cite it.
 - Pin every source repository to an immutable commit before generating knowledge.
 - Cite source files with commit-pinned GitHub URLs and line ranges whenever practical.
 - Do not convert assumptions, name similarity, or undocumented behavior into facts.

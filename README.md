@@ -2,7 +2,7 @@
 
 This repository provides a structured knowledge catalog for the Crossplane v2 ecosystem using the [Open Knowledge Format](https://okf.md/spec/).
 
-The goal is to make Crossplane concepts, APIs, providers, composition functions, development tools, and practical examples easier to discover and understand. The catalog is designed for both humans and knowledge-aware tools.
+The goal is to make Crossplane concepts, APIs, providers, composition functions, development tools, documentation, and practical examples easier to discover and understand. The catalog is designed for both humans and knowledge-aware tools.
 
 ## Why this repository exists
 
@@ -11,8 +11,9 @@ Crossplane knowledge is distributed across many repositories and different kinds
 - Go API types and runtime implementations
 - CustomResourceDefinitions and OpenAPI schemas
 - package metadata
-- examples and tests
-- design documents and user documentation
+- tests and executable examples
+- official Crossplane documentation
+- community implementations and real-world composition examples
 
 Upjet-based providers add another layer. Their Crossplane managed resources are generated from Terraform provider resources, while the Terraform documentation often contains more details about the underlying cloud APIs and configuration fields.
 
@@ -30,6 +31,8 @@ The catalog covers:
 - native providers such as `provider-kubernetes` and `provider-helm`
 - Upjet-based AWS and Azure providers
 - relationships between Upjet managed resources and their Terraform provider resources
+- versioned guidance from the official Crossplane documentation
+- selected community repositories that demonstrate practical Crossplane patterns
 
 ## Knowledge structure
 
@@ -40,7 +43,15 @@ The catalog is intended to be:
 - **Source-backed:** important statements link to source code, schemas, tests, examples, or official documentation.
 - **Version-aware:** sources are tied to specific repository revisions.
 - **Navigable:** overview documents connect related concepts without requiring readers to know the source repository layout.
-- **Incremental:** providers, functions, services, and managed resources can be added in focused batches.
+- **Incremental:** providers, functions, services, documentation areas, and example repositories can be added in focused batches.
+
+## Documentation and community examples
+
+The official Crossplane documentation is used for versioned terminology, guidance, supported workflows, and user-facing examples.
+
+Community repositories may be included to show practical platform and composition patterns. These examples are clearly identified as third-party implementations. They are not treated as official Crossplane guidance or as proof of general Crossplane behavior.
+
+Third-party material is summarized and linked by default. Code or configuration is copied or adapted only when its license allows reuse and the original source is attributed.
 
 ## Upjet and Terraform resources
 
@@ -50,7 +61,7 @@ The catalog also describes Crossplane-specific behavior that is not part of the 
 
 ## Project status
 
-The catalog is built incrementally. Initial work focuses on the common Crossplane concepts, development libraries, composition functions, and representative providers before expanding into individual cloud services and managed resources.
+The catalog is built incrementally. Initial work focuses on the common Crossplane concepts, development libraries, composition functions, official documentation, selected community examples, and representative providers before expanding into individual cloud services and managed resources.
 
 ## Disclaimer
 
