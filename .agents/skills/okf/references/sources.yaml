@@ -3,10 +3,11 @@ version: 1
 normative_sources:
   - id: okf-spec
     url: https://okf.md/spec/
-  - id: okf-reference-spec
+
+reference_sources:
+  - id: okf-demo-catalog
     repository: GoogleCloudPlatform/knowledge-catalog
     paths:
-      - okf/SPEC.md
       - toolbox/mdcode/demo/okf/catalog
 
 primary_sources:
