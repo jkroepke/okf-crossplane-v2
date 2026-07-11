@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "okf-open-knowledge-format": {
+      "source": "fabricioctelles/skills",
+      "sourceType": "github",
+      "skillPath": "skills/okf-open-knowledge-format/SKILL.md",
+      "computedHash": "c1bef46f79261cf136953f1eee5cade526a0e026b7a498beaf0f282a085276e9"
+    }
+  }
+}

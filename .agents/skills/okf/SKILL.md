@@ -28,8 +28,6 @@ Read:
 - `references/okf-profile.md`
 - the current OKF v0.1 specification at `https://okf.md/spec/`
 
-Use the external OKF skill at `https://github.com/fabricioctelles/skills/blob/main/skills/okf-open-knowledge-format/SKILL.md` as additional authoring guidance, but prefer the normative OKF specification when guidance differs.
-
 ## Workflow
 
 ### 1. Bound the work
