@@ -1,0 +1,6 @@
+name = "okf-function-go-templating-project-history-researcher"
+description = "Read-only researcher for human-authored issues and pull requests in crossplane-contrib/function-go-templating. Use only to summarize release changes, known limitations, and proposals for users."
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+sandbox_mode = "read-only"
+developer_instructions = "Before doing any work, read and follow `.agents/agents/okf-function-go-templating-project-history-researcher/AGENT.md` as the canonical role instructions."

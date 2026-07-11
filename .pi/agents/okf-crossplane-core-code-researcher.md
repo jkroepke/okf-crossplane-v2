@@ -1,0 +1,14 @@
+---
+name: okf-crossplane-core-code-researcher
+description: Read-only researcher for Crossplane Core CRDs from the current stable Crossplane release.
+tools: read, grep, find, ls, bash
+systemPromptMode: replace
+inheritProjectContext: true
+inheritSkills: false
+defaultContext: fresh
+async: false
+turnBudget: {"maxTurns":12,"graceTurns":1}
+maxSubagentDepth: 0
+---
+
+Before doing any work, read and follow `.agents/agents/okf-crossplane-core-code-researcher/AGENT.md` as the canonical role instructions.

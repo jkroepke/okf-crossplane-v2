@@ -1,0 +1,6 @@
+name = "okf-function-go-templating-researcher"
+description = "Read-only user-facing researcher dedicated to crossplane-contrib/function-go-templating. Use only to explain how users install, configure, and operate this function."
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+sandbox_mode = "read-only"
+developer_instructions = "Before doing any work, read and follow `.agents/agents/okf-function-go-templating-researcher/AGENT.md` as the canonical role instructions."
