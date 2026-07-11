@@ -2,7 +2,6 @@
 name: okf-reviewer
 description: Read-only evidence and conformance reviewer for changed OKF documents and their claim ledgers.
 tools: read, grep, find, ls, bash
-thinking: high
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
