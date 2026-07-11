@@ -2,7 +2,6 @@
 name: okf-crossplane-researcher
 description: Read-only Crossplane researcher for source-backed OKF concepts, APIs, documentation, and examples.
 tools: read, grep, find, ls, bash
-thinking: medium
 systemPromptMode: replace
 inheritProjectContext: true
 inheritSkills: false
