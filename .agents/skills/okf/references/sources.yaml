@@ -14,9 +14,21 @@ primary_sources:
   - id: crossplane
     repository: crossplane/crossplane
     kind: crossplane-core
+    release_policy: latest-stable
+    research_profiles:
+      core-crds:
+        agent: okf-crossplane-core-code-researcher
+        paths:
+          - cluster/crds
+        legacy_exclusions:
+          - Claims and claim APIs
+          - deprecated CompositeResourceDefinition v1 schema
+          - legacy v1 composite-resource semantics
   - id: crossplane-cli
     repository: crossplane/cli
     kind: cli
+    domain: crossplane-cli
+    core_scope: false
   - id: crossplane-runtime
     repository: crossplane/crossplane-runtime
     kind: provider-sdk
@@ -32,6 +44,15 @@ primary_sources:
   - id: function-go-templating
     repository: crossplane-contrib/function-go-templating
     kind: function
+    agent: okf-function-go-templating-researcher
+    release_policy: latest-stable-or-pinned-commit
+    paths:
+      - README.md
+      - example
+    legacy_exclusions:
+      - README section v1 Composite Resources (Legacy)
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
   - id: xprin
     repository: crossplane-contrib/xprin
     kind: composition-test-tool
@@ -66,9 +87,27 @@ documentation_sources:
   - id: crossplane-docs
     repository: crossplane/docs
     kind: official-documentation
-    paths:
-      - content
-    version_scope: v2
+    agent: okf-crossplane-core-docs-researcher
+    release_policy: match-latest-stable-crossplane-major-minor
+    path_template: content/v{major}.{minor}
+    exclude_paths:
+      - content/master
+      - content/cli
+      - content/v1.*
+    focus:
+      - composition
+      - managed-resources
+      - operations
+      - packages/providers
+      - packages/functions
+      - release-cycle
+      - feature-lifecycle
+    legacy_exclusions:
+      - Claims and claim workflows
+      - v1 Composite Resources (Legacy)
+      - deprecated CompositeResourceDefinition v1 schema
+      - v1-to-v2 migration guidance unless explicitly requested
+    version_scope: current-stable-v2
 
 supporting_sources:
   - id: upjet
@@ -101,3 +140,9 @@ source_policy:
   third_party_examples_can_define_behavior: false
   third_party_examples_require_corroboration: true
   verify_license_before_copying: true
+  resolve_current_stable_release_before_core_research: true
+  infer_feature_state_from_api_version: false
+  exclude_legacy_claims: true
+  exclude_deprecated_xrd_v1: true
+  treat_all_v1_api_versions_as_legacy: false
+  require_dedicated_agent_per_function: true
