@@ -44,11 +44,19 @@ primary_sources:
   - id: function-go-templating
     repository: crossplane-contrib/function-go-templating
     kind: function
-    agent: okf-function-go-templating-researcher
-    release_policy: latest-stable-or-pinned-commit
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-go-templating-researcher
+      sprig: okf-function-go-templating-sprig-researcher
     paths:
       - README.md
       - example
+      - package/input/gotemplating.fn.crossplane.io_gotemplates.yaml
+      - function_maps.go
+      - go.mod
+    supporting_sources:
+      - sprig
     legacy_exclusions:
       - README section v1 Composite Resources (Legacy)
       - examples requiring Claims or claim references
@@ -110,6 +118,16 @@ documentation_sources:
     version_scope: current-stable-v2
 
 supporting_sources:
+  - id: sprig
+    repository: Masterminds/sprig
+    kind: template-function-library
+    authority: supporting
+    version_policy: exact-version-from-selected-function-go-templating-go-mod
+    agent: okf-function-go-templating-sprig-researcher
+    paths:
+      - README.md
+      - docs
+    availability_source: function-go-templating/function_maps.go
   - id: upjet
     repository: crossplane/upjet
     kind: upjet-framework
@@ -141,8 +159,11 @@ source_policy:
   third_party_examples_require_corroboration: true
   verify_license_before_copying: true
   resolve_current_stable_release_before_core_research: true
+  resolve_current_stable_release_before_function_research: true
+  stable_release_definition: highest-semver-tag-excluding-draft-prerelease-rc-beta-alpha
+  allow_function_main_fallback: false
   infer_feature_state_from_api_version: false
   exclude_legacy_claims: true
   exclude_deprecated_xrd_v1: true
   treat_all_v1_api_versions_as_legacy: false
-  require_dedicated_agent_per_function: true
+  require_dedicated_agent_set_per_function: true
