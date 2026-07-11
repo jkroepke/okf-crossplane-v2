@@ -3,7 +3,7 @@ name: okf
 description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
 disable-model-invocation: true
 metadata:
-  version: "1.2"
+  version: "1.3"
   license: Apache-2.0
 ---
 
@@ -37,6 +37,7 @@ The workflow and evidence contracts are shared across agent runtimes:
 
 - Codex specialist definitions live in `.codex/agents/`.
 - Pi specialist definitions live in `.pi/agents/` and are loaded through `pi-subagents`.
+- Pi model configuration guidance lives in `.pi/README.md`.
 - Pi users may invoke the shared skill with `/skill:okf` or use the project prompt `/okf`.
 - Runtime-specific agents use the same `okf-*` role names and must preserve the same read-only evidence contract.
 - The root or parent agent remains the only writer regardless of runtime.
@@ -165,7 +166,7 @@ Fix blocking findings as the root or parent agent, rerun targeted validation, an
 Shared rules:
 
 - Keep at most three direct research agents active at once.
-- Use one final high-reasoning review over changed concepts, not over all source repositories.
+- Use one final evidence review over changed concepts, not over all source repositories.
 - Prefer targeted searches, schemas, tests, documentation sections, and configured example paths over recursive repository reads.
 - Batch related third-party example repositories instead of assigning one agent per repository.
 - Return summaries and evidence references, never raw exploration output.
@@ -180,10 +181,11 @@ Codex model selection:
 
 Pi model selection:
 
-- Project agents intentionally do not pin a provider-specific model identifier. They inherit the model selected for the Pi session.
-- Use the role-specific `thinking` levels declared in `.pi/agents/`.
+- Project agents intentionally do not pin a provider-specific model identifier or thinking level. They inherit the model and supported capabilities selected for the Pi session.
 - Configure local or hosted models outside this repository so the workflow remains portable across Pi providers.
-- Use a stronger model or higher reasoning only for ambiguous Upjet mappings and the final evidence review.
+- Non-thinking coding models such as Qwen3-Coder-Next can run every project agent without incompatible reasoning controls.
+- Use a stronger or different model for ambiguous Upjet mappings and the final evidence review when one is available.
+- Follow `.pi/README.md` for local Qwen3-Coder-Next configuration guidance.
 
 ## Completion report
 
