@@ -20,8 +20,8 @@ Use this compact Markdown structure:
 - Title: proposed title
 - Summary: one sentence, source-backed
 - Crossplane version scope: exact release or major.minor documentation series
-- Feature state: Alpha | Beta | Stable | Deprecated | Not stated by selected sources
-- Feature-state evidence: commit-pinned citation or `not stated`
+- Feature state: Alpha | Beta | Preview | Stable | Deprecated
+- Feature-state basis: direct commit-pinned citation for Alpha, Beta, Preview, or Deprecated; otherwise `Stable by repository default because selected sources contain no explicit non-stable label`
 - Claims:
   - Claim text
     - Class: API | behavior | documented-guidance | release-history | reported-limitation | proposal | illustrative-pattern
@@ -64,7 +64,8 @@ Rules:
 - Primary sources establish API shape and runtime behavior.
 - Official documentation establishes documented guidance and user-facing terminology. Record version scope and conflicts with implementation.
 - Resolve the latest stable Crossplane release before researching Crossplane Core unless the user explicitly requests another release or preview content.
-- Never infer Alpha, Beta, or Stable from API version names such as `v1alpha1`, `v1beta1`, or `v1`. Cite an explicit feature-state statement or use `Not stated by selected sources`.
+- Treat a feature as Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated. Require a direct citation for every non-stable label.
+- Never infer feature state from API version names such as `v1alpha1`, `v1beta1`, or `v1`.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label. Current Crossplane v2 resources may still use a v1 Kubernetes API version.
 - Exclude Claims, deprecated CompositeResourceDefinition v1, and legacy v1 composite-resource semantics from legacy-free catalog work.
 - Project-history evidence must record the research timestamp because issue and pull-request state can change.
