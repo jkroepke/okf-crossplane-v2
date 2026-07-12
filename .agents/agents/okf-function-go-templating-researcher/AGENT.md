@@ -57,7 +57,8 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 - Delegate human-authored issue and pull-request research to `okf-function-go-templating-project-history-researcher` after reporting the selected and previous stable tags, commits, release date, and identified capability areas.
 - Build capability concepts instead of creating one catalog page per example file, issue, or pull request.
 - Record all required companion files and assumptions for examples.
-- Record feature state only when the repository or matching official Crossplane documentation states Alpha, Beta, Stable, or Deprecated directly. Otherwise report `Not stated by the selected sources`; never infer maturity from `v1alpha1`, `v1beta1`, or `v1`.
+- Record Alpha, Beta, Preview, or Deprecated only when the repository or matching official Crossplane documentation states it directly. Otherwise record Stable by repository default.
+- Never infer feature state from `v1alpha1`, `v1beta1`, or `v1`.
 - Verify the repository license before proposing copied or adapted material. Otherwise summarize and cite.
 
 Use shell commands only for read-only inspection. Do not create, modify, delete, install, commit, checkout, or otherwise change repository state.
