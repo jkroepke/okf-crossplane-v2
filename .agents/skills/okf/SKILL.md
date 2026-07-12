@@ -1,9 +1,9 @@
 ---
 name: okf
-description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
+description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, historical design context, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
 disable-model-invocation: true
 metadata:
-  version: "1.4"
+  version: "1.5"
   license: Apache-2.0
 ---
 
@@ -29,7 +29,7 @@ Read:
 - `references/okf-profile.md`
 - `references/okf-spec.md`
 
-Treat the source categories in `references/sources.yaml` as separate authority roles. Do not flatten primary source, official documentation, supporting source, project-history evidence, and third-party example evidence into one undifferentiated source list.
+Treat the source categories in `references/sources.yaml` as separate authority roles. Do not flatten primary source, official documentation, historical-design, supporting source, project-history evidence, and third-party example evidence into one undifferentiated source list.
 
 ## Runtime adapters
 
@@ -68,6 +68,8 @@ Never cite a moving branch in generated knowledge. A repository homepage may be 
 
 For Crossplane Core, resolve the latest stable Crossplane release first. Use Core CRDs from that release tag and the matching `crossplane/docs` `content/v<major>.<minor>/` series. Do not use `content/master/`, `content/cli/**`, or `content/v1.*` for stable Core concepts.
 
+For historical Core design context, pin the current `crossplane/crossplane` `main` commit at research time and record the selected design document's status and accuracy warnings.
+
 For each composition function, discover the highest stable semantic-version tag at research time. Exclude prereleases, release candidates, beta tags, alpha tags, draft releases, and moving branches. Resolve the selected tag and the immediately preceding stable tag to full commits when available. Do not silently fall back to `main`.
 
 Issue and pull-request state is mutable. Record a research timestamp and direct GitHub item metadata for project-history evidence instead of presenting it as immutable released source.
@@ -80,6 +82,8 @@ Batch repositories by source kind. Do not spawn one agent per repository. Prefer
 
 Scout official documentation and third-party examples separately from implementation repositories so their authority roles remain explicit in the evidence packet.
 
+Never use `crossplane/crossplane/design/**` for general feature discovery. Locate a design document only for a specific feature already identified from current stable documentation or implementation evidence.
+
 Skip scouting when existing locks and evidence already identify the relevant files and their source paths have not changed.
 
 ### 4. Research only what needs semantics
@@ -88,13 +92,14 @@ Use the narrowest matching researcher:
 
 - `okf-crossplane-core-docs-researcher` for current stable Crossplane Core documentation, terminology, workflows, lifecycle states, and general provider or function installation guidance.
 - `okf-crossplane-core-code-researcher` for current stable Crossplane Core CRDs under `cluster/crds`.
+- `okf-crossplane-core-design-researcher` only as a last-resort historical-context source for a specific Core feature already identified from current stable documentation or implementation evidence.
 - `okf-function-go-templating-researcher` for user-facing `function-go-templating` installation, input schema, README guidance, examples, and additional template functions.
 - `okf-function-go-templating-sprig-researcher` for the exact Sprig version selected by `function-go-templating/go.mod`, restricted by the function map exposed by that release.
 - `okf-function-go-templating-project-history-researcher` for human-authored issues and pull requests, grouped into release changes, known reports, and post-release proposals or developments.
 - `okf-crossplane-researcher` for CLI, runtime, SDKs, tools, native providers, testing tools, examples, and domains without a dedicated researcher.
 - `okf-upjet-researcher` only for Upjet provider concepts that require Terraform correlation. Give it an explicit provider service or managed-resource batch.
 
-Run the Core docs and Core code researchers together when a concept needs both user-facing guidance and exact served API shape.
+Run the Core docs and Core code researchers together when a concept needs both user-facing guidance and exact served API shape. Invoke the Core design researcher afterward only when a bounded historical question remains.
 
 Every composition function must have its own dedicated Codex and Pi agent set. Add that bounded agent set and source profile before generating knowledge for a function that does not have one. A function agent set may include a primary user-facing researcher plus narrowly scoped supporting researchers for dependencies and project history.
 
@@ -110,17 +115,20 @@ Use evidence according to its source role:
 
 - Primary implementation sources, API types, generated schemas, tests, and package metadata establish API shape and runtime behavior.
 - Official Crossplane documentation establishes documented terminology, guidance, supported workflows, lifecycle states, and user-facing examples. When documentation conflicts with implementation or schemas, record the conflict and prefer implementation evidence for runtime behavior.
+- Historical-design sources establish only historical intent, rationale, conceptual models, alternatives, and tradeoffs for a specific already-known feature. They do not independently establish current API shape, runtime behavior, supported guidance, release inclusion, or feature maturity.
 - Supporting sources provide background that is relevant only to their domain, such as Sprig functions, Upjet generation, or Terraform resource behavior.
 - Project-history sources establish that a human-authored issue was reported, a pull request was proposed, or a change was merged. They do not independently establish released behavior, API shape, lifecycle state, or recommendations.
 - Third-party examples are illustrative. They may establish what that repository implements, but they must not be the sole evidence for Crossplane API semantics, runtime behavior, compatibility, security properties, or recommended practices.
 
+For every design-derived statement presented as a current fact, require corroboration from selected stable source code, CRDs, schemas, tests, or matching stable documentation. Otherwise retain it only as historical design intent or unresolved context. Accepted design status does not prove implementation or release inclusion, and design status never defines feature state.
+
 Apply feature-state precedence:
 
-1. Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources.
+1. Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected current sources.
 2. A relevant served `v1alpha*` API is an Alpha stability ceiling and a relevant served `v1beta*` API is a Beta stability ceiling. Never record either as Stable.
 3. When an explicit Stable label conflicts with a served alpha or beta API, classify the API as Alpha or Beta and record the source conflict.
 4. When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API exists.
-5. Never use `v1` alone as proof of Stable; it only permits the repository Stable default when no other selected evidence indicates a non-stable state.
+5. Never use `v1` alone as proof of Stable; it only permits the repository Stable default when no other selected current evidence indicates a non-stable state.
 
 Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or an explicit legacy label.
 
@@ -144,12 +152,13 @@ Before writing Markdown, reduce the evidence packets to a claim ledger:
 
 - concept identifier
 - exact claim
-- claim class: API, behavior, documented guidance, release history, reported limitation, proposal, or illustrative pattern
+- claim class: API, behavior, documented guidance, historical context, release history, reported limitation, proposal, or illustrative pattern
 - source role
 - supporting immutable citation or direct issue/PR snapshot
 - confidence: direct, corroborated, or inferred
 - Crossplane release or documentation series
-- feature state and basis: explicit label, served alpha or beta API ceiling, or Stable repository default when no non-stable evidence exists
+- feature state and basis: explicit label, served alpha or beta API ceiling, or Stable repository default when no non-stable current evidence exists
+- design document status, accuracy warnings, and current corroboration result for historical-design evidence
 - selected-release relationship for issue and pull-request evidence
 - research timestamp for project-history evidence
 - legacy exclusions applied
@@ -165,12 +174,13 @@ Rules:
 
 - one independently useful concept per file
 - structural Markdown over long prose
-- package, schema, behavior, documentation guidance, examples, and project history are separate concepts or sections when each is useful alone
+- package, schema, behavior, documentation guidance, historical context, examples, and project history are separate concepts or sections when each is useful alone
 - preserve existing unknown frontmatter fields
 - add natural-language cross-links, not a generic link dump
 - add a numbered `# Citations` section for externally sourced claims
 - update affected `index.md` files for progressive disclosure
 - update `log.md` only with high-level knowledge changes
+- label design-derived material as historical context and pair current facts with current implementation or documentation evidence
 - identify third-party examples as community examples and name their originating repository
 - distinguish copied examples, adapted examples, and summarized patterns
 - exclude Claims, deprecated CompositeResourceDefinition v1, legacy v1 XR semantics, and sections explicitly labelled `v1 Composite Resources (Legacy)`
@@ -181,7 +191,7 @@ Rules:
 - label open issues as reports and open or unmerged pull requests as proposals
 - include the project-history research timestamp
 
-Do not copy large documentation passages, issue bodies, pull-request descriptions, or comment threads. Summarize and cite.
+Do not copy large design documents, documentation passages, issue bodies, pull-request descriptions, or comment threads. Summarize and cite.
 
 ### 8. Apply the Upjet evidence gate
 
@@ -206,6 +216,8 @@ Also check:
 
 - source lock entries exist for all generated released-source concepts
 - released-source evidence citations contain immutable commit SHAs
+- historical-design citations pin the selected Crossplane commit and record document status and accuracy warnings
+- design documents are not used for general feature discovery, current facts without corroboration, or feature-state classification
 - cited files and line anchors resolve when network access is available
 - internal Markdown links are valid; report broken links as warnings because OKF permits them
 - no concept contains unresolved placeholders presented as facts
@@ -215,7 +227,7 @@ Also check:
 - served `v1alpha*` APIs are never recorded above Alpha and served `v1beta*` APIs are never recorded above Beta
 - an explicit Stable label that conflicts with a served alpha or beta API is recorded as a conflict, not accepted as Stable
 - `v1` alone is not used as proof of Stable
-- Stable is used by repository default only when no selected source or relevant served API indicates a non-stable state
+- Stable is used by repository default only when no selected current source or relevant served API indicates a non-stable state
 - legacy-free output excludes Claims, deprecated XRD v1, legacy v1 XR semantics, and explicitly labelled legacy sections
 - current non-deprecated APIs are not excluded only because they use `/v1`
 - Crossplane CLI content is not categorized as Core
@@ -243,7 +255,7 @@ Shared rules:
 
 - Keep at most three direct research agents active at once.
 - Use one final evidence review over changed concepts, not over all source repositories.
-- Prefer targeted searches, schemas, tests, documentation sections, configured example paths, and issue/PR queries over recursive repository reads.
+- Prefer targeted searches, schemas, tests, documentation sections, explicitly selected design documents, configured example paths, and issue/PR queries over recursive repository reads.
 - Batch related third-party example repositories instead of assigning one agent per repository.
 - Summarize issue and pull-request history by user-facing theme and omit low-signal housekeeping.
 - Return summaries and evidence references, never raw exploration output.
@@ -271,6 +283,7 @@ Report:
 - concepts created, updated, or removed
 - pinned source commits used
 - selected Crossplane release and documentation series for Core work
+- selected historical design documents, pinned commit, stated status, and corroboration result
 - selected stable function tags and commits
 - source roles used for material claims
 - explicit feature-state citations, served alpha or beta API ceilings, or the Stable repository-default basis
@@ -278,5 +291,5 @@ Report:
 - project-history timestamp, human-authored items summarized, and bot/app activity excluded
 - deterministic validation and `mise run lint` results
 - reviewer status
-- unresolved mappings, conflicts, licensing questions, and permitted broken links
+- unresolved mappings, conflicts, licensing questions, historical design differences, and permitted broken links
 - the narrowest next source batch, when more coverage is requested
