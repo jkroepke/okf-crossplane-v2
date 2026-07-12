@@ -40,3 +40,44 @@ All claims have function scope v0.12.2 unless a narrower version is stated.
 - No open report was shown to reproduce on v0.12.2.
 - README nests `options` under `inline`, conflicting with the generated CRD; catalog follows the generated schema.
 - Bundled installation examples pin v0.11.5 and use varying Function object names; catalog uses selected v0.12.2 and requires name matching.
+
+# Crossplane Core v2.3.3
+
+Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching official documentation series `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`.
+
+| Concept | Exact claim | Class | Source role | Confidence | Evidence |
+|---|---|---|---|---|---|
+| composite-resource-model | An XR represents a set of Kubernetes resources; an XRD defines its API and a Composition defines composed resources. | documented-guidance | official-documentation | direct | [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/composite-resources.md#L7-L35) |
+| composite-resource-definition | XRD v2 is cluster-scoped; names, group, scope, versions, serving, storage, and update policy follow the cited CRD schema. | API | primary | direct | [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml#L702-L1368) |
+| composite-resource-definition | Namespaced scope is the v2 default and is recommended for most XRDs. | documented-guidance | official-documentation | direct | [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/composite-resource-definitions.md#L500-L530) |
+| composition | Current Composition is a non-deprecated cluster-scoped v1 API with Pipeline mode and bounded, uniquely named Function steps. | API | primary | direct | [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L7-L273) |
+| managed-resources | A Provider defines and manages concrete MR APIs and their external resources. | documented-guidance | official-documentation | direct | [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L7-L47) |
+| managed-resource-definition | MRD is Alpha; its schema defines API identity, scope, versions, activation state, and status. | API and documented-guidance | primary and official-documentation | corroborated | [maturity](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-definitions.md#L1-L6), [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_managedresourcedefinitions.yaml#L7-L512) |
+
+## Core limitations and exclusions
+
+- Feature state is `Not stated by selected sources` for the XR model, XRD, Composition, and managed resources generally. Alpha applies only to MRD; Beta applies only to `managementPolicies`.
+- Claims, claim references, deprecated XRD v1 schema, legacy v1 XR semantics, `LegacyCluster`, migration guidance, and legacy connection-secret workflows are excluded.
+- Some v2.3 XRD documentation examples use the deprecated `/v1` XRD API; the catalog records the conflict and uses the released v2 CRD for API shape.
+- Concrete managed-resource schemas and controller behavior require separately pinned provider sources.
+- The generator and Go source-of-truth types for the released generated Core CRDs were not established in this bounded source batch.
+
+# Crossplane Configurations v2.3.3
+
+| Concept | Exact claim | Class | Source role | Confidence | Evidence |
+|---|---|---|---|---|---|
+| configuration-package | A Configuration is a portable OCI package containing XRDs and Compositions and declaring package dependencies. | documented-guidance | official-documentation | direct | [contents](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L8-L20), [dependency metadata](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L440-L451) |
+| configuration | Configuration is a cluster-scoped, served/stored `pkg.crossplane.io/v1` API requiring a qualified package reference and exposing package controls and status. | API | primary | direct | [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurations.yaml#L7-L249) |
+| configuration | Installation is registry-based; revision activation defaults automatic; constraints and dependency resolution are enforced by default. | documented-guidance | official-documentation | direct | [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L87-L338) |
+| configuration-revision | ConfigurationRevision is a controller-managed, cluster-scoped v1 API with desired state, image, revision number, dependency counts, owned objects, and conditions. | API and behavior | primary | direct | [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L7-L280) |
+| dependencies-and-authoring | Configuration metadata declares Configuration, Function, and Provider dependencies; dependency resolution is enabled by default. | documented-guidance | official-documentation | direct | [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L244-L270), [metadata](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L425-L472) |
+| dependencies-and-authoring | Automatic dependency upgrades and downgrades are Alpha, flag-gated features with documented downgrade risks. | documented-guidance | official-documentation | direct | [maturity](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/get-started/install.md#L96-L120) |
+
+## Configuration limitations and exclusions
+
+- Overall Configuration, ConfigurationRevision, base dependency resolution, and authoring maturity is `Not stated by selected sources`; Alpha applies only to automatic dependency upgrade and downgrade features.
+- Configuration and revision pull/state values are defined by Go constants but are not all encoded as CRD OpenAPI enums.
+- No rollback-specific field or status was found, so rollback procedure and reconciliation are not claimed.
+- CLI command syntax is excluded from Core. Claims, deprecated XRD v1, and legacy v1 XR semantics were outside this source batch.
+- The documentation's initial package-content summary omits some dependency kinds listed later; the catalog preserves the explicit Configuration, Function, and Provider dependency list.
+- The v2.3 Configuration page and installation page name different automatic-downgrade enablement settings; the catalog records the conflict and does not prescribe one mechanism.
