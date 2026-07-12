@@ -1,5 +1,5 @@
 ---
-type: Crossplane API
+type: api
 title: Install and manage Configuration packages
 description: The cluster-scoped API that requests installation of an OCI-compatible Crossplane Configuration package.
 resource: https://github.com/crossplane/crossplane
@@ -18,7 +18,8 @@ feature_state: Not stated by selected sources
 
 # Overview
 
-`Configuration` is a cluster-scoped `pkg.crossplane.io/v1` API, served and stored without deprecation metadata. It requests installation of an OCI-compatible package containing XRDs and Compositions.[1] Installation is registry-based; local registries can support offline environments, but direct installation from Kubernetes volumes is unsupported.[2]
+`Configuration` is a cluster-scoped `pkg.crossplane.io/v1` API, served and stored without deprecation metadata.
+It requests installation of an OCI-compatible package containing XRDs and Compositions.[1] Installation is registry-based; local registries can support offline environments, but direct installation from Kubernetes volumes is unsupported.[2]
 
 # Schema
 
@@ -37,7 +38,9 @@ The Go types in `apis/pkg/v1/configuration_types.go` and `package_types.go` are 
 
 # Behavior
 
-By default, Crossplane activates the newest revision and enforces the package's Crossplane version constraint. Manual activation prevents automatic activation; bypassing constraints or dependency resolution removes those protections.[7] A healthy installation reports `Installed` and `Healthy` as true. Dependency or constraint failures may leave installation true while health is false; revision conditions and events provide diagnostics.[8]
+By default, Crossplane activates the newest revision and enforces the package's Crossplane version constraint.
+Manual activation prevents automatic activation; bypassing constraints or dependency resolution removes those protections.[7] A healthy installation reports `Installed` and `Healthy` as true.
+Dependency or constraint failures may leave installation true while health is false; revision conditions and events provide diagnostics.[8]
 
 Status also records conditions, the current identifier, newest revision, resolved package reference, and applied image configuration references.[9]
 

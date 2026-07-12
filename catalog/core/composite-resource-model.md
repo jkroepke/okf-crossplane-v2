@@ -1,5 +1,5 @@
 ---
-type: Crossplane Core Concept
+type: concept
 title: Crossplane v2 composite resource model
 description: An XR exposes a custom API whose schema is defined by an XRD and whose composed resources are selected by a Composition.
 resource: https://docs.crossplane.io/v2.3/composition/composite-resources/
@@ -15,7 +15,9 @@ feature_state: Not stated by selected sources
 
 # Overview
 
-A composite resource (XR) is a custom Kubernetes API and a single object that represents a set of Kubernetes resources. A [CompositeResourceDefinition](composite-resource-definition.md) defines the XR API and schema. A [Composition](composition.md) defines how Crossplane composes resources for that XR type.[1]
+A composite resource (XR) is a custom Kubernetes API and a single object that represents a set of Kubernetes resources.
+A [CompositeResourceDefinition](composite-resource-definition.md) defines the XR API and schema.
+A [Composition](composition.md) defines how Crossplane composes resources for that XR type.[1]
 
 # Relationships
 

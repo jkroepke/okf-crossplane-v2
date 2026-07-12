@@ -1,5 +1,5 @@
 ---
-type: Reference
+type: reference
 title: function-go-templating v0.12.2 project history
 description: Human-authored release changes, version-scoped reports, and post-release developments researched on 2026-07-12.
 resource: https://github.com/crossplane-contrib/function-go-templating
@@ -14,7 +14,9 @@ feature_state: Not stated by selected sources
 
 # Included in selected release
 
-Human-authored PR #580 is the sole commit between v0.12.1 and v0.12.2. It updated Go and selected indirect dependencies as a security remediation. Its merge commit is the selected release commit, proving containment; the released `go.mod` corroborates the dependency result.[1][2]
+Human-authored PR #580 is the sole commit between v0.12.1 and v0.12.2.
+It updated Go and selected indirect dependencies as a security remediation.
+Its merge commit is the selected release commit, proving containment; the released `go.mod` corroborates the dependency result.[1][2]
 
 # Known reports for selected release
 
@@ -33,7 +35,10 @@ After v0.12.2, issue #591 and merged PR #592 addressed a function-specific gRPC 
 
 # Research boundaries
 
-Research was performed on 2026-07-12. Bot/app issues, pull requests, comments, and reviews were excluded, including Renovate activity. Claim-readiness issue #99 was excluded as legacy material. Project history is not used to establish API shape, runtime behavior, recommendations, or feature maturity; maturity is **Not stated by selected sources**.
+Research was performed on 2026-07-12.
+Bot/app issues, pull requests, comments, and reviews were excluded, including Renovate activity.
+Claim-readiness issue #99 was excluded as legacy material.
+Project history is not used to establish API shape, runtime behavior, recommendations, or feature maturity; maturity is **Not stated by selected sources**.
 
 # Citations
 

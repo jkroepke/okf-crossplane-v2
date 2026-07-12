@@ -1,5 +1,5 @@
 ---
-type: Crossplane API
+type: api
 title: ConfigurationRevision
 description: A controller-managed revision created when a Crossplane Configuration changes.
 resource: https://github.com/crossplane/crossplane
@@ -18,21 +18,28 @@ feature_state: Not stated by selected sources
 
 # Overview
 
-`ConfigurationRevision` is a cluster-scoped `pkg.crossplane.io/v1` API, served and stored without deprecation metadata. Crossplane creates a revision when a [Configuration](configuration.md) changes, manages it, and directs users not to edit it directly.[1]
+`ConfigurationRevision` is a cluster-scoped `pkg.crossplane.io/v1` API, served and stored without deprecation metadata.
+Crossplane creates a revision when a [Configuration](configuration.md) changes, manages it, and directs users not to edit it directly.[1]
 
 # Schema
 
-The required fields are `desiredState`, `image`, and `revision`. Desired state is `Active` or `Inactive`; the image is used for package installation, and the revision number participates in garbage collection according to the parent Configuration's history limit.[2] The Go revision types directly define the desired-state constants and provide the source types for the generated schema.[3]
+The required fields are `desiredState`, `image`, and `revision`.
+Desired state is `Active` or `Inactive`; the image is used for package installation, and the revision number participates in garbage collection according to the parent Configuration's history
+limit.[2] The Go revision types directly define the desired-state constants and provide the source types for the generated schema.[3]
 
 Status exposes conditions, dependency counts, owned object references, applied image configurations, a potentially rewritten resolved image, and opaque capabilities.[4]
 
 # Behavior
 
-Installing a newer package version creates a new revision. One revision is active and determines the installed Composition and XRD resources; by default one inactive revision is retained.[5] Automatic activation selects the newest revision, while manual activation leaves activation under user control.[6]
+Installing a newer package version creates a new revision.
+One revision is active and determines the installed Composition and XRD resources; by default one inactive revision is retained.[5] Automatic activation selects the newest revision, while manual
+activation leaves activation under user control.[6]
 
 # Limitations
 
-Feature maturity is not stated. The generated CRD reports `controller-gen` v0.19.0.[7] Desired state is defined by Go constants but not encoded as an OpenAPI enum. No rollback-specific field or status exists, so this page does not claim a rollback procedure.
+Feature maturity is not stated.
+The generated CRD reports `controller-gen` v0.19.0.[7] Desired state is defined by Go constants but not encoded as an OpenAPI enum.
+No rollback-specific field or status exists, so this page does not claim a rollback procedure.
 
 # Citations
 

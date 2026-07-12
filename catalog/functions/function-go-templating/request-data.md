@@ -1,5 +1,5 @@
 ---
-type: Crossplane Function
+type: function
 title: Template request data and pipeline context
 description: Read observed and desired state, context, extra resources, and credentials from templates.
 resource: https://github.com/crossplane-contrib/function-go-templating

@@ -1,5 +1,5 @@
 ---
-type: Reference
+type: reference
 title: function-go-templating template functions
 description: Project-specific template helpers and the boundary of exposed Sprig functions.
 resource: https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go
@@ -21,7 +21,8 @@ The selected release adds these project-specific functions:[1]
 
 # Sprig boundary
 
-The release depends on Sprig `v3.3.0`.[3] It starts with Sprig's general function map and deletes `env` and `expandenv` because the source identifies an information-leakage risk.[4] See the versioned [Sprig reference](sprig.md) for the retained capability groups.
+The release depends on Sprig `v3.3.0`.[3] It starts with Sprig's general function map and deletes `env` and `expandenv` because the source identifies an information-leakage risk.[4] See the versioned
+[Sprig reference](sprig.md) for the retained capability groups.
 
 Feature maturity is **Not stated by selected sources**.
 

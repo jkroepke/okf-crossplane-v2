@@ -1,5 +1,5 @@
 ---
-type: Crossplane API
+type: api
 title: ManagedResourceDefinition
 description: The Alpha API that defines and selectively activates a provider-managed resource API.
 resource: https://github.com/crossplane/crossplane
@@ -19,11 +19,14 @@ feature_state: Alpha
 
 # Schema
 
-An MRD requires `group`, `names`, `scope`, and `versions`; names require `kind` and `plural`.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Every version requires `name`, `served`, and `storage`, and exactly one version must be stored.[5]
+An MRD requires `group`, `names`, `scope`, and `versions`; names require `kind` and `plural`.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Every version requires
+`name`, `served`, and `storage`, and exactly one version must be stored.[5]
 
 # Behavior
 
-`spec.state` defaults to `Inactive` in the schema and permits `Active` or `Inactive`. It controls whether Crossplane creates the underlying CRD, and cannot return to `Inactive` after activation.[6] User-facing defaults are qualified by provider capability: providers with `safe-start` initially keep MRDs inactive for selective activation; providers without it initially activate MRDs for backward compatibility.[7]
+`spec.state` defaults to `Inactive` in the schema and permits `Active` or `Inactive`.
+It controls whether Crossplane creates the underlying CRD, and cannot return to `Inactive` after activation.[6] User-facing defaults are qualified by provider capability: providers with `safe-start`
+initially keep MRDs inactive for selective activation; providers without it initially activate MRDs for backward compatibility.[7]
 
 # Relationships
 
@@ -31,7 +34,9 @@ MRDs describe and activate the concrete APIs behind [managed resources](managed-
 
 # Limitations
 
-Alpha maturity is directly stated by the v2.3 documentation and applies to MRDs, not all managed resources. The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch. Concrete MR schemas and controller behavior remain provider-specific.
+Alpha maturity is directly stated by the v2.3 documentation and applies to MRDs, not all managed resources.
+The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch.
+Concrete MR schemas and controller behavior remain provider-specific.
 
 # Citations
 
