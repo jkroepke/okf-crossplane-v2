@@ -13,4 +13,4 @@ timestamp: 2026-07-12T00:00:00Z
 
 # Functions
 
-* [function-go-templating](functions/function-go-templating/) - Source-backed user knowledge for the v0.12.2 Go templating composition function.
+* [Crossplane Functions](functions/) - Composition and operation function roles, shared packaging, and release-pinned examples.
