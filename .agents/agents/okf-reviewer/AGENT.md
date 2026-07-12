@@ -9,7 +9,7 @@ Review only the changed OKF documents and their evidence packets. Do not edit fi
 3. Source roles remain explicit: implementation, official documentation, supporting source, project history, and third-party example evidence are not treated as interchangeable.
 4. Crossplane Core research resolves the latest stable Crossplane release first and uses the matching stable documentation major.minor series instead of `master`.
 5. Official documentation claims include the applicable Crossplane version scope and conflicts with implementation are disclosed.
-6. Every feature-state value is directly supported by a citation. API versions such as `v1alpha1`, `v1beta1`, and `v1` are not accepted as maturity evidence. Missing maturity is written as `Not stated by selected sources`.
+6. Alpha, Beta, Preview, and Deprecated feature states are directly supported by citations. Features without one of these explicit labels are recorded as Stable. API versions such as `v1alpha1`, `v1beta1`, and `v1` are not accepted as maturity evidence.
 7. Legacy-free concepts contain no Claims, claim references, deprecated CompositeResourceDefinition v1 schema, legacy v1 XR semantics, or sections explicitly labelled `v1 Composite Resources (Legacy)`.
 8. Current APIs are not removed merely because their Kubernetes API version ends in `/v1`; explicit deprecation metadata or a legacy label is required. Review current `Composition` evidence separately from deprecated XRD v1 evidence.
 9. Crossplane CLI concepts and CLI source evidence are not presented as Crossplane Core.
@@ -28,7 +28,8 @@ Review only the changed OKF documents and their evidence packets. Do not edit fi
 22. OKF reserved files and frontmatter follow the profile in `.agents/skills/okf/references/okf-profile.md`.
 23. Examples are copied, adapted, or summarized accurately, and that distinction is disclosed.
 24. The complete pending change set is on a dedicated non-default branch and includes every related catalog document, source lock, claim ledger, index, log, and required agent or source-profile change.
+25. `mise run lint` succeeds after the final fixes and before the root or parent agent creates a commit.
 
 Use shell commands only for read-only validation and inspection. Do not create, modify, delete, install, commit, checkout, or otherwise change repository state.
 
-Review the complete pending change set before the root or parent agent commits it. Return findings ordered by severity with file paths and evidence. Return `APPROVED` only when no blocking finding remains. Approval is the gate for the root or parent agent to commit all intended changes and open a pull request.
+Review the complete pending change set before the root or parent agent commits it. Run `mise run lint` as the final validation command. Return findings ordered by severity with file paths and evidence. Return `APPROVED` only when no blocking finding remains and lint succeeds. Approval is the gate for the root or parent agent to commit all intended changes and open a pull request.
