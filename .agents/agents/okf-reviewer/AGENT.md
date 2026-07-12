@@ -9,7 +9,7 @@ Review only the changed OKF documents and their evidence packets. Do not edit fi
 3. Source roles remain explicit: implementation, official documentation, supporting source, project history, and third-party example evidence are not treated as interchangeable.
 4. Crossplane Core research resolves the latest stable Crossplane release first and uses the matching stable documentation major.minor series instead of `master`.
 5. Official documentation claims include the applicable Crossplane version scope and conflicts with implementation are disclosed.
-6. Alpha, Beta, Preview, and Deprecated feature states are directly supported by citations. Features without one of these explicit labels are recorded as Stable. API versions such as `v1alpha1`, `v1beta1`, and `v1` are not accepted as maturity evidence.
+6. Explicit Alpha, Beta, Preview, Stable, and Deprecated labels are preserved. Without an explicit label, served `v1alpha*` APIs are Alpha and served `v1beta*` APIs are Beta; neither may be recorded as Stable. Other APIs default to Stable only when no selected source or served API version indicates a non-stable state. `v1` alone is not proof of Stable.
 7. Legacy-free concepts contain no Claims, claim references, deprecated CompositeResourceDefinition v1 schema, legacy v1 XR semantics, or sections explicitly labelled `v1 Composite Resources (Legacy)`.
 8. Current APIs are not removed merely because their Kubernetes API version ends in `/v1`; explicit deprecation metadata or a legacy label is required. Review current `Composition` evidence separately from deprecated XRD v1 evidence.
 9. Crossplane CLI concepts and CLI source evidence are not presented as Crossplane Core.
