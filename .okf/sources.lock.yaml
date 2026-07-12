@@ -1,5 +1,16 @@
 version: 1
 sources:
+  crossplane:
+    repository: crossplane/crossplane
+    tag: v2.3.3
+    commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+    resolved_at: 2026-07-12
+  crossplane-docs:
+    repository: crossplane/docs
+    series: v2.3
+    commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+    selected_by: crossplane/v2.3.3
+    resolved_at: 2026-07-12
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
     tag: v0.12.2
