@@ -1,0 +1,15 @@
+version: 1
+sources:
+  function-go-templating:
+    repository: crossplane-contrib/function-go-templating
+    tag: v0.12.2
+    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+    previous_tag: v0.12.1
+    previous_commit: 548ae34fd9c843f0747981894fb7fa0ff1ba47fa
+    resolved_at: 2026-07-12
+  sprig:
+    repository: Masterminds/sprig
+    tag: v3.3.0
+    commit: e708470d529a10ac1a3f02ab6fdd339b65958372
+    selected_by: function-go-templating/go.mod
+    resolved_at: 2026-07-12
