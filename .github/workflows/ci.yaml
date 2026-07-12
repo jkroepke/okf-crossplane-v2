@@ -1,0 +1,63 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+permissions: {}
+
+jobs:
+  lint:
+    name: Lint OKF
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install mise tools
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+
+      - run: mise run lint
+
+  super-lint:
+    name: Super Linter
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: 'false'
+          fetch-depth: 0
+
+      - name: Lint Code Base
+        uses: super-linter/super-linter/slim@4ce20838b8ab83717e78138c5b3a1407148e0918 # v8.7.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MULTI_STATUS: false
+          LINTER_RULES_PATH: .
+          GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE: ./.github/zizmor.yml
+          ENABLE_GITHUB_ACTIONS_STEP_SUMMARY: true
+          ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT: false
+          SAVE_SUPER_LINTER_SUMMARY: true
+          VALIDATE_ALL_CODEBASE: true
+          VALIDATE_BASH: true
+          VALIDATE_BASH_EXEC: true
+          VALIDATE_EDITORCONFIG: true
+          VALIDATE_ENV: true
+          VALIDATE_GIT_MERGE_CONFLICT_MARKERS: true
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_GITHUB_ACTIONS_ZIZMOR: true
+          VALIDATE_JSON: true
+          VALIDATE_NATURAL_LANGUAGE: true
+          # VALIDATE_MARKDOWN: false
+          VALIDATE_RENOVATE: true
+          VALIDATE_SHELL_SHFMT: true
+          VALIDATE_SPELL_CODESPELL: true
+          VALIDATE_XML: true
+          VALIDATE_YAML: true
