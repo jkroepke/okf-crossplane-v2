@@ -5,15 +5,6 @@ sources:
     tag: v2.3.3
     commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     resolved_at: 2026-07-12
-  crossplane-function-specification:
-    repository: crossplane/crossplane
-    branch: main
-    commit: 231dd83a48fe7a4b9c06c8c94735c365f3da40b6
-    path: contributing/specifications/functions.md
-    source_scope: current-development-specification
-    identical_release_tag: v2.3.3
-    identical_release_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
-    resolved_at: 2026-07-12
   crossplane-docs:
     repository: crossplane/docs
     series: v2.3

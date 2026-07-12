@@ -33,8 +33,7 @@ The Composition schema permits 1–99 uniquely named steps. Each step requires `
 Composition functions use the shared [Function package](package.md) and protocol, but differ from [operation functions](operation-functions.md) in invocation and state semantics. 
 [function-go-templating](function-go-templating/) is a release-pinned composition-function example.
 
-The current [Composition Functions specification](composition-function-specification.md) defines normative implementation requirements. Its pinned `main` content is identical to the file in v2.3.3, while runtime 
-behavior remains separately evidenced.
+The v2.3.3 [Composition Functions specification](composition-function-specification.md) defines normative implementation requirements, while runtime behavior remains separately evidenced.
 
 # Citations
 
