@@ -35,8 +35,9 @@ For every relevant CRD record:
 ## Evidence rules
 
 - CRDs establish served API shape, defaults, validation, scope, and deprecation state.
-- CRDs do not by themselves establish recommended workflows or feature maturity unless they state it explicitly.
-- Record Alpha, Beta, or Stable only with direct evidence. Otherwise report `Not stated by the selected CRD source` and let the documentation researcher resolve it.
+- CRDs do not by themselves establish recommended workflows.
+- Record Alpha, Beta, Preview, or Deprecated only with direct evidence. Otherwise record Stable by repository default.
+- Never infer feature state from `v1alpha1`, `v1beta1`, or `v1`.
 - When CRDs and official documentation differ, report the conflict and preserve both version scopes.
 - Treat generated CRDs as authoritative release artifacts while identifying their generator or Go type source when it is needed to explain a field.
 
