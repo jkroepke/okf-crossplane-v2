@@ -114,7 +114,13 @@ Use evidence according to its source role:
 - Project-history sources establish that a human-authored issue was reported, a pull request was proposed, or a change was merged. They do not independently establish released behavior, API shape, lifecycle state, or recommendations.
 - Third-party examples are illustrative. They may establish what that repository implements, but they must not be the sole evidence for Crossplane API semantics, runtime behavior, compatibility, security properties, or recommended practices.
 
-Treat a feature as Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated. Require direct source evidence for every non-stable label. Never infer feature state from API version suffixes such as `v1alpha1`, `v1beta1`, or `v1`.
+Apply feature-state precedence:
+
+1. Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources.
+2. A relevant served `v1alpha*` API is an Alpha stability ceiling and a relevant served `v1beta*` API is a Beta stability ceiling. Never record either as Stable.
+3. When an explicit Stable label conflicts with a served alpha or beta API, classify the API as Alpha or Beta and record the source conflict.
+4. When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API exists.
+5. Never use `v1` alone as proof of Stable; it only permits the repository Stable default when no other selected evidence indicates a non-stable state.
 
 Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or an explicit legacy label.
 
@@ -143,7 +149,7 @@ Before writing Markdown, reduce the evidence packets to a claim ledger:
 - supporting immutable citation or direct issue/PR snapshot
 - confidence: direct, corroborated, or inferred
 - Crossplane release or documentation series
-- feature state and basis: direct citation for Alpha, Beta, Preview, or Deprecated; otherwise Stable by repository default because selected sources contain no explicit non-stable label
+- feature state and basis: explicit label, served alpha or beta API ceiling, or Stable repository default when no non-stable evidence exists
 - selected-release relationship for issue and pull-request evidence
 - research timestamp for project-history evidence
 - legacy exclusions applied
@@ -205,8 +211,11 @@ Also check:
 - no concept contains unresolved placeholders presented as facts
 - Core concepts record the selected stable release and matching documentation series
 - function concepts record the dynamically selected stable function tag and commit
-- Alpha, Beta, Preview, and Deprecated states have direct evidence; features without an explicit non-stable label are Stable by repository default
-- feature state is not inferred from API version names
+- explicit feature-state labels are preserved
+- served `v1alpha*` APIs are never recorded above Alpha and served `v1beta*` APIs are never recorded above Beta
+- an explicit Stable label that conflicts with a served alpha or beta API is recorded as a conflict, not accepted as Stable
+- `v1` alone is not used as proof of Stable
+- Stable is used by repository default only when no selected source or relevant served API indicates a non-stable state
 - legacy-free output excludes Claims, deprecated XRD v1, legacy v1 XR semantics, and explicitly labelled legacy sections
 - current non-deprecated APIs are not excluded only because they use `/v1`
 - Crossplane CLI content is not categorized as Core
@@ -264,7 +273,7 @@ Report:
 - selected Crossplane release and documentation series for Core work
 - selected stable function tags and commits
 - source roles used for material claims
-- feature-state citations for Alpha, Beta, Preview, or Deprecated labels, or the Stable-by-default basis
+- explicit feature-state citations, served alpha or beta API ceilings, or the Stable repository-default basis
 - legacy material excluded
 - project-history timestamp, human-authored items summarized, and bot/app activity excluded
 - deterministic validation and `mise run lint` results
