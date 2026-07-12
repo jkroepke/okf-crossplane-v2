@@ -57,8 +57,11 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 - Delegate human-authored issue and pull-request research to `okf-function-go-templating-project-history-researcher` after reporting the selected and previous stable tags, commits, release date, and identified capability areas.
 - Build capability concepts instead of creating one catalog page per example file, issue, or pull request.
 - Record all required companion files and assumptions for examples.
-- Record Alpha, Beta, Preview, or Deprecated only when the repository or matching official Crossplane documentation states it directly. Otherwise record Stable by repository default.
-- Never infer feature state from `v1alpha1`, `v1beta1`, or `v1`.
+- Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from the repository or matching official Crossplane documentation.
+- Without an explicit label, classify a served `v1alpha*` function input API as Alpha and a served `v1beta*` function input API as Beta. Never classify either as Stable.
+- For function capabilities without a relevant served alpha or beta API, use Stable by repository default unless another selected source explicitly states a non-stable feature state.
+- Never use `v1` alone as proof of Stable.
+- When an explicit Stable label conflicts with a served alpha or beta API version, use Alpha or Beta for the API and record the conflict.
 - Verify the repository license before proposing copied or adapted material. Otherwise summarize and cite.
 
 Use shell commands only for read-only inspection. Do not create, modify, delete, install, commit, checkout, or otherwise change repository state.
