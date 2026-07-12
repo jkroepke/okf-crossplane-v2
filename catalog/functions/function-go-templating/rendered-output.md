@@ -1,5 +1,5 @@
 ---
-type: Crossplane Function
+type: function
 title: Rendered resources, readiness, status, and recursion
 description: Control desired resources and v2 composite output produced by Go templates.
 resource: https://github.com/crossplane-contrib/function-go-templating
@@ -13,7 +13,8 @@ feature_state: Not stated by selected sources
 
 # Behavior
 
-The annotation `gotemplating.fn.crossplane.io/composition-resource-name` identifies a rendered composed resource; `setResourceNameAnnotation` emits it.[1] The `gotemplating.fn.crossplane.io/ready` annotation marks a rendered composed or composite resource ready or not ready.[2]
+The annotation `gotemplating.fn.crossplane.io/composition-resource-name` identifies a rendered composed resource; `setResourceNameAnnotation` emits it.[1] The `gotemplating.fn.crossplane.io/ready`
+annotation marks a rendered composed or composite resource ready or not ready.[2]
 
 For v2 composite resources, render a composed Kubernetes `Secret` for connection details. The legacy `CompositeConnectionDetails` pseudo-resource is unsupported for v2 and is excluded here.[3]
 

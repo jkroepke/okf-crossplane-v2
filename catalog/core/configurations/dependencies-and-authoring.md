@@ -1,5 +1,5 @@
 ---
-type: Crossplane Development Guide
+type: guide
 title: Configuration dependencies and authoring
 description: Package metadata, contents, dependency constraints, and dependency-resolution behavior for Crossplane Configurations.
 resource: https://docs.crossplane.io/v2.3/packages/configurations/
@@ -19,13 +19,17 @@ feature_state: Not stated by selected sources
 
 A Configuration package is a fully OCI-compliant image containing one or more YAML files. It requires `crossplane.yaml` metadata and may include XRD and Composition files.[1]
 
-Metadata uses `meta.pkg.crossplane.io/v1` kind `Configuration`. `spec.dependsOn` may declare Configuration, Function, or Provider requirements with optional package-version constraints; `spec.crossplane.version` may constrain the Crossplane version.[2]
+Metadata uses `meta.pkg.crossplane.io/v1` kind `Configuration`.
+`spec.dependsOn` may declare Configuration, Function, or Provider requirements with optional package-version constraints; `spec.crossplane.version` may constrain the Crossplane version.[2]
 
 # Dependencies
 
-Crossplane resolves and installs dependencies by default. Setting `skipDependencyResolution` disables that behavior and makes the user responsible for installing required packages.[3] Missing or incompatible dependencies make the Configuration unhealthy and appear in ConfigurationRevision conditions and events.[4]
+Crossplane resolves and installs dependencies by default.
+Setting `skipDependencyResolution` disables that behavior and makes the user responsible for installing required packages.[3] Missing or incompatible dependencies make the Configuration unhealthy and
+appear in ConfigurationRevision conditions and events.[4]
 
-Automatic dependency version upgrades and downgrades are separate Alpha features, disabled behind feature flags. Downgrades may risk orphaned managed resources, data loss, or CRD storage-version problems.[5] Alpha applies only to these automatic version-change features; maturity for base dependency resolution and package authoring is not stated.
+Automatic dependency version upgrades and downgrades are separate Alpha features, disabled behind feature flags.
+Downgrades may risk orphaned managed resources, data loss, or CRD storage-version problems.[5] Alpha applies only to these automatic version-change features; maturity for base dependency resolution and package authoring is not stated.
 
 # Relationships
 
@@ -33,9 +37,12 @@ Dependencies are resolved as part of installing a [Configuration](configuration.
 
 # Limitations
 
-The selected v2.3 documentation disagrees on downgrade enablement: the Configuration page names Helm value `packageManager.enableAutomaticDependencyDowngrade=true` and also requires automatic upgrades, while the installation page names the distinct flag `--enable-dependency-version-downgrades`.[5][6] This catalog therefore does not prescribe one activation mechanism.
+The selected v2.3 documentation disagrees on downgrade enablement: the Configuration page names Helm value `packageManager.enableAutomaticDependencyDowngrade=true` and also requires automatic
+upgrades, while the installation page names the distinct flag `--enable-dependency-version-downgrades`.[5][6] This catalog therefore does not prescribe one activation mechanism.
 
-This Core page documents package input and metadata, not Crossplane CLI command syntax. Building and publishing commands belong to the separate CLI catalog domain. The selected documentation links to a moving package specification; no claims here rely on that unpinned link.
+This Core page documents package input and metadata, not Crossplane CLI command syntax.
+Building and publishing commands belong to the separate CLI catalog domain.
+The selected documentation links to a moving package specification; no claims here rely on that unpinned link.
 
 # Citations
 

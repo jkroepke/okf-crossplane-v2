@@ -1,3 +1,10 @@
+---
+type: log
+title: crossplane-catalog-update-log
+description: Chronological record of high-level Crossplane catalog updates.
+timestamp: 2026-07-12T00:00:00Z
+---
+
 # Catalog Update Log
 
 ## 2026-07-12

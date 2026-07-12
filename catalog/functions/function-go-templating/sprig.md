@@ -1,5 +1,5 @@
 ---
-type: Reference
+type: reference
 title: Sprig v3.3.0 in function-go-templating
 description: Versioned Sprig capability reference constrained to the function's exposed map.
 resource: https://github.com/Masterminds/sprig/tree/e708470d529a10ac1a3f02ab6fdd339b65958372
@@ -28,7 +28,8 @@ feature_state: Not stated by selected sources
 
 # Limitations
 
-`env` and `expandenv` are explicitly unavailable.[2] Current-time, random, and DNS functions are non-hermetic and may produce different output for identical template input.[8] Sprig warns against embedding password material directly in templates.[7]
+`env` and `expandenv` are explicitly unavailable.[2] Current-time, random, and DNS functions are non-hermetic and may produce different output for identical template input.[8] Sprig warns against
+embedding password material directly in templates.[7]
 
 Sprig's project stability labels are not Crossplane maturity evidence. Feature maturity is **Not stated by selected sources**.
 
@@ -37,8 +38,16 @@ Sprig's project stability labels are not Crossplane maturity evidence. Feature m
 [1] [Function dependency on Sprig v3.3.0](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/go.mod#L5-L9)
 [2] [Function-map exclusions](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L56-L62)
 [3] [Sprig capability index](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/index.md#L3-L25)
-[4] [Lists](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/lists.md#L1-L82), [dictionaries](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/dicts.md#L1-L89), and [defaults](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/defaults.md#L1-L87)
-[5] [Encoding](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/encoding.md#L1-L6), [paths](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/paths.md#L1-L63), [URLs](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/url.md#L1-L32), and [reflection](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/reflection.md#L1-L50)
-[6] [Dates](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/date.md#L1-L90) and [semantic versions](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/semver.md#L1-L62)
-[7] [Cryptographic and password helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/crypto.md#L1-L90), [UUID](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/uuid.md#L1-L9), and [network lookup](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/network.md#L1-L10)
+[4] [Lists](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/lists.md#L1-L82),
+[dictionaries](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/dicts.md#L1-L89), and
+[defaults](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/defaults.md#L1-L87)
+[5] [Encoding](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/encoding.md#L1-L6),
+[paths](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/paths.md#L1-L63),
+[URLs](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/url.md#L1-L32), and
+[reflection](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/reflection.md#L1-L50)
+[6] [Dates](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/date.md#L1-L90) and [semantic
+versions](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/semver.md#L1-L62)
+[7] [Cryptographic and password helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/crypto.md#L1-L90),
+[UUID](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/uuid.md#L1-L9), and [network
+lookup](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/network.md#L1-L10)
 [8] [General versus hermetic function maps](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/functions.go#L67-L94)

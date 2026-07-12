@@ -1,5 +1,5 @@
 ---
-type: Crossplane API
+type: api
 title: CompositeResourceDefinition v2
 description: The cluster-scoped Crossplane v2 API that defines a custom composite resource type.
 resource: https://github.com/crossplane/crossplane
@@ -19,7 +19,8 @@ feature_state: Not stated by selected sources
 
 # Schema
 
-The defined resource requires `names.kind` and `names.plural`. Group and names are immutable, and plural and singular names must be lowercase.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Each declared version requires `name`, `served`, and `storage`.[5]
+The defined resource requires `names.kind` and `names.plural`.
+Group and names are immutable, and plural and singular names must be lowercase.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Each declared version requires `name`, `served`, and `storage`.[5]
 
 The XRD `v2` representation is served but not stored. The CRD's stored `v1` representation is explicitly deprecated; that storage detail does not make the current v2 user API legacy.[6]
 
@@ -29,7 +30,10 @@ The default composition update policy is `Automatic`; `Manual` is also permitted
 
 # Limitations
 
-Feature maturity is not stated by the selected CRD or documentation. The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch. Claims, claim references, deprecated XRD v1 schema, legacy v1 XR semantics, and `LegacyCluster` guidance are excluded. Some v2.3 documentation snippets use the deprecated XRD `/v1` API; they are not used as v2 schema evidence.
+Feature maturity is not stated by the selected CRD or documentation.
+The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch.
+Claims, claim references, deprecated XRD v1 schema, legacy v1 XR semantics, and `LegacyCluster` guidance are excluded.
+Some v2.3 documentation snippets use the deprecated XRD `/v1` API; they are not used as v2 schema evidence.
 
 # Citations
 

@@ -1,5 +1,5 @@
 ---
-type: Crossplane API
+type: api
 title: Composition
 description: The current cluster-scoped API for an ordered Crossplane Function pipeline compatible with an XR type.
 resource: https://github.com/crossplane/crossplane
@@ -19,7 +19,8 @@ feature_state: Not stated by selected sources
 
 # Schema
 
-`spec.compositeTypeRef` is required and immutable, and requires an `apiVersion` and `kind`.[3] Mode defaults to—and currently permits only—`Pipeline`; Pipeline mode requires a pipeline.[4] A pipeline has 1–99 uniquely named steps, each requiring `step` and `functionRef`.[5] A step may contain arbitrary embedded Kubernetes input and resource or schema requirements.[6]
+`spec.compositeTypeRef` is required and immutable, and requires an `apiVersion` and `kind`.[3] Mode defaults to—and currently permits only—`Pipeline`; Pipeline mode requires a pipeline.[4] A pipeline
+has 1–99 uniquely named steps, each requiring `step` and `functionRef`.[5] A step may contain arbitrary embedded Kubernetes input and resource or schema requirements.[6]
 
 # Behavior
 
@@ -31,7 +32,10 @@ A Composition implements the API defined by a [CompositeResourceDefinition](comp
 
 # Limitations
 
-Feature maturity is not stated by the selected sources. The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch. The `/v1` API is current and is not excluded as legacy. Legacy connection-secret workflows are outside this foundational scope.
+Feature maturity is not stated by the selected sources.
+The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch.
+The `/v1` API is current and is not excluded as legacy.
+Legacy connection-secret workflows are outside this foundational scope.
 
 # Citations
 

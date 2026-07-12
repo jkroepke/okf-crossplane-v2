@@ -1,5 +1,5 @@
 ---
-type: Crossplane Function Input
+type: functioninput
 title: GoTemplate input
 description: Schema and source modes for gotemplating.fn.crossplane.io/v1beta1 GoTemplate input.
 resource: https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml
@@ -31,7 +31,9 @@ The README documents Inline, FileSystem, and Environment loading. Inline accepts
 
 # Limitations
 
-The README example nests `options` beneath `inline`, but the generated CRD places it at the top level. Follow the generated schema. The only bundled FileSystem example depends on excluded legacy Claim/XRD semantics, so this catalog does not present it as a runnable v2 example.
+The README example nests `options` beneath `inline`, but the generated CRD places it at the top level.
+Follow the generated schema.
+The only bundled FileSystem example depends on excluded legacy Claim/XRD semantics, so this catalog does not present it as a runnable v2 example.
 
 Feature maturity is **Not stated by selected sources**.
 
