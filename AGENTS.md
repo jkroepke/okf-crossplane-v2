@@ -17,6 +17,16 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use at most three direct subagents at once. Do not create nested subagent trees.
 - When running in Pi, use only the project agents whose names start with `okf-`. Their tool allowlists intentionally omit editing tools and nested delegation.
 
+## Change workflow
+
+- For every content addition or update, create a new dedicated branch from the latest default branch before editing. Never add or update content directly on the default branch.
+- Keep the complete related change set on that branch, including catalog documents, source locks, claim ledgers, indexes, logs, and required agent or source-profile changes.
+- Run deterministic validation and the `okf-reviewer` before committing the changes.
+- Resolve all blocking review findings and rerun targeted validation. Continue only after the reviewer returns `APPROVED`.
+- After the final review fixes, run `mise run lint` before creating any commit. Fix every lint error and rerun the command until it succeeds.
+- After reviewer approval and a successful lint run, commit every intended change. Do not leave generated or supporting files uncommitted.
+- Push the branch and open a pull request for the reviewed commit set. Do not merge the pull request unless the user explicitly requests it.
+
 ## Domain routing
 
 - Use `okf-crossplane-core-docs-researcher` for current stable Crossplane Core documentation.
@@ -34,7 +44,10 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use official Crossplane documentation to establish documented terminology, guidance, supported workflows, lifecycle states, and versioned user-facing examples.
 - Resolve the latest stable Crossplane release before Core research and use the matching stable documentation major.minor series.
 - Resolve the highest stable semantic-version tag before researching a composition function. Do not assume a sample tag and do not silently fall back to `main`.
-- Record Alpha, Beta, Stable, or Deprecated only with direct source evidence. Never infer feature maturity from API version names.
+- Record explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources when available.
+- Without an explicit feature-state label, treat a served `v1alpha*` API as Alpha and a served `v1beta*` API as Beta. Such APIs must never be recorded as Stable.
+- For APIs without an alpha or beta served version, default the feature state to Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated.
+- Never use `v1` alone as proof of Stable; it only permits the Stable default when no selected source or served API version indicates a non-stable state.
 - Exclude Claims, claim references, deprecated CompositeResourceDefinition v1, legacy v1 XR semantics, and sections explicitly labelled `v1 Composite Resources (Legacy)` from legacy-free output.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label.
 - Project-history evidence must exclude bots and apps and record a research timestamp.

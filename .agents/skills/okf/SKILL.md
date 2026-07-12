@@ -3,7 +3,7 @@ name: okf
 description: Explicit-only workflow that builds or updates a source-backed Open Knowledge Format catalog for Crossplane core, providers, functions, SDKs, tools, official documentation, and examples. Never invoke implicitly; the user must invoke `$okf`, `/skill:okf`, or `/okf`.
 disable-model-invocation: true
 metadata:
-  version: "1.3"
+  version: "1.4"
   license: Apache-2.0
 ---
 
@@ -42,6 +42,15 @@ The workflow and evidence contracts are shared across agent runtimes:
 - Runtime-specific agents use the same `okf-*` role names and must preserve the same read-only evidence contract.
 - Every dedicated role must exist as a matching Codex and Pi agent set.
 - The root or parent agent remains the only writer regardless of runtime.
+
+## Change publication rules
+
+- For every content addition or update, create a dedicated non-default branch from the latest default branch before editing.
+- Keep the complete related change set on that branch, including generated content and all supporting source locks, claim ledgers, indexes, logs, agent instructions, and source profiles.
+- Complete deterministic validation and obtain `APPROVED` from `okf-reviewer` before committing.
+- After all review fixes, run `mise run lint`. Fix every lint error and rerun the command until it succeeds.
+- Commit every intended file only after reviewer approval and a successful lint run. Push the branch and open a pull request.
+- Do not merge the pull request unless the user explicitly requests it.
 
 ## Workflow
 
@@ -105,7 +114,13 @@ Use evidence according to its source role:
 - Project-history sources establish that a human-authored issue was reported, a pull request was proposed, or a change was merged. They do not independently establish released behavior, API shape, lifecycle state, or recommendations.
 - Third-party examples are illustrative. They may establish what that repository implements, but they must not be the sole evidence for Crossplane API semantics, runtime behavior, compatibility, security properties, or recommended practices.
 
-Never infer Alpha, Beta, or Stable from an API version suffix. Use direct feature-state evidence or state `Not stated by selected sources`.
+Apply feature-state precedence:
+
+1. Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources.
+2. A relevant served `v1alpha*` API is an Alpha stability ceiling and a relevant served `v1beta*` API is a Beta stability ceiling. Never record either as Stable.
+3. When an explicit Stable label conflicts with a served alpha or beta API, classify the API as Alpha or Beta and record the source conflict.
+4. When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API exists.
+5. Never use `v1` alone as proof of Stable; it only permits the repository Stable default when no other selected evidence indicates a non-stable state.
 
 Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or an explicit legacy label.
 
@@ -134,7 +149,7 @@ Before writing Markdown, reduce the evidence packets to a claim ledger:
 - supporting immutable citation or direct issue/PR snapshot
 - confidence: direct, corroborated, or inferred
 - Crossplane release or documentation series
-- feature state and its evidence, or `Not stated by selected sources`
+- feature state and basis: explicit label, served alpha or beta API ceiling, or Stable repository default when no non-stable evidence exists
 - selected-release relationship for issue and pull-request evidence
 - research timestamp for project-history evidence
 - legacy exclusions applied
@@ -196,7 +211,11 @@ Also check:
 - no concept contains unresolved placeholders presented as facts
 - Core concepts record the selected stable release and matching documentation series
 - function concepts record the dynamically selected stable function tag and commit
-- feature states have direct evidence and are not inferred from API version names
+- explicit feature-state labels are preserved
+- served `v1alpha*` APIs are never recorded above Alpha and served `v1beta*` APIs are never recorded above Beta
+- an explicit Stable label that conflicts with a served alpha or beta API is recorded as a conflict, not accepted as Stable
+- `v1` alone is not used as proof of Stable
+- Stable is used by repository default only when no selected source or relevant served API indicates a non-stable state
 - legacy-free output excludes Claims, deprecated XRD v1, legacy v1 XR semantics, and explicitly labelled legacy sections
 - current non-deprecated APIs are not excluded only because they use `/v1`
 - Crossplane CLI content is not categorized as Core
@@ -216,7 +235,7 @@ Use an installed OKF linter when available, but do not add or install dependenci
 
 After deterministic validation passes, use `okf-reviewer` on the changed concepts and their claim ledger. Do not invoke the reviewer while blocking validation errors remain.
 
-Fix blocking findings as the root or parent agent, rerun targeted validation, and report remaining warnings explicitly.
+Fix blocking findings as the root or parent agent and rerun targeted validation. After all fixes, run `mise run lint` and fix every reported issue. The reviewer may return `APPROVED` only after the final lint run succeeds. Commit only after approval.
 
 ## Token and model policy
 
@@ -254,10 +273,10 @@ Report:
 - selected Crossplane release and documentation series for Core work
 - selected stable function tags and commits
 - source roles used for material claims
-- feature-state evidence or `Not stated by selected sources`
+- explicit feature-state citations, served alpha or beta API ceilings, or the Stable repository-default basis
 - legacy material excluded
 - project-history timestamp, human-authored items summarized, and bot/app activity excluded
-- validation results
+- deterministic validation and `mise run lint` results
 - reviewer status
 - unresolved mappings, conflicts, licensing questions, and permitted broken links
 - the narrowest next source batch, when more coverage is requested
