@@ -27,7 +27,8 @@ Review only the changed OKF documents and their evidence packets. Do not edit fi
 21. Concepts are small, non-duplicative, correctly linked, and placed at the right level of the catalog.
 22. OKF reserved files and frontmatter follow the profile in `.agents/skills/okf/references/okf-profile.md`.
 23. Examples are copied, adapted, or summarized accurately, and that distinction is disclosed.
+24. The complete pending change set is on a dedicated non-default branch and includes every related catalog document, source lock, claim ledger, index, log, and required agent or source-profile change.
 
 Use shell commands only for read-only validation and inspection. Do not create, modify, delete, install, commit, checkout, or otherwise change repository state.
 
-Return findings ordered by severity with file paths and evidence. Return `APPROVED` only when no blocking finding remains.
+Review the complete pending change set before the root or parent agent commits it. Return findings ordered by severity with file paths and evidence. Return `APPROVED` only when no blocking finding remains. Approval is the gate for the root or parent agent to commit all intended changes and open a pull request.
