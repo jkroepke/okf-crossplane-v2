@@ -17,6 +17,15 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use at most three direct subagents at once. Do not create nested subagent trees.
 - When running in Pi, use only the project agents whose names start with `okf-`. Their tool allowlists intentionally omit editing tools and nested delegation.
 
+## Change workflow
+
+- For every content addition or update, create a new dedicated branch from the latest default branch before editing. Never add or update content directly on the default branch.
+- Keep the complete related change set on that branch, including catalog documents, source locks, claim ledgers, indexes, logs, and required agent or source-profile changes.
+- Run deterministic validation and the `okf-reviewer` before committing the changes.
+- Resolve all blocking review findings and rerun targeted validation. Continue only after the reviewer returns `APPROVED`.
+- After approval, commit every intended change. Do not leave generated or supporting files uncommitted.
+- Push the branch and open a pull request for the reviewed commit set. Do not merge the pull request unless the user explicitly requests it.
+
 ## Domain routing
 
 - Use `okf-crossplane-core-docs-researcher` for current stable Crossplane Core documentation.
