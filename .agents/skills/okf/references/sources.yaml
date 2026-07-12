@@ -119,6 +119,26 @@ documentation_sources:
       - v1-to-v2 migration guidance unless explicitly requested
     version_scope: current-stable-v2
 
+historical_design_sources:
+  - id: crossplane-core-designs
+    repository: crossplane/crossplane
+    kind: historical-design
+    authority: historical-design
+    agent: okf-crossplane-core-design-researcher
+    revision_policy: pin-current-main-commit-at-research-time
+    paths:
+      - design
+    discovery: disabled
+    invocation: last-resort-for-specific-known-feature
+    requires_current_corroboration: true
+    cannot_define:
+      - current API shape
+      - runtime behavior
+      - supported workflow
+      - release inclusion
+      - feature maturity
+      - general feature inventory
+
 supporting_sources:
   - id: sprig
     repository: Masterminds/sprig
@@ -177,6 +197,10 @@ source_policy:
   prefer_primary_sources: true
   allow_unpinned_citations: false
   allow_name_only_upjet_mapping: false
+  historical_design_can_discover_features: false
+  historical_design_can_define_current_facts: false
+  historical_design_requires_current_corroboration: true
+  historical_design_can_define_feature_state: false
   third_party_examples_can_define_behavior: false
   third_party_examples_require_corroboration: true
   verify_license_before_copying: true
