@@ -1,0 +1,6 @@
+[tools]
+"github:superops-team/okf" = "1.2.0"
+
+[tasks.lint]
+description = "Run OKF linter"
+run = "okf lint -path catalog -strict"
