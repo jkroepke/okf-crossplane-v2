@@ -21,7 +21,7 @@ Use this compact Markdown structure:
 - Summary: one sentence, source-backed
 - Crossplane version scope: exact release or major.minor documentation series
 - Feature state: Alpha | Beta | Preview | Stable | Deprecated
-- Feature-state basis: direct commit-pinned citation for Alpha, Beta, Preview, or Deprecated; otherwise `Stable by repository default because selected sources contain no explicit non-stable label`
+- Feature-state basis: explicit commit-pinned label; served `v1alpha*` or `v1beta*` API version; or `Stable by repository default because selected sources contain no explicit non-stable label and no relevant served alpha or beta API version`
 - Claims:
   - Claim text
     - Class: API | behavior | documented-guidance | release-history | reported-limitation | proposal | illustrative-pattern
@@ -64,8 +64,11 @@ Rules:
 - Primary sources establish API shape and runtime behavior.
 - Official documentation establishes documented guidance and user-facing terminology. Record version scope and conflicts with implementation.
 - Resolve the latest stable Crossplane release before researching Crossplane Core unless the user explicitly requests another release or preview content.
-- Treat a feature as Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated. Require a direct citation for every non-stable label.
-- Never infer feature state from API version names such as `v1alpha1`, `v1beta1`, or `v1`.
+- Preserve explicit Alpha, Beta, Preview, Stable, and Deprecated labels from selected sources.
+- A relevant served `v1alpha*` API is an Alpha stability ceiling and a relevant served `v1beta*` API is a Beta stability ceiling. Never record either as Stable.
+- When an explicit Stable label conflicts with a served alpha or beta API version, classify the API as Alpha or Beta and record the source conflict.
+- When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API version exists.
+- Never use `v1` alone as evidence of Stable; it only permits the repository Stable default when no other selected evidence indicates a non-stable state.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label. Current Crossplane v2 resources may still use a v1 Kubernetes API version.
 - Exclude Claims, deprecated CompositeResourceDefinition v1, and legacy v1 composite-resource semantics from legacy-free catalog work.
 - Project-history evidence must record the research timestamp because issue and pull-request state can change.
