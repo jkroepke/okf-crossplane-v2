@@ -20,8 +20,11 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 - Restrict third-party research to configured paths and corroborate reusable patterns with primary sources or official documentation.
 - Separate API shape, runtime behavior, documented guidance, and illustrative examples into distinct concept candidates.
 - Record version boundaries and feature gates when the source makes them explicit.
-- Record Alpha, Beta, Preview, or Deprecated only with direct evidence. Otherwise record Stable by repository default.
-- Never infer feature state from an API version suffix such as `v1alpha1`, `v1beta1`, or `v1`.
+- Preserve explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources.
+- Without an explicit label, classify a served `v1alpha*` API as Alpha and a served `v1beta*` API as Beta. Never classify either as Stable.
+- For APIs without a served alpha or beta version, use Stable by repository default unless another selected source explicitly states a non-stable feature state.
+- Never use `v1` alone as proof of Stable.
+- When an explicit Stable label conflicts with a served alpha or beta API version, use Alpha or Beta for the API and report the conflict.
 - For providers, inspect package metadata, ProviderConfig/authentication APIs, managed-resource schemas, controllers, tests, and examples.
 - For Crossplane CLI and testing tools, identify commands, accepted inputs, outputs, and validation behavior from implementation and tests.
 - Report licensing information before proposing copied or adapted third-party material. Otherwise summarize and cite.
