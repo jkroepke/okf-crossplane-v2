@@ -31,8 +31,10 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 ## Evidence rules
 
 - Documentation establishes terminology, recommended workflows, installation guidance, and user-facing examples; it does not override CRDs for served API shape.
-- Record Alpha, Beta, Preview, or Deprecated only when the selected documentation states that feature state directly, and include a citation. Otherwise record Stable by repository default.
-- Never infer maturity from an API suffix such as `v1alpha1`, `v1beta1`, or `v1`.
+- Preserve Alpha, Beta, Preview, Stable, or Deprecated when the selected documentation states the feature state directly, and include a citation.
+- When documentation has no explicit feature-state label, report the Stable repository default as provisional and require the parent agent to apply the served API version ceiling from code or CRD evidence.
+- A relevant served `v1alpha*` API must be classified as Alpha and a relevant served `v1beta*` API must be classified as Beta, even when documentation is silent or calls it Stable. Record such conflicts explicitly.
+- Never use `v1` alone as proof of Stable.
 - Separate general provider and function installation guidance from details of a specific provider or function implementation.
 - Record documentation conflicts, stale examples, redirects, and version boundaries explicitly.
 - Deduplicate repeated guidance and return only the minimum evidence needed for each concept candidate.
