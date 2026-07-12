@@ -44,8 +44,10 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use official Crossplane documentation to establish documented terminology, guidance, supported workflows, lifecycle states, and versioned user-facing examples.
 - Resolve the latest stable Crossplane release before Core research and use the matching stable documentation major.minor series.
 - Resolve the highest stable semantic-version tag before researching a composition function. Do not assume a sample tag and do not silently fall back to `main`.
-- Treat a feature as Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated. Require direct source evidence for every non-stable label.
-- Never infer feature maturity from API version names such as `v1alpha1`, `v1beta1`, or `v1`.
+- Record explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources when available.
+- Without an explicit feature-state label, treat a served `v1alpha*` API as Alpha and a served `v1beta*` API as Beta. Such APIs must never be recorded as Stable.
+- For APIs without an alpha or beta served version, default the feature state to Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated.
+- Never use `v1` alone as proof of Stable; it only permits the Stable default when no selected source or served API version indicates a non-stable state.
 - Exclude Claims, claim references, deprecated CompositeResourceDefinition v1, legacy v1 XR semantics, and sections explicitly labelled `v1 Composite Resources (Legacy)` from legacy-free output.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label.
 - Project-history evidence must exclude bots and apps and record a research timestamp.
