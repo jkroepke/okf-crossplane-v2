@@ -62,6 +62,31 @@ Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; ma
 - Concrete managed-resource schemas and controller behavior require separately pinned provider sources.
 - The generator and Go source-of-truth types for the released generated Core CRDs were not established in this bounded source batch.
 
+# Managed Resources deep dive
+
+Selected Crossplane `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`, docs `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`, and the pinned runtime dependency `v2.3.3` at `fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827`.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| managed-resources | Core provides a reusable MR contract but Providers define concrete APIs and external behavior. | API and documented-guidance | primary and official-documentation | corroborated | Stable by repository default; [runtime interface](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L200-L219) |
+| anatomy | Common specs provide management policies, typed ProviderConfig references, connection Secret references, conditions, and observed status; provider schemas supply concrete desired/observed fields. | API | primary | direct | Stable by repository default, with Beta fields separated; [Core types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/core/v2/resource_namespace.go#L19-L44) |
+| anatomy | `initProvider` is create-time-only and explicitly Beta; late initialization persists only when provider-reported and policy-allowed. | behavior | official-documentation and primary | corroborated | Beta for initProvider/policy control; [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L224-L264) |
+| lifecycle | The modern reconciler observes first, then policy-gates deletion, creation, late initialization, or update and requeues for polling. | behavior | primary | direct | Stable by repository default; [reconciler](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L1174-L1569) |
+| management-policies | Observe, Create, Update, LateInitialize, Delete, and wildcard actions are validated and independently gate lifecycle operations. | API and behavior | primary and official-documentation | corroborated | Explicit Beta; [policies](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/policies.go#L45-L234) |
+| external-identity | External name carries provider identity; after an indeterminate create, timestamps stop controllers without deterministic external names while deterministic-name controllers may continue safely. | behavior | primary | direct | Stable by repository default; [creation guard and exception](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L1100-L1116) |
+| references-providerconfig | Generated reference resolution applies resolved fields before external reconciliation; typed ProviderConfig usage is tracked before config use. | behavior | primary | direct | Stable by repository default; [references](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/api.go#L196-L262), [usage](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/providerconfig.go#L157-L205) |
+| controls-conditions | Pause, poll interval, and reconcile-request annotations control scheduling; conditions expose reconcile state. | behavior | primary and official-documentation | corroborated | Stable by repository default; [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L712-L824) |
+| managed-resource-definition | MRD is an Alpha schema carrier whose activation irreversibly applies the derived CRD and reports establishment. | API and behavior | primary | direct | Alpha from served v1alpha1; [types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v1alpha1/mrd_types.go#L25-L49) |
+| managed-resource-activation-policy | MRAP is an Alpha API that activates MRDs matched by filepath-style globs and never deactivates them. | API and behavior | primary | direct | Alpha from served v1alpha1; [types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v1alpha1/mrd_policy_types.go#L28-L68) |
+
+## Managed Resource limitations and exclusions
+
+- Concrete `forProvider`, `initProvider`, `atProvider`, reference, selector, ProviderConfig, credential, connection-detail, identifier, import, async-operation, and late-initializable schemas or guarantees require a separately pinned Provider.
+- The docs conflict on omitted ProviderConfig defaults; released namespaced Core types establish `ClusterProviderConfig/default`.
+- The modern runtime excludes deletion policy from its required MR interface and gates deletion through management policies; deprecated compatibility resolvers were excluded.
+- Claims, legacy managed-resource interfaces, deprecated reconcilers, legacy v1 XR semantics, CLI content, Upjet-only asynchronous conditions, and legacy MR activation examples were excluded.
+- No project-history or third-party evidence was used; licensing is Apache-2.0 and no source material was copied or adapted.
+
 # Crossplane Configurations v2.3.3
 
 | Concept | Exact claim | Class | Source role | Confidence | Evidence |

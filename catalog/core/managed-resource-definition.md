@@ -20,12 +20,13 @@ feature_state: Alpha
 # Schema
 
 An MRD requires `group`, `names`, `scope`, and `versions`; names require `kind` and `plural`.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Every version requires
-`name`, `served`, and `storage`, and exactly one version must be stored.[5]
+`name`, `served`, and `storage`, and exactly one version must be stored.[5] Optional `connectionDetails` entries require a name and description.[9]
 
 # Behavior
 
 `spec.state` defaults to `Inactive` in the schema and permits `Active` or `Inactive`.
-It controls whether Crossplane creates the underlying CRD, and cannot return to `Inactive` after activation.[6] User-facing defaults are qualified by provider capability: providers with `safe-start`
+It controls whether Crossplane creates the underlying CRD, and cannot return to `Inactive` after activation.[6] Inactive reconciliation sets `Established=False`; active reconciliation applies the
+derived CRD, reports pending establishment, then `Established=True` after Kubernetes establishes it.[10] User-facing defaults are qualified by provider capability: providers with `safe-start`
 initially keep MRDs inactive for selective activation; providers without it initially activate MRDs for backward compatibility.[7]
 
 # Relationships
@@ -35,7 +36,7 @@ MRDs describe and activate the concrete APIs behind [managed resources](managed-
 # Limitations
 
 Alpha maturity is directly stated by the v2.3 documentation and applies to MRDs, not all managed resources.
-The released generated CRD is authoritative for this catalog's schema claims, but its generator and Go source-of-truth types were not established in this bounded source batch.
+The released generated CRD is authoritative for schema claims. Its source types are `apis/apiextensions/v1alpha1/mrd_types.go` and a maintained fork of Kubernetes CRD types in `crd_types.go`.[11]
 Concrete MR schemas and controller behavior remain provider-specific.
 
 # Citations
@@ -48,3 +49,6 @@ Concrete MR schemas and controller behavior remain provider-specific.
 [6] [MRD activation state](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_managedresourcedefinitions.yaml#L263-L272)
 [7] [Provider safe-start behavior](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-definitions.md#L248-L279)
 [8] [MRD status and printer columns](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_managedresourcedefinitions.yaml#L457-L507)
+[9] [Connection detail metadata schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_managedresourcedefinitions.yaml#L59-L76)
+[10] [MRD establishment reconciliation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/managed/reconciler.go#L119-L199)
+[11] [MRD source types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v1alpha1/mrd_types.go#L25-L49)

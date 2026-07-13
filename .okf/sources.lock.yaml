@@ -11,6 +11,12 @@ sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     selected_by: crossplane/v2.3.3
     resolved_at: 2026-07-12
+  crossplane-runtime:
+    repository: crossplane/crossplane-runtime
+    tag: v2.3.3
+    commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+    selected_by: crossplane/v2.3.3 go.mod
+    resolved_at: 2026-07-12
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
     tag: v0.12.2
