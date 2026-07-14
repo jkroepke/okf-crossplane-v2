@@ -15,7 +15,7 @@ timestamp: 2026-07-14T00:00:00Z
 * [Managed resources](managed-resources.md) - Kubernetes representations of external resources managed by Providers.
 * [Managed resource anatomy](managed-resource-anatomy.md) - Common desired, observed, policy, configuration, and connection-detail fields.
 * [Managed resource lifecycle](managed-resource-lifecycle.md) - Observe-first creation, update, late-initialization, deletion, and polling behavior.
-* [Managed resource management policies](managed-resource-management-policies.md) - Beta action gates for external lifecycle operations.
+* [Managed resource management policies](managed-resource-management-policies.md) - Beta action gates, GA tracking, and known limitation reports for external lifecycle operations.
 * [Usage and ClusterUsage deletion protection](usages-and-clusterusages.md) - Beta deletion protection, ordering behavior, scope rules, and mixed-scope limitations.
 * [External identity and creation safety](managed-resource-external-identity.md) - External names, provider-specific adoption, and duplicate-creation protection.
 * [References and ProviderConfig](managed-resource-references-and-provider-config.md) - Generated references, configuration selection, usages, and connection details.
