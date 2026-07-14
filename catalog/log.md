@@ -9,6 +9,11 @@ timestamp: 2026-07-12T00:00:00Z
 
 ## 2026-07-14
 * **Creation**: Added manual composed-resource readiness patterns and a release-pinned Sveltos Profile-to-ClusterSummary ExtraResources example.
+* **Correction**: Clarified from function-go-templating v0.12.2 conversion
+  code and tests that ExtraResources `matchLabels` works for cluster-scoped
+  resources; the defect is lost namespace scoping, which turns `matchLabels`
+  plus `namespace` into an all-namespace list subject to RBAC.
+* **Creation**: Documented Crossplane's default composed-resource permission boundary, aggregated ClusterRole grant procedure, and RBAC-manager implications.
 * **Update**: Clarified the one-way effects of deleting or narrowing a ManagedResourceActivationPolicy, the related report in issue #6984, and the dedicated MRAP page's missing explicit warning.
 * **Update**: Clarified with function and Crossplane Core implementation evidence that function-go-templating ExtraResources zero-match lookups are non-fatal and do not impose a minimum result count.
 * **Creation**: Documented Beta real-time composition watches, TTL-driven reconciliation, required-resource refresh boundaries, and six related issue reports with released-fix provenance.
