@@ -268,6 +268,29 @@ project_history_sources:
     usage: summarize-by-user-facing-theme
 
 example_sources:
+  - id: sveltos-addon-controller
+    repository: projectsveltos/addon-controller
+    kind: kubernetes-addon-controller
+    origin: third-party
+    authority: illustrative
+    release_policy: discover-highest-stable-semver-tag
+    paths:
+      - api/v1beta1/clustersummary_types.go
+      - controllers/profile_utils.go
+      - controllers/utils.go
+      - lib/clusterops/clustersummary.go
+      - LICENSE
+    usage: summarize-and-cite
+  - id: sveltos-libsveltos
+    repository: projectsveltos/libsveltos
+    kind: kubernetes-api-library
+    origin: third-party
+    authority: illustrative
+    release_policy: match-sveltos-addon-controller
+    paths:
+      - api/v1beta1/common_types.go
+      - LICENSE
+    usage: summarize-and-cite
   - id: kubernetes-reflector
     repository: emberstack/kubernetes-reflector
     kind: kubernetes-resource-replication-controller
