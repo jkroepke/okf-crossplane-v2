@@ -53,6 +53,31 @@ All claims have function scope v0.12.2 unless a narrower version is stated.
 - README nests `options` under `inline`, conflicting with the generated CRD; catalog follows the generated schema.
 - Bundled installation examples pin v0.11.5 and use varying Function object names; catalog uses selected v0.12.2 and requires name matching.
 
+# function-auto-ready v0.7.0
+
+Selected stable release `v0.7.0` at `ed7886de159af73b9d6976f04f9171ec7a4cb411`; previous stable release `v0.6.6` at `046fe9eca400dfdb835911d8b22da9b0e27a5547`. Claims, claim references, deprecated XRD v1, and legacy v1 XR semantics were excluded. No project-history, historical-design, official-documentation, supporting, or third-party-example evidence was used.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| package | The package declares Composition capability and is used after a pipeline step produces desired resources. | API and documented-guidance | primary | direct | Stable by repository default; [metadata](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/package/crossplane.yaml#L2-L22), [README](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L149-L186) |
+| readiness | Desired resources require a same-key observed resource, and explicit readiness from an earlier function is preserved. | behavior | primary | direct | Stable by repository default; [implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193) |
+| readiness | Evaluation order is CEL, registered Kubernetes health check, then generic observed `Ready=True` condition. | behavior | primary | direct | Mixed: core Stable by repository default; CEL explicitly Alpha; [implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L193) |
+| readiness | A false built-in check leaves readiness unspecified, allowing the generic condition fallback. | behavior | primary | direct | Stable by repository default; [implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193) |
+| built-in-health-checks | Fifteen Kubernetes kinds have registered resource-specific checks; exact rules are established by their implementations. | behavior | primary | corroborated | Stable by repository default; [registry](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L58-L74), [README inventory](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L15-L68) |
+| input | Input is a non-installed KRM-like v1beta1 object with TTL and two CEL customization fields. | API | primary | direct | Beta ceiling from served v1beta1 schema; [source](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/input/v1beta1/input.go#L1-L38), [schema](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/package/input/autoready.fn.crossplane.io_inputs.yaml#L18-L60) |
+| input | Input TTL overrides the runtime default; an invalid duration produces a fatal response. | behavior | primary | direct | Beta input; [implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L40-L54) |
+| cel-health-checks | CELHealthcheckCustomizations is explicitly Alpha and disabled by default. | API | primary | direct | Explicit Alpha; [feature registration](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/features/features.go#L7-L18) |
+| cel-health-checks | Rules are keyed by normalized GVK, evaluate observed `object`, return Boolean readiness, and inline entries override context entries. | API and behavior | primary | direct | Explicit Alpha; [resolver](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L23-L71), [merge](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L100) |
+| cel-health-checks | A CEL evaluation error warns and falls through, conflicting with README language that it is treated as not ready. | behavior and documented-guidance | primary | direct conflict | Explicit Alpha; [runtime](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L119-L159), [README](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L85-L91) |
+
+## function-auto-ready limitations and conflicts
+
+- README CEL snippets use `v1alpha1`, but selected source, generated schema, and runnable example use `v1beta1`; catalog follows the schema-backed v1beta1 API.
+- README links old Crossplane v1.14 documentation; it was not used as current official-documentation evidence.
+- Bundled basic-example package references are timestamp builds, not the selected v0.7.0 release; the catalog summarizes behavior without copying those references.
+- The selected sources do not state a minimum supported Crossplane version.
+- No legacy material was found in the bounded selected-release sources; current `/v1` Composition and Configuration APIs were not excluded merely for using v1.
+
 # Crossplane Core v2.3.3
 
 Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching official documentation series `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`.

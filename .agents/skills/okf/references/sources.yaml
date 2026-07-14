@@ -72,6 +72,26 @@ primary_sources:
   - id: function-auto-ready
     repository: crossplane-contrib/function-auto-ready
     kind: function
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-auto-ready-researcher
+    paths:
+      - README.md
+      - package/crossplane.yaml
+      - fn.go
+      - fn_test.go
+      - main.go
+      - features
+      - cel
+      - healthchecks
+      - input
+      - package/input/autoready.fn.crossplane.io_inputs.yaml
+      - example
+      - go.mod
+    legacy_exclusions:
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
   - id: provider-kubernetes
     repository: crossplane-contrib/provider-kubernetes
     kind: native-provider
