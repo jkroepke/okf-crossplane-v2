@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Update**: Clarified with function and Crossplane Core implementation evidence that function-go-templating ExtraResources zero-match lookups are non-fatal and do not impose a minimum result count.
 * **Creation**: Documented Beta real-time composition watches, TTL-driven reconciliation, required-resource refresh boundaries, and six related issue reports with released-fix provenance.
 * **Creation**: Documented the Crossplane v2 namespaced-composition boundary reported in issue #6759 and compared provider-kubernetes, Reflector, and kubernetes-replicator synchronization patterns.
 * **Creation**: Added a provider-opentofu and function-go-templating pattern for external queries, including static Function credential limits in multi-tenant pipelines.

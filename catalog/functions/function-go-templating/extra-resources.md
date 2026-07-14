@@ -12,9 +12,20 @@ source_paths:
   - README.md
   - extraresources.go
   - fn.go
+  - fn_test.go
+  - function_maps.go
+  - function_maps_test.go
   - example/extra-resources/composition.yaml
   - example/functions/getExtraResources/composition.yaml
   - example/functions/getExtraResourcesFromContext/composition.yaml
+supporting_source_repository: crossplane/crossplane
+supporting_source_tag: v2.3.3
+supporting_source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+supporting_source_paths:
+  - proto/fn/v1/run_function.proto
+  - internal/xfn/required_resources.go
+  - internal/xfn/required_resources_test.go
+  - internal/controller/apiextensions/composite/composition_functions.go
 feature_state: Alpha
 feature_state_basis: >-
   The rendered special resource uses
@@ -72,6 +83,39 @@ The template itself may compute selector values from request data, including lab
   entry returns `nil`. This is useful in a later pipeline step or when reading
   resources accumulated by an earlier invocation.[4][5]
 
+## No-match execution
+
+`requiredResources` is protocol terminology for resources Crossplane must try
+to fetch. It does **not** require at least one matching object. Crossplane
+v2.3.3 and function-go-templating v0.12.2 handle a successful zero-match lookup
+as follows:[9][10]
+
+1. The function returns the selector in its response requirements.
+2. Crossplane attempts the lookup and records the requirement key even when no
+   object matched.
+3. Crossplane calls the function again with the empty result.
+4. The function renders normally. Once it returns the same requirements,
+   Crossplane considers them stable and continues the Composition pipeline.
+
+The released code preserves a low-level distinction between selector types:
+
+| Selector | Zero-match representation | Outcome |
+|---|---|---|
+| Exact `matchName` | Kubernetes `NotFound` becomes a nil resource group without an error. | The requirement key is recorded and the function is called again. |
+| `matchLabels` | A successful empty `List` becomes a resource group with zero items. | The requirement key is recorded and the function is called again. |
+
+The function helpers may expose a present zero-item path as an empty slice and
+an absent path as `nil`; protobuf-to-map conversion can also omit an empty
+repeated `items` field. Ordinary `range` treats both as zero elements, and the
+bundled examples normalize them with `default (list)`.[11][12]
+
+No-match behavior is therefore permissive by default: the composition
+continues and a range over the result emits nothing. A template that needs at
+least one object must enforce that condition itself. Template evaluation errors
+still produce a fatal function result, actual Kubernetes fetch errors other
+than `NotFound` abort the pipeline step, and requirements that keep changing
+eventually fail the bounded stabilization loop.[10][13][14]
+
 # Example
 
 This summarized pattern requests resources by label, then safely iterates over the returned list:[1][6]
@@ -108,6 +152,8 @@ The example is summarized from the Apache-2.0-licensed project source; it is not
   validate that exactly one match field is set. Any protocol-side rejection is
   outside the selected function source.[2]
 - Because result lookup returns `nil` for absent paths, use `default (list)` before ranging when a request may have no result.[4][6]
+- Do not use the word `required` as a cardinality guarantee. The selected
+  protocol and implementations impose no minimum match count.[9][10]
 
 # Relationships
 
@@ -123,3 +169,9 @@ See [template functions](template-functions.md) for all helper signatures and [r
 [6] [Bundled direct-access helper example](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/example/functions/getExtraResources/composition.yaml#L18-L34)
 [7] [Repository Apache-2.0 license](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/LICENSE)
 [8] [Legacy-then-current context merge call order](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L370-L384)
+[9] [Crossplane protocol contract for missing required resources](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/proto/fn/v1/run_function.proto#L70-L92)
+[10] [Crossplane required-resource fetch, repeat, and stabilization loop](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L149)
+[11] [Exact-name NotFound and label-list fetch behavior](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L171-L227)
+[12] [Helper tests for empty items and absent paths](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps_test.go#L572-L593)
+[13] [Template execution fatal-result path](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L90-L118)
+[14] [Crossplane fetch-error propagation into the Composition pipeline](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L378-L409)
