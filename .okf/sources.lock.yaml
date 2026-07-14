@@ -56,6 +56,21 @@ sources:
     tag: v1.1.4
     commit: 6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609
     resolved_at: 2026-07-14
+  provider-kubernetes:
+    repository: crossplane-contrib/provider-kubernetes
+    tag: v1.2.1
+    commit: 0ea671a4dab090ff3b14877d35086f1950fa35e3
+    resolved_at: 2026-07-14
+  kubernetes-reflector:
+    repository: emberstack/kubernetes-reflector
+    tag: v10.0.59
+    commit: d5b9b2f83269cdb94647088a1fcf83b1b0081ff6
+    resolved_at: 2026-07-14
+  kubernetes-replicator:
+    repository: mittwald/kubernetes-replicator
+    tag: v2.12.4
+    commit: 44dc6db78c584771832a84a41cd06a1701a39fc0
+    resolved_at: 2026-07-14
   sprig:
     repository: Masterminds/sprig
     tag: v3.3.0

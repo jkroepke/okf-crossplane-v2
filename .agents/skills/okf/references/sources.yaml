@@ -268,6 +268,29 @@ project_history_sources:
     usage: summarize-by-user-facing-theme
 
 example_sources:
+  - id: kubernetes-reflector
+    repository: emberstack/kubernetes-reflector
+    kind: kubernetes-resource-replication-controller
+    origin: third-party
+    authority: illustrative
+    paths:
+      - README.md
+      - src/ES.Kubernetes.Reflector/Mirroring
+      - src/helm/reflector/templates/clusterRole.yaml
+      - LICENSE
+    usage: summarize-and-cite
+  - id: kubernetes-replicator
+    repository: mittwald/kubernetes-replicator
+    kind: kubernetes-resource-replication-controller
+    origin: third-party
+    authority: illustrative
+    paths:
+      - README.md
+      - main.go
+      - replicate
+      - deploy/helm-chart/kubernetes-replicator
+      - LICENSE.txt
+    usage: summarize-and-cite
   - id: homelab-idp-crossplane-compositions
     repository: 0xayf/homelab-idp
     kind: crossplane-compositions
