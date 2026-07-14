@@ -25,6 +25,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Resolve all blocking review findings and rerun targeted validation. Continue only after the reviewer returns `APPROVED`.
 - After the final review fixes, run `mise run lint` before creating any commit. Fix every lint error and rerun the command until it succeeds.
 - After reviewer approval and a successful lint run, commit every intended change. Do not leave generated or supporting files uncommitted.
+- Create commits with a Developer Certificate of Origin sign-off by default by using `git commit --signoff` (or `git commit -s`). Omit the sign-off only when the user explicitly requests an unsigned commit.
 - Push the branch and open a pull request for the reviewed commit set. Do not merge the pull request unless the user explicitly requests it.
 
 ## Domain routing
