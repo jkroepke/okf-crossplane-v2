@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Creation**: Added manual composed-resource readiness patterns and a release-pinned Sveltos Profile-to-ClusterSummary ExtraResources example.
 * **Correction**: Clarified from function-go-templating v0.12.2 conversion
   code and tests that ExtraResources `matchLabels` works for cluster-scoped
   resources; the defect is lost namespace scoping, which turns `matchLabels`

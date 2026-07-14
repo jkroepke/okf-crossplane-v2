@@ -51,6 +51,16 @@ sources:
     previous_tag: v0.6.6
     previous_commit: 046fe9eca400dfdb835911d8b22da9b0e27a5547
     resolved_at: 2026-07-14
+  sveltos-addon-controller:
+    repository: projectsveltos/addon-controller
+    tag: v1.12.0
+    commit: b528b72dedf369566470709796d23d93fa1827b1
+    resolved_at: 2026-07-14
+  sveltos-libsveltos:
+    repository: projectsveltos/libsveltos
+    tag: v1.12.0
+    commit: 82cc79ba33929ffd061ee75f106a3bd8b70addcd
+    resolved_at: 2026-07-14
   provider-opentofu:
     repository: upbound/provider-opentofu
     tag: v1.1.4

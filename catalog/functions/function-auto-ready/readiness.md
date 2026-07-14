@@ -31,6 +31,11 @@ The implementation matches resources by the desired and observed maps supplied i
 
 The function writes desired composed-resource readiness. The README's statement that Crossplane considers an XR ready after all desired resources are ready describes downstream Crossplane behavior, not behavior implemented here.[5]
 
+CEL receives only the matched observed composed resource as `object`; it does
+not directly evaluate a separate ExtraResources result.[6] When readiness
+depends on a controller-created non-composed object, use an earlier
+[function-go-templating non-composed-resource readiness pattern](../function-go-templating/non-composed-resource-readiness.md).
+
 # Citations
 
 [1] [Desired and observed resource matching](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)
@@ -38,3 +43,4 @@ The function writes desired composed-resource readiness. The README's statement 
 [3] [Built-in health-check stage](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L159)
 [4] [Generic Ready-condition fallback](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L161-L193)
 [5] [README readiness overview](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L4-L13)
+[6] [CEL activation contains only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
