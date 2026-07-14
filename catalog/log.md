@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Update**: Expanded function-go-templating issue #579 with its version scope, reported failure mode, proposed workarounds, and unresolved current-release applicability.
 * **Creation**: Documented the absence of native Composition health status and the evidence boundaries of Argo CD Lua and Flux CEL health customizations.
 * **Creation**: Added Crossplane Core Usage and ClusterUsage deletion protection, scope semantics, and current mixed namespace/cluster limitations.
 * **Creation**: Added a release-pinned function-auto-ready v0.7.0 knowledge set covering package use, readiness ordering, Kubernetes health checks, Beta input, and Alpha CEL customizations.
