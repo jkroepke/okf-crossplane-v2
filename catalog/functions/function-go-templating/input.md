@@ -8,7 +8,8 @@ timestamp: 2026-07-12T00:00:00Z
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
-feature_state: Not stated by selected sources
+feature_state: Beta
+feature_state_basis: The generated CRD serves and stores only gotemplating.fn.crossplane.io/v1beta1.
 ---
 
 # Schema
@@ -35,7 +36,7 @@ The README example nests `options` beneath `inline`, but the generated CRD place
 Follow the generated schema.
 The only bundled FileSystem example depends on excluded legacy Claim/XRD semantics, so this catalog does not present it as a runnable v2 example.
 
-Feature maturity is **Not stated by selected sources**.
+The overall input is Beta because its only served and stored version is `v1beta1`. Capabilities implemented through separate `v1alpha1` meta instructions, such as Context, retain their Alpha ceilings.
 
 # Citations
 
