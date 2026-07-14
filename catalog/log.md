@@ -7,6 +7,9 @@ timestamp: 2026-07-12T00:00:00Z
 
 # Catalog Update Log
 
+## 2026-07-14
+* **Update**: Documented exact function-go-templating helper semantics and added a dedicated ExtraResources capability reference.
+
 ## 2026-07-12
 * **Update**: Expanded provider-agnostic Managed Resource knowledge with anatomy, reconciliation lifecycle, policies, identity safety, references, ProviderConfig, controls, conditions, and MR activation APIs.
 * **Creation**: Added the two-role Crossplane Functions model, distinguishing composition functions from Alpha operation functions and documenting direct, scheduled, and watched invocation.
