@@ -15,6 +15,7 @@ timestamp: 2026-07-12T00:00:00Z
 * [Managed resource anatomy](managed-resource-anatomy.md) - Common desired, observed, policy, configuration, and connection-detail fields.
 * [Managed resource lifecycle](managed-resource-lifecycle.md) - Observe-first creation, update, late-initialization, deletion, and polling behavior.
 * [Managed resource management policies](managed-resource-management-policies.md) - Beta action gates for external lifecycle operations.
+* [Usage and ClusterUsage deletion protection](usages-and-clusterusages.md) - Beta deletion protection, ordering behavior, scope rules, and mixed-scope limitations.
 * [External identity and creation safety](managed-resource-external-identity.md) - External names, provider-specific adoption, and duplicate-creation protection.
 * [References and ProviderConfig](managed-resource-references-and-provider-config.md) - Generated references, configuration selection, usages, and connection details.
 * [Reconciliation controls and conditions](managed-resource-controls-and-conditions.md) - Pause, polling, reconcile requests, Ready, and Synced signals.
