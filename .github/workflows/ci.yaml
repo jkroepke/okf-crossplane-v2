@@ -65,7 +65,8 @@ jobs:
           VALIDATE_XML: true
           VALIDATE_YAML: true
   pages:
-    name: Super Linter
+    name: Deploy to pages
+    environment: pages
     runs-on: ubuntu-24.04
     if: github.repository_owner == 'jkroepke' && github.ref_name == 'main'
     permissions:
