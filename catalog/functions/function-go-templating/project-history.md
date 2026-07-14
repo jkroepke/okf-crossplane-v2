@@ -18,6 +18,12 @@ Human-authored PR #580 is the sole commit between v0.12.1 and v0.12.2.
 It updated Go and selected indirect dependencies as a security remediation.
 Its merge commit is the selected release commit, proving containment; the released `go.mod` corroborates the dependency result.[1][2]
 
+Earlier human-authored PR #498 introduced the ExtraResources `namespace` field
+while updating function-sdk-go. Its merge commit is an ancestor of v0.12.2,
+proving release containment. The released conversion code shows that the PR's
+namespace assignment is reached only for `matchName`; the `matchLabels` branch
+returns first.[15][16]
+
 # Known reports for selected release
 
 No open report below was shown to reproduce on v0.12.2. They remain version-scoped reports, not established behavior:
@@ -88,3 +94,6 @@ Project history is not used to establish API shape, runtime behavior, recommenda
 [12] [Pinned Sprig `default` documentation](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/defaults.md#L5-L31)
 [13] [Issue #579 reporter follow-up](https://github.com/crossplane-contrib/function-go-templating/issues/579#issuecomment-4699609327)
 [14] [Issue #579 collaborator request for current-release reproduction](https://github.com/crossplane-contrib/function-go-templating/issues/579#issuecomment-4803746103)
+[15] [PR #498 and its merge commit](https://github.com/crossplane-contrib/function-go-templating/pull/498)
+and [containment in v0.12.2](https://github.com/crossplane-contrib/function-go-templating/compare/fba11b570e75660b1ff52b05979ba805baae1a51...0a1e6d386f4363fae257ddbfb5b497416370e830)
+[16] [Released ExtraResources selector conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)
