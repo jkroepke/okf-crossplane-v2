@@ -16,6 +16,7 @@ timestamp: 2026-07-12T00:00:00Z
 * [Composition Functions specification](composition-function-specification.md) - Normative contract for serving, desired state, packaging, and runtime assumptions.
 
 * [function-go-templating](function-go-templating/) - Render desired resources from Go templates in a composition pipeline.
+* [function-auto-ready](function-auto-ready/) - Determine desired composed-resource readiness from observed resources.
 
 # Operation Functions
 
