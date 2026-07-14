@@ -98,6 +98,10 @@ primary_sources:
   - id: provider-helm
     repository: crossplane-contrib/provider-helm
     kind: native-provider
+  - id: provider-opentofu
+    repository: upbound/provider-opentofu
+    kind: native-provider
+    release_policy: discover-highest-stable-semver-tag
   - id: function-patch-and-transform
     repository: crossplane-contrib/function-patch-and-transform
     kind: function

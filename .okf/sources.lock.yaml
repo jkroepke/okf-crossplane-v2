@@ -51,6 +51,11 @@ sources:
     previous_tag: v0.6.6
     previous_commit: 046fe9eca400dfdb835911d8b22da9b0e27a5547
     resolved_at: 2026-07-14
+  provider-opentofu:
+    repository: upbound/provider-opentofu
+    tag: v1.1.4
+    commit: 6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609
+    resolved_at: 2026-07-14
   sprig:
     repository: Masterminds/sprig
     tag: v3.3.0

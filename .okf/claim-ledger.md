@@ -142,6 +142,26 @@ Selected Crossplane `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`, docs
 
 # Crossplane Functions taxonomy and specification
 
+## Provider-backed external query pattern
+
+Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`; function-go-templating `v0.12.2` at `0a1e6d386f4363fae257ddbfb5b497416370e830`; provider-opentofu `v1.1.4` at `6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609`. Project history was researched on 2026-07-14. Claims, deprecated XRD v1, legacy v1 XR semantics, and bot/app activity were excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| provider-backed-external-query | Issue #4141 reports that observe-only MRs require unique identity and do not provide general property queries; proposed alternatives are not released query semantics. | reported-limitation and proposal | project-history | direct as report | Open human-authored [issue #4141](https://github.com/crossplane/crossplane/issues/4141), researched 2026-07-14 |
+| provider-backed-external-query | Composition step credentials use literal Secret names and namespaces; issue #7343 reports the resulting dynamic per-XR credential-selection gap. | API, behavior, and reported-limitation | primary and project-history | corroborated | Stable by repository default; [API](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v1/composition_common.go#L75-L125), [controller](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L357-L375), open [issue #7343](https://github.com/crossplane/crossplane/issues/7343) |
+| provider-backed-external-query | A namespaced provider-opentofu Workspace accepts inline module text, selects ProviderConfig, and publishes non-sensitive outputs at `status.atProvider.outputs`. | API and documented-guidance | primary | corroborated | Beta from served v1beta1; [types](https://github.com/upbound/provider-opentofu/blob/6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609/apis/namespaced/v1beta1/workspace_types.go#L84-L187), [README](https://github.com/upbound/provider-opentofu/blob/6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609/README.md#L22-L45) |
+| provider-backed-external-query | A namespaced Workspace resolves a namespaced ProviderConfig and its credential Secret references in the Workspace namespace. | behavior | primary | direct | Beta from served v1beta1; [resolution](https://github.com/upbound/provider-opentofu/blob/6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609/internal/clients/client.go#L67-L107), [Secret namespace](https://github.com/upbound/provider-opentofu/blob/6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609/internal/clients/client.go#L138-L147) |
+| provider-backed-external-query | function-go-templating can name the Workspace as a composed resource and retrieve it from observed state on a later reconciliation; absent paths require a guard. | behavior and illustrative-pattern | primary and user-supplied example | corroborated | Beta from [GoTemplate v1beta1 CRD](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L8-L22); [resource name](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L101-L103), [observed lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132) |
+
+### Limitations and unresolved points
+
+- The user-supplied AWS SSO data-source pattern is illustrative and was not independently executed against the pinned releases.
+- The user reports one namespace per tenant and a namespaced ProviderConfig containing only tenant-level credentials. Released code corroborates same-namespace configuration and Secret lookup; tenant authorization still depends on Workspace placement, RBAC, and preventing unintended ClusterProviderConfig or cross-tenant object control.
+- The downstream schema determines whether omitting `principalArn` before the output exists is valid.
+- Neither open issue has a linked released resolution in Crossplane v2.3.3.
+- provider-opentofu is Apache-2.0 licensed. Its upstream example is summarized and cited; the rendered Workspace snippet is adapted from user-supplied material with no identified external provenance.
+
 Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`. The Composition Functions specification is sourced directly from the selected v2.3.3 release. Claims, deprecated XRD v1, legacy v1 XR semantics, and CLI material were excluded.
 
 | Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |

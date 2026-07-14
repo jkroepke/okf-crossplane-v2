@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Creation**: Added a provider-opentofu and function-go-templating pattern for external queries, including static Function credential limits in multi-tenant pipelines.
 * **Update**: Added the Management Policies GA tracker, grouped known limitation reports, and selected-release containment for implemented policy combinations.
 * **Update**: Expanded function-go-templating issue #579 with its version scope, reported failure mode, proposed workarounds, and unresolved current-release applicability.
 * **Creation**: Documented the absence of native Composition health status and the evidence boundaries of Argo CD Lua and Flux CEL health customizations.
