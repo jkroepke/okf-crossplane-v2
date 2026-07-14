@@ -12,6 +12,7 @@ timestamp: 2026-07-14T00:00:00Z
 * [Request data and context](request-data.md) - Read request state, extra resources, context, and credentials.
 * [Context](context.md) - Read, create, and deeply update shared function-pipeline context.
 * [ExtraResources](extra-resources.md) - Request cluster resources by name or labels and consume them directly or through pipeline context.
+* [Provider-backed external queries](provider-backed-external-query.md) - Query external APIs through a provider-opentofu Workspace and consume observed outputs safely.
 * [Connection details](connection-details.md) - Aggregate observed connection details into an explicitly composed Kubernetes Secret for v2 composite resources.
 * [Rendered output](rendered-output.md) - Name resources, report readiness, update status, and handle v2 connection details.
 * [Template functions](template-functions.md) - Use project-specific helpers and understand the Sprig boundary.
