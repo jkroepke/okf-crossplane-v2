@@ -9,6 +9,7 @@ timestamp: 2026-07-14T00:00:00Z
 
 * [Package and installation](package.md) - Install and reference the selected stable function package.
 * [GoTemplate input](input.md) - Author Inline, FileSystem, or Environment input using the generated schema.
+* [Environment template source](environment-source.md) - Load template text from the reserved EnvironmentConfig pipeline-context map.
 * [Request data and context](request-data.md) - Read request state, extra resources, context, and credentials.
 * [Context](context.md) - Read, create, and deeply update shared function-pipeline context.
 * [ExtraResources](extra-resources.md) - Request cluster resources by name or labels and consume them directly or through pipeline context.

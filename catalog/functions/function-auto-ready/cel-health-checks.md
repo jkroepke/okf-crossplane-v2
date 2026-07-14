@@ -59,6 +59,19 @@ only: each expression still receives its matched observed composed resource as
 `object`. Inline rules remain useful for Composition-specific overrides because
 they replace same-key context rules.[2][3]
 
+# Context path behavior
+
+The local path parser preserves dots inside unquoted bracket segments, then
+traverses dot-separated keys. A missing key or non-map intermediate silently
+yields no context rules. At the terminal map, non-string values are silently
+dropped.[9][10]
+
+The parser reports an error only when it extracts no segments and does not
+require the entire input to match. Use the documented bracket form exactly;
+malformed punctuation may otherwise be partially ignored.[9]
+
+See the [three-function environment pipeline](../environment-config-pipeline.md) for ordering and adaptation guidance.
+
 # Limitations
 
 The README says an evaluation error is treated as not ready and that a customization takes precedence over a built-in check.
@@ -77,3 +90,5 @@ The README's CEL snippets use `v1alpha1`, conflicting with the selected [v1beta1
 [6] [README error and precedence description](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L85-L91)
 [7] [Runtime error fallthrough](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L119-L159)
 [8] [README v1alpha1 snippets](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/README.md#L100-L129)
+[9] [Local bracket-and-dot path parser](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L238-L255)
+[10] [Context traversal and string-map conversion](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L203-L235)

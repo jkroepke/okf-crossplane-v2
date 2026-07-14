@@ -1,6 +1,6 @@
 ---
 type: Evidence Ledger
-title: function-go-templating v0.12.2 claim ledger
+title: Crossplane catalog claim ledger
 ---
 
 # Scope
@@ -15,6 +15,24 @@ evidence for this Crossplane catalog and primary implementation evidence only
 for its own API and controller behavior. The integration example is adapted,
 not copied; both Sveltos repositories and both Crossplane functions are
 Apache-2.0 licensed.
+
+## EnvironmentConfig lifecycle and three-function pipeline
+
+Selected Core releases: v1.17.3 at `481d3ca7193c89708b9a40375381862d25d64006`, v1.18.0 at `e663a43ece850e93fe5cdebb2e478e2fb9762ad1`, and current v2.3.3 at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`. Current documentation is v2.3 at `f1315464e35d40d25a28e4c15b6725b0e21adf91`; historical v1.18 documentation is pinned at `ad7f75a96dc902b1cdfee213255d87612fccbdbe`. Selected function releases are environment-configs v0.7.2 at `5589092483aea1d65b9988f5116106585c4b516b`, go-templating v0.12.2 at `0a1e6d386f4363fae257ddbfb5b497416370e830`, and auto-ready v0.7.0 at `ed7886de159af73b9d6976f04f9171ec7a4cb411`. Claims, deprecated XRD v1, legacy XR semantics, and old Resource-mode examples were excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| environment-config | EnvironmentConfig remains a cluster-scoped schemaless data API in v2.3.3 and serves only v1beta1. | API | primary and official-documentation | corroborated | Beta; [CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_environmentconfigs.yaml#L7-L62) |
+| native-composition-environment-removal | v1.18 removed native Alpha Composition selection/loading/environment patches, not the EnvironmentConfig resource. | API and release-history | primary and official-documentation | corroborated | Removed capability; [old Alpha field](https://github.com/crossplane/crossplane/blob/481d3ca7193c89708b9a40375381862d25d64006/apis/apiextensions/v1/composition_types.go#L62-L68), [migration docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/environment-configs.md#L78-L96) |
+| environment-configs-package | function-environment-configs v0.7.2 requires Crossplane 2.x and writes merged data to the standard environment context key. | API and behavior | primary | direct | Beta input ceiling; [metadata](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/package/crossplane.yaml#L10-L25) |
+| environment-configs-input | Input supports default data, ordered references or selectors, Single/Multiple cardinality, label matchers, sorting, and Required/Optional resolution. | API | primary | direct | Beta; [types](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/input/v1beta1/composition_environment.go#L24-L238) |
+| environment-configs-input | Runtime types and tests support toFieldPath but the packaged schema omits it, so safe packaged use is unresolved. | API conflict | primary | corroborated | Beta context; [type](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/input/v1beta1/composition_environment.go#L115-L118), [schema](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/package/input/environmentconfigs.fn.crossplane.io_inputs.yaml#L70-L165) |
+| selection-and-merge | Later selected data overrides earlier data, selected data overrides defaults, and defaults override incoming environment context; maps merge recursively. | behavior | primary | corroborated | Beta; [runtime](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/fn.go#L101-L120) |
+| go-templating-environment-source | Environment source requires a string at the named key beneath the reserved environment context; missing or wrong-typed values are fatal before template parsing. | API and behavior | primary | direct | Beta input ceiling; [loader](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/template.go#L103-L122) |
+| auto-ready-environment-context | Alpha CEL rules may load from a bracket-and-dot environment context path; inline rules override context rules and parser/type misses are silently ignored. | API and behavior | primary | corroborated | Explicit Alpha; [merge](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L100), [parser](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L203-L255) |
+| environment-config-pipeline | Function ordering follows data dependencies: environment-configs precedes a context-consuming template; auto-ready follows resource-producing steps and optional context producers. | illustrative-pattern and behavior | primary function repositories and official-documentation | corroborated | Alpha when CEL customizations or Alpha Context mutation are used; [example](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/composition.yaml#L10-L48) |
+
+Unresolved: the packaged `toFieldPath` schema conflict; stale v1alpha1 auto-ready README snippets versus the served v1beta1 input; old go-templating environment example pins and legacy XRD companion material. No project-history or design evidence was used for this batch.
 
 # Claims
 

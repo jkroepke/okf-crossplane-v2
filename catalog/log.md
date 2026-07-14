@@ -9,6 +9,10 @@ timestamp: 2026-07-12T00:00:00Z
 
 ## 2026-07-14
 * **Creation**: Added manual composed-resource readiness patterns and a release-pinned Sveltos Profile-to-ClusterSummary ExtraResources example.
+* **Creation**: Added release-pinned EnvironmentConfig knowledge covering the
+  retained Beta API, the v1.18 removal of native Composition integration,
+  function-environment-configs v0.7.2 selection and merge behavior, and the
+  environment-to-template-to-readiness pipeline.
 * **Correction**: Clarified from function-go-templating v0.12.2 conversion
   code and tests that ExtraResources `matchLabels` works for cluster-scoped
   resources; the defect is lost namespace scoping, which turns `matchLabels`

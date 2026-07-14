@@ -15,8 +15,10 @@ timestamp: 2026-07-12T00:00:00Z
 * [Composition functions](composition-functions.md) - Continuously reconcile XRs through ordered Composition pipelines.
 * [Composition Functions specification](composition-function-specification.md) - Normative contract for serving, desired state, packaging, and runtime assumptions.
 
+* [function-environment-configs](function-environment-configs/) - Select and merge EnvironmentConfigs into pipeline context.
 * [function-go-templating](function-go-templating/) - Render desired resources from Go templates in a composition pipeline.
 * [function-auto-ready](function-auto-ready/) - Determine desired composed-resource readiness from observed resources.
+* [EnvironmentConfig, Go templating, and readiness pipeline](environment-config-pipeline.md) - Order the three functions by their context and desired-resource dependencies.
 
 # Operation Functions
 

@@ -63,6 +63,25 @@ primary_sources:
       - README section v1 Composite Resources (Legacy)
       - examples requiring Claims or claim references
       - examples requiring deprecated v1 XRD or legacy v1 XR semantics
+  - id: function-environment-configs
+    repository: crossplane-contrib/function-environment-configs
+    kind: function
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-environment-configs-researcher
+    paths:
+      - README.md
+      - package/crossplane.yaml
+      - fn.go
+      - fn_test.go
+      - input
+      - package/input
+      - examples
+      - go.mod
+    legacy_exclusions:
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
   - id: xprin
     repository: crossplane-contrib/xprin
     kind: composition-test-tool
