@@ -55,7 +55,7 @@ Each requirement supports:[2]
 | `kind` | Semantically necessary | Kind passed to the protocol selector. This function does not validate that it is non-empty. |
 | `matchName` | Conditional | Exact resource name. Used when it is non-empty. |
 | `matchLabels` | Conditional | Label map. Used when `matchName` is empty; an empty map therefore selects by an empty label set. |
-| `namespace` | No | Namespace for a namespaced resource. In v0.12.2 the implementation copies it only when `matchName` is non-empty. Omit it for a cluster-scoped resource. |
+| `namespace` | No | Namespace for a namespaced resource. In v0.12.2 the implementation copies it only when `matchName` is non-empty; it is ignored on the `matchLabels` path. Omit it for a cluster-scoped resource. |
 
 The template itself may compute selector values from request data, including labels derived from the observed composite resource.[1]
 
@@ -141,9 +141,14 @@ The example is summarized from the Apache-2.0-licensed project source; it is not
 
 - The special `ExtraResources` object is a function rendering directive, not a Kubernetes object that is added to desired composed resources.[3]
 - Label selectors are equality maps only; this schema does not expose set-based selector expressions.[2]
-- Although the schema accepts `namespace` beside either match field, v0.12.2
-  copies it to the protocol selector only on the `matchName` path. Namespaced
-  label matching is therefore not supported by this implementation.[2]
+- `matchLabels` works for cluster-scoped resources; the released tests cover
+  both a non-empty label map and an empty label map.[15] The limitation is
+  namespace scoping: although the schema accepts `namespace` beside
+  `matchLabels`, v0.12.2 returns the label selector before copying the
+  namespace. Crossplane consequently receives an empty namespace and performs
+  an all-namespace label list, subject to RBAC, rather than limiting the list
+  to the supplied namespace. The only released namespaced test uses
+  `matchName`.[2][11][15]
 - The README's response illustration shows arrays directly beneath requirement
   keys, but its access syntax and released helpers read an `items` envelope.
   Follow the implementation-backed `requiredResources[key].items` shape.[1][4]
@@ -175,3 +180,5 @@ See [template functions](template-functions.md) for all helper signatures and [r
 [12] [Helper tests for empty items and absent paths](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps_test.go#L572-L593)
 [13] [Template execution fatal-result path](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L90-L118)
 [14] [Crossplane fetch-error propagation into the Composition pipeline](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L378-L409)
+[15] [Released cluster-scoped label tests](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1083-L1147)
+and [namespaced exact-name test](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1762-L1822)
