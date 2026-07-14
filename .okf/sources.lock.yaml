@@ -11,6 +11,26 @@ sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     selected_by: crossplane/v2.3.3
     resolved_at: 2026-07-14
+  argo-cd:
+    repository: argoproj/argo-cd
+    tag: v3.1.16
+    commit: 5d001b80990d14c0fc9b2cbee1eac25fc288da15
+    feature_first_stable_tag: v3.1.0
+    feature_first_stable_commit: 03c4ad854c1e6d922a121cd40f505d9bc6e402da
+    feature_merge_commit: 9149021b2cd1f7ed7d2ba711643b560127f81ad0
+    selected_by: user-requested Argo CD 3.1 release line
+    resolved_at: 2026-07-14
+  cli-utils-kstatus:
+    repository: kubernetes-sigs/cli-utils
+    commit: 45a0b5b7e6b292c0a59c899aa50a3662a0c1cf7d
+    selected_by: crossplane/crossplane issue 2672 maintainer reference
+    resolved_at: 2026-07-14
+  flux-website:
+    repository: fluxcd/website
+    series: v2-9
+    commit: 32b8fe6417a23265c1d8eb2851ce8f0f7ef85317
+    selected_by: user-requested Flux v2.9 documentation track
+    resolved_at: 2026-07-14
   crossplane-runtime:
     repository: crossplane/crossplane-runtime
     tag: v2.3.3
