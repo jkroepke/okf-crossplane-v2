@@ -183,6 +183,19 @@ supporting_sources:
     documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
 project_history_sources:
+  - id: function-sequencer-project-history
+    repository: crossplane-contrib/function-sequencer
+    kind: github-issues-and-pull-requests
+    authority: project-history
+    author_policy: humans-only
+    exclude_authors:
+      - bots
+      - apps
+      - dependabot
+      - renovate
+      - github-actions
+      - release-automation
+    usage: bounded supporting reports for related Core limitations
   - id: function-go-templating-project-history
     repository: crossplane-contrib/function-go-templating
     kind: github-issues-and-pull-requests
