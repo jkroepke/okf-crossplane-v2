@@ -4,7 +4,7 @@ title: Composition
 description: The current cluster-scoped API for an ordered Crossplane Function pipeline compatible with an XR type.
 resource: https://github.com/crossplane/crossplane
 tags: [crossplane, core, composition, functions]
-timestamp: 2026-07-12T00:00:00Z
+timestamp: 2026-07-14T00:00:00Z
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
@@ -28,7 +28,11 @@ Functions run in declared order, each receiving the preceding result. `composite
 
 # Relationships
 
-A Composition implements the API defined by a [CompositeResourceDefinition](composite-resource-definition.md) and may use packages such as [function-go-templating](../functions/function-go-templating/).
+A Composition implements the API defined by a
+[CompositeResourceDefinition](composite-resource-definition.md) and may use
+packages such as [function-go-templating](../functions/function-go-templating/).
+Because a Composition has no native status, GitOps tools need special treatment
+when users expect a meaningful [health assessment](composition-gitops-health.md).
 
 # Limitations
 

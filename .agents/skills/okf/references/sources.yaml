@@ -160,6 +160,28 @@ historical_design_sources:
       - general feature inventory
 
 supporting_sources:
+  - id: argo-cd
+    repository: argoproj/argo-cd
+    kind: gitops-controller
+    authority: supporting
+    release_policy: requested-stable-minor-release
+    paths:
+      - resource_customizations
+      - util/lua
+      - docs/operator-manual/health.md
+  - id: cli-utils-kstatus
+    repository: kubernetes-sigs/cli-utils
+    kind: kubernetes-status-library
+    authority: supporting
+    paths:
+      - pkg/kstatus/status
+  - id: flux-website
+    repository: fluxcd/website
+    kind: official-flux-documentation
+    authority: supporting
+    release_policy: requested-minor-release-track
+    paths:
+      - content/en/flux/cheatsheets/cel-healthchecks.md
   - id: sprig
     repository: Masterminds/sprig
     kind: template-function-library
@@ -183,6 +205,32 @@ supporting_sources:
     documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
 
 project_history_sources:
+  - id: argo-cd-project-history
+    repository: argoproj/argo-cd
+    kind: github-issues-and-pull-requests
+    authority: project-history
+    author_policy: humans-only
+    exclude_authors:
+      - bots
+      - apps
+      - dependabot
+      - renovate
+      - github-actions
+      - release-automation
+    usage: bounded supporting-tool release provenance
+  - id: crossplane-project-history
+    repository: crossplane/crossplane
+    kind: github-issues-and-pull-requests
+    authority: project-history
+    author_policy: humans-only
+    exclude_authors:
+      - bots
+      - apps
+      - dependabot
+      - renovate
+      - github-actions
+      - release-automation
+    usage: bounded reports that are corroborated by selected-release evidence
   - id: function-sequencer-project-history
     repository: crossplane-contrib/function-sequencer
     kind: github-issues-and-pull-requests
