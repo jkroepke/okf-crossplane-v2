@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Update**: Documented function-go-templating Context semantics and the Crossplane v2 compatibility boundary of all special meta kinds.
 * **Update**: Documented exact function-go-templating helper semantics and added a dedicated ExtraResources capability reference.
 
 ## 2026-07-12

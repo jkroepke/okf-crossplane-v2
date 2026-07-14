@@ -15,7 +15,8 @@ feature_state: Not stated by selected sources
 
 Templates receive the function's `RunFunctionRequest`, including observed and desired composite and composed resources, pipeline context, and fetched extra resources.[1]
 
-- Rendering the special `Context` resource writes or updates context for later pipeline steps.[2]
+- Rendering the special [`Context`](context.md) instruction deeply merges data
+  into response context for later pipeline steps.[2]
 - [`ExtraResources`](extra-resources.md) requests can match resources by name or
   labels. Results are available in the current request and are merged into
   context under `apiextensions.crossplane.io/extra-resources` for later
