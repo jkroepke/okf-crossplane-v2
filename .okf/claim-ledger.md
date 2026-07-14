@@ -287,3 +287,22 @@ Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; ma
 - The six issues are not flattened into a single root cause; only runtime #902 has a released fix proven in the selected source.
 - Two GitHub Actions comments on #6898, two on #6824, and one on #6453 were excluded. Stale automation did not establish resolution.
 - No source material was copied or adapted. Crossplane implementation is Apache-2.0 and Crossplane documentation is CC BY 4.0.
+
+# Composed-resource RBAC
+
+Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`. The workflow is Stable by repository default because selected current documentation contains no explicit non-stable label and no relevant served alpha or beta API. Claims, deprecated XRD v1, legacy v1 XR semantics, and CLI material were excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| composed-resource-rbac | Crossplane uses its service account to create function-produced composed resources, but it does not have unrestricted access to every Kubernetes resource kind by default. | documented-guidance | official-documentation | direct | Stable by repository default; [controller identity](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L277-L280), [default scope](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L282-L288) |
+| composed-resource-rbac | Default access covers resources installed by Providers (managed resources), resources defined by XRDs (composite resources), and some Kubernetes kinds required by Crossplane, such as Deployments. | documented-guidance | official-documentation | direct | Stable by repository default; [default scope](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L282-L288) |
+| composed-resource-rbac | Operators grant another kind by creating a ClusterRole with the required rules and the `rbac.crossplane.io/aggregate-to-crossplane: "true"` label. | documented-guidance | official-documentation | direct | Stable by repository default; [grant procedure](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L290-L321) |
+| composed-resource-rbac | The documented CloudNativePG example grants all verbs on `postgresql.cnpg.io` `clusters`; the docs do not claim this is a least-privilege rule. | documented-guidance | official-documentation | direct | Stable by repository default; [example](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L299-L316) |
+| composed-resource-rbac | The RBAC manager is installed and enabled by default, automatically grants Crossplane access to managed and composite resources, and separately manages Provider service-account roles. | behavior and documented-guidance | official-documentation | direct | Stable by repository default; [default deployment](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/pods.md#L206-L227), [responsibilities](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/pods.md#L246-L260) |
+| composed-resource-rbac | With the RBAC manager disabled, operators must manually grant access to every composed kind, including managed and composite resources. | documented-guidance | official-documentation | direct | Stable by repository default; [disabled-manager consequence](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L324-L333) |
+
+## Composed-resource RBAC limitations and exclusions
+
+- The selected documentation does not enumerate the complete default Kubernetes-kind allowlist or least-privilege verbs for arbitrary composed kinds.
+- Current v2.3 guidance uses an aggregated ClusterRole, not ControllerConfig, for the access grant.
+- No source manifest was copied or adapted. Crossplane documentation is CC BY 4.0.
