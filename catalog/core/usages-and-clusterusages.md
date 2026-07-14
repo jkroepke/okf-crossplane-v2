@@ -87,6 +87,9 @@ Research timestamp: **2026-07-14**.
 - [Issue #7249](https://github.com/crossplane/crossplane/issues/7249), opened by a human maintainer and still open at the research timestamp,
   reports that a namespaced `Usage` protecting a cluster-scoped `of` resource receives the in-use label but does not block deletion.
   The released v2.3.3 finder retains the reported namespace-key mismatch.[15]
+- [Issue #6336](https://github.com/crossplane/crossplane/issues/6336), opened by a human maintainer and still open at the research timestamp,
+  tracks promotion of the `protection.crossplane.io` Usage APIs to GA. It is an enhancement and roadmap-tracking issue, not evidence that GA promotion
+  is released or committed to a particular release; the selected v2.3.3 APIs remain Beta.[2][3][4][21]
 - [function-sequencer issue #114](https://github.com/crossplane-contrib/function-sequencer/issues/114), opened by a human author and still open at the research timestamp,
   reports a downstream manifestation in function-sequencer v0.5.0. A cluster-scoped Composition sequencing a namespaced resource produces a `ClusterUsage`
   that cannot encode the resource namespace and remains unready indefinitely.[20] This report illustrates the Core scope gap but does not independently establish Core behavior.
@@ -119,3 +122,4 @@ The in-use label alone is therefore not proof that mixed-scope deletion protecti
 [18] [PR #6345 scope discussion](https://github.com/crossplane/crossplane/pull/6345)
 [19] [Diverged PR merge and v2.3.3 commits](https://github.com/crossplane/crossplane/compare/b90c89203554e2a4a0d5af0eecd72846a4b48c6d...09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d)
 [20] [function-sequencer report #114](https://github.com/crossplane-contrib/function-sequencer/issues/114)
+[21] [Open GA promotion tracker #6336](https://github.com/crossplane/crossplane/issues/6336)
