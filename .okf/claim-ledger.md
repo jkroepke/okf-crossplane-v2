@@ -262,3 +262,23 @@ Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; ma
 - Flux's condition-based examples cannot be transferred unchanged to a status-less Composition; a Composition-specific CEL workaround remains unestablished.
 - No selected-release test directly executes kstatus against a v2.3.3 Composition.
 - Crossplane and cli-utils sources are Apache-2.0, Crossplane documentation is CC BY 4.0, and Flux website content is Apache-2.0. No configuration or source material was copied or adapted.
+
+# Real-time composition reconciliation
+
+Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`; selected crossplane-runtime `v2.3.3` at `fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827`. The capability is explicitly Beta and enabled by default. Project history was researched on 2026-07-14; bot/app activity, Claims, deprecated XRD v1, and legacy v1 XR semantics were excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| realtime-composition-reconciliation | Beta real-time mode indexes XR composed-resource references, disables the normal poll interval, and maps composed-resource events back to referencing XRs. | behavior | primary and official-documentation | corroborated | Explicit Beta; [setup](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/definition/reconciler.go#L565-L583), [docs](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/pods.md#L141-L175) |
+| realtime-composition-reconciliation | A positive shortest function TTL schedules a jittered requeue even in real-time mode. | behavior | primary | direct | Beta context; [result](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/reconciler.go#L892-L908), [TTL fold](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L318-L416) |
+| realtime-composition-reconciliation | Required resources are fetched during a run but do not independently enter the XR resource-reference watch index. | reported-limitation and behavior | primary | corroborated by negative-path inspection | Beta context; [fetch](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L151), [index](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/definition/indexes.go#L34-L59) |
+| realtime-composition-reconciliation | Issues #6898, #6824, #7024, and provider-kubernetes #421 report distinct forms of reconciliation or watch-event churn; none proves a selected-release Core fix. | reported-limitation | project-history | direct as reports | Researched 2026-07-14; direct issue URLs in concept |
+| realtime-composition-reconciliation | Runtime #902's defensive condition-equality fix is contained in selected crossplane-runtime v2.3.3 and is distinct from provider-kubernetes #421. | release-history and behavior | project-history corroborated by primary | corroborated | [issue](https://github.com/crossplane/crossplane-runtime/issues/902), [released Crossplane source](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/core/v2/condition.go#L105-L124), [runtime containment](https://github.com/crossplane/crossplane-runtime/compare/311ca76bbd30f86e196438771062091a39e39e0d...fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827) |
+| realtime-composition-reconciliation | Issue #6453 proposes promotion from Beta to GA; it does not establish GA maturity. | proposal | project-history | direct | Researched 2026-07-14; [issue](https://github.com/crossplane/crossplane/issues/6453) |
+
+## Real-time composition limitations and exclusions
+
+- Required-resource non-watch behavior is scoped to the selected v2.3.3 implementation.
+- The six issues are not flattened into a single root cause; only runtime #902 has a released fix proven in the selected source.
+- Two GitHub Actions comments on #6898, two on #6824, and one on #6453 were excluded. Stale automation did not establish resolution.
+- No source material was copied or adapted. Crossplane implementation is Apache-2.0 and Crossplane documentation is CC BY 4.0.

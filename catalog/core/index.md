@@ -10,6 +10,7 @@ timestamp: 2026-07-14T00:00:00Z
 * [Composite resource model](composite-resource-model.md) - How XRs, XRDs, Compositions, and composed resources relate in Crossplane v2.
 * [CompositeResourceDefinition v2](composite-resource-definition.md) - The current API for defining composite resource types.
 * [Composition](composition.md) - The current function-pipeline API for composing resources.
+* [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, required-resource refresh boundaries, and related churn reports.
 * [Namespaced composition boundaries and cross-namespace synchronization](namespaced-composition-cross-namespace-sync.md) - Same-namespace enforcement, issue #6759, and evidence-backed provider or community-controller tradeoffs.
 * [Composition health in GitOps tools](composition-gitops-health.md) - Native status limitations and the documented Argo CD and Flux customization boundaries.
 * [Configuration packages](configurations/) - Portable OCI packages of Crossplane APIs, Compositions, and package dependencies.
