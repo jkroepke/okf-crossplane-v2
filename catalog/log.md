@@ -8,6 +8,7 @@ timestamp: 2026-07-12T00:00:00Z
 # Catalog Update Log
 
 ## 2026-07-14
+* **Update**: Clarified the one-way effects of deleting or narrowing a ManagedResourceActivationPolicy, the related report in issue #6984, and the dedicated MRAP page's missing explicit warning.
 * **Update**: Clarified with function and Crossplane Core implementation evidence that function-go-templating ExtraResources zero-match lookups are non-fatal and do not impose a minimum result count.
 * **Creation**: Documented Beta real-time composition watches, TTL-driven reconciliation, required-resource refresh boundaries, and six related issue reports with released-fix provenance.
 * **Creation**: Documented the Crossplane v2 namespaced-composition boundary reported in issue #6759 and compared provider-kubernetes, Reflector, and kubernetes-replicator synchronization patterns.
