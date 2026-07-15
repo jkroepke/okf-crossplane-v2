@@ -20,6 +20,25 @@ Selected Core release: `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; m
 
 Unresolved: the user-supplied SQL-provider resource shapes, provider condition semantics, connection-detail key names, ProviderConfig behavior, and Terraform/HCL authoring requirements are not established without selecting and pinning their relevant provider releases.
 
+## External Secrets Operator PushSecret pattern
+
+Selected supporting source: External Secrets Operator `v2.7.0` at
+`e215053f3e68504de7483f9542b49f19f98293a1`. This is a community
+Kubernetes-secret publication pattern, not a Crossplane API or recommendation.
+No Crossplane Core release or documentation series is used. The served
+`external-secrets.io/v1alpha1` PushSecret API makes the pattern Alpha. Claims,
+deprecated XRD v1, legacy v1 XR semantics, and copied source material are
+excluded. The source license is Apache-2.0; the catalog example is authored
+from the API shape and is not copied or adapted.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| core/pushsecret-external-store-pattern | ESO's namespaced PushSecret selects a Kubernetes Secret and pushes mapped or bulk-selected data to external secret providers through SecretStore or ClusterSecretStore references. | API and documented-guidance | supporting | corroborated | Alpha from served `external-secrets.io/v1alpha1`; [CRD](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/config/crds/bases/external-secrets.io_pushsecrets.yaml#L8-L36), [API guide](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/api/pushsecret.md#L3-L8), [types](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/apis/externalsecrets/v1alpha1/pushsecret_types.go#L90-L121) |
+| core/pushsecret-external-store-pattern | A Secret selected by name must be in the same namespace as PushSecret; PushSecret can reference SecretStore or ClusterSecretStore targets. | API | supporting | direct | Alpha from served `v1alpha1`; [source-Secret rule](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/apis/externalsecrets/v1alpha1/pushsecret_types.go#L124-L149), [store reference type](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/apis/externalsecrets/v1alpha1/pushsecret_types.go#L37-L55) |
+| core/pushsecret-external-store-pattern | `data` maps source keys to remote keys, while `dataTo` bulk-selects keys; a dataTo target must name or label-select a store, and its key conversion defaults to None. | API | supporting | direct | Alpha from served `v1alpha1`; [data mapping](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/apis/externalsecrets/v1alpha1/pushsecret_types.go#L172-L193), [dataTo validation and conversion](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/apis/externalsecrets/v1alpha1/pushsecret_types.go#L215-L256) |
+| core/pushsecret-external-store-pattern | Replace is the default update policy; IfNotExists avoids overwrite but may leave the cluster and provider values different. Provider secrets are retained on PushSecret deletion unless deletionPolicy is Delete. | documented-guidance | supporting | direct | Alpha from served `v1alpha1`; [policy guide](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/guides/pushsecrets.md#L2-L6) |
+| core/pushsecret-external-store-pattern | Official v2.7.0 snippets demonstrate a Vault SecretStore with remote-key mappings and AWS Secrets Manager-oriented per-entry metadata. | illustrative-pattern | supporting | direct | Alpha from served `v1alpha1`; [Vault snippet](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/snippets/vault-pushsecret.yaml#L10-L32), [AWS snippet](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/snippets/aws-sm-push-secret-with-metadata.yaml#L1-L29) |
+
 ## Historical design: controlled rollout of Composition Functions
 
 Selected Core release and requested design snapshot `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`. Its status is `Accepted`; it contains no prominent accuracy or implementation-completeness warning. That status establishes only that the proposal was accepted, not that it was released or remains current. Claims, deprecated XRD v1, legacy v1 XR semantics, and CLI material are excluded.
