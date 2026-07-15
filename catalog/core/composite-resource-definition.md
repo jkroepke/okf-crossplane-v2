@@ -20,6 +20,12 @@ feature_state: Stable by repository default
 
 `CompositeResourceDefinition` (XRD) is a cluster-scoped `apiextensions.crossplane.io/v2` API. It defines the group, names, scope, versions, and schemas of an XR API.[1][2]
 
+An XRD is the Crossplane definition from which Crossplane generates an XR
+CustomResourceDefinition (CRD). The focused guides on [OpenAPI schemas](xrd-openapi-schema.md),
+[CEL validation](xrd-cel-validation.md), [unknown data and collection semantics](xrd-unknown-data.md),
+[version evolution](xrd-api-version-evolution.md), and [scale and display](xrd-subresources-and-display.md)
+cover the CRD capabilities exposed through an XRD.
+
 # Schema
 
 The defined resource requires `names.kind` and `names.plural`.

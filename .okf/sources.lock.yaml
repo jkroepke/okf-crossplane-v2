@@ -5,6 +5,11 @@ sources:
     tag: v2.3.3
     commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     resolved_at: 2026-07-14
+  crossplane-pr-7018:
+    repository: crossplane/crossplane
+    commit: 7e8d6e108b846555abdd09f60188b7adcf451495
+    selected_by: post-v2.3.3 root XRD CEL-validation propagation, PR #7018 merge commit
+    resolved_at: 2026-07-15
   crossplane-v1.17:
     repository: crossplane/crossplane
     tag: v1.17.3
@@ -23,6 +28,12 @@ sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     selected_by: crossplane/v2.3.3
     resolved_at: 2026-07-14
+  kubernetes-website-v1.35:
+    repository: kubernetes/website
+    branch: release-1.35
+    commit: be897babb9149b808e2ab8ed5367e5d0651b3dca
+    selected_by: XRD-backed CRD schema, validation, versioning, and scale guidance
+    resolved_at: 2026-07-15
   crossplane-docs-v1.18:
     repository: crossplane/docs
     series: v1.18
