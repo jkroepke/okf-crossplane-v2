@@ -6,7 +6,7 @@ resource: https://github.com/crossplane/crossplane/blob/v2.3.3/design/one-pager-
 tags: [crossplane, composition-functions, historical-design]
 timestamp: 2026-07-15T00:00:00Z
 source_repository: crossplane/crossplane
-source_commit: 231dd83a48fe7a4b9c06c8c94735c365f3da40b6
+source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
 source_paths:
   - design/one-pager-controlled-rollout-of-composition-functions.md
 selected_core_release: v2.3.3
@@ -42,18 +42,17 @@ documentation—not an accepted design alone.
 
 # Limitations
 
-The design was pinned from Crossplane `main` for historical context on
-2026-07-15. It contains no prominent warning that it is partial, superseded, or
-inaccurate, but that absence is not implementation evidence. This bounded
-review does not make a roadmap claim or determine whether a later release has
-replaced the proposal.
+The design is pinned to the requested Crossplane `v2.3.3` release. It contains
+no prominent warning that it is partial, superseded, or inaccurate, but that
+absence is not implementation evidence. This bounded review does not make a
+roadmap claim or determine whether a later release has replaced the proposal.
 
 # Citations
 
-[1] [Pinned design title, reviewers, and Accepted status](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L1-L6)
+[1] [v2.3.3 design title, reviewers, and Accepted status](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/design/one-pager-controlled-rollout-of-composition-functions.md#L1-L6)
 
-[2] [Pinned design proposal](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L46-L59)
+[2] [v2.3.3 design proposal](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/design/one-pager-controlled-rollout-of-composition-functions.md#L46-L59)
 
-[3] [v2.3.3 Function revision fields](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_functions.yaml#L124-L139) and [design's proposed activeRevisionLimit](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L71-L78)
+[3] [v2.3.3 Function revision fields](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_functions.yaml#L124-L139) and [design's proposed activeRevisionLimit](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/design/one-pager-controlled-rollout-of-composition-functions.md#L71-L78)
 
-[4] [v2.3.3 pipeline Function reference schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L144-L152), [v2.3.3 controller invocation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L403-L409), and [design's proposed revision fields](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L117-L123)
+[4] [v2.3.3 pipeline Function reference schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L144-L152), [v2.3.3 controller invocation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L403-L409), and [design's proposed revision fields](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/design/one-pager-controlled-rollout-of-composition-functions.md#L117-L123)
