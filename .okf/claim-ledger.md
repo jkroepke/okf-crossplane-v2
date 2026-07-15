@@ -5,6 +5,17 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Historical design: controlled rollout of Composition Functions
+
+Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`. The historical design was pinned from current `main` at `231dd83a48fe7a4b9c06c8c94735c365f3da40b6` on 2026-07-15. Its status is `Accepted`; it contains no prominent accuracy or implementation-completeness warning. That status establishes only that the proposal was accepted, not that it was released or remains current. Claims, deprecated XRD v1, legacy v1 XR semantics, and CLI material are excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| controlled-rollout-of-composition-functions-design | The design proposes (rather than establishes) multiple active Function revisions and pipeline-level revision reference or selection. | historical-context | historical-design | direct | No feature state is derived from the `Accepted` design status; [design proposal](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L46-L59), [proposed Function field](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L71-L78), [proposed pipeline fields](https://github.com/crossplane/crossplane/blob/231dd83a48fe7a4b9c06c8c94735c365f3da40b6/design/one-pager-controlled-rollout-of-composition-functions.md#L117-L123) |
+| controlled-rollout-of-composition-functions-design | In v2.3.3, Function exposes `revisionActivationPolicy` and `revisionHistoryLimit`, while a Composition pipeline step exposes `functionRef.name`; the controller invokes that name. Selected-release schema and controller evidence do not expose the design's `activeRevisionLimit`, `functionRevisionRef`, or `functionRevisionSelector`, so controlled Function-revision rollout is not recorded as current behavior. | API and behavior | primary | corroborated | Composition role: Stable by repository default; [Function schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_functions.yaml#L124-L139), [pipeline schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L144-L152), [controller invocation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L403-L409) |
+
+Unresolved: this bounded review does not determine whether the accepted proposal is intended for a future release, has been replaced by another design, or exists outside the selected v2.3.3 release. It makes no roadmap claim.
+
 ## Provider-domain foundation
 
 Selected Core release: `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation series `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`. Selected provider sources: `provider-upjet-aws` `v2.6.0` at `857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60`, `provider-aws` `v0.58.0` at `405d4d48d20c332ee427beb4187f80cc4b0af4ea`, `provider-opentofu` `v1.1.4` at `6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609`, and supporting Upjet `v2.3.0` at `b02902e67b336b94e6bd119b86d14077ed0a0a32`. Claims, deprecated XRD v1, and legacy v1 XR semantics are excluded. No source text is copied.

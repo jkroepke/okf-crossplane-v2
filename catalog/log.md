@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-15
+* **Creation**: Added the accepted controlled-rollout design as historical context and separated its proposed Function-revision API from selected-release behavior proved by schemas and controller code.
 * **Update**: Clarified that generated managed-resource references are Provider- and field-specific, documented explicit observed-status composition fallbacks, and bounded server-side-apply ownership and re-resolution behavior.
 * **Update**: Added explicit ProviderConfig selection and central-account least-privilege guidance.
 * **Creation**: Added a release-pinned Upjet-to-Terraform provenance and example-adaptation evidence chain.

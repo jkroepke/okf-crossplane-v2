@@ -5,6 +5,12 @@ sources:
     tag: v2.3.3
     commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     resolved_at: 2026-07-14
+  crossplane-design-main:
+    repository: crossplane/crossplane
+    branch: main
+    commit: 231dd83a48fe7a4b9c06c8c94735c365f3da40b6
+    selected_by: historical context for controlled rollout of Composition Functions
+    resolved_at: 2026-07-15
   crossplane-v2.2.0:
     repository: crossplane/crossplane
     tag: v2.2.0
