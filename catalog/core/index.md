@@ -19,6 +19,7 @@
 * [Namespaced composition boundaries](namespaced-composition-boundaries.md) - Same-namespace enforcement and the open issue #6759 report.
 * [Cross-namespace synchronization patterns](cross-namespace-synchronization-patterns.md) - Evidence-backed provider-kubernetes and community-controller tradeoffs.
 * [Composition health in GitOps tools](composition-gitops-health.md) - Native status limitations and the documented Argo CD and Flux customization boundaries.
+* [Push platform-team Secrets to external stores](pushsecret-external-store-pattern.md) - An Alpha External Secrets Operator pattern for publishing selected Kubernetes Secret data to configured external stores.
 
 # Environment and migration
 
