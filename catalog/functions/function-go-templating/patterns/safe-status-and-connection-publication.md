@@ -107,8 +107,7 @@ that the producer is ready.[3][5]
 
 Keep sensitive connection material in a composed Kubernetes `Secret`, not in
 XR status. The status gate should publish the Secret *reference* only after
-the Secret has the required data. `CompositeConnectionDetails` is legacy v1
-behavior and is excluded here. This catalog also excludes Claim-based examples,
+the Secret has the required data. This catalog excludes Claim-based workflows,
 so a template that reads `spec.claimRef` needs a non-Claim v2 equivalent before
 it can be included.[3]
 
@@ -129,22 +128,17 @@ external identity to the Kubernetes name, but the accepted format and adoption
 behavior remain provider-specific. The annotation is not a generic XR naming
 mechanism and cannot make an invalid Kubernetes `metadata.name` valid.[9][10]
 
-# Limits of the submitted examples
+# Scope boundaries
 
-- The PostgreSQL and SQL-provider resource shapes, condition semantics, and
-  connection-detail keys are illustrative until their provider releases are
-  separately selected and pinned.
+- Concrete provider resource shapes, condition semantics, connection-detail
+  keys, and ProviderConfig behavior require separately selected and pinned
+  provider releases.
 - For a generated extension list, make both the Kubernetes object name and the
   composition-resource name deterministic and collision-free; sanitize or hash
   input when it is not Kubernetes-name compatible.
-- The SSO example's `CompositeConnectionDetails` output is legacy v1 behavior
-  and is excluded from this v2 pattern. Use a composed Kubernetes `Secret`
-  instead.[3]
-- The submitted inline OpenTofu or Terraform HCL is illustrative. Keeping HCL
-  in a separate module is an authoring choice, not a Crossplane requirement.
-  If both template languages are used, define clear ownership and escaping
-  boundaries; do not make a general compatibility claim from the submitted
-  example alone.
+- Keeping inline OpenTofu or Terraform HCL in a separate module is an authoring
+  choice, not a Crossplane requirement. If both template languages are used,
+  define clear ownership and escaping boundaries.
 
 # Citations
 

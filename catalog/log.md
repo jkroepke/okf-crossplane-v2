@@ -1,7 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
-* **Update**: Generalized submitted PostgreSQL and SSO examples into dependency-gating, dynamic collection identity, and base64-safe connection-data guidance; excluded claim-based and legacy v1 connection publication.
+* **Update**: Added dependency-gating, dynamic collection identity, and base64-safe connection-data guidance; excluded Claim-based workflows from this v2 pattern.
 * **Creation**: Added a strict function-go-templating pattern that gates database XR status and connection references on observed composed-resource readiness, distinguishes Kubernetes names from managed-resource external names, and excludes legacy v1 connection output.
 * **Creation**: Added an Alpha External Secrets Operator PushSecret pattern for publishing selected platform-team Kubernetes Secret data to configured external secret stores, including Vault and AWS examples.
 * **Update**: Extended provider-family guidance with Upbound's pinned official-provider installation, monolith ownership, shared-family dependency, and offline-resolution boundaries.

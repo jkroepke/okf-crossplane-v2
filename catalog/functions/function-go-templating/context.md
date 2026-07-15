@@ -30,7 +30,7 @@ They can render a special `meta.gotemplating.fn.crossplane.io/v1alpha1`
 function consumes this document as an instruction; it does not add it to the
 desired composed resources.[2]
 
-Context returned by a pipeline step is available to subsequent steps.[10] A
+Context returned by a pipeline step is available to subsequent steps.[9] A
 template can therefore read data written by an earlier function, transform it,
 and publish new or updated keys.[3]
 
@@ -102,19 +102,18 @@ than copied as a complete Composition.[3][6]
 
 # Special meta kinds and Crossplane v2
 
-The selected runtime switch accepts four kinds at the meta API version.[2]
+The selected runtime switch accepts Context, ExtraResources, and ClaimConditions
+at the meta API version.[2]
 
 | Kind | Crossplane v2 status |
 |---|---|
 | `Context` | V2-safe. Updates pipeline context as documented above. |
 | `ExtraResources` | V2-safe capability. Emits current `requirements.resources`; the release also retains a deprecated v1 compatibility path for cluster-scoped selectors.[7] |
-| `CompositeConnectionDetails` | Legacy v1 XR only. The selected README explicitly says it is unsupported for v2 XRs; compose a Kubernetes `Secret` instead.[8] |
-| `ClaimConditions` | Partially v2-safe. The default or `Composite` target emits a condition for the XR. `CompositeAndClaim` targets a Claim and is excluded from claim-free v2 usage.[9] |
+| `ClaimConditions` | Partially v2-safe. The default or `Composite` target emits a condition for the XR. `CompositeAndClaim` targets a Claim and is excluded from claim-free v2 usage.[8] |
 
 An unknown kind under this API version produces a fatal result. The error text
-lists only `CompositeConnectionDetails`, `Context`, and `ExtraResources`, even
-though the adjacent runtime case also accepts `ClaimConditions`; the switch is
-authoritative for released behavior.[2]
+does not include every accepted kind; the runtime switch is authoritative for
+released behavior.[2]
 
 # Limitations
 
@@ -126,8 +125,7 @@ authoritative for released behavior.[2]
 - The selected release does not test collisions involving arrays, nulls, or
   unlike value types. Avoid relying on undocumented collision semantics for
   those cases.
-- `CompositeConnectionDetails` and the Claim target of `ClaimConditions` are
-  excluded from legacy-free v2 examples.
+- The Claim target of `ClaimConditions` is excluded from legacy-free v2 usage.
 
 # Relationships
 
@@ -145,6 +143,5 @@ groups beneath the reserved context key
 [5] [Deep merge implementation and tests](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/context.go#L10-L20)
 [6] [Repository Apache-2.0 license](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/LICENSE)
 [7] [ExtraResources v2 and compatibility requirement fields](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L311-L327)
-[8] [Legacy-v1 and v2 connection-details guidance](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L78-L122)
-[9] [ClaimConditions composite and claim targets](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/claimconditions.go#L12-L77)
-[10] [README Context guidance and later-step visibility](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L241-L277)
+[8] [ClaimConditions composite and claim targets](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/claimconditions.go#L12-L77)
+[9] [README Context guidance and later-step visibility](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L241-L277)

@@ -17,8 +17,7 @@ feature_state: Beta
 
 # Overview
 
-Crossplane v2 does not use the legacy `CompositeConnectionDetails` pseudo-resource.
-With `function-go-templating`, a Composition instead renders an ordinary Kubernetes
+With `function-go-templating`, a Composition renders an ordinary Kubernetes
 `Secret` as a named composed resource. The Secret aggregates connection details
 observed from other composed resources.[1][2]
 
@@ -46,7 +45,6 @@ Guard every resource and field that the template indexes when its presence is no
 
 # Boundaries
 
-- The aggregate object is a normal composed Kubernetes `Secret`; it is not a legacy composite connection secret.[1][2]
 - Connection-detail keys and availability are provider-specific. The guide's AWS `AccessKey` resources illustrate the pattern but are not required by it.[1][4]
 - The guide pins function-go-templating v0.11.2, while this catalog uses the selected stable v0.12.2 release. The v0.12.2 schema and behavior corroborate the documented pattern.[3][6]
 - A later readiness function may be useful, but it is separate from connection-detail aggregation.[4]
