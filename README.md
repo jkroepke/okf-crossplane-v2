@@ -11,11 +11,11 @@ The goal is to make Crossplane concepts, APIs, providers, composition functions,
 
 ## Installation
 
-Install the OKF-aware MCP server globally for your detected agent:
+Install the hosted OKF-aware MCP server globally for your detected agent:
 
 ```shell
 npx add-mcp \
-  "npx -y github:rodcar/okf-atlas-mcp --bundle-url https://github.com/jkroepke/okf-crossplane-v2/tree/main/catalog --refresh true" \
+  https://crossplane.mcp.jkroepke.de/mcp \
   --name crossplane-v2-okf \
   --global
 ```
@@ -29,6 +29,22 @@ npx skills add jkroepke/okf-crossplane-v2 \
 ```
 
 Both installers detect supported agents and ask where the integration should be installed. Restart the selected agent after installation.
+
+The public MCP health endpoint is available at `https://crossplane.mcp.jkroepke.de/healthz`.
+
+## Self-hosting the MCP server
+
+The included container fetches this repository, ingests `catalog/` into a DuckDB catalog, and serves the `okf-mcp` tools over Streamable HTTP.
+
+```shell
+docker compose up --build --detach
+```
+
+The local MCP endpoint is `http://127.0.0.1:8000/mcp`. Put it behind a TLS reverse proxy for `crossplane.mcp.jkroepke.de`.
+
+The catalog is refreshed at container startup. If fetching or ingestion fails and a previous catalog exists in the volume, the server continues with that last successful catalog.
+
+The MCP tools are read-only, but the public endpoint has no application-level authentication. Apply request limits and access controls at the reverse proxy when required.
 
 ## Why this repository exists
 

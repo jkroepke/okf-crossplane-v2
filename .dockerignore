@@ -1,0 +1,7 @@
+.git
+.github
+.agents
+.codex
+.pi
+catalog
+*.duckdb

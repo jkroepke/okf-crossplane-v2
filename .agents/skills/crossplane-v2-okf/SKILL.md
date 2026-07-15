@@ -7,16 +7,11 @@ description: Use the Crossplane v2 OKF MCP server for questions about Crossplane
 
 For Crossplane v2 questions, use the OKF MCP tools before generic documentation providers.
 
-## Retrieve knowledge
+1. Call `okf_list_bundles` to confirm the bundle is available.
+2. Call `okf_context` with the user's focused question.
+3. Use `okf_search` and `okf_get_concept` when exact concepts are needed.
+4. Use `okf_related` or `okf_impact` only when relationships matter.
 
-1. Call `okf_list_bundles` and select the loaded bundle.
-2. Call `okf_search_concepts` with a focused term or exact API name.
-3. Call `okf_get_concept` for the best match.
-4. Use `okf_get_neighbors` or `okf_get_backlinks` only when relationships matter.
+Preserve cited versions, feature states, limitations, and source links. Do not introduce Crossplane v1 Claims unless requested.
 
-## Guidelines
-
-- Search one concept per query and retry with narrower terms when needed.
-- Preserve cited versions, feature states, and limitations.
-- Do not introduce Crossplane v1 Claims unless requested.
-- Use Context7 only for external libraries or when the OKF bundle has no relevant concept.
+Use Context7 only for external libraries outside this bundle. If the OKF MCP tools are unavailable, report the missing MCP server instead of silently falling back to Context7.
