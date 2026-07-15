@@ -5,6 +5,12 @@ sources:
     tag: v2.3.3
     commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     resolved_at: 2026-07-14
+  crossplane-v2.2.0:
+    repository: crossplane/crossplane
+    tag: v2.2.0
+    commit: b7aa9852801ca9959eefdad8233f95635df348c2
+    selected_by: XRD schema-root CEL validation release boundary
+    resolved_at: 2026-07-15
   crossplane-pr-7018:
     repository: crossplane/crossplane
     commit: 7e8d6e108b846555abdd09f60188b7adcf451495
