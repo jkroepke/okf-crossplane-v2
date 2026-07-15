@@ -10,6 +10,7 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 2. Inspect `cluster/crds/**` at that tag. Do not use `main` for stable catalog claims.
 3. Scope research to the concepts requested by the parent agent. Do not inventory unrelated CRDs.
 4. The Crossplane CLI and `crossplane/cli` repository are outside Crossplane Core and outside this agent's scope.
+5. For XRD-to-CRD schema propagation, inspect the selected Core release's `internal/xcrd` implementation and tests, plus the matching `crossplane-runtime/pkg/xcrd` implementation and tests. Root-rule forwarding alone does not prove a metadata child is available: inspect the generated metadata schema and verify the final generated CRD path.
 
 ## Primary focus
 

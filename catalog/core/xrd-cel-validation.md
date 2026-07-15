@@ -27,19 +27,23 @@ A rule referring to `oldSelf` is a transition rule: it compares an update's
 old and new value. Put it only on correlatable schema portions; array parents
 need a map-list rather than an atomic or set list.[3]
 
-# Crossplane release boundary
+# Crossplane support and metadata boundary
 
-The v2.3.3 XRD schema accepts OpenAPI schema data, but do not rely on a
-schema-root rule outside `spec` being propagated by that release. Merged PR
-#7018 added copying root `x-kubernetes-validations` to the generated CRD; its
-merge commit is post-v2.3.3. This enables future rules that compare, for
-example, `spec` with `status` or metadata, but it is not selected-release
-behavior.[4][5]
+Crossplane v2.2.0 and later include PR #7018, which copies schema-root
+`x-kubernetes-validations` to the generated XR CRD. The release-pinned test
+uses `self.metadata.name` with `self.spec.engineVersion`, so an XRD can use a
+root rule to validate the XR name.[4][5]
+
+Do not infer equivalent support for arbitrary `metadata.labels`. The generated
+XR metadata schema retains only `name`; source metadata-label properties are
+not propagated. Use an admission policy for label-dependent validation unless
+a generated-CRD and API-server test establishes the exact label path.[6]
 
 # Citations
 
 [1] [Kubernetes CEL validation scope](https://github.com/kubernetes/website/blob/be897babb9149b808e2ab8ed5367e5d0651b3dca/content/en/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions.md#L783-L933)
 [2] [Kubernetes CEL diagnostic fields](https://github.com/kubernetes/website/blob/be897babb9149b808e2ab8ed5367e5d0651b3dca/content/en/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions.md#L1096-L1181)
 [3] [Kubernetes CEL transition rules](https://github.com/kubernetes/website/blob/be897babb9149b808e2ab8ed5367e5d0651b3dca/content/en/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions.md#L1221-L1254)
-[4] [PR #7018](https://github.com/crossplane/crossplane/pull/7018)
-[5] [Post-v2.3.3 root-validation propagation](https://github.com/crossplane/crossplane/blob/7e8d6e108b846555abdd09f60188b7adcf451495/internal/xcrd/crd.go#L175-L204)
+[4] [Crossplane v2.2.0 root-rule propagation](https://github.com/crossplane/crossplane/blob/b7aa9852801ca9959eefdad8233f95635df348c2/internal/xcrd/crd.go#L159-L220)
+[5] [v2.2.0 test of `metadata.name` validation](https://github.com/crossplane/crossplane/blob/b7aa9852801ca9959eefdad8233f95635df348c2/internal/xcrd/crd_test.go#L1995-L2088)
+[6] [Generated metadata schema retains only `name`](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/xcrd/crd.go#L186-L196)
