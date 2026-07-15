@@ -4,6 +4,11 @@
 
 * [Composite resource model](composite-resource-model.md) - How XRs, XRDs, Compositions, and composed resources relate in Crossplane v2.
 * [CompositeResourceDefinition v2](composite-resource-definition.md) - The current API for defining composite resource types.
+* [XRD OpenAPI schemas](xrd-openapi-schema.md) - Model an XR API with an OpenAPI v3 schema that Crossplane carries into its generated CRD.
+* [XRD CEL validation](xrd-cel-validation.md) - Apply schema-scoped CEL rules and understand the current root-rule release boundary.
+* [XRD unknown data and collections](xrd-unknown-data.md) - Choose pruning, preserved data, and Kubernetes list semantics deliberately.
+* [XRD API version evolution](xrd-api-version-evolution.md) - Serve and reference XR versions, with CRD conversion boundaries.
+* [XRD scale and display](xrd-subresources-and-display.md) - Expose `/scale` and useful `kubectl get` columns from an XRD version.
 * [Composition](composition.md) - The current function-pipeline API for composing resources.
 * [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
 * [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, and required-resource refresh boundaries.
