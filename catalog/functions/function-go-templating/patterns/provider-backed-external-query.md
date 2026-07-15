@@ -156,8 +156,8 @@ comment on #4141 was omitted.
 
 # Relationships
 
-See [request data and context](request-data.md) for observed resources and
-credentials, and [rendered output](rendered-output.md) for composition resource
+See [request data and context](../request-data.md) for observed resources and
+credentials, and [rendered output](../rendered-output.md) for composition resource
 names and readiness.
 
 # Citations
