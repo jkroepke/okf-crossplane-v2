@@ -1,0 +1,6 @@
+name = "okf-crossplane-docs-update-researcher"
+description = "Read-only researcher for newly documented capabilities in a stable Crossplane documentation series."
+model = "gpt-5.6-terra"
+model_reasoning_effort = "medium"
+sandbox_mode = "read-only"
+developer_instructions = "Before doing any work, read and follow `.agents/agents/okf-crossplane-docs-update-researcher/AGENT.md` as the canonical role instructions."

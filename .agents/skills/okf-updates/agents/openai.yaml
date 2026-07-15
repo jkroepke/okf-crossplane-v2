@@ -1,0 +1,6 @@
+interface:
+  display_name: "Crossplane OKF Updates"
+  short_description: "Find relevant features in newer stable source releases"
+  default_prompt: "Use $okf-updates to compare locked Crossplane ecosystem sources with their latest stable identities and present relevant feature candidates."
+policy:
+  allow_implicit_invocation: false
