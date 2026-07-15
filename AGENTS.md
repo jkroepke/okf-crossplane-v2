@@ -5,8 +5,9 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 ## Default behavior
 
 - Do not start the OKF generation or enrichment workflow automatically.
-- Run the workflow only when the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`.
-- Keep this file limited to repository-wide rules. The shared workflow lives in `.agents/skills/okf/`.
+- Run the normal workflow only when the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`, or selects a feature candidate returned by an explicitly invoked `$okf-updates`, `/skill:okf-updates`, or `/okf-updates` workflow.
+- Run update discovery only when the user explicitly invokes `$okf-updates`, `/skill:okf-updates`, or `/okf-updates`.
+- Keep this file limited to repository-wide rules. The shared workflows live in `.agents/skills/okf/` and `.agents/skills/okf-updates/`.
 - Canonical specialist instructions live in `.agents/agents/<name>/AGENT.md`.
 - Runtime adapters in `.codex/agents/` and `.pi/agents/` contain only runtime metadata and a reference to the matching canonical instruction file. Do not duplicate role instructions in runtime adapters.
 
@@ -16,6 +17,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Subagents are read-only researchers. They return compact evidence packets and never edit the catalog.
 - Use at most three direct subagents at once. Do not create nested subagent trees.
 - When running in Pi, use only the project agents whose names start with `okf-`. Their tool allowlists intentionally omit editing tools and nested delegation.
+- The `$okf-updates` parent resolves locked and latest stable component identities before delegation. It must not start an update researcher when no newer stable identity exists.
 
 ## Change workflow
 
@@ -27,6 +29,8 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - After reviewer approval and a successful lint run, commit every intended change. Do not leave generated or supporting files uncommitted.
 - Create commits with a Developer Certificate of Origin sign-off by default by using `git commit --signoff` (or `git commit -s`). Omit the sign-off only when the user explicitly requests an unsigned commit.
 - Push the branch and open a pull request for the reviewed commit set. Do not merge the pull request unless the user explicitly requests it.
+- `$okf-updates` discovery is read-only. It must not update source locks or catalog files before the requester selects a candidate.
+- After selection from `$okf-updates`, process each selected feature independently through the normal `$okf` workflow. Never include an unselected feature implicitly.
 
 ## Domain routing
 
@@ -36,6 +40,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use `okf-function-go-templating-researcher` for user-facing `function-go-templating` installation, input schema, examples, and additional template functions.
 - Use `okf-function-go-templating-sprig-researcher` for the exact Sprig version exposed by the selected stable `function-go-templating` release.
 - Use `okf-function-go-templating-project-history-researcher` for human-authored issues and pull requests related to that function.
+- Use the matching `*-update-researcher` only from the explicit `$okf-updates` workflow and only after its component identity changes.
 - Every composition function must have its own canonical instruction files and matching Codex and Pi adapters before its OKF concepts are generated.
 - Use the generic `okf-crossplane-researcher` only for domains without a dedicated agent, such as CLI, runtime, SDKs, tools, native providers, and testing tools.
 - The Crossplane CLI is a separate catalog domain and is not part of Crossplane Core.
