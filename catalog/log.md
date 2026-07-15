@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-15
+* **Update**: Verified the XRD v2 Composition selection fields: documented default selection, automatic or manual revision policy, and immutable enforced Composition override behavior.
 * **Reorganization**: Separated namespaced Composition enforcement from cross-namespace synchronization patterns and moved real-time Composition and Management Policies project history into dedicated references.
 * **Reorganization**: Grouped the Core index by domain and moved function-go-templating readiness and external-query examples under a dedicated patterns index.
 
