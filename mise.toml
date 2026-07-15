@@ -1,19 +1,10 @@
 [tools]
-"gem:okf" = "1.5.0"
+"pipx:okf-ingest" = "latest"
 
 [tasks.lint]
 description = "Run OKF linter"
-depends = ['validate', 'okf-validate']
-run = "okf lint catalog/"
+depends = ['validate']
 
 [tasks.validate]
 description = "Run OKF linter"
 run = "okf validate catalog/"
-
-[tasks.loose]
-description = "Run OKF linter"
-run = "okf loose catalog/"
-
-[tasks.okf-validate]
-description = "Validate OKF v0.1 conformance"
-run = "ruby scripts/validate-okf.rb catalog"
