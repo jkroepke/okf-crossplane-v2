@@ -44,7 +44,8 @@ central account, with the least permissions required. This is platform
 security guidance: the actual ProviderConfig GVK and credential schema are
 provider-specific.[3]
 
-For a central network account used by tenant compositions, choose deliberately:
+For a central account, subscription, or project (for example, network, identity,
+or security) used by tenant compositions, choose deliberately:
 
 - a least-privileged ClusterProviderConfig for the shared account;
 - a tenant-local ProviderConfig for that account in every tenant namespace; or
