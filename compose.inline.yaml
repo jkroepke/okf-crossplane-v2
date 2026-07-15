@@ -1,0 +1,59 @@
+services:
+  crossplane-v2-okf-mcp:
+    build:
+      context: .
+      dockerfile_inline: |
+        FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
+
+        ARG OKF_MCP_VERSION=0.3.0
+
+        RUN apt-get update \
+            && apt-get install --yes --no-install-recommends ca-certificates git tini \
+            && rm -rf /var/lib/apt/lists/*
+
+        RUN uv pip install --system --no-cache "okf-mcp==${OKF_MCP_VERSION}"
+
+        RUN groupadd --gid 65532 okf \
+            && useradd --uid 65532 --gid 65532 --create-home \
+                --home-dir /home/okf --shell /usr/sbin/nologin okf
+
+        WORKDIR /app
+
+        RUN printf '%s' 'ZnJvbSBfX2Z1dHVyZV9fIGltcG9ydCBhbm5vdGF0aW9ucwoKaW1wb3J0IG9zCmZyb20gcGF0aGxpYiBpbXBvcnQgUGF0aAoKZnJvbSBtY3Auc2VydmVyLnRyYW5zcG9ydF9zZWN1cml0eSBpbXBvcnQgVHJhbnNwb3J0U2VjdXJpdHlTZXR0aW5ncwpmcm9tIG9rZl9tY3AgaW1wb3J0IHNlcnZlciBhcyB1cHN0cmVhbQpmcm9tIHN0YXJsZXR0ZS5yZXF1ZXN0cyBpbXBvcnQgUmVxdWVzdApmcm9tIHN0YXJsZXR0ZS5yZXNwb25zZXMgaW1wb3J0IEpTT05SZXNwb25zZQoKCmRlZiBlbnZfYm9vbChuYW1lOiBzdHIsIGRlZmF1bHQ6IGJvb2wpIC0+IGJvb2w6CiAgICByYXcgPSBvcy5nZXRlbnYobmFtZSkKICAgIGlmIHJhdyBpcyBOb25lOgogICAgICAgIHJldHVybiBkZWZhdWx0CiAgICBub3JtYWxpemVkID0gcmF3LnN0cmlwKCkubG93ZXIoKQogICAgaWYgbm9ybWFsaXplZCBpbiB7IjEiLCAidHJ1ZSIsICJ5ZXMiLCAib24ifToKICAgICAgICByZXR1cm4gVHJ1ZQogICAgaWYgbm9ybWFsaXplZCBpbiB7IjAiLCAiZmFsc2UiLCAibm8iLCAib2ZmIn06CiAgICAgICAgcmV0dXJuIEZhbHNlCiAgICByYWlzZSBWYWx1ZUVycm9yKGYie25hbWV9IG11c3QgYmUgYSBib29sZWFuLCByZWNlaXZlZCB7cmF3IXJ9IikKCgpkZWYgZW52X2NzdihuYW1lOiBzdHIpIC0+IGxpc3Rbc3RyXToKICAgIHJldHVybiBbdmFsdWUuc3RyaXAoKSBmb3IgdmFsdWUgaW4gb3MuZ2V0ZW52KG5hbWUsICIiKS5zcGxpdCgiLCIpIGlmIHZhbHVlLnN0cmlwKCldCgoKZGJfcGF0aCA9IFBhdGgob3MuZW52aXJvbi5nZXQoIkRCX1BBVEgiLCAiL2RhdGEvY2F0YWxvZy5kdWNrZGIiKSkucmVzb2x2ZSgpCmJ1bmRsZV9uYW1lID0gb3MuZW52aXJvbi5nZXQoIkJVTkRMRV9OQU1FIiwgImNyb3NzcGxhbmUtdjItb2tmIikKCmlmIG5vdCBkYl9wYXRoLmlzX2ZpbGUoKToKICAgIHJhaXNlIFJ1bnRpbWVFcnJvcihmIkR1Y2tEQiBjYXRhbG9nIGRvZXMgbm90IGV4aXN0OiB7ZGJfcGF0aH0iKQoKdXBzdHJlYW0ucmVnLmFkZChidW5kbGVfbmFtZSwgc3RyKGRiX3BhdGgpKQoKbWNwID0gdXBzdHJlYW0ubWNwCm1jcC5zZXR0aW5ncy5ob3N0ID0gb3MuZW52aXJvbi5nZXQoIk1DUF9IT1NUIiwgIjAuMC4wLjAiKQptY3Auc2V0dGluZ3MucG9ydCA9IGludChvcy5lbnZpcm9uLmdldCgiTUNQX1BPUlQiLCAiODAwMCIpKQptY3Auc2V0dGluZ3Muc3RyZWFtYWJsZV9odHRwX3BhdGggPSBvcy5lbnZpcm9uLmdldCgiTUNQX1BBVEgiLCAiL21jcCIpCm1jcC5zZXR0aW5ncy5qc29uX3Jlc3BvbnNlID0gZW52X2Jvb2woIk1DUF9KU09OX1JFU1BPTlNFIiwgVHJ1ZSkKbWNwLnNldHRpbmdzLnN0YXRlbGVzc19odHRwID0gZW52X2Jvb2woIk1DUF9TVEFURUxFU1NfSFRUUCIsIFRydWUpCgphbGxvd2VkX2hvc3RzID0gZW52X2NzdigiTUNQX0FMTE9XRURfSE9TVFMiKQphbGxvd2VkX29yaWdpbnMgPSBlbnZfY3N2KCJNQ1BfQUxMT1dFRF9PUklHSU5TIikKbWNwLnNldHRpbmdzLnRyYW5zcG9ydF9zZWN1cml0eSA9IFRyYW5zcG9ydFNlY3VyaXR5U2V0dGluZ3MoCiAgICBlbmFibGVfZG5zX3JlYmluZGluZ19wcm90ZWN0aW9uPWJvb2woYWxsb3dlZF9ob3N0cyksCiAgICBhbGxvd2VkX2hvc3RzPWFsbG93ZWRfaG9zdHMsCiAgICBhbGxvd2VkX29yaWdpbnM9YWxsb3dlZF9vcmlnaW5zLAopCgoKQG1jcC5jdXN0b21fcm91dGUoIi9oZWFsdGh6IiwgbWV0aG9kcz1bIkdFVCJdLCBpbmNsdWRlX2luX3NjaGVtYT1GYWxzZSkKYXN5bmMgZGVmIGhlYWx0aHooXzogUmVxdWVzdCkgLT4gSlNPTlJlc3BvbnNlOgogICAgcmV0dXJuIEpTT05SZXNwb25zZSgKICAgICAgICB7CiAgICAgICAgICAgICJzdGF0dXMiOiAib2siLAogICAgICAgICAgICAiYnVuZGxlIjogYnVuZGxlX25hbWUsCiAgICAgICAgICAgICJtY3BfcGF0aCI6IG1jcC5zZXR0aW5ncy5zdHJlYW1hYmxlX2h0dHBfcGF0aCwKICAgICAgICB9CiAgICApCgoKaWYgX19uYW1lX18gPT0gIl9fbWFpbl9fIjoKICAgIG1jcC5ydW4odHJhbnNwb3J0PSJzdHJlYW1hYmxlLWh0dHAiKQo=' | base64 --decode > /app/server.py \
+            && printf '%s' 'IyEvYmluL3NoCnNldCAtZXUKCjogIiR7QlVORExFX1VSTDo/QlVORExFX1VSTCBtdXN0IG5vdCBiZSBlbXB0eX0iCjogIiR7QlVORExFX05BTUU6P0JVTkRMRV9OQU1FIG11c3Qgbm90IGJlIGVtcHR5fSIKOiAiJHtEQl9QQVRIOj9EQl9QQVRIIG11c3Qgbm90IGJlIGVtcHR5fSIKCm1rZGlyIC1wICIkKGRpcm5hbWUgIiR7REJfUEFUSH0iKSIKdGVtcG9yYXJ5X2RiPSIke0RCX1BBVEh9LnRtcCIKcm0gLWYgIiR7dGVtcG9yYXJ5X2RifSIKCmNsZWFudXAoKSB7CiAgICBybSAtZiAiJHt0ZW1wb3JhcnlfZGJ9Igp9CnRyYXAgY2xlYW51cCBFWElUIElOVCBURVJNCgpzZXQgLS0gb2tmIGluZ2VzdCAiJHtCVU5ETEVfVVJMfSIgXAogICAgLS1kYiAiJHt0ZW1wb3JhcnlfZGJ9IiBcCiAgICAtLWlkICIke0JVTkRMRV9OQU1FfSIgXAogICAgLS1qc29uCgppZiBbIC1uICIke0JVTkRMRV9SRUY6LX0iIF07IHRoZW4KICAgIHNldCAtLSAiJEAiIC0tYnJhbmNoICIke0JVTkRMRV9SRUZ9IgpmaQoKaWYgWyAtbiAiJHtCVU5ETEVfU1VCRElSOi19IiBdOyB0aGVuCiAgICBzZXQgLS0gIiRAIiAtLXN1YmRpciAiJHtCVU5ETEVfU1VCRElSfSIKZmkKCmVjaG8gIkZldGNoaW5nIGFuZCBpbmdlc3RpbmcgJHtCVU5ETEVfVVJMfSAoJHtCVU5ETEVfUkVGOi1kZWZhdWx0IHJlZn0sIHN1YmRpcj0ke0JVTkRMRV9TVUJESVI6LXJvb3R9KSIgPiYyCmlmICIkQCI7IHRoZW4KICAgIG12IC1mICIke3RlbXBvcmFyeV9kYn0iICIke0RCX1BBVEh9IgplbGlmIFsgLWYgIiR7REJfUEFUSH0iIF07IHRoZW4KICAgIGVjaG8gIkluZ2VzdGlvbiBmYWlsZWQ7IHNlcnZpbmcgdGhlIHByZXZpb3VzIGNhdGFsb2cgZnJvbSAke0RCX1BBVEh9IiA+JjIKZWxzZQogICAgZWNobyAiSW5nZXN0aW9uIGZhaWxlZCBhbmQgbm8gcHJldmlvdXMgY2F0YWxvZyBpcyBhdmFpbGFibGUiID4mMgogICAgZXhpdCAxCmZpCgp0cmFwIC0gRVhJVCBJTlQgVEVSTQpleGVjIHB5dGhvbiAvYXBwL3NlcnZlci5weQo=' | base64 --decode > /app/entrypoint.sh \
+            && chmod 0755 /app/entrypoint.sh \
+            && mkdir -p /data \
+            && chown -R okf:okf /app /data /home/okf
+
+        USER 65532:65532
+
+        ENV BUNDLE_URL="https://github.com/jkroepke/okf-crossplane-v2.git" \
+            BUNDLE_REF="main" \
+            BUNDLE_SUBDIR="catalog" \
+            BUNDLE_NAME="crossplane-v2-okf" \
+            DB_PATH="/data/catalog.duckdb" \
+            MCP_HOST="0.0.0.0" \
+            MCP_PORT="8000" \
+            MCP_PATH="/mcp" \
+            MCP_JSON_RESPONSE="true" \
+            MCP_STATELESS_HTTP="true" \
+            MCP_ALLOWED_HOSTS="crossplane.mcp.jkroepke.de,crossplane.mcp.jkroepke.de:*,127.0.0.1:*,localhost:*" \
+            MCP_ALLOWED_ORIGINS="https://crossplane.mcp.jkroepke.de,http://127.0.0.1:*,http://localhost:*" \
+            PYTHONUNBUFFERED="1" \
+            UV_NO_PROGRESS="1"
+
+        EXPOSE 8000
+
+        HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
+            CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2).close()"
+
+        ENTRYPOINT ["/usr/bin/tini", "--", "/app/entrypoint.sh"]
+    image: crossplane-v2-okf-mcp:local
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - crossplane-v2-okf-data:/data
+
+volumes:
+  crossplane-v2-okf-data:
