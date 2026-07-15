@@ -13,15 +13,17 @@ feature_state: Stable by repository default
 
 # Organization convention
 
-For fictional, human-orderable composite resources owned by one team, use one
-API group: `apigroup.example.com`. This permits a single Role or ClusterRole
-rule, and therefore a single binding, to grant that team's selected XR
-resources and verbs. Kubernetes RBAC scopes a rule by API group, resource, and
-verb; grant explicit resources and verbs rather than wildcards.[1]
+For a fictional, human-orderable composite resource owned by one team, use
+`plattform.example.com` as the placeholder for a team-owned API group. In a
+real deployment, use a group such as `<department>.<company-domain>`. Grouping
+that team's XRs can permit a single Role or ClusterRole rule, and therefore a
+single binding, to grant selected resources and verbs. Kubernetes RBAC scopes a
+rule by API group, resource, and verb; grant explicit resources and verbs
+rather than wildcards.[1]
 
 This is local organizational guidance, not a Kubernetes or Crossplane
 requirement. It applies only to fictional examples; do not rename real APIs.
-An API proxy or network boundary that exposes only `/apis/apigroup.example.com`
+An API proxy or network boundary that exposes only `/apis/plattform.example.com`
 is a deployment-specific defence-in-depth control, not an RBAC guarantee.
 
 # Tenant namespace baseline

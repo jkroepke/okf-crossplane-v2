@@ -77,4 +77,4 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 
 ## Catalog example convention
 
-- For fictional, human-orderable composite-resource examples, use the shared API group `apigroup.example.com` (for example, `apigroup.example.com/v1alpha1`). Keep real product and Kubernetes API groups unchanged. This is an organizational authoring convention, not a Crossplane or Kubernetes requirement.
+- For fictional, human-orderable composite-resource examples, use `plattform.example.com` as the placeholder for a team-owned group (for example, `plattform.example.com/v1alpha1`). In real deployments, replace it with `<department>.<company-domain>`. Keep real product and Kubernetes API groups unchanged. This is an illustrative authoring convention, not a Crossplane or Kubernetes requirement.
