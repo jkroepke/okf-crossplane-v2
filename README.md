@@ -11,6 +11,9 @@ The goal is to make Crossplane concepts, APIs, providers, composition functions,
 
 ## Installation
 
+> [!WARNING]
+> The public MCP server is a temporary early-access service for early adopters. Its availability is not guaranteed, and it may change or be removed without notice. It is intended to bridge the current tooling gap until the OKF ecosystem provides practical, end-user-friendly solutions that run locally. For reliable or production use, self-host the included container.
+
 Install the hosted OKF-aware MCP server globally for your detected agent:
 
 ```shell
