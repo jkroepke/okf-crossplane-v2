@@ -62,6 +62,19 @@ For this AWS release, the schema binary is the Upbound fork release
 `v6.34.0`. The latter may not describe fork-specific differences; the selected
 resource configuration and generated Crossplane CRD remain authoritative.
 
+# Provider example artifacts
+
+Treat `examples/` as resource-focused coverage material, not as a curated
+reference-architecture library: AWS CI checks that CRD types have examples.[6]
+Some examples include prerequisite resources, so they are not categorically
+single-resource manifests. They still do not establish an end-to-end platform
+use case.[7]
+
+`examples-generated/` is generator output derived from provider metadata and
+configuration. Use it to inspect generated API illustration, but keep it
+distinct from `examples/` and from independently sourced
+composition/use-case patterns.[8]
+
 # Relationships
 
 This is the required evidence gate for a resource-specific Upjet mapping and
@@ -75,3 +88,6 @@ modern namespaced resource selection, see [provider families](provider-families.
 [3] [Generated modern AWS Bucket CRD](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.m.upbound.io_buckets.yaml#L7-L108)
 [4] [Terraform AWS v6.34.0 S3 Bucket documentation](https://github.com/hashicorp/terraform-provider-aws/blob/b53a72bc2e0bf0395b4b1f91e06340785ddaac86/website/docs/r/s3_bucket.html.markdown#L9-L43)
 [5] [provider-upjet-aws Upjet declaration](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/README.md#L20-L23) and [selected release Upjet/Terraform dependencies](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/go.mod#L21-L32)
+[6] [Examples CI coverage check](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/.github/workflows/ci.yml#L218-L231) and [checker behavior](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/scripts/check-examples.py#L11-L60)
+[7] [Multi-resource EKS example](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/examples/eks/namespaced/v1beta1/accessentry.yaml)
+[8] [Generated-example pipeline](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/cmd/generator/main.go#L39-L55) and [metadata/config inputs](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/config/provider-metadata.yaml#L1-L29)
