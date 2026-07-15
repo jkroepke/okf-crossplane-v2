@@ -4,7 +4,7 @@ title: Managed resource references and ProviderConfig
 description: Provider-generated cross-resource references, typed provider configuration selection, usage tracking, and connection detail publication.
 resource: https://docs.crossplane.io/v2.3/managed-resources/managed-resources/
 tags: [crossplane, core, managed-resources, references, providerconfig]
-timestamp: 2026-07-12T00:00:00Z
+timestamp: 2026-07-16T00:00:00Z
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane-runtime
@@ -71,6 +71,27 @@ Set `providerConfigRef` explicitly in platform-owned MRs and Compositions. An
 omitted reference silently selects `ClusterProviderConfig/default`, which can
 hide the intended credential boundary.[5]
 
+## Keep provider selection out of the XR API by default
+
+An XRD defines the custom API that people use to create XRs; a Composition
+defines how that API creates managed resources.[10] Do not expose a raw
+`providerConfigRef` (`kind` and `name`) in a human-orderable XR schema by
+default. It selects the credentials and configuration for a composed managed
+resource, so it is ordinarily a platform implementation detail. Set it in the
+Composition or in the Function-produced managed-resource template instead.[12]
+
+This is a platform API design recommendation, not a Crossplane validation
+rule. Crossplane does not prohibit an XRD from carrying such fields. If a
+product deliberately allows an authorized tenant to choose between approved
+account or credential boundaries, expose a constrained, platform-owned
+selector—not an unrestricted `ProviderConfig` or `ClusterProviderConfig` name
+and kind. Define that selector's authorization, allowed values, and tenancy
+semantics for the selected provider rather than relying on implicit defaults.
+
+The documented Function Patch and Transform resource `base` is a managed
+resource manifest and may set its `spec.providerConfigRef` there.[11] This
+keeps a provider-specific kind, scope, and default out of the XR contract.
+
 For tenant-local credentials, prefer the selected provider's namespaced modern
 `ProviderConfig` API. A namespaced ProviderConfig cannot be referenced across
 namespaces; use a `ClusterProviderConfig` only for an intentional shared or
@@ -105,3 +126,6 @@ limitation](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b67
 [7] [Namespaced composition namespace enforcement](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L500-L530)
 [8] [Composition observed state and status-to-environment example](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L611-L673) and [observed identifier environment example](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/environment-configs.md#L456-L492)
 [9] [Reference resolver literal cache and re-resolution](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reference/reference.go#L210-L252)
+[10] [XR custom-API and Composition responsibility split](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/composite-resources.md#L7-L35)
+[11] [Function Patch and Transform managed-resource base](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/function-patch-and-transform.md#L92-L144)
+[12] [Managed-resource ProviderConfig selection](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L358-L405)
