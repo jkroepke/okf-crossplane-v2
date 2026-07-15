@@ -121,6 +121,7 @@ primary_sources:
     repository: upbound/provider-opentofu
     kind: native-provider
     release_policy: discover-highest-stable-semver-tag
+    provider_family: bespoke-opentofu-workspace-provider
   - id: function-patch-and-transform
     repository: crossplane-contrib/function-patch-and-transform
     kind: function
@@ -128,6 +129,20 @@ primary_sources:
     repository: crossplane-contrib/provider-upjet-aws
     kind: upjet-provider
     terraform_source: terraform-provider-aws
+    release_policy: discover-highest-stable-semver-tag
+    provider_family: upjet-generated
+    supporting_sources:
+      - upjet
+      - terraform-provider-aws
+    family_provider_source:
+      package_metadata: package/crossplane.yaml.tmpl
+      resource_packages: docs/family
+  - id: provider-aws
+    repository: crossplane-contrib/provider-aws
+    kind: provider
+    release_policy: discover-highest-stable-semver-tag
+    provider_family: aws-go-codegen-with-manual-controller-work
+    related_provider: provider-upjet-aws
   - id: provider-upjet-azure
     repository: crossplane-contrib/provider-upjet-azure
     kind: upjet-provider
@@ -183,6 +198,12 @@ historical_design_sources:
       - general feature inventory
 
 supporting_sources:
+  - id: crossplane-provider-families-blog
+    url: https://blog.crossplane.io/crd-scaling-provider-families/
+    kind: historical-provider-context
+    authority: historical-context
+    published_at: 2023-06-13
+    usage: historical-rationale-only; corroborate-current-behavior-with-released-provider-source
   - id: argo-cd
     repository: argoproj/argo-cd
     kind: gitops-controller

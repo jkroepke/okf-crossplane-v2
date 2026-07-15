@@ -4,7 +4,7 @@ title: ManagedResourceActivationPolicy
 description: The Alpha API that irreversibly activates ManagedResourceDefinitions matched by glob patterns.
 resource: https://docs.crossplane.io/v2.3/managed-resources/managed-resource-activation-policies/
 tags: [crossplane, core, managed-resources, api, alpha]
-timestamp: 2026-07-14T00:00:00Z
+timestamp: 2026-07-15T00:00:00Z
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
@@ -14,6 +14,8 @@ source_paths:
   - apis/apiextensions/v1alpha1/mrd_policy_types.go
   - internal/controller/apiextensions/activationpolicy/reconciler.go
   - internal/controller/apiextensions/activationpolicy/reconciler_test.go
+  - test/e2e/apiextensions_activation_policy_test.go
+  - content/v2.3/managed-resources/managed-resource-activation-policies.md
 feature_state: Alpha
 project_history_researched_at: 2026-07-14T17:23:20Z
 ---
@@ -32,6 +34,19 @@ Activation is one-way. After an MRD becomes `Active`, API validation prevents it
 longer matches does not deactivate the MRD or remove its derived CRD. MRAP deletion returns without touching MRDs, while normal reconciliation only activates current matches and rebuilds the
 policy's observational `status.activated` list.[3][4][5][6][7][8]
 
+# Default activation and overlap
+
+The Helm chart creates a `default` MRAP with `activate: ["*"]`, activating all
+**MRDs**. This is MRD activation, not proof that every provider CRD is already
+installed. Set `provider.defaultActivations={}` at chart installation to omit
+the default activations.[12]
+
+Policies are additive: any matching policy activates the MRD, and overlaps are
+supported. E2E coverage confirms that specific and wildcard policies can both
+report the same MRD as activated; deleting all matching policies leaves it
+Active.[11] A policy can therefore be configuration- or composition-scoped, but
+it cannot be used later to shrink an already activated API surface.
+
 # Limitations
 
 The v2.3 MRD documentation explicitly describes activation as irreversible and explains the CRD-safety rationale. The dedicated MRAP page describes policies as additive, but it does not
@@ -40,7 +55,7 @@ explicitly warn that deleting a policy or removing one of its patterns cannot un
 Open issue #6984 reports this consequence on Crossplane v2.0.6. A maintainer states that deactivation was intentionally excluded from the Alpha implementation and requires additional safety and
 controller-lifecycle design. The issue remains an open report, not evidence of a released deactivation path or fix.[10]
 
-Legacy v1-style activation examples are excluded. MRAP controls API activation, not reconciliation policies on individual managed resources.
+Legacy v1-style activation examples are excluded. MRAP controls API activation, not reconciliation policies on individual managed resources. Crossplane Core does not establish how an unqualified `kubectl get buckets` resolves when different API groups expose `buckets`; use fully qualified resources while evaluating a migration.
 
 # Citations
 
@@ -54,3 +69,5 @@ Legacy v1-style activation examples are excluded. MRAP controls API activation, 
 [8] [MRAP status reconstruction](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/activationpolicy/reconciler.go#L117-L147)
 [9] [Additive MRAP behavior](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L446-L450)
 [10] [Open issue #6984 and maintainer context](https://github.com/crossplane/crossplane/issues/6984#issuecomment-4917762377), researched 2026-07-14
+[11] [Overlapping-policy E2E behavior](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/test/e2e/apiextensions_activation_policy_test.go#L191-L256)
+[12] [Default Helm activation and disable override](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L166-L191)

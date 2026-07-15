@@ -31,6 +31,29 @@ invalid.[4] Core supplies reusable usage contracts but Providers define the serv
 The v2.3 docs conflict internally about the omitted-reference default. The released namespaced common type is authoritative: it defaults to
 `ClusterProviderConfig/default`.[5]
 
+# Platform selection guidance
+
+Set `providerConfigRef` explicitly in platform-owned MRs and Compositions. An
+omitted reference silently selects `ClusterProviderConfig/default`, which can
+hide the intended credential boundary.[5]
+
+For tenant-local credentials, prefer the selected provider's namespaced modern
+`ProviderConfig` API. A namespaced ProviderConfig cannot be referenced across
+namespaces; use a `ClusterProviderConfig` only for an intentional shared or
+central account, with the least permissions required. This is platform
+security guidance: the actual ProviderConfig GVK and credential schema are
+provider-specific.[3]
+
+For a central account, subscription, or project (for example, network, identity,
+or security) used by tenant compositions, choose deliberately:
+
+- a least-privileged ClusterProviderConfig for the shared account;
+- a tenant-local ProviderConfig for that account in every tenant namespace; or
+- a composition pattern that keeps the composed resource in the tenant
+  namespace, subject to the namespaced-composition boundary.
+
+The last option is constrained by [namespaced composition boundaries](namespaced-composition-boundaries.md); Crossplane does not permit a namespaced XR to compose a resource into another namespace.[7]
+
 # Connection details
 
 `writeConnectionSecretToRef` selects a Secret destination for provider-published credentials or endpoints. Providers decide whether to publish and which keys exist. Alpha MRDs can document
@@ -45,3 +68,4 @@ available keys, but the docs warn that many Providers do not populate that metad
 [5] [Namespaced common spec defaults](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/core/v2/resource_namespace.go#L19-L44)
 [6] [Connection Secret guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L453-L504) and [MRD metadata 
 limitation](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-definitions.md#L147-L176)
+[7] [Namespaced composition namespace enforcement](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L500-L530)
