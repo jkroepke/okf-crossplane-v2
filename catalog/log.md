@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Creation**: Added provider CRD schema discovery guidance for version-addressed Upbound API routes, pinned source-tree fallbacks, and AWS package-identity boundaries.
 * **Creation**: Added Crossplane CLI local Composition rendering guidance, including Docker runtime requirements, Functions-only input handling, and observed-resource status fixtures.
 * **Creation**: Added an XR-focused xprin assertion-suite reference and a recommended empty-project manifest layout for Composition authoring.
 

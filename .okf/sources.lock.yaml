@@ -166,6 +166,27 @@ sources:
     tag: v1.2.1
     commit: 0ea671a4dab090ff3b14877d35086f1950fa35e3
     resolved_at: 2026-07-14
+  provider-sql-schema-navigation:
+    repository: crossplane-contrib/provider-sql
+    commit: 9665c434424129d54f2bc265f5921fa3dab29581
+    selected_by: provider CRD source-tree navigation snapshot
+    resolved_at: 2026-07-16
+  provider-gitlab-schema-navigation:
+    repository: crossplane-contrib/provider-gitlab
+    commit: c2a24e3ffe91fc25926c2f558f6b1cc97d60e3ee
+    selected_by: provider CRD source-tree navigation snapshot
+    resolved_at: 2026-07-16
+  provider-kubernetes-schema-navigation:
+    repository: crossplane-contrib/provider-kubernetes
+    commit: 46af47297f636dc015afdf5743929c12990a5fc5
+    selected_by: provider CRD source-tree navigation snapshot
+    resolved_at: 2026-07-16
+  upbound-provider-aws-s3-api:
+    package: upbound/provider-aws-s3
+    version: v2.6.1
+    resource_inventory: https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources
+    selected_by: provider CRD registry discovery reference
+    resolved_at: 2026-07-16
   kubernetes-reflector:
     repository: emberstack/kubernetes-reflector
     tag: v10.0.59
