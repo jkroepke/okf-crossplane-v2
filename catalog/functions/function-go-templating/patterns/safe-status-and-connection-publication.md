@@ -72,6 +72,46 @@ the first reconciliation.[2][3] Do not replace those checks with unconditional
 `gotemplating.fn.crossplane.io/ready: "True"`; that assertion bypasses the
 observed readiness contract.[4]
 
+# Dependency and collection patterns
+
+Only defer a dependent resource until the prerequisite observation contains a
+value that the dependent resource actually needs. For example, defer a Secret
+that needs a role password until that named role is `Ready=True` and the
+password exists. A database whose `owner` is a user-supplied, static role name
+does not automatically need that gate; the selected SQL provider's reference
+and retry behavior must establish whether it does.[11]
+
+Once a long-lived composed resource has been introduced, keep rendering its
+complete desired object on every reconciliation. Readiness is a separate
+decision: set its explicit readiness to `False` while a prerequisite is not
+usable rather than omitting the desired object merely because a transient
+condition changed. Crossplane deletes a composed resource that a function
+previously added but no longer returns in desired state, unless that omission is
+intentional.[12]
+
+For a list such as database extensions, derive both a stable composition
+resource name (for example, `extension-<logical-id>`) and a deterministic,
+Kubernetes-compatible object name. Validate or normalize XR-supplied logical
+IDs before using them in `metadata.name`; ensure the derived names cannot
+collide after normalization. The resource-name annotation must also remain
+stable across reconciliations, otherwise its observed state cannot be joined
+reliably.[1][12]
+
+# Connection-data handling
+
+Observed `connectionDetails` values are already base64-encoded. Copy them
+directly into `Secret.data`; when constructing a derived URI, decode only the
+required component, compose the URI, and encode the final value once. Do not
+double-encode an observed password or treat the presence of a password as proof
+that the producer is ready.[3][5]
+
+Keep sensitive connection material in a composed Kubernetes `Secret`, not in
+XR status. The status gate should publish the Secret *reference* only after
+the Secret has the required data. `CompositeConnectionDetails` is legacy v1
+behavior and is excluded here. This catalog also excludes Claim-based examples,
+so a template that reads `spec.claimRef` needs a non-Claim v2 equivalent before
+it can be included.[3]
+
 # Kubernetes and external names
 
 Give every composite resource a Kubernetes object identity: normally a valid
@@ -118,3 +158,5 @@ mechanism and cannot make an invalid Kubernetes `metadata.name` valid.[9][10]
 [8] [Composite-resource name in observed state](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L650-L669)
 [9] [Documented external-name behavior](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L506-L568)
 [10] [Runtime external-name annotation definition](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/meta/meta.go#L34-L39)
+[11] [Provider-defined managed-resource settings boundary](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L24-L59)
+[12] [Crossplane desired-state copy and deletion behavior](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L675-L729)

@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Update**: Generalized submitted PostgreSQL and SSO examples into dependency-gating, dynamic collection identity, and base64-safe connection-data guidance; excluded claim-based and legacy v1 connection publication.
 * **Creation**: Added a strict function-go-templating pattern that gates database XR status and connection references on observed composed-resource readiness, distinguishes Kubernetes names from managed-resource external names, and excludes legacy v1 connection output.
 * **Update**: Extended provider-family guidance with Upbound's pinned official-provider installation, monolith ownership, shared-family dependency, and offline-resolution boundaries.
 * **Creation**: Added provider CRD schema discovery guidance for version-addressed Upbound API routes, pinned source-tree fallbacks, and AWS package-identity boundaries.
