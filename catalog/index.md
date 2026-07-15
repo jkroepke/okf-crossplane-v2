@@ -1,8 +1,5 @@
 ---
-type: index
-title: crossplane-knowledge-catalog
-description: Progressive index for the Crossplane v2 knowledge catalog.
-timestamp: 2026-07-12T00:00:00Z
+okf_version: "0.1"
 ---
 
 # Crossplane Knowledge Catalog

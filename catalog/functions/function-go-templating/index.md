@@ -1,10 +1,3 @@
----
-type: index
-title: function-go-templating-index
-description: Progressive index for function-go-templating release knowledge.
-timestamp: 2026-07-14T00:00:00Z
----
-
 # function-go-templating v0.12.2
 
 * [Package and installation](package.md) - Install and reference the selected stable function package.

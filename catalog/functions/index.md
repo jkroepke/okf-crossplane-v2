@@ -1,10 +1,3 @@
----
-type: index
-title: crossplane-functions-index
-description: Progressive index for composition and operation functions in Crossplane v2.3.3.
-timestamp: 2026-07-12T00:00:00Z
----
-
 # Function Model
 
 * [Crossplane Functions](overview.md) - Understand the two function roles and their shared package and protocol.

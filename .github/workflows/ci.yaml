@@ -9,8 +9,8 @@ on:
 permissions: {}
 
 jobs:
-  lint:
-    name: Lint OKF
+  validate:
+    name: Validate OKF v0.1
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -24,7 +24,7 @@ jobs:
       - name: Install mise tools
         uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
 
-      - run: mise run lint
+      - run: mise run okf-validate
 
   super-lint:
     name: Super Linter

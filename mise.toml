@@ -1,6 +1,19 @@
 [tools]
-"github:superops-team/okf" = "1.2.0"
+"gem:okf" = "1.5.0"
 
 [tasks.lint]
 description = "Run OKF linter"
-run = "okf lint -path catalog -strict"
+depends = ['validate', 'okf-validate']
+run = "okf lint catalog/"
+
+[tasks.validate]
+description = "Run OKF linter"
+run = "okf validate catalog/"
+
+[tasks.loose]
+description = "Run OKF linter"
+run = "okf loose catalog/"
+
+[tasks.okf-validate]
+description = "Validate OKF v0.1 conformance"
+run = "ruby scripts/validate-okf.rb catalog"

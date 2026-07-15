@@ -1,10 +1,3 @@
----
-type: index
-title: function-auto-ready index
-description: Progressive index for function-auto-ready v0.7.0.
-timestamp: 2026-07-14T00:00:00Z
----
-
 # Package and behavior
 
 * [Function package](package.md) - Install and place function-auto-ready in a Composition pipeline.
