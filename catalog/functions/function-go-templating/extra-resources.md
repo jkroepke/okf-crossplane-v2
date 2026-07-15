@@ -137,6 +137,29 @@ requirements:
 
 The example is summarized from the Apache-2.0-licensed project source; it is not a verbatim runnable Composition and the selected API version and kind must exist in the cluster.[6][7]
 
+## Template-side namespace filter
+
+This illustrative template-side pattern filters returned items before emitting
+any desired resource when a namespaced resource must be selected with
+`matchLabels`. It keeps a resource returned from another namespace out of the
+rendered output:
+
+```gotemplate
+{{- $someExtraResources := getExtraResources . "bucket" }}
+{{- range $i, $extraResource := default (list) $someExtraResources }}
+{{- if eq $extraResource.resource.metadata.namespace $.observed.composite.resource.metadata.namespace }}
+# Render a desired resource that uses $extraResource.
+{{- end }}
+{{- end }}
+```
+
+`getExtraResources` reads the items already included in the function request;
+it does not construct or alter an `ExtraResources` selector.[4] This is
+therefore a template-side **consumption** filter: it can prevent
+cross-namespace items from influencing rendered desired resources, but cannot
+narrow the earlier all-namespace `List`, reduce its RBAC requirement, or avoid
+the associated lookup cost.[2][11]
+
 # Limitations
 
 - The special `ExtraResources` object is a function rendering directive, not a Kubernetes object that is added to desired composed resources.[3]
@@ -157,6 +180,9 @@ The example is summarized from the Apache-2.0-licensed project source; it is not
   validate that exactly one match field is set. Any protocol-side rejection is
   outside the selected function source.[2]
 - Because result lookup returns `nil` for absent paths, use `default (list)` before ranging when a request may have no result.[4][6]
+- For a namespaced `matchLabels` requirement, a template-side namespace test
+  filters only the returned results. It is not a retrieval-scope or
+  least-privilege mitigation; use `matchName` when an exact name is available.
 - Do not use the word `required` as a cardinality guarantee. The selected
   protocol and implementations impose no minimum match count.[9][10]
 

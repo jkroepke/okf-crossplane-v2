@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Update**: Added a template-side namespace-result filter for `ExtraResources` label lookups, and clarified that it prevents cross-namespace results from being consumed but cannot scope the earlier cluster-wide list or reduce its RBAC requirement.
 * **Creation**: Added an Alpha External Secrets Operator PushSecret pattern for publishing selected platform-team Kubernetes Secret data to configured external secret stores, including Vault and AWS examples.
 * **Update**: Extended provider-family guidance with Upbound's pinned official-provider installation, monolith ownership, shared-family dependency, and offline-resolution boundaries.
 * **Creation**: Added provider CRD schema discovery guidance for version-addressed Upbound API routes, pinned source-tree fallbacks, and AWS package-identity boundaries.
