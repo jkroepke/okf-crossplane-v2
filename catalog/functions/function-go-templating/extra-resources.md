@@ -137,6 +137,41 @@ requirements:
 
 The example is summarized from the Apache-2.0-licensed project source; it is not a verbatim runnable Composition and the selected API version and kind must exist in the cluster.[6][7]
 
+## Template-side namespace filter
+
+This illustrative template-side pattern retains the first returned item from
+the composite's namespace, then uses it outside the loop. `break` stops the
+template scan after that match:[16]
+
+```gotemplate
+{{- $selected := dict }}
+{{- $namespace := $.observed.composite.resource.metadata.namespace }}
+{{- range $extraResource := (getExtraResources . "bucket" | default (list)) }}
+  {{- if eq $extraResource.resource.metadata.namespace $namespace }}
+    {{- $selected = $extraResource }}
+    {{- break }}
+  {{- end }}
+{{- end }}
+
+{{- if $selected }}
+# Render a desired resource using $selected.resource here.
+{{- end }}
+```
+
+`getExtraResources` reads the items already included in the function request;
+it does not construct or alter an `ExtraResources` selector.[4] This is
+therefore a template-side **consumption** filter: it can prevent
+cross-namespace items from influencing rendered desired resources, but cannot
+narrow the earlier all-namespace `List`, reduce its RBAC requirement, or avoid
+the associated lookup cost.[2][11]
+
+Sprig v3.3.0 has no predicate-based list filter or nested-field finder for this
+unstructured result shape. Its list helpers operate on whole list items, while
+`pluck` selects a top-level key from explicitly supplied dictionaries and `dig`
+traverses one dictionary. The `range` is therefore still needed to find a
+matching item; the variable assignment and `break` are Go-template syntax, not
+Sprig functions.[16][17][18]
+
 # Limitations
 
 - The special `ExtraResources` object is a function rendering directive, not a Kubernetes object that is added to desired composed resources.[3]
@@ -157,6 +192,12 @@ The example is summarized from the Apache-2.0-licensed project source; it is not
   validate that exactly one match field is set. Any protocol-side rejection is
   outside the selected function source.[2]
 - Because result lookup returns `nil` for absent paths, use `default (list)` before ranging when a request may have no result.[4][6]
+- For a namespaced `matchLabels` requirement, a template-side namespace test
+  filters only the returned results. It is not a retrieval-scope or
+  least-privilege mitigation; use `matchName` when an exact name is available.
+- The early-stop pattern is first-match-wins. If multiple resources in the
+  composite's namespace match, define a stronger selector or an explicit
+  selection policy before using the retained item.
 - Do not use the word `required` as a cardinality guarantee. The selected
   protocol and implementations impose no minimum match count.[9][10]
 
@@ -182,3 +223,8 @@ See [template functions](template-functions.md) for all helper signatures and [r
 [14] [Crossplane fetch-error propagation into the Composition pipeline](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L378-L409)
 [15] [Released cluster-scoped label tests](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1083-L1147)
 and [namespaced exact-name test](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1762-L1822)
+[16] [Go-template variable assignment, scope, and `break`](https://github.com/golang/go/blob/go1.25.11/src/text/template/doc.go#L121-L127)
+and [variable declaration and reassignment](https://github.com/golang/go/blob/go1.25.11/src/text/template/doc.go#L283-L310)
+[17] [Sprig list helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/lists.md#L1-L125)
+and [dictionary helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/dicts.md#L38-L106)
+[18] [function-go-templating's Sprig function map](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L24-L62)
