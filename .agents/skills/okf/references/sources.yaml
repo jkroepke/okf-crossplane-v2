@@ -263,6 +263,20 @@ supporting_sources:
     repository: hashicorp/terraform-provider-azurerm
     kind: terraform-provider
     documentation: https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs
+  - id: external-secrets
+    repository: external-secrets/external-secrets
+    kind: kubernetes-secrets-operator
+    authority: supporting
+    release_policy: user-requested-stable-tag
+    paths:
+      - docs/api/pushsecret.md
+      - docs/guides/pushsecrets.md
+      - docs/snippets/vault-pushsecret.yaml
+      - docs/snippets/aws-sm-push-secret-with-metadata.yaml
+      - apis/externalsecrets/v1alpha1/pushsecret_types.go
+      - config/crds/bases/external-secrets.io_pushsecrets.yaml
+      - LICENSE
+    usage: platform secret-publication pattern; not evidence of Crossplane behavior
 
 project_history_sources:
   - id: argo-cd-project-history

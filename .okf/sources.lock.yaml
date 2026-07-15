@@ -209,3 +209,9 @@ sources:
     commit: e708470d529a10ac1a3f02ab6fdd339b65958372
     selected_by: function-go-templating/go.mod
     resolved_at: 2026-07-12
+  external-secrets:
+    repository: external-secrets/external-secrets
+    tag: v2.7.0
+    commit: e215053f3e68504de7483f9542b49f19f98293a1
+    selected_by: user-requested PushSecret pattern
+    resolved_at: 2026-07-16
