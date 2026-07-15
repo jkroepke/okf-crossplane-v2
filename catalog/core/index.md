@@ -11,6 +11,7 @@
 * [XRD scale and display](xrd-subresources-and-display.md) - Expose `/scale` and useful `kubectl get` columns from an XRD version.
 * [Tenant XR API and admission security](tenant-xr-api-security.md) - Organization-specific API-group, RBAC, namespace, and admission-policy hardening guidance.
 * [Composition](composition.md) - The current function-pipeline API for composing resources.
+* [Composition project layout](composition-project-layout.md) - A reference manifest layout that keeps render inputs and provider setup distinct.
 * [Controlled rollout design for Composition Functions](controlled-rollout-of-composition-functions-design.md) - Historical accepted proposal; selected-release source proof shows its rollout API is not current behavior.
 * [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
 * [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, and required-resource refresh boundaries.

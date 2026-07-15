@@ -394,3 +394,29 @@ Selected Core release `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; ma
 - The selected documentation does not enumerate the complete default Kubernetes-kind allowlist or least-privilege verbs for arbitrary composed kinds.
 - Current v2.3 guidance uses an aggregated ClusterRole, not ControllerConfig, for the access grant.
 - No source manifest was copied or adapted. Crossplane documentation is CC BY 4.0.
+
+# Local Composition rendering and xprin assertion suites
+
+Selected CLI release: `v2.4.0` at `ef9b974770a45e085aacee3b2cdda6284ab6cf51`.
+Selected xprin release: `v0.2.0` at `b5a100aa3e7118c1acdd2096b7993929939624b2`.
+Both are Stable by repository default: the selected sources contain no
+explicit non-stable label and no relevant served alpha or beta API version.
+Claims, deprecated XRD v1, legacy v1 XR semantics, and xprin Claim examples
+are excluded. No source material is copied or adapted; both repositories are
+Apache-2.0.
+
+| Concept | Exact claim | Class | Source role | Confidence | Evidence |
+|---|---|---|---|---|---|
+| cli/local-composition-rendering | `crossplane composition render` takes an XR, a Pipeline-mode Composition, and a Functions input; it validates the Composition's `compositeTypeRef` against the XR GVK. | API | primary | direct | [arguments](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L66-L85), [validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158) |
+| cli/local-composition-rendering | The default render engine and Function runtime use Docker; documented alternatives include a development Function runtime and `--crossplane-binary`. | documented-guidance | primary | direct | [render runtime guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L10-L35) |
+| cli/local-composition-rendering | The Functions input accepts only Function objects, so non-Function project manifests must remain outside it. | behavior | primary | direct | [Function GVK validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113) |
+| cli/local-composition-rendering | `--observed-resources` injects unvalidated YAML as observed cluster resources, allowing a fixture to supply managed-resource status. | documented-guidance | primary | direct | [observed resource guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74) |
+| core/composition-project-layout | The current Composition API is `apiextensions.crossplane.io/v1`; its required type reference and Pipeline mode support a separate `composition.yaml` that targets the project's XR API. | API | primary | direct | [Composition CRD](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L7-L98) |
+| core/composition-project-layout | The listed files are an authoring recommendation, not a required Crossplane layout. Its Functions-only boundary is directly supported by CLI validation, and MRAP remains conditional on the selected activation policy. | documented-guidance | primary, official-documentation, plus explicit recommendation | corroborated | [Function GVK validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113), [MRAP activation guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L166-L191) |
+| tools/xprin-test-suites | xprin orchestrates local Crossplane CLI render and validation commands, has declarative assertions, and requires Docker for Composition Functions without requiring a Kubernetes cluster. | behavior | primary third-party tool | direct | [README](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L9-L40) |
+| tools/xprin-test-suites | A suite configures XR, Composition, Functions, optional observed resources and CRDs, then may validate and assert over render output. | API and behavior | primary third-party tool | corroborated | [suite specification](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/docs/testsuite-specification.md#L1-L29), [execution sequence](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L123-L168) |
+
+## Limitations
+
+- xprin establishes only its own framework behavior; it is not authority for general Crossplane behavior.
+- The reference layout does not claim that Provider, ProviderConfig, or MRAP manifests are universal CLI inputs or required in every project.

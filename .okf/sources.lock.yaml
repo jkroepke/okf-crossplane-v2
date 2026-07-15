@@ -34,6 +34,18 @@ sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     selected_by: crossplane/v2.3.3
     resolved_at: 2026-07-14
+  crossplane-cli:
+    repository: crossplane/cli
+    tag: v2.4.0
+    commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
+    selected_by: local Composition rendering and authoring layout
+    resolved_at: 2026-07-16
+  xprin:
+    repository: crossplane-contrib/xprin
+    tag: v0.2.0
+    commit: b5a100aa3e7118c1acdd2096b7993929939624b2
+    selected_by: local Composition render assertion suites
+    resolved_at: 2026-07-16
   kubernetes-website-v1.35:
     repository: kubernetes/website
     branch: release-1.35
