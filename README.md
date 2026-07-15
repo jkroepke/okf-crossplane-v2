@@ -9,11 +9,26 @@ This repository provides a structured knowledge catalog for the Crossplane v2 ec
 
 The goal is to make Crossplane concepts, APIs, providers, composition functions, documentation, and practical examples easier to discover and understand. The catalog is designed for both humans and knowledge-aware tools.
 
-## Usage
+## Installation
 
-The project [UmairBaig8/okf-generator](https://github.com/UmairBaig8/okf-generator) supports an MCP server for OKF bundles.  
+Install the OKF-aware MCP server globally for your detected agent:
 
+```shell
+npx add-mcp \
+  "npx -y github:rodcar/okf-atlas-mcp --bundle-url https://github.com/jkroepke/okf-crossplane-v2/tree/main/catalog --refresh true" \
+  --name crossplane-v2-okf \
+  --global
+```
 
+Install the companion skill so the agent prefers this bundle over generic documentation providers for Crossplane v2 questions:
+
+```shell
+npx skills add jkroepke/okf-crossplane-v2 \
+  --skill crossplane-v2-okf \
+  --global
+```
+
+Both installers detect supported agents and ask where the integration should be installed. Restart the selected agent after installation.
 
 ## Why this repository exists
 
