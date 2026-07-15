@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-15
+* **Update**: Added MRAP default-activation, additive-overlap, one-way activation, and minimal-activation policy guidance.
 * **Creation**: Added evidence-backed AWS provider-family package identification and the v2.3 modern namespaced managed-resource group convention.
 * **Creation**: Established the provider catalog foundation: implementation families, AWS migration/selection boundaries, and Provider package revision activation scope.
 * **Creation**: Added tenant XR API-group and admission-security guidance, including organization-specific example conventions.

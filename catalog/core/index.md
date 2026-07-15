@@ -40,3 +40,4 @@
 * [Reconciliation controls and conditions](managed-resource-controls-and-conditions.md) - Pause, polling, reconcile requests, Ready, and Synced signals.
 * [ManagedResourceDefinition](managed-resource-definition.md) - The Alpha API for selectively activating provider-defined managed-resource APIs.
 * [ManagedResourceActivationPolicy](managed-resource-activation-policy.md) - The Alpha API for activating MRDs by glob pattern.
+* [Minimal managed-resource activation](minimal-managed-resource-activation.md) - A preventive platform policy for explicit modern MRD activation and configuration-scoped dependencies.
