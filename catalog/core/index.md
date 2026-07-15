@@ -9,6 +9,7 @@
 * [XRD unknown data and collections](xrd-unknown-data.md) - Choose pruning, preserved data, and Kubernetes list semantics deliberately.
 * [XRD API version evolution](xrd-api-version-evolution.md) - Serve and reference XR versions, with CRD conversion boundaries.
 * [XRD scale and display](xrd-subresources-and-display.md) - Expose `/scale` and useful `kubectl get` columns from an XRD version.
+* [Tenant XR API and admission security](tenant-xr-api-security.md) - Organization-specific API-group, RBAC, namespace, and admission-policy hardening guidance.
 * [Composition](composition.md) - The current function-pipeline API for composing resources.
 * [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
 * [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, and required-resource refresh boundaries.

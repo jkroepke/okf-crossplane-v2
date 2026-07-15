@@ -27,6 +27,16 @@ A rule referring to `oldSelf` is a transition rule: it compares an update's
 old and new value. Put it only on correlatable schema portions; array parents
 need a map-list rather than an atomic or set list.[3]
 
+# Admission-policy layering
+
+Prefer the CRD/XRD's built-in OpenAPI and CEL validation for invariants that
+depend only on the object being admitted: the rule travels with the API schema
+and is checked before admission-policy layering is needed. This is an
+organizational guidance rule, not a Kubernetes mandate. Use a
+[ValidatingAdmissionPolicy](tenant-xr-api-security.md) or Kyverno when a rule
+needs cluster context, such as a tenant namespace label that identifies an AWS
+account, Azure subscription, or OpenStack tenant.
+
 # Crossplane support and metadata boundary
 
 Crossplane v2.2.0 includes PR #7018, which copies schema-root

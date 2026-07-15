@@ -29,7 +29,7 @@ apiVersion: meta.gotemplating.fn.crossplane.io/v1alpha1
 kind: ExtraResources
 requirements:
   external-status:
-    apiVersion: example.org/v1beta1
+    apiVersion: plattform.example.com/v1beta1
     kind: ExternalStatus
     matchName: {{ $knownName }}
     namespace: {{ $knownNamespace }}
@@ -43,7 +43,7 @@ requirements:
   {{- end }}
 {{- end }}
 # Render the complete desired composed resource.
-apiVersion: example.org/v1beta1
+apiVersion: plattform.example.com/v1beta1
 kind: Parent
 metadata:
   annotations:

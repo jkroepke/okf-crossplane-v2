@@ -40,6 +40,23 @@ sources:
     commit: be897babb9149b808e2ab8ed5367e5d0651b3dca
     selected_by: XRD-backed CRD schema, validation, versioning, and scale guidance
     resolved_at: 2026-07-15
+  kubernetes-v1.35:
+    repository: kubernetes/kubernetes
+    tag: v1.35.0
+    commit: 66452049f3d692768c39c797b21b793dce80314e
+    selected_by: ValidatingAdmissionPolicy match-condition behavior
+    resolved_at: 2026-07-15
+  kyverno:
+    repository: kyverno/kyverno
+    tag: v1.18.2
+    commit: 945ac9ce8546ea6cd51370f24b615148c577da5e
+    selected_by: tenant namespace-label validation and controller exclusions
+    resolved_at: 2026-07-15
+  kyverno-website:
+    repository: kyverno/website
+    commit: e8d76c57e95060e61a8e864178862747a3a693fb
+    selected_by: official Kyverno admission-policy documentation
+    resolved_at: 2026-07-15
   crossplane-docs-v1.18:
     repository: crossplane/docs
     series: v1.18
