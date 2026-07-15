@@ -1,6 +1,7 @@
 [![CI](https://github.com/jkroepke/okf-crossplane-v2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/jkroepke/okf-crossplane-v2/actions/workflows/ci.yaml)
 [![GitHub license](https://img.shields.io/github/license/jkroepke/okf-crossplane-v2)](https://github.com/jkroepke/okf-crossplane-v2/blob/master/LICENSE.txt)
 [![GitHub Repo stars](https://img.shields.io/github/stars/jkroepke/okf-crossplane-v2?style=flat&logo=github)](https://github.com/jkroepke/okf-crossplane-v2/stargazers)
+[![BundleDex](https://bundledex.net/badge/okf-crossplane-v2.svg)](https://bundledex.net/bundles/okf-crossplane-v2/)
 
 # Open Knowledge Format for Crossplane v2
 
