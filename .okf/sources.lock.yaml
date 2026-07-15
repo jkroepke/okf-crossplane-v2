@@ -125,6 +125,24 @@ sources:
     tag: v1.1.4
     commit: 6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609
     resolved_at: 2026-07-14
+  provider-upjet-aws:
+    repository: crossplane-contrib/provider-upjet-aws
+    tag: v2.6.0
+    commit: 857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60
+    selected_by: provider-domain foundation and AWS provider comparison
+    resolved_at: 2026-07-15
+  provider-aws:
+    repository: crossplane-contrib/provider-aws
+    tag: v0.58.0
+    commit: 405d4d48d20c332ee427beb4187f80cc4b0af4ea
+    selected_by: provider-domain foundation and AWS provider comparison
+    resolved_at: 2026-07-15
+  upjet:
+    repository: crossplane/upjet
+    tag: v2.3.0
+    commit: b02902e67b336b94e6bd119b86d14077ed0a0a32
+    selected_by: provider-domain implementation-family guidance
+    resolved_at: 2026-07-15
   provider-kubernetes:
     repository: crossplane-contrib/provider-kubernetes
     tag: v1.2.1

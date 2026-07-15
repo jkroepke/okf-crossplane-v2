@@ -121,6 +121,7 @@ primary_sources:
     repository: upbound/provider-opentofu
     kind: native-provider
     release_policy: discover-highest-stable-semver-tag
+    provider_family: bespoke-opentofu-workspace-provider
   - id: function-patch-and-transform
     repository: crossplane-contrib/function-patch-and-transform
     kind: function
@@ -128,6 +129,17 @@ primary_sources:
     repository: crossplane-contrib/provider-upjet-aws
     kind: upjet-provider
     terraform_source: terraform-provider-aws
+    release_policy: discover-highest-stable-semver-tag
+    provider_family: upjet-generated
+    supporting_sources:
+      - upjet
+      - terraform-provider-aws
+  - id: provider-aws
+    repository: crossplane-contrib/provider-aws
+    kind: provider
+    release_policy: discover-highest-stable-semver-tag
+    provider_family: aws-go-codegen-with-manual-controller-work
+    related_provider: provider-upjet-aws
   - id: provider-upjet-azure
     repository: crossplane-contrib/provider-upjet-azure
     kind: upjet-provider
