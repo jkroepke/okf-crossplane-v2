@@ -49,9 +49,11 @@ suites as the project needs them.
 | `example.yaml` | A representative XR used for local rendering and authoring checks. |
 
 `provider.yaml`, `providerconfig.yaml`, and `mrap.yaml` are intentionally
-outside `functions.yaml`: the CLI Functions loader rejects objects that are
-not `pkg.crossplane.io` Function resources. MRAP is conditional—include it
-when the chosen provider and platform policy require managed-resource
+outside `functions.yaml`: the CLI Functions loader rejects every non-Function
+kind. A `pkg.crossplane.io/v1` `Provider` is still rejected; sharing the API
+group with a Function does not make it a valid Functions input. Keep Provider
+package installation manifests in `provider.yaml`. MRAP is conditional—include
+it when the chosen provider and platform policy require managed-resource
 activation, not merely because every project has this reference layout.
 
 # Local authoring check

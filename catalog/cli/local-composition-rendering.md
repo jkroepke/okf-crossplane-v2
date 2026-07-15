@@ -51,6 +51,24 @@ multi-document YAML file or a directory of YAML files. A Functions file is a
 CLI input boundary: do not put a Provider, ProviderConfig,
 ManagedResourceActivationPolicy, Composition, or XR in it.
 
+## Strict Functions-only rule
+
+`functions.yaml` is **not** a general package manifest file. It must contain
+only `Function` objects. In particular, this otherwise familiar package object
+is incompatible with `crossplane composition render` when placed in
+`functions.yaml`:
+
+```text
+apiVersion: pkg.crossplane.io/v1
+kind: Provider
+```
+
+The loader rejects it because its kind is `Provider`, even though it uses the
+same `pkg.crossplane.io` API group as a Function. Put Provider package
+installation manifests in `provider.yaml`; leave `functions.yaml` for the
+Function objects named by pipeline `functionRef` entries. A non-Function
+object in the Functions input makes the render command fail.
+
 # Mock observed resources
 
 Use `--observed-resources` (or `-o`) to provide mock composed resources to the
