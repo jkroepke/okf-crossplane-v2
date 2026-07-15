@@ -1,5 +1,11 @@
 version: 1
 sources:
+  upbound-docs:
+    repository: upbound/docs
+    commit: 889d144d40620e05129a935824c592aece77657a
+    source_path: docs/manuals/packages/providers/provider-families.md
+    selected_by: user-supplied provider-family documentation
+    resolved_at: 2026-07-16
   crossplane:
     repository: crossplane/crossplane
     tag: v2.3.3
