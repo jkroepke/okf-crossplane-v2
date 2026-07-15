@@ -1,19 +1,33 @@
 # Crossplane Core
 
+# Composition
+
 * [Composite resource model](composite-resource-model.md) - How XRs, XRDs, Compositions, and composed resources relate in Crossplane v2.
 * [CompositeResourceDefinition v2](composite-resource-definition.md) - The current API for defining composite resource types.
 * [Composition](composition.md) - The current function-pipeline API for composing resources.
+* [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
+* [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, and required-resource refresh boundaries.
+* [Real-time composition project history](realtime-composition-project-history.md) - Selected-release churn reports, a contained runtime fix, and the post-release GA proposal.
+* [Namespaced composition boundaries](namespaced-composition-boundaries.md) - Same-namespace enforcement and the open issue #6759 report.
+* [Cross-namespace synchronization patterns](cross-namespace-synchronization-patterns.md) - Evidence-backed provider-kubernetes and community-controller tradeoffs.
+* [Composition health in GitOps tools](composition-gitops-health.md) - Native status limitations and the documented Argo CD and Flux customization boundaries.
+
+# Environment and migration
+
 * [EnvironmentConfig](environment-config.md) - The retained Beta cluster-scoped data API consumed by environment-aware functions.
 * [Native Composition environment removal](native-composition-environment-removal.md) - The v1.18 removal and migration boundary without conflating it with the retained resource API.
-* [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
-* [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, required-resource refresh boundaries, and related churn reports.
-* [Namespaced composition boundaries and cross-namespace synchronization](namespaced-composition-cross-namespace-sync.md) - Same-namespace enforcement, issue #6759, and evidence-backed provider or community-controller tradeoffs.
-* [Composition health in GitOps tools](composition-gitops-health.md) - Native status limitations and the documented Argo CD and Flux customization boundaries.
+
+# Configuration packages
+
 * [Configuration packages](configurations/) - Portable OCI packages of Crossplane APIs, Compositions, and package dependencies.
+
+# Managed resources
+
 * [Managed resources](managed-resources.md) - Kubernetes representations of external resources managed by Providers.
 * [Managed resource anatomy](managed-resource-anatomy.md) - Common desired, observed, policy, configuration, and connection-detail fields.
 * [Managed resource lifecycle](managed-resource-lifecycle.md) - Observe-first creation, update, late-initialization, deletion, and polling behavior.
-* [Managed resource management policies](managed-resource-management-policies.md) - Beta action gates, GA tracking, and known limitation reports for external lifecycle operations.
+* [Managed resource management policies](managed-resource-management-policies.md) - Beta action gates for external lifecycle operations.
+* [Management Policies project history](managed-resource-management-policies-project-history.md) - GA tracking, known reports, proposals, and selected-release containment.
 * [Usage and ClusterUsage deletion protection](usages-and-clusterusages.md) - Beta deletion protection, ordering behavior, scope rules, and mixed-scope limitations.
 * [External identity and creation safety](managed-resource-external-identity.md) - External names, provider-specific adoption, and duplicate-creation protection.
 * [References and ProviderConfig](managed-resource-references-and-provider-config.md) - Generated references, configuration selection, usages, and connection details.

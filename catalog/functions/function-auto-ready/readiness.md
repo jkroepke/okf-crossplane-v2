@@ -34,7 +34,7 @@ The function writes desired composed-resource readiness. The README's statement 
 CEL receives only the matched observed composed resource as `object`; it does
 not directly evaluate a separate ExtraResources result.[6] When readiness
 depends on a controller-created non-composed object, use an earlier
-[function-go-templating non-composed-resource readiness pattern](../function-go-templating/non-composed-resource-readiness.md).
+[function-go-templating non-composed-resource readiness pattern](../function-go-templating/patterns/non-composed-resource-readiness.md).
 
 # Citations
 

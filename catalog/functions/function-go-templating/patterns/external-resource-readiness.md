@@ -150,11 +150,11 @@ path for this pattern.[8]
 
 # Relationships
 
-See [ExtraResources](extra-resources.md) for fetch and no-match semantics,
+See [ExtraResources](../extra-resources.md) for fetch and no-match semantics,
 [non-composed-resource readiness](non-composed-resource-readiness.md) for the
 generic pattern,
 [manual readiness](manual-readiness.md) for annotation behavior, and
-[function-auto-ready CEL](../function-auto-ready/cel-health-checks.md) for the
+[function-auto-ready CEL](../../function-auto-ready/cel-health-checks.md) for the
 composed-resource-only alternative.
 
 # Citations

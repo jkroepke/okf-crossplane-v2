@@ -82,7 +82,7 @@ checking the list length.
 Use a manual annotation when readiness depends on an application-specific
 condition, field, or
 [non-composed resource](non-composed-resource-readiness.md).
-Use [function-auto-ready](../function-auto-ready/readiness.md) when its built-in
+Use [function-auto-ready](../../function-auto-ready/readiness.md) when its built-in
 Kubernetes checks, generic `Ready=True` fallback, or Alpha CEL customization
 matches the observed composed resource.
 

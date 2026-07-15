@@ -1,5 +1,9 @@
 # Catalog Update Log
 
+## 2026-07-15
+* **Reorganization**: Separated namespaced Composition enforcement from cross-namespace synchronization patterns and moved real-time Composition and Management Policies project history into dedicated references.
+* **Reorganization**: Grouped the Core index by domain and moved function-go-templating readiness and external-query examples under a dedicated patterns index.
+
 ## 2026-07-14
 * **Creation**: Added manual composed-resource readiness patterns and a release-pinned Sveltos Profile-to-ClusterSummary ExtraResources example.
 * **Creation**: Added release-pinned EnvironmentConfig knowledge covering the
