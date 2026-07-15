@@ -29,15 +29,17 @@ need a map-list rather than an atomic or set list.[3]
 
 # Crossplane support and metadata boundary
 
-Crossplane v2.2.0 and later include PR #7018, which copies schema-root
-`x-kubernetes-validations` to the generated XR CRD. The release-pinned test
-uses `self.metadata.name` with `self.spec.engineVersion`, so an XRD can use a
-root rule to validate the XR name.[4][5]
+Crossplane v2.2.0 includes PR #7018, which copies schema-root
+`x-kubernetes-validations` to the generated XR CRD for the deprecated XRD v1
+generator. Its release-pinned test uses `self.metadata.name` with
+`self.spec.engineVersion`.[4][5] This is historical implementation evidence,
+not proof that the current XRD v2 API exposes the same rule path.
 
-Do not infer equivalent support for arbitrary `metadata.labels`. The generated
-XR metadata schema retains only `name`; source metadata-label properties are
-not propagated. Use an admission policy for label-dependent validation unless
-a generated-CRD and API-server test establishes the exact label path.[6]
+Do not infer current-v2 support for `metadata.name` or arbitrary
+`metadata.labels` from that legacy test. The matching runtime generator retains
+only `name` in generated metadata and does not propagate source label
+properties. Use an admission policy for label-dependent validation unless a
+current-v2 generated-CRD and API-server test establishes the exact path.[6]
 
 # Citations
 
