@@ -114,6 +114,12 @@ primary_sources:
   - id: provider-kubernetes
     repository: crossplane-contrib/provider-kubernetes
     kind: native-provider
+  - id: provider-sql
+    repository: crossplane-contrib/provider-sql
+    kind: native-provider
+  - id: provider-gitlab
+    repository: crossplane-contrib/provider-gitlab
+    kind: native-provider
   - id: provider-helm
     repository: crossplane-contrib/provider-helm
     kind: native-provider
@@ -198,6 +204,16 @@ historical_design_sources:
       - general feature inventory
 
 supporting_sources:
+  - id: upbound-package-api
+    url: https://api.upbound.io/v1/packages/
+    kind: provider-schema-registry
+    authority: official-registry
+    usage: rapid schema discovery; version-addressed routes preferred over latest
+  - id: upbound-marketplace
+    url: https://marketplace.upbound.io/
+    kind: provider-package-marketplace
+    authority: official-registry
+    usage: package identity, source metadata, and published support-capability metadata
   - id: crossplane-provider-families-blog
     url: https://blog.crossplane.io/crd-scaling-provider-families/
     kind: historical-provider-context
