@@ -42,8 +42,6 @@ docker compose up --build --detach
 
 The local MCP endpoint is `http://127.0.0.1:8000/mcp`. Put it behind a TLS reverse proxy for `crossplane.mcp.jkroepke.de`.
 
-For a single copy-and-paste Compose file without repository-local build files, use [`compose.inline.yaml`](compose.inline.yaml).
-
 The catalog is refreshed at container startup. If fetching or ingestion fails and a previous catalog exists in the volume, the server continues with that last successful catalog.
 
 The MCP tools are read-only, but the public endpoint has no application-level authentication. Apply request limits and access controls at the reverse proxy when required.
