@@ -74,3 +74,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Every non-reserved OKF Markdown document must contain parseable YAML frontmatter with a non-empty `type` field.
 - `index.md` and `log.md` follow the OKF reserved-file rules.
 - Prefer small concept documents, structural Markdown, progressive disclosure, and citations over broad narrative pages.
+
+## Catalog example convention
+
+- For fictional, human-orderable composite-resource examples, use the shared API group `apigroup.example.com` (for example, `apigroup.example.com/v1alpha1`). Keep real product and Kubernetes API groups unchanged. This is an organizational authoring convention, not a Crossplane or Kubernetes requirement.

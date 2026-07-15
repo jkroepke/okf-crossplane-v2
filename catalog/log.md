@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-15
+* **Creation**: Added tenant XR API-group and admission-security guidance, including organization-specific example conventions.
 * **Creation**: Added focused XRD-backed CRD authoring guidance for OpenAPI schemas, CEL validation, unknown data, version evolution, and scale/display subresources.
 * **Update**: Verified the XRD v2 Composition selection fields: documented default selection, automatic or manual revision policy, and immutable enforced Composition override behavior.
 * **Reorganization**: Separated namespaced Composition enforcement from cross-namespace synchronization patterns and moved real-time Composition and Management Policies project history into dedicated references.
