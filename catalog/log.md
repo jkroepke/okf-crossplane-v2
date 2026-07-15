@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-15
+* **Update**: Added explicit ProviderConfig selection and central-account least-privilege guidance.
 * **Creation**: Added a release-pinned Upjet-to-Terraform provenance and example-adaptation evidence chain.
 * **Update**: Added MRAP default-activation, additive-overlap, one-way activation, and minimal-activation policy guidance.
 * **Creation**: Added evidence-backed AWS provider-family package identification and the v2.3 modern namespaced managed-resource group convention.
