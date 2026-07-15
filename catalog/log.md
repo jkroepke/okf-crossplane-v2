@@ -1,6 +1,9 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Creation**: Added provider-kubernetes Object wrapper readiness and Secret-status boundaries, including Alpha API scope, derived-condition limits, and random-secret churn risk.
+* **Update**: Added dependency-gating, dynamic collection identity, and base64-safe connection-data guidance; excluded Claim-based workflows from this v2 pattern.
+* **Creation**: Added a strict function-go-templating pattern that gates database XR status and connection references on observed composed-resource readiness, distinguishes Kubernetes names from managed-resource external names, and excludes legacy v1 connection output.
 * **Update**: Added a template-side namespace-result filter for `ExtraResources` label lookups, including an early-stop Go-template variable pattern for use after the scan; it cannot scope the earlier cluster-wide list or reduce its RBAC requirement.
 * **Creation**: Added an Alpha External Secrets Operator PushSecret pattern for publishing selected platform-team Kubernetes Secret data to configured external secret stores, including Vault and AWS examples.
 * **Update**: Extended provider-family guidance with Upbound's pinned official-provider installation, monolith ownership, shared-family dependency, and offline-resolution boundaries.
