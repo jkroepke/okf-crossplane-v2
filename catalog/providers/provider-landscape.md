@@ -36,6 +36,7 @@ For a selected Upjet managed resource, publish a Terraform relationship only aft
 Provider-specific managed-resource schemas implement the provider-defined side of [Crossplane Core managed resources](/core/managed-resources.md). The Core concept defines common reconciliation contracts; it does not make two provider GVKs, schemas, or migration paths compatible.
 
 See [Provider package revisions and activation scope](provider-package-revisions.md) for the separate question of how Crossplane activates provider package revisions.
+See [Provider families and modern managed-resource groups](provider-families.md) for AWS family packaging and the v2 `.m.` API-group convention.
 
 # Limitations
 
