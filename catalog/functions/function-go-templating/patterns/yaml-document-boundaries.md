@@ -116,7 +116,7 @@ tags:
   {{- get $spec "tags" | default (dict) | toYaml | nindent 10 }}
 ```
 
-As an optional local gate after `crossplane beta render`, pipe the output to a
+As an optional local gate after `crossplane composition render`, pipe the output to a
 pinned `yq` `eval --prettyPrint '.' -` command. `yq` supports multi-document
 YAML, so successful parse and reformatting provides a quick structural check;
 still assert the expected documents and resource names separately.[8]
@@ -124,6 +124,10 @@ still assert the expected documents and resource names separately.[8]
 Use the CLI command boundary deliberately: `crossplane composition render`
 renders, while `crossplane resource validate` validates resources. There is no
 `crossplane composition validate` command.[9]
+
+The selected function-go-templating README still shows the historical
+`crossplane beta render` spelling. Do not copy that invocation into a current
+CLI workflow; the current CLI documents `crossplane composition render`.[10][11]
 
 # Relationships
 
@@ -144,3 +148,5 @@ describes Crossplane CLI rendering prerequisites and observed-resource fixtures.
 [7] [Sprig issue #53 nil-workaround comment](https://github.com/Masterminds/sprig/issues/53#issuecomment-483414063), authored by a human contributor on 2019-04-15.
 [8] [yq multi-document, eval, and pretty-print support](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L350-L353) and [CLI flags](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L399-L402)
 [9] [Crossplane CLI render-to-resource-validation pipeline](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71)
+[10] [Current CLI Composition render command](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L86-L99)
+[11] [Historical function README render example](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L149-L157)
