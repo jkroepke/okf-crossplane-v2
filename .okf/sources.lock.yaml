@@ -151,13 +151,6 @@ sources:
     previous_tag: v0.6.6
     previous_commit: 046fe9eca400dfdb835911d8b22da9b0e27a5547
     resolved_at: 2026-07-14
-  function-sequencer:
-    repository: crossplane-contrib/function-sequencer
-    tag: v0.6.0
-    commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
-    previous_tag: v0.5.0
-    previous_commit: 33505d3c6fb203b1f5f7a0257c28a8de3001ebf9
-    resolved_at: 2026-07-16
   function-sequencer-post-v060:
     repository: crossplane-contrib/function-sequencer
     commit: e277a4070f65fc50dfb08b03d2acdcbdbfe1350b
