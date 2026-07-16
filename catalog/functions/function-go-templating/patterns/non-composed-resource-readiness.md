@@ -73,7 +73,7 @@ resource's actual schema. The example is a generic skeleton, not a claim that
 
 # Relationships
 
-The [Sveltos ClusterSummary pattern](external-resource-readiness.md) applies
+The [Sveltos ClusterSummary pattern](sveltos-clustersummary-readiness.md) applies
 this flow using Sveltos's deterministic summary name and feature-status model.
 See [manual readiness](manual-readiness.md) for annotation semantics and
 [ExtraResources](../extra-resources.md) for fetch stabilization and no-match

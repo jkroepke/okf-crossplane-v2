@@ -26,6 +26,7 @@ supporting_sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     paths:
       - content/v2.3/composition/compositions.md
+      - content/v2.3/guides/connection-details-composition.md
       - content/v2.3/managed-resources/usages.md
   - repository: crossplane/cli
     commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
@@ -51,6 +52,11 @@ supporting_sources:
     commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
     paths:
       - fn.go
+  - repository: crossplane-contrib/provider-kubernetes
+    commit: 0ea671a4dab090ff3b14877d35086f1950fa35e3
+    paths:
+      - apis/namespaced/object/v1alpha1/types.go
+      - internal/controller/namespaced/object/object.go
 feature_state: Not stated by selected sources
 ---
 
@@ -116,15 +122,19 @@ forward.[5] Choose a pattern by the outcome it changes:
 | Need | Use | Outcome and boundary |
 | --- | --- | --- |
 | Render or transform desired resources | A resource-producing function such as [function-go-templating](functions/function-go-templating/index.md) | Adds complete desired objects under stable logical keys. |
-| Decide readiness for an already-rendered resource | [Manual readiness](functions/function-go-templating/patterns/manual-readiness.md) or [function-auto-ready](functions/function-auto-ready/readiness.md) | Changes readiness; it should not change whether the desired object exists. |
+| Decide readiness from an already-rendered resource's own observation | [Manual readiness](functions/function-go-templating/patterns/manual-readiness.md) or [function-auto-ready](functions/function-auto-ready/readiness.md), including its [built-in checks](functions/function-auto-ready/built-in-health-checks.md) and optional [Alpha CEL rules](functions/function-auto-ready/cel-health-checks.md) | Changes readiness; it should not change whether the desired object exists. Manual readiness sets an explicit decision; auto-ready derives one from the matched observed composed resource.[9][17] |
+| Decide readiness from a controller-created object outside `.observed.resources` | [Non-composed-resource readiness](functions/function-go-templating/patterns/non-composed-resource-readiness.md), with the [Sveltos ClusterSummary](functions/function-go-templating/patterns/sveltos-clustersummary-readiness.md) as a specialization | Fetches the object through the Alpha ExtraResources directive and translates its documented status into explicit readiness on a complete desired composed resource. Core performs the read, so grant the Core service account—not the Function pod—the required RBAC.[6][7][12] |
+| Choose readiness for a provider-kubernetes `Object` wrapper | [provider-kubernetes Object readiness](functions/function-go-templating/patterns/provider-kubernetes-object-readiness.md) | Separates wrapper creation or update success from the wrapped application's usable state; the selected namespaced Object API is Alpha.[18] |
+| Publish consumer-visible XR status or connection references | [Strict status and connection publication](functions/function-go-templating/patterns/safe-status-and-connection-publication.md) | Gates the consumer contract on producer readiness and required data-key completeness. Resource or Secret existence alone is insufficient.[16][19] |
 | Delay the first appearance of one exceptional successor | [Readiness-gated template staging](functions/function-go-templating/patterns/readiness-gated-staging.md) | Changes desired-resource introduction; retain every successor after it is observed. |
 | Express a declared or branching introduction graph | [function-sequencer](functions/function-sequencer/sequencing.md) | Filters only unobserved successors and retains observed ones. |
 | Protect deletion or order deletion | [Usage and ClusterUsage](core/usages-and-clusterusages.md), optionally sequencer deletion rules | Creates pre-existing deletion-protection relationships; it does not schedule creation or wait for readiness. Audit mixed scopes because Function pipelines do not run during XR deletion.[14] |
 
 These patterns can apply the same broad principle—wait for a prerequisite—but
-produce different outcomes. Readiness, desired-resource membership, and
-deletion protection are separate control planes. Do not exchange them merely
-because their prose descriptions all mention ordering.
+produce different outcomes. Readiness evaluation, consumer publication,
+desired-resource membership, and deletion protection are separate control
+planes. Do not exchange them merely because their prose descriptions all
+mention readiness or ordering.
 
 For environment-driven pipelines, use the
 [environment, templating, and readiness route](functions/environment-config-pipeline.md)
@@ -227,3 +237,9 @@ Do not fill these gaps by guesswork:
 [15] [Composition compatibility filter compares the reconciled XR GVK](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/api.go#L267-L280)
 
 [16] [Secret existence check and explicit readiness preservation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/secret.go#L7-L13), [`alwaysReady`](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L27-L32), and [explicit readiness preservation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
+
+[17] [function-auto-ready matches desired and observed resources, preserves explicit decisions, then evaluates unspecified readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L193)
+
+[18] [provider-kubernetes Object readiness policies](https://github.com/crossplane-contrib/provider-kubernetes/blob/0ea671a4dab090ff3b14877d35086f1950fa35e3/apis/namespaced/object/v1alpha1/types.go#L114-L148) and [derived readiness evaluation](https://github.com/crossplane-contrib/provider-kubernetes/blob/0ea671a4dab090ff3b14877d35086f1950fa35e3/internal/controller/namespaced/object/object.go#L534-L599)
+
+[19] [Official connection-details template guards absent observations and connection keys](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/connection-details-composition.md#L296-L317)
