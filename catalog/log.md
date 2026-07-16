@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Creation**: Proved composed-resource name preservation under a stable logical key, bounded immutable-field recreation claims, and added staged create-before-delete replacement guidance.
 * **Creation**: Added complete function-sequencer v0.6.0 Input property coverage, explicit UsageVersion mixed-scope safety, and post-release `createOnly` boundaries.
 * **Update**: Cross-linked Core Usage/ClusterUsage scope guidance with function-sequencer issue #114 and generated-reference limitations.
 * **Update**: Added local validation schema-coverage triage for built-in Kubernetes resources, non-Crossplane custom resources, and community CRD catalog discovery boundaries.
