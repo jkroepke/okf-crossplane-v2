@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Creation**: Added readiness-gated staged resource introduction for function-go-templating, distinguishing reconciliation-round admission and retention from provider-side ordering.
 * **Creation**: Added Go-template whitespace-boundary guidance for staged, multi-document function-go-templating output, including initial and fully observed render verification.
 * **Update**: Added release-contained PR #6588 source and test proof for the namespaced-XR cluster-scoped-resource rejection.
 * **Creation**: Added provider-kubernetes Object wrapper readiness and Secret-status boundaries, including Alpha API scope, derived-condition limits, and random-secret churn risk.
