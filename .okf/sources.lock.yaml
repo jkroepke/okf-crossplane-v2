@@ -109,7 +109,7 @@ sources:
   crd-catalog:
     repository: CustomResourceDefinition/catalog
     commit: 0584c9f7e6eaef8367cd65e59266d8ad49764f0c
-    selected_by: community CRD schema snapshot discovery for local validation coverage
+    selected_by: community CRD definition discovery for local validation coverage
     resolved_at: 2026-07-16
   flux-website:
     repository: fluxcd/website
