@@ -118,22 +118,24 @@ gap, not evidence that the built-in resource needs a CRD.[10]
 
 For a non-Crossplane custom GVK that is missing from the XRD/provider definition
 set, look up the normalized Group, Kind, and version in the community
-`CustomResourceDefinition/catalog` at a pinned commit or Kubernetes-version
-tag. A hit establishes only that a community CRD definition exists; supply that
+`CustomResourceDefinition/catalog` `main` branch. A hit establishes only that
+a community CRD definition exists; supply that
 definition as an extension, then verify that it matches the exact installed
-operator CRD. A miss does not prove that the CRD does not exist.[11]
+operator CRD. The `main` branch is mutable and discovery-only: resolve and
+record its commit before using a selected definition in reproducible
+validation. A miss does not prove that the CRD does not exist.[11]
 
-Use the catalog's definition path, pinned to an immutable catalog commit. The
-resource kind is lowercase in the catalog path:
+Use the catalog's current `main` definition path. The resource kind is
+lowercase in the catalog path:
 
 ```text
-https://raw.githubusercontent.com/CustomResourceDefinition/catalog/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/definitions/{{group}}/{{resourcekind-lowercase}}.yaml
+https://raw.githubusercontent.com/CustomResourceDefinition/catalog/main/definitions/{{group}}/{{resourcekind-lowercase}}.yaml
 ```
 
 For example, an Argo CD Application definition is:
 
 ```text
-https://raw.githubusercontent.com/CustomResourceDefinition/catalog/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/definitions/argoproj.io/application.yaml
+https://raw.githubusercontent.com/CustomResourceDefinition/catalog/main/definitions/argoproj.io/application.yaml
 ```
 
 Do not use this CRD-definition lookup for built-in Kubernetes resources such
@@ -185,6 +187,6 @@ not change the documented v2.4.0 behavior.
 
 [10] [CLI extension-only definition inputs](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L1-L27), [CRD validator construction](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92), and [missing-definition exit behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140)
 
-[11] [CRD Catalog definition files and pinned-definition examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38)
+[11] [CRD Catalog definition files and definition examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38)
 
 [12] [CLI issue #195: built-in Secret missing-definition report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
