@@ -73,7 +73,7 @@ sources:
     repository: kubernetes/kubernetes
     tag: v1.35.0
     commit: 66452049f3d692768c39c797b21b793dce80314e
-    selected_by: ValidatingAdmissionPolicy match-condition behavior
+    selected_by: ValidatingAdmissionPolicy match-condition behavior and composed-resource metadata.name immutability
     resolved_at: 2026-07-15
   kyverno:
     repository: kyverno/kyverno

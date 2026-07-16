@@ -4,12 +4,12 @@ title: Managed resource anatomy
 description: Common desired, initialization, observed, policy, provider configuration, and connection-detail fields around provider-defined schemas.
 resource: https://docs.crossplane.io/v2.3/managed-resources/managed-resources/
 tags: [crossplane, core, managed-resources, schema]
-timestamp: 2026-07-12T00:00:00Z
+timestamp: 2026-07-16T00:00:00Z
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
 source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
-source_paths: [apis/core/v2/resource.go, apis/core/v2/resource_namespace.go, apis/core/v2/resource_cluster.go]
+source_paths: [apis/core/v2/resource.go, apis/core/v2/resource_namespace.go, apis/core/v2/resource_cluster.go, internal/controller/apiextensions/composite/composition_functions.go]
 feature_state: Stable by repository default; Beta fields identified separately
 ---
 
@@ -29,6 +29,12 @@ observed reconciliation status.[1][2]
 
 The documentation describes `forProvider` as desired state whose mutable fields are normally corrected after out-of-band drift. Kubernetes may accept an edit to a provider-declared
 immutable field, but Crossplane does not recreate the external resource solely to apply it.[3]
+
+This provider-side immutability is distinct from
+[composed-resource identity](composed-resource-identity-and-replacement.md):
+under an unchanged logical Composition key, Crossplane preserves an observed
+Kubernetes `metadata.name` instead of interpreting a changed name as replacement
+intent.[7]
 
 # Initialization and observation
 
@@ -57,3 +63,4 @@ selected Provider release.
 [4] [Beta initProvider semantics](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L224-L264)
 [5] [Late-initialization persistence gate](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L1473-L1521)
 [6] [Modern runtime interface excludes deletion policy](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L200-L219)
+[7] [Observed composed-resource identity overrides desired name changes](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L491-L498)
