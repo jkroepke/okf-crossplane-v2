@@ -84,17 +84,27 @@ names sharing the retained prefix can still collide. Do not assume a
 composition-resource-name annotation itself has a DNS-label limit unless the
 particular consumer requires one.
 
-For optional map fields, use `get` before `default` so the fallback is applied
-to an absent value without dot-field traversal:
+Do not use `default` for an optional boolean when its fallback can be `true`.
+Sprig considers `false` empty, so `get $spec "forceDestroy" | default true`
+always produces `true` for both an absent value and an explicit `false`.[4]
+For a map, test key presence and only then read the value:
 
 ```gotemplate
-{{- $providerConfigRef := get $spec "providerConfigRef" | default (dict "kind" "ClusterProviderConfig" "name" "default") -}}
-forceDestroy: {{ get $spec "forceDestroy" | default false }}
+{{ if hasKey $spec "forceDestroy" }}
+forceDestroy: {{ get $spec "forceDestroy" }}
+{{ else }}
+forceDestroy: true
+{{ end }}
 ```
 
-`default` treats `false` as empty. A field for which explicit `false` must be
-distinguished from absent therefore needs a presence check rather than this
-shortcut.[4]
+For a value that is genuinely `nil`, `kindIs "invalid" $value` is a common
+template guard. Do not substitute `eq $value nil` or `ne $value nil`: template
+comparisons require comparable types and can fail on heterogeneous values.[5]
+This guard does not replace `hasKey` for a Sprig `get` result—`get` returns an
+empty string for an absent map key, not an invalid value.[6] The `kindIs`
+workaround was recorded by a human contributor in Sprig issue #53; treat that
+comment as a historical workaround, while the selected release documentation
+and code establish the current helper behavior.[7]
 
 # Map indentation and formatting gate
 
@@ -109,11 +119,11 @@ tags:
 As an optional local gate after `crossplane beta render`, pipe the output to a
 pinned `yq` `eval --prettyPrint '.' -` command. `yq` supports multi-document
 YAML, so successful parse and reformatting provides a quick structural check;
-still assert the expected documents and resource names separately.[5]
+still assert the expected documents and resource names separately.[8]
 
 Use the CLI command boundary deliberately: `crossplane composition render`
 renders, while `crossplane resource validate` validates resources. There is no
-`crossplane composition validate` command.[6]
+`crossplane composition validate` command.[9]
 
 # Relationships
 
@@ -129,5 +139,8 @@ describes Crossplane CLI rendering prerequisites and observed-resource fixtures.
 [2] [Go text/template whitespace trimming](https://github.com/golang/go/blob/28622c19591d95c9a83f706f2ed1b303d58da85f/src/text/template/doc.go#L39-L53)
 [3] [Kubernetes DNS label length](https://github.com/kubernetes/kubernetes/blob/66452049f3d692768c39c797b21b793dce80314e/staging/src/k8s.io/apimachinery/pkg/util/validation/validation.go#L158-L170)
 [4] [Sprig dictionary lookup](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/dicts.md#L11-L48) and [empty-value defaults](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/defaults.md#L5-L25)
-[5] [yq multi-document, eval, and pretty-print support](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L350-L353) and [CLI flags](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L399-L402)
-[6] [Crossplane CLI render-to-resource-validation pipeline](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71)
+[5] [Go-template comparison rules](https://github.com/golang/go/blob/28622c19591d95c9a83f706f2ed1b303d58da85f/src/text/template/doc.go#L411-L441)
+[6] [Sprig `get` implementation](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/dict.go#L8-L27) and [reflection helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/reflection.md#L12-L27)
+[7] [Sprig issue #53 nil-workaround comment](https://github.com/Masterminds/sprig/issues/53#issuecomment-483414063), authored by a human contributor on 2019-04-15.
+[8] [yq multi-document, eval, and pretty-print support](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L350-L353) and [CLI flags](https://github.com/mikefarah/yq/blob/1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d/README.md#L399-L402)
+[9] [Crossplane CLI render-to-resource-validation pipeline](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71)
