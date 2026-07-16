@@ -8,7 +8,7 @@ timestamp: 2026-07-15T00:00:00Z
 source_repository: crossplane-contrib/provider-upjet-aws
 source_commit: 857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60
 source_paths: [Makefile, config/namespaced/s3/config.go, package/crds/s3.aws.m.upbound.io_buckets.yaml]
-feature_state: Stable by repository default; individual managed-resource APIs retain their own version maturity
+feature_state: Not stated by selected sources; individual managed-resource APIs retain their own version maturity
 ---
 
 # Overview

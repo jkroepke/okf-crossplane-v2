@@ -9,8 +9,7 @@ source_repository: crossplane-contrib/function-environment-configs
 source_tag: v0.7.2
 source_commit: 5589092483aea1d65b9988f5116106585c4b516b
 source_paths: [README.md, package/crossplane.yaml, go.mod]
-feature_state: Beta
-feature_state_basis: The packaged function input serves environmentconfigs.fn.crossplane.io/v1beta1, which imposes a Beta ceiling.
+feature_state: Not stated by selected sources
 ---
 
 # Overview
@@ -32,6 +31,10 @@ Place it before every step that needs the merged environment. Typical consumers 
 
 - [function-go-templating Environment source](../function-go-templating/environment-source.md), direct `.context` reads, or Alpha Context updates;
 - [function-auto-ready CEL customizations](../function-auto-ready/cel-health-checks.md) loaded from an environment context path.
+
+Package maturity is **Not stated by selected sources**. Its separate
+[Input API](input.md) is Beta; that served version does not label the whole
+Function package.
 
 # Limitations
 

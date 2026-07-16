@@ -9,8 +9,18 @@ crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
 source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
-source_paths: [cluster/crds/pkg.crossplane.io_providers.yaml, cluster/crds/pkg.crossplane.io_providerrevisions.yaml, internal/controller/pkg/manager/reconciler.go, internal/controller/pkg/runtime/runtime_provider.go]
+source_paths:
+  - cluster/crds/pkg.crossplane.io_providers.yaml
+  - cluster/crds/pkg.crossplane.io_providerrevisions.yaml
+  - internal/controller/pkg/manager/reconciler.go
+  - internal/controller/pkg/runtime/runtime_provider.go
+  - internal/controller/pkg/revision/reconciler.go
+documentation_repository: crossplane/docs
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/packages/providers.md
 feature_state: Stable by repository default
+feature_state_basis: Provider and ProviderRevision each serve only v1 in the selected release, with no explicit non-stable label or deprecation metadata; v1 alone is not used as proof.
 ---
 
 # Overview
@@ -22,6 +32,12 @@ Exactly one revision of a given `Provider` is Active at a time.[3] The package m
 # Activation and upgrade behavior
 
 `revisionActivationPolicy` defaults to `Automatic`; `Manual` prevents a newly installed revision being activated automatically. `revisionHistoryLimit` defaults to one retained inactive revision.[6] This is the documented single-cluster upgrade control: install a new revision, inspect it, then choose when to activate it.[2][3]
+
+The selected v2.3 documentation does not state the exact supported mutation or
+command for that manual activation step. Do not infer direct ProviderRevision
+editing, a `desiredState` patch, a parent-policy toggle, or package reapply from
+the existence of the policy alone; resolve the current supported promotion
+workflow before operational use.
 
 An Active revision applies provider runtime resources, including its Deployment. An inactive revision has its provider Deployment deleted.[7] A provider revision also establishes package API objects; when the relevant feature is enabled, that includes the provider CRDs converted to Managed Resource Definitions.[8]
 

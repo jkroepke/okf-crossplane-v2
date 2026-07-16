@@ -10,6 +10,7 @@ source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
 feature_state: Beta
 feature_state_basis: The generated GoTemplate input CRD serves and stores gotemplating.fn.crossplane.io/v1beta1.
+project_history_researched_at: 2026-07-16T00:00:00Z
 ---
 
 # Overview

@@ -80,7 +80,7 @@ Project history is not used to establish API shape, runtime behavior, recommenda
 
 # Citations
 
-[1] [v0.12.1...v0.12.2 comparison](https://github.com/crossplane-contrib/function-go-templating/compare/v0.12.1...v0.12.2)
+[1] [v0.12.1...v0.12.2 comparison](https://github.com/crossplane-contrib/function-go-templating/compare/548ae34fd9c843f0747981894fb7fa0ff1ba47fa...0a1e6d386f4363fae257ddbfb5b497416370e830)
 [2] [PR #580](https://github.com/crossplane-contrib/function-go-templating/pull/580) and [released go.mod](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/go.mod)
 [3] [Issue #579](https://github.com/crossplane-contrib/function-go-templating/issues/579)
 [4] [Issue #536](https://github.com/crossplane-contrib/function-go-templating/issues/536)

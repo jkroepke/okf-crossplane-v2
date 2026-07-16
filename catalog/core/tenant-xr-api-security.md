@@ -9,6 +9,7 @@ crossplane_release: v2.3.3
 source_repository: kubernetes/website
 source_commit: be897babb9149b808e2ab8ed5367e5d0651b3dca
 feature_state: Stable by repository default
+feature_state_basis: The pattern depends on the selected stable XRD and Kubernetes RBAC and ValidatingAdmissionPolicy v1 API surfaces; the organizational convention has no independent maturity.
 ---
 
 # Organization convention

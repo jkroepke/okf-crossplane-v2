@@ -2,6 +2,7 @@
 
 # Composition
 
+* [Composition developer starter guide](../composition-developer-starter.md) - Follow the end-to-end authoring route and its evidence boundaries.
 * [Composite resource model](composite-resource-model.md) - How XRs, XRDs, Compositions, and composed resources relate in Crossplane v2.
 * [CompositeResourceDefinition v2](composite-resource-definition.md) - The current API for defining composite resource types.
 * [XRD OpenAPI schemas](xrd-openapi-schema.md) - Model an XR API with an OpenAPI v3 schema that Crossplane carries into its generated CRD.
@@ -29,7 +30,7 @@
 
 # Configuration packages
 
-* [Configuration packages](configurations/) - Portable OCI packages of Crossplane APIs, Compositions, and package dependencies.
+* [Configuration packages](configurations/index.md) - Portable OCI packages of Crossplane APIs, Compositions, and package dependencies.
 
 # Managed resources
 

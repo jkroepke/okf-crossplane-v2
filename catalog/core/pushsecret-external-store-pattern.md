@@ -8,7 +8,19 @@ timestamp: 2026-07-16T00:00:00Z
 source_repository: external-secrets/external-secrets
 source_tag: v2.7.0
 source_commit: e215053f3e68504de7483f9542b49f19f98293a1
+source_paths:
+  - config/crds/bases/external-secrets.io_pushsecrets.yaml
+  - apis/externalsecrets/v1alpha1/pushsecret_types.go
+  - docs/api/pushsecret.md
+  - docs/guides/pushsecrets.md
+  - docs/snippets/vault-pushsecret.yaml
+  - docs/snippets/aws-sm-push-secret-with-metadata.yaml
 source_role: supporting
+documentation_repository: crossplane/docs
+documentation_series: v2.3
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/manifests/guides/connection-details-composition/composition-go-templating.yaml
 feature_state: Alpha
 ---
 
@@ -37,6 +49,14 @@ namespace as the `PushSecret`.[1][3]
    overwrites an existing provider value. `IfNotExists` avoids overwrite, but
    can leave the cluster and provider values different. Provider data remains
    after deleting `PushSecret` unless `deletionPolicy: Delete` is set.[5]
+
+Before publishing a Crossplane-produced aggregate Secret, establish that its
+required keys are present. The aggregate pattern deliberately permits an empty
+Secret during initial reconciliation; `PushSecret` selection does not prove
+that every mapped key is available.[9] The selected ESO sources do not establish
+the exact reconciliation result for an absent source key, so this catalog does
+not guess it. Gate publication or application readiness using the Crossplane
+connection-data contract first.
 
 This authored starter manifest maps two keys to a Vault-configured
 `SecretStore`; it is not copied from the ESO source.
@@ -94,6 +114,8 @@ connection-details aggregate described in
 [Compose connection details with function-go-templating](../functions/function-go-templating/connection-details.md).
 That Crossplane pattern determines how the Secret is composed; ESO determines
 whether and how selected data is later published to an external store.
+Use [safe status and connection publication](../functions/function-go-templating/patterns/safe-status-and-connection-publication.md)
+when key completeness gates the consumer contract.
 
 # Citations
 
@@ -112,3 +134,5 @@ whether and how selected data is later published to an external store.
 [7] [AWS Secrets Manager-oriented metadata example](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/snippets/aws-sm-push-secret-with-metadata.yaml#L1-L29)
 
 [8] [Bulk PushSecret `dataTo` documentation](https://github.com/external-secrets/external-secrets/blob/e215053f3e68504de7483f9542b49f19f98293a1/docs/api/pushsecret.md#L30-L84)
+
+[9] [Crossplane v2.3 aggregate Secret starts with empty data](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/manifests/guides/connection-details-composition/composition-go-templating.yaml#L53-L67)

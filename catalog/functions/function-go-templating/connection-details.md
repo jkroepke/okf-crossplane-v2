@@ -8,9 +8,20 @@ timestamp: 2026-07-14T00:00:00Z
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+source_paths:
+  - README.md
+  - function_maps.go
+  - package/input/gotemplating.fn.crossplane.io_gotemplates.yaml
 documentation_repository: crossplane/docs
 documentation_series: v2.3
 documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/guides/connection-details-composition.md
+  - content/v2.3/manifests/guides/connection-details-composition/composition-go-templating.yaml
+  - content/v2.3/manifests/guides/connection-details-composition/fn-go-templating.yaml
+supporting_source_repository: crossplane-contrib/function-auto-ready
+supporting_source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
+supporting_source_paths: [healthchecks/secret.go, healthchecks/registry.go, fn.go]
 crossplane_release: v2.3.3
 feature_state: Beta
 ---
@@ -49,12 +60,20 @@ Guard every resource and field that the template indexes when its presence is no
 - The guide pins function-go-templating v0.11.2, while this catalog uses the selected stable v0.12.2 release. The v0.12.2 schema and behavior corroborate the documented pattern.[3][6]
 - A later readiness function may be useful, but it is separate from connection-detail aggregation.[4]
 
+An empty aggregate Secret is intentionally valid during initial convergence.[4]
+That does not make its connection data complete. function-auto-ready's built-in
+Secret check treats existence as ready, so a Composition whose XR contract
+depends on particular keys should set explicit readiness from those keys before
+auto-ready runs.[7] See [safe status and connection publication](patterns/safe-status-and-connection-publication.md).
+
 # Relationships
 
 See [Request data and context](request-data.md) for the complete template request
 and [Rendered output](rendered-output.md) for composed-resource identity and
 readiness. [Template functions](template-functions.md) documents
 `setResourceNameAnnotation` and the exposed Sprig helpers.
+[function-auto-ready built-in health checks](../function-auto-ready/built-in-health-checks.md)
+documents the separate Secret-existence rule.
 
 # Citations
 
@@ -64,3 +83,4 @@ readiness. [Template functions](template-functions.md) documents
 [4] [Official function-go-templating Composition manifest](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/manifests/guides/connection-details-composition/composition-go-templating.yaml#L20-L66)
 [5] [Resource-name annotation helper](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L101-L103)
 [6] [Guide-selected function package](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/manifests/guides/connection-details-composition/fn-go-templating.yaml#L1-L6)
+[7] [Secret registers the existence-only check](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/secret.go#L7-L13), [`alwaysReady` returns true](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L27-L32), and [explicit readiness is preserved](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)

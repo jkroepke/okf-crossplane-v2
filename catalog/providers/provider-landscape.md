@@ -8,7 +8,7 @@ timestamp: 2026-07-15T00:00:00Z
 source_repository: crossplane-contrib/provider-upjet-aws
 source_commit: 857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60
 source_paths: [README.md, go.mod, package/crds/s3.aws.m.upbound.io_buckets.yaml]
-feature_state: Stable by repository default; individual managed-resource APIs require their own maturity evidence
+feature_state: Not stated by selected sources; individual managed-resource APIs require their own maturity evidence
 ---
 
 # Overview
@@ -20,6 +20,9 @@ Provider ownership, implementation method, and support status are separate quest
 | Upjet-generated | `provider-upjet-aws` v2.6.0 | Upjet turns Terraform-provider schemas into Crossplane CRDs, controllers, examples, and runtime support; this provider explicitly says it is built with Upjet. |
 | AWS Go-codegen with manual controller work | `provider-aws` v0.58.0 | Its separate generator produces API-related code, but requires Crossplane-specific additions and controller work. |
 | Bespoke provider API | `provider-opentofu` v1.1.4 | Its `Workspace` resource executes OpenTofu modules and exposes OpenTofu-specific inputs and outputs; it is not a projection of every cloud Terraform resource. |
+
+These family assignments come from the selected implementations and APIs, not
+from repository naming alone.[5]
 
 “Community-maintained” is a maintenance/governance category, not an implementation family: Upjet documents both providers it calls official and more than 50 community providers. It is not a complete ownership inventory.[1]
 
@@ -37,6 +40,8 @@ Provider-specific managed-resource schemas implement the provider-defined side o
 
 See [Provider package revisions and activation scope](provider-package-revisions.md) for the separate question of how Crossplane activates provider package revisions.
 See [Provider families and modern managed-resource groups](provider-families.md) for AWS family packaging and the v2 `.m.` API-group convention.
+After selecting a package, use [provider CRD schema discovery](crd-schema-discovery.md)
+to inspect the exact resource schema instead of authoring from family names.
 
 # Limitations
 

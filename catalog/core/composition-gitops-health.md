@@ -13,6 +13,7 @@ source_paths:
   - apis/apiextensions/v1/composition_types.go
   - cluster/crds/apiextensions.crossplane.io_compositions.yaml
 feature_state: Stable by repository default
+feature_state_basis: The status-shape claim inherits the selected stable Composition API; GitOps assessment guidance has no independent maturity assignment.
 project_history_researched_at: 2026-07-14
 ---
 

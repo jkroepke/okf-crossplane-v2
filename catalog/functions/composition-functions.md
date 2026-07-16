@@ -10,6 +10,8 @@ source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
 source_paths:
   - cluster/crds/apiextensions.crossplane.io_compositions.yaml
   - proto/fn/v1/run_function.proto
+feature_state: Stable by repository default
+feature_state_basis: Stable applies to the owning Composition API; unlabelled Function runtime behavior has no separate maturity assignment.
 ---
 
 # Overview
@@ -31,7 +33,7 @@ The Composition schema permits 1–99 uniquely named steps. Each step requires `
 # Relationships
 
 Composition functions use the shared [Function package](package.md) and protocol, but differ from [operation functions](operation-functions.md) in invocation and state semantics. 
-[function-go-templating](function-go-templating/) is a release-pinned composition-function example.
+[function-go-templating](function-go-templating/index.md) is a release-pinned composition-function example.
 
 The v2.3.3 [Composition Functions specification](composition-function-specification.md) defines normative implementation requirements, while runtime behavior remains separately evidenced.
 

@@ -54,6 +54,9 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Record explicit Alpha, Beta, Preview, Stable, or Deprecated labels from selected sources when available.
 - Without an explicit feature-state label, treat a served `v1alpha*` API as Alpha and a served `v1beta*` API as Beta. Such APIs must never be recorded as Stable.
 - For APIs without an alpha or beta served version, default the feature state to Stable unless selected sources explicitly label it Alpha, Beta, Preview, or Deprecated.
+- Apply the served-version default to the API or capability that actually owns that version. Do not transfer an input API's Beta state to the whole Function package, and do not transfer an unlabelled package's state to its input API.
+- For non-API software, packages, helpers, and implementation behavior without an explicit lifecycle label, record `Not stated by selected sources`. A highest stable semantic-version tag selects released source; it does not establish product maturity.
+- A pattern that requires multiple APIs or explicitly labelled capabilities inherits the least stable required surface. State that dependency as the basis instead of assigning the pattern the package's unrelated maturity.
 - Never use `v1` alone as proof of Stable; it only permits the Stable default when no selected source or served API version indicates a non-stable state.
 - Crossplane Core design documents under `crossplane/crossplane/design/**` are historical design-context sources only. Pin the current `main` commit and record the document status and any accuracy warning.
 - A design document, including an Accepted design, does not establish current implementation, released behavior, supported guidance, or feature maturity.

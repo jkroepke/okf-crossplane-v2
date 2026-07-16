@@ -16,7 +16,7 @@
 
 # Patterns and examples
 
-* [Readiness and external-query patterns](patterns/) - Apply manual readiness, non-composed-resource readiness, Sveltos status, and provider-backed external-query patterns.
+* [Readiness and external-query patterns](patterns/index.md) - Apply manual readiness, non-composed-resource readiness, Sveltos status, and provider-backed external-query patterns.
 
 # Reference and history
 

@@ -13,7 +13,22 @@ source_paths:
   - internal/controller/apiextensions/composite/composed.go
   - internal/controller/apiextensions/composite/composition_functions.go
   - internal/controller/apiextensions/composite/composition_render.go
-feature_state: Stable by repository default; managementPolicies discussed separately are Beta
+supporting_sources:
+  - repository: crossplane-contrib/function-go-templating
+    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+    paths: [fn.go]
+  - repository: crossplane/crossplane-runtime
+    commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+    paths: [pkg/xcrd/composite.go, pkg/reconciler/managed/reconciler.go]
+  - repository: kubernetes/kubernetes
+    commit: 66452049f3d692768c39c797b21b793dce80314e
+    paths: [staging/src/k8s.io/apimachinery/pkg/apis/meta/v1/types.go]
+  - repository: crossplane/docs
+    commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+    paths:
+      - content/v2.3/composition/compositions.md
+      - content/v2.3/managed-resources/managed-resources.md
+feature_state: Not stated by selected sources; managementPolicies discussed separately are Beta
 ---
 
 # Identity
@@ -27,6 +42,13 @@ replacement plans.
 | Logical composition-resource key | An entry in Function desired and observed resource maps, persisted on the object as `crossplane.io/composition-resource-name` | The same key means the same composed resource. A new key declares a different desired resource.[1][2][16] |
 | `metadata.name` | Kubernetes object identity | Kubernetes names cannot be updated. After Crossplane associates a key with an observed object, it preserves that object's name.[3][4] |
 | `crossplane.io/external-name` | Provider-facing external identity for a managed resource | It is separate from the Kubernetes name. When supplied, its value is used as the external resource name.[5] |
+
+Some rendering functions use their own input annotation to select the logical
+key. For example, function-go-templating consumes
+`gotemplating.fn.crossplane.io/composition-resource-name`; Core persists
+`crossplane.io/composition-resource-name` on the actual object.[15][16][17] These
+are two layers of the same logical association, not interchangeable annotation
+keys and not Kubernetes names.
 
 # Behavior when `metadata.name` changes
 
@@ -165,3 +187,4 @@ and [existing-resource update behavior](https://github.com/crossplane/crossplane
 [14] [Management policies and recreation after external deletion](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L286-L355)
 [15] [Generated composed-resource names are recommended](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_render.go#L74-L100)
 [16] [Composition-resource annotation key and accessors](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/xcrd/composite.go#L25-L40)
+[17] [function-go-templating named rendered-resource handling](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)

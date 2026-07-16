@@ -13,7 +13,12 @@ source_paths:
   - cluster/crds/pkg.crossplane.io_configurationrevisions.yaml
   - apis/pkg/v1/configuration_types.go
   - apis/pkg/v1/revision_types.go
-feature_state: Not stated by selected sources
+documentation_repository: crossplane/docs
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/packages/configurations.md
+feature_state: Stable by repository default
+feature_state_basis: ConfigurationRevision serves only v1 in the selected release, with no explicit non-stable label or deprecation metadata; v1 alone is not used as proof.
 ---
 
 # Overview
@@ -35,11 +40,20 @@ Installing a newer package version creates a new revision.
 One revision is active and determines the installed Composition and XRD resources; by default one inactive revision is retained.[5] Automatic activation selects the newest revision, while manual
 activation leaves activation under user control.[6]
 
+The selected v2.3 documentation establishes that `Manual` prevents automatic
+activation, but it does not state the exact supported mutation or command for
+promoting a retained inactive ConfigurationRevision. This catalog therefore
+does not invent a patch, `desiredState` edit, parent-policy toggle, or package
+reapply procedure. Resolve the operational promotion action from a current
+supported workflow before relying on manual activation.
+
 # Limitations
 
-Feature maturity is not stated.
+The ConfigurationRevision API is Stable by repository default. Manual
+activation workflow behavior has no separate maturity statement, and the
+supported promotion procedure remains unresolved by the selected sources.
 The generated CRD reports `controller-gen` v0.19.0.[7] Desired state is defined by Go constants but not encoded as an OpenAPI enum.
-No rollback-specific field or status exists, so this page does not claim a rollback procedure.
+No rollback-specific field or status exists, so this page does not claim a rollback procedure. The exact manual-promotion action is unresolved by the selected official documentation.
 
 # Citations
 

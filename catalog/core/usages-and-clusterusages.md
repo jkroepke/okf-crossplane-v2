@@ -17,6 +17,14 @@ source_paths:
   - internal/controller/protection/usage/reconciler.go
   - internal/protection/usage/finder.go
   - internal/webhook/protection/usage/handler.go
+documentation_repository: crossplane/docs
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/managed-resources/usages.md
+  - content/v2.3/composition/compositions.md
+supporting_source_repository: crossplane-contrib/function-sequencer
+supporting_source_commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
+supporting_source_paths: [fn.go]
 feature_state: Beta
 ---
 
@@ -27,6 +35,10 @@ Crossplane blocks deletion of the `of` resource while the relationship exists. T
 a dependent can be deleted before the resource it needs.[1]
 
 The APIs do not schedule creation or wait for the `of` resource to become ready. Their ordering guarantee is limited to deletion protection.
+This differs from [function-sequencer creation gating](../functions/function-sequencer/sequencing.md),
+which filters unobserved desired successors. When sequencer also generates
+deletion relationships, those Usage objects must already exist because
+Composition Functions do not run during XR deletion.[23]
 
 Both APIs are **Beta**, served and stored as `protection.crossplane.io/v1beta1`. Usages are enabled by default and can be disabled with `--enable-usages=false`.[2][3][4]
 
@@ -134,3 +146,4 @@ function generates Usage resources.[22]
 [20] [function-sequencer report #114](https://github.com/crossplane-contrib/function-sequencer/issues/114)
 [21] [Open GA promotion tracker #6336](https://github.com/crossplane/crossplane/issues/6336)
 [22] [function-sequencer v0.6.0 Usage generation](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L310-L387)
+[23] [Function pipelines do not run during XR deletion](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L143-L148)

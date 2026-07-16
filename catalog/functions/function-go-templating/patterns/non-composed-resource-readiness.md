@@ -9,6 +9,9 @@ source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
 source_paths: [extraresources.go, function_maps.go, fn.go]
+supporting_source_repository: crossplane/crossplane
+supporting_source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+supporting_source_paths: [internal/xfn/required_resources.go, cmd/crossplane/core/core.go]
 feature_state: Alpha
 feature_state_basis: ExtraResources uses meta.gotemplating.fn.crossplane.io/v1alpha1.
 ---
@@ -64,8 +67,9 @@ resource's actual schema. The example is a generic skeleton, not a claim that
   namespaced status object in this release.[1]
 - Treat zero or multiple results as not ready unless the external controller's
   contract explicitly supports another interpretation.
-- Ensure the function service account can read the requested API in the target
-  namespace.
+- Ensure the Crossplane Core Deployment service account can read the requested
+  API in the target namespace. Core performs the required-resource fetch; the
+  Function pod does not.[5]
 
 # Relationships
 
@@ -74,6 +78,8 @@ this flow using Sveltos's deterministic summary name and feature-status model.
 See [manual readiness](manual-readiness.md) for annotation semantics and
 [ExtraResources](../extra-resources.md) for fetch stabilization and no-match
 behavior.
+See [composed-resource RBAC](../../../core/composed-resource-rbac.md) for the
+principal and grant boundary.
 
 # Limitations
 
@@ -88,3 +94,4 @@ into explicit composed-resource readiness.
 [2] [`getExtraResources` lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154)
 [3] [Named-resource readiness handling](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
 [4] [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[5] [Core required-resource fetcher](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [Core client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
