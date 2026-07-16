@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Correction**: Clarified that the XRD `referenceable` version, rather than an XRD `storage` field, determines the generated CRD storage version; confirmed a referenceable `v1alpha1` renders as `storage: true`.
 * **Update**: Added release-contained PR #6588 source and test proof for the namespaced-XR cluster-scoped-resource rejection.
 * **Creation**: Added provider-kubernetes Object wrapper readiness and Secret-status boundaries, including Alpha API scope, derived-condition limits, and random-secret churn risk.
 * **Update**: Added dependency-gating, dynamic collection identity, and base64-safe connection-data guidance; excluded Claim-based workflows from this v2 pattern.
