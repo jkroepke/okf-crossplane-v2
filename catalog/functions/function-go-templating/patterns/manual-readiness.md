@@ -91,6 +91,22 @@ decisions made by this template.[5] Its CEL expression receives only the
 matched observed composed object, so CEL does not directly evaluate a separate
 `ExtraResources` result.[6]
 
+# Boundary: readiness is not staged introduction
+
+The ready annotation applies only after this template has rendered a complete
+named resource. A conditional whole-document `{{ if ... }}` instead changes
+the desired-resource set; it is a staged-introduction pattern, not manual
+readiness.[2][7]
+
+Use manual readiness for an application-specific condition or field on an
+already-rendered resource, including non-composed observed state. For a
+multi-stage dependency graph that needs declared rules, observed-successor
+retention, and XR Events, use
+[function-sequencer](../../function-sequencer/sequencing.md). The two can be
+combined: auto-ready can derive predecessor readiness before sequencer filters
+unobserved successors, while a manual annotation can set that readiness
+explicitly.[5][8]
+
 # Limitations
 
 - Explicit `False` is authoritative to a later auto-ready step. Use
@@ -107,3 +123,5 @@ matched observed composed object, so CEL does not directly evaluate a separate
 [4] [`getComposedResource` behavior](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132)
 [5] [function-auto-ready preserves explicit readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)
 [6] [function-auto-ready CEL activation contains the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[7] [Rendered documents and desired named resources](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L198-L218) and [desired-resource insertion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
+[8] [function-sequencer pipeline order and readiness boundary](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L54-L91)

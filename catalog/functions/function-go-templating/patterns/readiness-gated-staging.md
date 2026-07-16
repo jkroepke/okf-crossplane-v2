@@ -103,6 +103,11 @@ they express the dependency. If staging is necessary, use one named gate per
 stage and state the retention rule explicitly: once introduced, keep rendering
 the named resource unless deletion is intentional.
 
+For a declared multi-stage graph, prefer
+[function-sequencer](../../function-sequencer/sequencing.md): it performs the
+same unobserved-successor gating and observed-successor retention without
+duplicating latches in the template, and reports blocked stages as XR Events.[7]
+
 # Verification matrix
 
 Render and inspect at least these states:
@@ -132,3 +137,4 @@ status-update behavior.
 [4] [Final desired-state application](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L482-L570)
 [5] [function-auto-ready matching and explicit-readiness preservation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)
 [6] [Observed-resource garbage collection](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L882-L930)
+[7] [function-sequencer gating, retention, and Normal results](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L169-L247) and [Core Event conversion](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L449-L477)

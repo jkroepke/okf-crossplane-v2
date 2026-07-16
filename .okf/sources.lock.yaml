@@ -125,6 +125,13 @@ sources:
     previous_tag: v0.12.1
     previous_commit: 548ae34fd9c843f0747981894fb7fa0ff1ba47fa
     resolved_at: 2026-07-14
+  function-sequencer:
+    repository: crossplane-contrib/function-sequencer
+    tag: v0.6.0
+    commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
+    previous_tag: v0.5.0
+    previous_commit: 33505d3c6fb203b1f5f7a0257c28a8de3001ebf9
+    resolved_at: 2026-07-16
   function-environment-configs:
     repository: crossplane-contrib/function-environment-configs
     tag: v0.7.2
