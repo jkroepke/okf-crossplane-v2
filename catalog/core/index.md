@@ -16,7 +16,7 @@
 * [Composed-resource RBAC](composed-resource-rbac.md) - Why Crossplane cannot manage every Kubernetes resource kind by default and how to grant additional access.
 * [Real-time composition reconciliation](realtime-composition-reconciliation.md) - Beta composed-resource watches, TTL requeues, and required-resource refresh boundaries.
 * [Real-time composition project history](realtime-composition-project-history.md) - Selected-release churn reports, a contained runtime fix, and the post-release GA proposal.
-* [Namespaced composition boundaries](namespaced-composition-boundaries.md) - Same-namespace enforcement and the open issue #6759 report.
+* [Namespaced composition boundaries](namespaced-composition-boundaries.md) - Same-namespace enforcement with PR #6588 release and source proof.
 * [Cross-namespace synchronization patterns](cross-namespace-synchronization-patterns.md) - Evidence-backed provider-kubernetes and community-controller tradeoffs.
 * [Composition health in GitOps tools](composition-gitops-health.md) - Native status limitations and the documented Argo CD and Flux customization boundaries.
 * [Push platform-team Secrets to external stores](pushsecret-external-store-pattern.md) - An Alpha External Secrets Operator pattern for publishing selected Kubernetes Secret data to configured external stores.
