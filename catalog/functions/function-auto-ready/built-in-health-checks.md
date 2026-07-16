@@ -9,8 +9,7 @@ source_repository: crossplane-contrib/function-auto-ready
 source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 source_paths: [README.md, healthchecks]
 release: v0.7.0
-feature_state: Stable
-feature_state_basis: Stable by repository default because selected sources contain no explicit non-stable label and no relevant served alpha or beta API.
+feature_state: Not stated by selected sources
 ---
 
 # Behavior
@@ -34,9 +33,18 @@ The selected release registers specialized checks for 15 Kubernetes resource kin
 
 The README provides the inventory, while the resource-specific implementations establish exact rules.[2][3][4][5][6]
 
+The built-in Secret rule establishes existence only. It does not check for
+required data keys or prove that a producer is ready. When credential
+completeness gates the XR contract, set explicit readiness in an earlier step
+using the [strict connection publication pattern](../function-go-templating/patterns/safe-status-and-connection-publication.md);
+function-auto-ready preserves explicit readiness.[7]
+
 # Limitations
 
-Resources without a registered check use the generic `Ready=True` condition fallback. A specialized check returning false also leaves readiness unspecified and does not prevent that fallback.[7]
+Maturity of these implementation-provided checks is **Not stated by selected
+sources**.
+
+Resources without a registered check use the generic `Ready=True` condition fallback. A specialized check returning false also leaves readiness unspecified and does not prevent that fallback.[8]
 
 # Citations
 
@@ -46,4 +54,5 @@ Resources without a registered check use the generic `Ready=True` condition fall
 [4] [Deployment implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/deployment.go#L17-L73)
 [5] [Job implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/job.go#L18-L45)
 [6] [HPA implementation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/horizontalpodautoscaler.go#L18-L50)
-[7] [Built-in and fallback ordering](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193)
+[7] [Secret registers the existence-only check](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/secret.go#L7-L13), [`alwaysReady` returns true](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L27-L32), and [earlier explicit readiness is preserved](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
+[8] [Built-in and fallback ordering](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193)

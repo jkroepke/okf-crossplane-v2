@@ -9,8 +9,7 @@ source_repository: crossplane-contrib/function-auto-ready
 source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 source_paths: [README.md, package/crossplane.yaml]
 release: v0.7.0
-feature_state: Stable
-feature_state_basis: Stable by repository default because selected sources contain no explicit non-stable label and the core function has no relevant served alpha or beta API.
+feature_state: Not stated by selected sources
 ---
 
 # Overview
@@ -31,6 +30,9 @@ The function consumes desired resources created by preceding steps; see [readine
 This concept describes stable tag `v0.7.0`, pinned to commit `ed7886de159af73b9d6976f04f9171ec7a4cb411`. The immediately preceding stable release is `v0.6.6`, pinned to `046fe9eca400dfdb835911d8b22da9b0e27a5547`.
 
 The repository does not state a minimum supported Crossplane version. Its Go dependency on Crossplane API modules is build-time evidence, not a user-facing compatibility guarantee.[3]
+Package maturity is **Not stated by selected sources**. The optional
+[Input API](input.md) is Beta and the CEL capability is explicitly Alpha; those
+states apply to their surfaces rather than labelling the package as a whole.
 
 # Citations
 

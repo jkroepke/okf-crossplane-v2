@@ -11,6 +11,8 @@ source_paths:
   - README.md
   - docs/testsuite-specification.md
   - docs/assertions.md
+  - examples/mytests/6_assertions/example1_assertions_xprin.yaml
+feature_state: Not stated by selected sources
 ---
 
 # Overview
@@ -18,25 +20,25 @@ source_paths:
 xprin is a Crossplane ecosystem test tool that orchestrates local CLI render
 and validation commands, then evaluates declarative assertions. It does not
 need a Kubernetes cluster, but rendering Composition Functions still requires
-Docker. This concept describes xprin's own test framework; it does not change
+Docker.[1] This concept describes xprin's own test framework; it does not change
 the Crossplane CLI contract described in [local Composition rendering](/cli/local-composition-rendering.md).
 
 # Suite inputs
 
 A suite identifies an XR, Composition, and Functions input. It may also
 provide observed resources and CRDs. Keep the suite XR-oriented for this
-legacy-free catalog.
+legacy-free catalog.[2]
 
 # Assertions
 
 After rendering, a suite may validate rendered manifests and check declarative
 assertions. The project's XR-oriented examples demonstrate count, existence,
 field-existence, field-type, and field-value assertions. Golden-file diff
-assertions are another optional check.
+assertions are another optional check.[4]
 
 The suite sequence is setup; optional XR patching; rendering; optional
 validation; optional assertions; hooks; and optional artifact export or
-chaining. Treat assertions as a repeatable test suite around a known input,
+chaining.[3] Treat assertions as a repeatable test suite around a known input,
 not proof that providers will successfully reconcile the generated resources.
 
 # Relationship to CLI rendering

@@ -129,6 +129,9 @@ Apply feature-state precedence:
 3. When an explicit Stable label conflicts with a served alpha or beta API, classify the API as Alpha or Beta and record the source conflict.
 4. When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API exists.
 5. Never use `v1` alone as proof of Stable; it only permits the repository Stable default when no other selected current evidence indicates a non-stable state.
+6. Apply a served-version state only to the API or capability that owns that version. Do not transfer an input API's state to the whole package or an unlabelled package's state to the input API.
+7. For non-API software, packages, helpers, and implementation behavior without an explicit lifecycle label, use `Not stated by selected sources`. A stable semantic-version tag selects released evidence; it is not a maturity label.
+8. A pattern that requires several APIs or explicitly labelled capabilities inherits the least stable required surface. Record the exact dependency as its feature-state basis.
 
 Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or an explicit legacy label.
 
@@ -157,7 +160,7 @@ Before writing Markdown, reduce the evidence packets to a claim ledger:
 - supporting immutable citation or direct issue/PR snapshot
 - confidence: direct, corroborated, or inferred
 - Crossplane release or documentation series
-- feature state and basis: explicit label, served alpha or beta API ceiling, or Stable repository default when no non-stable current evidence exists
+- feature state and basis: explicit label; served alpha or beta API ceiling; Stable API repository default when no non-stable current evidence exists; `Not stated by selected sources` for unlabelled non-API surfaces; or the least stable required surface for a pattern
 - design document status, accuracy warnings, and current corroboration result for historical-design evidence
 - selected-release relationship for issue and pull-request evidence
 - research timestamp for project-history evidence

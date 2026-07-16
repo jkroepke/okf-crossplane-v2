@@ -13,6 +13,12 @@ source_paths:
   - cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml
   - apis/apiextensions/v2/xrd_types.go
   - internal/controller/apiextensions/composite/api.go
+supporting_source_repository: crossplane/crossplane-runtime
+supporting_source_commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+supporting_source_paths: [pkg/xcrd/crd.go]
+documentation_repository: crossplane/docs
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths: [content/v2.3/composition/composite-resource-definitions.md]
 feature_state: Stable by repository default
 ---
 
@@ -29,7 +35,7 @@ cover the CRD capabilities exposed through an XRD.
 # Schema
 
 The defined resource requires `names.kind` and `names.plural`.
-Group and names are immutable, and plural and singular names must be lowercase.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Each declared version requires `name`, `served`, and `storage`.[5]
+Group and names are immutable, and plural and singular names must be lowercase.[3] Scope defaults to `Namespaced`, also permits `Cluster`, and is immutable.[4] Each declared version requires `name`, `served`, and `referenceable`.[5] The API field contract says exactly one version must be referenceable and it must also be served; Crossplane maps that version to `storage: true` in the generated XR CRD.[5][16]
 
 The XRD `v2` representation is served but not stored. The CRD's stored `v1` representation is explicitly deprecated; that storage detail does not make the current v2 user API legacy.[6]
 
@@ -62,6 +68,9 @@ therefore Stable by repository default; the `/v1` storage representation alone
 is not the basis for that classification.
 Claims, claim references, deprecated XRD v1 schema, legacy v1 XR semantics, and `LegacyCluster` guidance are excluded.
 Some v2.3 documentation snippets use the deprecated XRD `/v1` API; they are not used as v2 schema evidence.
+The selected XRD CRD does not contain a list-level CEL rule directly proving
+admission enforcement of the unique-referenceable contract; the field
+description and released generator establish the declared contract and mapping.
 
 # Citations
 
@@ -80,3 +89,4 @@ Some v2.3 documentation snippets use the deprecated XRD `/v1` API; they are not 
 [13] [Enforced Composition override](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/api.go#L355-L381)
 [14] [Enforced Composition guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/composite-resource-definitions.md#L603-L627)
 [15] [XRD scope guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/composite-resource-definitions.md#L500-L530)
+[16] [Referenceable version mapped to generated CRD storage](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/xcrd/crd.go#L158-L168)

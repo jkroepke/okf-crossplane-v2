@@ -1,5 +1,5 @@
 [![CI](https://github.com/jkroepke/okf-crossplane-v2/actions/workflows/ci.yaml/badge.svg?branch=main)](https://github.com/jkroepke/okf-crossplane-v2/actions/workflows/ci.yaml)
-[![GitHub license](https://img.shields.io/github/license/jkroepke/okf-crossplane-v2)](https://github.com/jkroepke/okf-crossplane-v2/blob/master/LICENSE.txt)
+[![GitHub license](https://img.shields.io/github/license/jkroepke/okf-crossplane-v2)](https://github.com/jkroepke/okf-crossplane-v2/blob/main/LICENSE)
 [![GitHub Repo stars](https://img.shields.io/github/stars/jkroepke/okf-crossplane-v2?style=flat&logo=github)](https://github.com/jkroepke/okf-crossplane-v2/stargazers)
 [![BundleDex](https://bundledex.net/badge/okf-crossplane-v2.svg)](https://bundledex.net/bundles/okf-crossplane-v2/)
 
@@ -66,7 +66,13 @@ This repository connects these sources in one versioned catalog without replacin
 
 ## Knowledge structure
 
-Knowledge is stored as small Markdown documents under `catalog/`. Each document represents an independently useful concept and includes OKF metadata, relationships to related concepts, and citations to the original sources.
+Knowledge is stored as small Markdown documents under [`catalog/`](catalog/index.md). Each document represents an independently useful concept and includes OKF metadata, relationships to related concepts, and citations to the original sources.
+
+If the task is to build a Crossplane v2 Composition, start with the
+[Composition developer starter guide](catalog/composition-developer-starter.md).
+It connects the API, provider, function, security, readiness, identity,
+testing, and packaging concepts without pretending that provider-specific
+schemas or credentials are universal.
 
 The catalog is intended to be:
 

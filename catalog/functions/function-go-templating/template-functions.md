@@ -10,13 +10,16 @@ source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
 source_paths:
   - function_maps.go
+  - fn.go
   - README.md
   - example/functions
-feature_state: Stable
-feature_state_basis: >-
-  Stable by repository default because selected sources contain no explicit
-  non-stable label and no relevant served alpha or beta API version for these
-  helpers.
+supporting_source_repository: crossplane/crossplane-runtime
+supporting_source_commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+supporting_source_paths: [pkg/xcrd/composite.go]
+crossplane_source_repository: crossplane/crossplane
+crossplane_source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+crossplane_source_paths: [internal/controller/apiextensions/composite/composition_render.go]
+feature_state: Not stated by selected sources
 ---
 
 # Functions
@@ -43,7 +46,9 @@ feature_state_basis: >-
 - `setResourceNameAnnotation name` returns the YAML mapping line
   `gotemplating.fn.crossplane.io/composition-resource-name: <name>`. It is
   intended for use beneath `metadata.annotations`; it does not mutate an
-  object.[4]
+  object.[4] This function-specific annotation selects the desired-map key.[14]
+  Crossplane Core persists a separate `crossplane.io/composition-resource-name`
+  annotation on the actual object; neither annotation is `metadata.name`.[12][13]
 - `getComposedResource request name` reads
   `observed.resources[<name>].resource` and returns a resource map or `nil` when
   the named observed composed resource or path is absent.[5]
@@ -81,6 +86,9 @@ the retained capability groups.
 
 # Limitations
 
+- Maturity of these implementation-provided helpers is **Not stated by selected
+  sources**. The selected stable release tag pins evidence but is not a product
+  lifecycle label.
 - `randomChoice` is nondeterministic and is not suitable for cryptographic selection.[2]
 - Lookup helpers intentionally collapse malformed or missing paths to `nil` (or an `Unknown` condition), so templates that must distinguish those cases need explicit validation.[3][5][6]
 - `getCredentialData` is implemented in the selected release but is omitted from its README helper table.[7][11]
@@ -98,3 +106,6 @@ the retained capability groups.
 [9] [Pinned Sprig dependency](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/go.mod#L5-L10)
 [10] [Removed environment functions](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L56-L62)
 [11] [Selected-release additional-functions table](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L393-L410)
+[12] [Core composition-resource annotation key](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/xcrd/composite.go#L25-L40)
+[13] [Core persists the logical resource key on the rendered object](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_render.go#L98-L100)
+[14] [Function consumes the annotation as the desired resource-map key](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)

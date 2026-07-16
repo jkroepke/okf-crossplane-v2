@@ -1,6 +1,14 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Reorganization**: Kept readiness concepts atomic while expanding the Composition developer route by outcome, grouping function-go-templating patterns by the state they change, and renaming the Sveltos specialization so it cannot be mistaken for the generic non-composed-resource pattern.
+* **Update**: Taught the Crossplane v2 OKF skill to retrieve the Composition developer starter as the primary routing concept for Composition authoring and substantial review tasks.
+* **Review**: Added an evidence-bounded Composition developer starter route and cross-concept links across API design, provider schema selection, functions, security, readiness, identity, testing, and packaging.
+* **Correction**: Replaced the incorrect XRD v2 `storage` authoring field with `referenceable` and corrected the Composition `compositeTypeRef` formula.
+* **Correction**: Assigned ExtraResources read RBAC to the Crossplane Core service account and separated required-resource reads from composed-resource writes and Function runtime identity.
+* **Consistency**: Scoped feature-state defaults to their owning API or capability; unlabelled non-API packages, helpers, and implementation behavior now remain Not stated.
+* **Cross-concept review**: Distinguished readiness, desired-resource introduction, and deletion protection; documented Secret existence versus key completeness and shared environment-context ownership.
+* **Validation**: Replaced directory links with explicit indexes and pinned remaining released-source citations to immutable commits.
 * **Creation**: Proved composed-resource name preservation under a stable logical key, bounded immutable-field recreation claims, and added staged create-before-delete replacement guidance.
 * **Creation**: Added complete function-sequencer v0.6.0 Input property coverage, explicit UsageVersion mixed-scope safety, and post-release `createOnly` boundaries.
 * **Update**: Cross-linked Core Usage/ClusterUsage scope guidance with function-sequencer issue #114 and generated-reference limitations.

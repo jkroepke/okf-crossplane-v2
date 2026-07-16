@@ -11,6 +11,7 @@ source_repository: crossplane/crossplane
 source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
 source_paths: [apis/core/v2/resource.go, apis/core/v2/resource_namespace.go, apis/core/v2/resource_cluster.go, internal/controller/apiextensions/composite/composition_functions.go]
 feature_state: Stable by repository default; Beta fields identified separately
+feature_state_basis: Stable applies to the selected common managed-resource API contract; explicitly Beta initProvider and managementPolicies surfaces retain their lower state.
 ---
 
 # Common shape

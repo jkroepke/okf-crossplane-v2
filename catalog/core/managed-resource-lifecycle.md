@@ -1,7 +1,7 @@
 ---
 type: concept
 title: Managed resource reconciliation lifecycle
-description: The stable provider-agnostic observe-first state machine for creating, updating, late-initializing, deleting, and polling external resources.
+description: The provider-agnostic observe-first state machine for creating, updating, late-initializing, deleting, and polling external resources.
 resource: https://github.com/crossplane/crossplane-runtime
 tags: [crossplane, core, managed-resources, reconciliation, lifecycle]
 timestamp: 2026-07-12T00:00:00Z
@@ -9,7 +9,7 @@ crossplane_release: v2.3.3
 source_repository: crossplane/crossplane-runtime
 source_commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
 source_paths: [pkg/reconciler/managed/reconciler.go]
-feature_state: Stable by repository default
+feature_state: Not stated by selected sources
 ---
 
 # Lifecycle

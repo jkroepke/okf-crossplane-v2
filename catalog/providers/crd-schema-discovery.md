@@ -11,6 +11,7 @@ source_paths:
 supporting_sources:
   - api.upbound.io/v1
   - marketplace.upbound.io
+feature_state: Not stated by selected sources
 ---
 
 # Fast registry lookup
@@ -22,14 +23,14 @@ available CRDs. Use the package route, not the `/v1/` root by itself:
 https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources
 ```
 
-This version-addressed route returns the package resource inventory. To fetch
+This version-addressed route returns the package resource inventory.[1] To fetch
 one CRD definition directly, use its group and kind:
 
 ```text
 https://api.upbound.io/v1/packages/upbound/provider-aws-s3/latest/resources/s3.aws.m.upbound.io/Bucket
 ```
 
-The latter is a fast way to inspect the `Bucket` CRD. `latest` is mutable, so
+The latter is a fast way to inspect the `Bucket` CRD.[2] `latest` is mutable, so
 use it for exploration only. For a test, validation fixture, or published
 claim, select the exact package version installed by the environment and retain
 the retrieved CRD as an explicit fixture. A version in this API URL is useful
@@ -39,16 +40,17 @@ package identity, but is not a Git commit pin.
 
 Do not conflate `upbound/provider-aws-s3` with
 `crossplane-contrib/provider-aws`. They are different provider families and
-their APIs are not interchangeable. There is also no
-`crossplane-contrib/provider-aws-s3` repository. The Upbound S3 subpackage
-identifies `crossplane-contrib/provider-upjet-aws` as its source.
+their APIs are not interchangeable. Do not assume a
+`crossplane-contrib/provider-aws-s3` repository from the package name; the
+selected Upbound S3 package identifies `crossplane-contrib/provider-upjet-aws`
+as its source.[3][4]
 
 The Upbound Marketplace documents supported package capabilities including
 backporting for selected releases. Do not turn that into a claim that public
 Upbound packages and an upstream repository are byte-for-byte equivalent, or
 that a particular fix is paywalled: establish the exact package version,
 digest, entitlement, and selected upstream source before making a compatibility
-or availability claim.
+or availability claim.[5]
 
 # Source-tree fallback
 

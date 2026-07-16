@@ -21,8 +21,8 @@ Use this compact Markdown structure:
 - Title: proposed title
 - Summary: one sentence, source-backed
 - Crossplane version scope: exact release or major.minor documentation series
-- Feature state: Alpha | Beta | Preview | Stable | Deprecated
-- Feature-state basis: explicit commit-pinned label; served `v1alpha*` or `v1beta*` API version; or `Stable by repository default because selected sources contain no explicit non-stable label and no relevant served alpha or beta API version`
+- Feature state: Alpha | Beta | Preview | Stable | Deprecated | Not stated by selected sources
+- Feature-state basis: explicit commit-pinned label; served `v1alpha*` or `v1beta*` API version; `Stable by repository default because selected API sources contain no explicit non-stable label and no relevant served alpha or beta API version`; `Not stated by selected sources` for an unlabelled non-API surface; or the least stable required API/capability for a pattern
 - Claims:
   - Claim text
     - Class: API | behavior | documented-guidance | historical-context | release-history | reported-limitation | proposal | illustrative-pattern
@@ -76,6 +76,9 @@ Rules:
 - When an explicit Stable label conflicts with a served alpha or beta API version, classify the API as Alpha or Beta and record the source conflict.
 - When no explicit label exists, use Alpha for `v1alpha*`, Beta for `v1beta*`, and Stable only when no relevant served alpha or beta API version exists.
 - Never use `v1` alone as evidence of Stable; it only permits the repository Stable default when no other selected evidence indicates a non-stable state.
+- Apply a served-version state only to the API or capability that owns that version. Do not transfer an input API's state to a Function package or a package state to its input API.
+- For non-API software, packages, helpers, and implementation behavior without an explicit lifecycle label, use `Not stated by selected sources`. Stable semantic-version source selection is not a maturity label.
+- A pattern inherits the least stable API or explicitly labelled capability required for the pattern; record that dependency as the feature-state basis.
 - Never derive feature state from a design document or its Speculative, Draft, Accepted, or Defunct status.
 - Do not treat every `apiextensions.crossplane.io/v1` resource as legacy. Require explicit deprecation metadata or a legacy label. Current Crossplane v2 resources may still use a v1 Kubernetes API version.
 - Exclude Claims, deprecated CompositeResourceDefinition v1, and legacy v1 composite-resource semantics from legacy-free catalog work.

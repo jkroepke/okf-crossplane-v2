@@ -11,9 +11,12 @@ source_paths:
   - internal/controller/apiextensions/composite/composition_functions.go
   - internal/controller/apiextensions/composite/composition_render.go
   - internal/controller/apiextensions/composite/composition_functions_test.go
+supporting_source_repository: crossplane-contrib/function-go-templating
+supporting_source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+supporting_source_paths: [extraresources.go]
 crossplane_release: v2.3.3
-feature_state: Stable
-feature_state_basis: Stable by repository default because selected released implementation and tests contain no explicit non-stable label and no relevant served alpha or beta API defining this controller behavior.
+feature_state: Not stated by selected sources
+feature_state_basis: Selected released implementation and tests establish current controller behavior, but do not state a lifecycle label.
 project_history_researched_at: 2026-07-16T00:00:00Z
 ---
 
@@ -65,10 +68,24 @@ cluster-scoped XR, or wrapping the target in provider-kubernetes `Object`.[11]
 The issue remains open and is labelled `enhancement` and `composition` as of the
 research timestamp.
 
+# Required-resource boundary
+
+Function required resources are fetched by Crossplane Core separately from
+composed-resource rendering. Exact-name selectors call `Get` with the supplied
+namespace; label selectors call `List`, and an empty namespace lists across
+namespaces.[12] This fetch path is not constrained by the namespaced-XR
+composed-resource namespace override described above.
+
+For function-go-templating v0.12.2, only exact-name ExtraResources conversion
+copies the requested namespace. Its label path returns without the namespace,
+so Core receives an empty namespace and lists across namespaces, subject to
+the Crossplane Core service account's RBAC.[13] Issue #6759 remains only a
+report; the selected released code establishes this narrower fetch behavior.
+
 # Limitations
 
-- Issue #6759's cross-namespace `ExtraResources` report is retained as a report;
-  this source batch did not establish its exact released Core fetch boundary.
+- Required-resource reads do not authorize cross-namespace composed-resource
+  writes and do not weaken the same-namespace rendering guard.
 - Claims, deprecated XRD v1, and legacy v1 XR semantics were excluded. The
   legacy workaround appears only as project-history context.
 
@@ -76,7 +93,9 @@ research timestamp.
 
 See [cross-namespace synchronization patterns](cross-namespace-synchronization-patterns.md)
 for provider-kubernetes and community-controller tradeoffs that operate without
-changing this Core boundary.
+changing this Core boundary. See
+[ExtraResources](../functions/function-go-templating/extra-resources.md) for the
+function-specific selector limitation.
 
 # Citations
 
@@ -91,3 +110,5 @@ changing this Core boundary.
 [9] [Namespaced composed-resource observation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L778-L810)
 [10] [Maintainer comment on Kubernetes ownership conventions](https://github.com/crossplane/crossplane/issues/6759#issuecomment-3235190860)
 [11] [Open issue #6759 and complete discussion](https://github.com/crossplane/crossplane/issues/6759)
+[12] [Core required-resource exact-name and label fetch paths](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L154-L227)
+[13] [function-go-templating namespace conversion boundary](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)

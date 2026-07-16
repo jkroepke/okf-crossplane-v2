@@ -8,6 +8,20 @@ timestamp: 2026-07-16T00:00:00Z
 source_repository: crossplane-contrib/function-sequencer
 source_tag: v0.6.0
 source_commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
+source_paths: [fn.go, README.md]
+supporting_sources:
+  - repository: crossplane/crossplane
+    commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+    paths: [internal/controller/apiextensions/composite/composition_functions.go]
+  - repository: crossplane/docs
+    commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+    paths: [content/v2.3/composition/compositions.md]
+  - repository: crossplane-contrib/function-auto-ready
+    commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
+    paths: [fn.go]
+  - repository: crossplane-contrib/function-go-templating
+    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+    paths: [fn.go]
 feature_state: Beta
 feature_state_basis: The selected Input API is served as sequencer.fn.crossplane.io/v1beta1.
 ---
@@ -105,7 +119,9 @@ sequencer has withheld a successor.[3]
   need a rule condition rather than an unconditional predecessor rule.[4]
 - Creation sequencing and optional deletion sequencing are separate. Deletion
   sequencing uses v2 Usage or ClusterUsage relationships and has its own
-  scope and foreground-deletion requirements.[5]
+  scope and foreground-deletion requirements.[5] Composition Functions do not
+  run during XR deletion, so deletion relationships must already exist before
+  deletion begins.[8]
 - Sequencer filters desired state; it cannot reverse an external action already
   taken by a provider.
 
@@ -115,6 +131,10 @@ For a small, custom condition or non-composed observed state, retain a
 [manual readiness](../function-go-templating/patterns/manual-readiness.md)
 override. For the lower-level template-latch alternative, see
 [readiness-gated staging](../function-go-templating/patterns/readiness-gated-staging.md).
+For the Core deletion-protection contract, see
+[Usage and ClusterUsage](../../core/usages-and-clusterusages.md).
+The [Input reference](input.md) documents defaults, CEL conditions, cache TTL,
+and the mixed-scope deletion-sequencing guard.
 
 # Citations
 
@@ -124,4 +144,5 @@ override. For the lower-level template-latch alternative, see
 [4] [Rule conditions and missing predecessor behavior](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L196-L250)
 [5] [Deletion sequencing and v2 Usage handling](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L93-L153)
 [6] [Minimal Input pipeline step](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L7-L21)
-[7] [function-auto-ready writes matched desired-resource readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)
+[7] [function-auto-ready writes observation-derived desired-resource readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193)
+[8] [Function pipelines do not run during XR deletion](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L143-L148)

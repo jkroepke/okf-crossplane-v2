@@ -79,7 +79,14 @@ resources. Do not select it for a namespaced relationship.[2]
 The user-supplied commit `e277a4070f65fc50dfb08b03d2acdcbdbfe1350b` is after
 v0.6.0 and is not a selected stable release. It adds `rules[].createOnly` and
 mutual exclusion with `deleteOnly`; do not use that field unless a released
-function package containing it has been selected and verified.
+function package containing it has been selected and verified.[5]
+
+# Relationships
+
+See [sequencing behavior](sequencing.md) for the creation-gating outcome and
+recommended pipeline position. Core
+[Usage and ClusterUsage](../../core/usages-and-clusterusages.md) establish the
+separate deletion-protection scope model.
 
 # Citations
 

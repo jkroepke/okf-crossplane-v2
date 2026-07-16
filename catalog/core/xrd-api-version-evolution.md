@@ -9,6 +9,7 @@ crossplane_release: v2.3.3
 source_repository: crossplane/crossplane
 source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
 feature_state: Stable by repository default
+feature_state_basis: The guidance inherits the selected stable XRD and Kubernetes CRD API surfaces; the authoring procedure has no independent maturity.
 ---
 
 # XRD version mapping

@@ -10,9 +10,13 @@ source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 source_paths:
   - example/cel-healthcheck/composition.yaml
   - example/cel-healthcheck/extra-resources.yaml
-supporting_source_repositories:
-  - crossplane-contrib/function-environment-configs
-  - crossplane-contrib/function-go-templating
+supporting_sources:
+  - repository: crossplane-contrib/function-environment-configs
+    commit: 5589092483aea1d65b9988f5116106585c4b516b
+    paths: [fn.go]
+  - repository: crossplane-contrib/function-go-templating
+    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+    paths: [template.go, context.go, fn.go, example/environment/composition.yaml]
 feature_state: Alpha
 feature_state_basis: The full pattern uses function-auto-ready CELHealthcheckCustomizations, which is explicitly Alpha and disabled by default.
 ---
@@ -31,6 +35,22 @@ consume the environment. If template text or rendering data comes from an
 EnvironmentConfig, environment-configs must instead precede go-templating.
 Auto-ready remains last because it consumes the desired resource and optional
 context produced earlier.[1][4]
+
+# Shared-context ownership
+
+Both function-environment-configs and function-go-templating can update the
+reserved `apiextensions.crossplane.io/environment` context key. The environment
+function merges selected EnvironmentConfig data over the incoming environment,
+while a rendered Alpha `Context` instruction deep-merges its values over the
+incoming context.[2][7] Pipeline order therefore changes the winner at a
+conflicting path.
+
+Assign one owner to each reserved-key subtree. If go-templating writes the
+environment key and a later environment-configs step selects a conflicting
+value, the later environment merge can overwrite it. Prefer environment-configs
+before templating when the template consumes or extends selected environment
+data, and avoid two steps claiming the same nested path unless the overwrite is
+intentional and tested.
 
 # Environment-supplied CEL rules
 
@@ -63,3 +83,4 @@ This page summarizes repository-owned Apache-2.0 examples; it does not reproduce
 [4] [auto-ready desired and observed resource ordering](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L119)
 [5] [Current v1beta1 EnvironmentConfig CEL rule](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/extra-resources.yaml#L1-L7)
 [6] [Older go-templating environment pipeline snapshot](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/example/environment/composition.yaml#L1-L36)
+[7] [function-go-templating Context deep merge](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/context.go#L10-L20) and [response writes](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L270-L310)

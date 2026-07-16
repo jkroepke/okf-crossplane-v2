@@ -203,7 +203,7 @@ Sprig functions.[16][17][18]
 
 # Relationships
 
-See [template functions](template-functions.md) for all helper signatures and [request data and context](request-data.md) for the rest of the request available to templates.
+See [template functions](template-functions.md) for all helper signatures and [request data and context](request-data.md) for the rest of the request available to templates. [Composed-resource RBAC](../../core/composed-resource-rbac.md) identifies the Crossplane Core service account as the required-resource read principal; do not grant these reads to the Function pod merely because the Function declared the selector.
 
 # Citations
 
@@ -223,8 +223,8 @@ See [template functions](template-functions.md) for all helper signatures and [r
 [14] [Crossplane fetch-error propagation into the Composition pipeline](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/apiextensions/composite/composition_functions.go#L378-L409)
 [15] [Released cluster-scoped label tests](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1083-L1147)
 and [namespaced exact-name test](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn_test.go#L1762-L1822)
-[16] [Go-template variable assignment, scope, and `break`](https://github.com/golang/go/blob/go1.25.11/src/text/template/doc.go#L121-L127)
-and [variable declaration and reassignment](https://github.com/golang/go/blob/go1.25.11/src/text/template/doc.go#L283-L310)
+[16] [Go-template variable assignment, scope, and `break`](https://github.com/golang/go/blob/d563bc4ba3301156c1e6b115a89c659b00d71fe7/src/text/template/doc.go#L121-L127)
+and [variable declaration and reassignment](https://github.com/golang/go/blob/d563bc4ba3301156c1e6b115a89c659b00d71fe7/src/text/template/doc.go#L283-L310)
 [17] [Sprig list helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/lists.md#L1-L125)
 and [dictionary helpers](https://github.com/Masterminds/sprig/blob/e708470d529a10ac1a3f02ab6fdd339b65958372/docs/dicts.md#L38-L106)
 [18] [function-go-templating's Sprig function map](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L24-L62)

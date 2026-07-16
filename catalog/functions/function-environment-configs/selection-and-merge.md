@@ -55,6 +55,9 @@ subject to the selected policy.[1][2][3]
 # Relationships
 
 Later steps can consume the output through [function-go-templating](../function-go-templating/environment-source.md) or the Alpha [function-auto-ready CEL context source](../function-auto-ready/cel-health-checks.md).
+See the [combined pipeline guide](../environment-config-pipeline.md) before a
+later function also updates the reserved environment key; order determines the
+winner at conflicting paths.
 
 # Citations
 

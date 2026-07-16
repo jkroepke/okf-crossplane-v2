@@ -11,6 +11,7 @@ source_repository: crossplane/docs
 source_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
 source_paths: [content/v2.3/managed-resources/managed-resources.md]
 feature_state: Stable by repository default
+feature_state_basis: Stable applies to the selected common managed-resource API contract; provider-defined APIs and explicitly labelled capabilities require separate evidence.
 ---
 
 # Overview
@@ -21,8 +22,11 @@ references, credentials, and external API behavior.[1]
 Crossplane Core publishes reusable MR contracts, but no single generic concrete `ManagedResource` CRD. The common runtime requires conditions, management policies, and a typed
 ProviderConfig reference, then delegates external `Observe`, `Create`, `Update`, and `Delete` behavior to the Provider.[2][3]
 
-Provider-agnostic MR behavior is **Stable by repository default** because the selected common contracts and runtime have no non-stable label or served alpha/beta API. This does
-not raise the maturity of provider-specific resources or the separately Beta and Alpha features below.
+The common managed-resource API contract is **Stable by repository default**
+because selected API sources have no non-stable label or served alpha/beta API.
+Unlabelled runtime implementation behavior has no separate maturity statement.
+Neither classification raises the maturity of provider-specific resources or
+the separately Beta and Alpha features below.
 
 # Relationships
 

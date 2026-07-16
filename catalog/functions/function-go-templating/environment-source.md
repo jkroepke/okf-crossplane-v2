@@ -47,7 +47,7 @@ The Alpha rendered `Context` instruction can deep-merge updates under the same r
 
 # Relationships
 
-[function-environment-configs](../function-environment-configs/) must run first to select and merge EnvironmentConfigs. [function-auto-ready](../function-auto-ready/) may run after resource rendering when its readiness behavior is needed.
+[function-environment-configs](../function-environment-configs/index.md) must run first to select and merge EnvironmentConfigs. [function-auto-ready](../function-auto-ready/index.md) may run after resource rendering when its readiness behavior is needed. The [combined pipeline guide](../environment-config-pipeline.md) documents shared-key overwrite ownership.
 
 # Citations
 

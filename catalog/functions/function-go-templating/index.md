@@ -16,7 +16,7 @@
 
 # Patterns and examples
 
-* [Readiness and external-query patterns](patterns/) - Apply manual readiness, non-composed-resource readiness, Sveltos status, and provider-backed external-query patterns.
+* [Pattern decision routes](patterns/index.md) - Choose among readiness evaluation, consumer publication, desired-resource introduction, and external-integration patterns by outcome.
 
 # Reference and history
 

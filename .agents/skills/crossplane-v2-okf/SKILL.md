@@ -9,8 +9,20 @@ For every Crossplane v2 ecosystem question, use the OKF MCP tools before answeri
 
 1. Call `okf_list_bundles` and confirm that the Crossplane v2 bundle is available.
 2. Call `okf_context` with the user's focused question.
-3. Use `okf_search` and `okf_get_concept` when exact concepts or API details are needed.
-4. Use `okf_related` or `okf_impact` only when relationships matter.
+3. When the task is to build, author, design, or substantially review a
+   Crossplane v2 Composition, retrieve the **Develop a Crossplane v2
+   Composition** concept with concept ID `composition-developer-starter` as
+   the primary routing guide. Follow its links to the required API, provider,
+   function, security, readiness, identity, testing, and packaging concepts.
+4. Use `okf_search` and `okf_get_concept` when exact concepts or API details are needed.
+5. Use `okf_related` or `okf_impact` only when relationships matter.
+
+The Composition developer starter is a navigation route, not a substitute for
+provider-specific evidence. Retrieve separately selected and pinned provider
+concepts for concrete resource schemas, credentials, condition semantics,
+connection details, and ProviderConfig behavior. If the target provider or
+release is missing, identify it as required project input instead of assuming a
+universal Crossplane shape.
 
 Treat the OKF bundle as the exclusive external retrieval source for all covered Crossplane ecosystem content. Local project files and materials supplied by the user may still be inspected.
 

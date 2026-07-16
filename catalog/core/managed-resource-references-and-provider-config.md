@@ -10,7 +10,7 @@ documentation_series: v2.3
 source_repository: crossplane/crossplane-runtime
 source_commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
 source_paths: [pkg/reconciler/managed/api.go, pkg/reconciler/managed/reconciler.go, pkg/reference/reference.go, pkg/resource/providerconfig.go]
-feature_state: Stable by repository default
+feature_state: Not stated by selected sources; individual referenced APIs retain their own maturity
 ---
 
 # References and selectors

@@ -9,8 +9,7 @@ source_repository: crossplane-contrib/function-auto-ready
 source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 source_paths: [fn.go, fn_test.go]
 release: v0.7.0
-feature_state: Stable
-feature_state_basis: Stable by repository default because selected sources contain no explicit non-stable label and no relevant served alpha or beta API.
+feature_state: Not stated by selected sources
 ---
 
 # Behavior
@@ -29,6 +28,9 @@ The implementation matches resources by the desired and observed maps supplied i
 
 # Limitations
 
+Maturity of the built-in implementation behavior is **Not stated by selected
+sources**. The optional CEL branch remains explicitly Alpha.
+
 The function writes desired composed-resource readiness. The README's statement that Crossplane considers an XR ready after all desired resources are ready describes downstream Crossplane behavior, not behavior implemented here.[5]
 
 CEL receives only the matched observed composed resource as `object`; it does
@@ -38,7 +40,7 @@ depends on a controller-created non-composed object, use an earlier
 
 # Citations
 
-[1] [Desired and observed resource matching](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)
+[1] [Desired and observed resource matching](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119) and [explicit-readiness preservation](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
 [2] [CEL evaluation stage](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L130)
 [3] [Built-in health-check stage](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L159)
 [4] [Generic Ready-condition fallback](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L161-L193)

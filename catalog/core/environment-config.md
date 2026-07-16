@@ -26,7 +26,7 @@ plural `environmentconfigs`, and short name `envcfg`.[1][2]
 
 The resource is not a native Composition selector or merge engine. Current
 pipelines use
-[function-environment-configs](../functions/function-environment-configs/) to
+[function-environment-configs](../functions/function-environment-configs/index.md) to
 retrieve selected objects, merge their data, and place the result in function
 context.[3]
 

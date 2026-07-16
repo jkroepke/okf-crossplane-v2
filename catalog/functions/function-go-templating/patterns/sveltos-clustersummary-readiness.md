@@ -21,6 +21,9 @@ supporting_source_repository: projectsveltos/libsveltos
 supporting_source_tag: v1.12.0
 supporting_source_commit: 82cc79ba33929ffd061ee75f106a3bd8b70addcd
 supporting_source_paths: [api/v1beta1/common_types.go]
+crossplane_source_repository: crossplane/crossplane
+crossplane_source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+crossplane_source_paths: [internal/xfn/required_resources.go, cmd/crossplane/core/core.go]
 feature_state: Alpha
 feature_state_basis: ExtraResources uses meta.gotemplating.fn.crossplane.io/v1alpha1.
 ---
@@ -46,8 +49,12 @@ Assumptions for this adaptable readiness fragment:
   Sveltos cluster;
 - the Profile configures at least one of Helm charts, policy references, or
   Kustomize references; and
-- the function service account can `get` Sveltos `ClusterSummary` objects in
-  the target namespace.
+- the Crossplane Core Deployment service account can `get` Sveltos
+  `ClusterSummary` objects in the target namespace; the Function pod does not
+  perform this read.[11]
+
+The directive below requests one exact-name required resource, and the helper
+reads its returned items from the Function request.[1][2]
 
 ```gotemplate
 {{- $xr := .observed.composite.resource }}
@@ -169,3 +176,4 @@ composed-resource-only alternative.
 [8] [Label selection omits namespace while exact-name selection copies it](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)
 [9] [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
 [10] [Sveltos compares Profile and ClusterSummary configuration before accepting provisioned status](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L147-L185)
+[11] [Core required-resource fetcher and client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)

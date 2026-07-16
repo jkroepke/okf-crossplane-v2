@@ -8,7 +8,17 @@ timestamp: 2026-07-15T00:00:00Z
 crossplane_release: v2.3.3
 source_repository: kubernetes/website
 source_commit: be897babb9149b808e2ab8ed5367e5d0651b3dca
+source_paths:
+  - content/en/docs/tasks/extend-kubernetes/custom-resources/custom-resource-definitions.md
+project_history_repository: crossplane/crossplane
+project_history_items: [pull/5908]
+supporting_source_repository: crossplane/crossplane
+supporting_source_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+supporting_source_paths:
+  - cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml
 feature_state: Stable by repository default
+feature_state_basis: The guidance is scoped to the selected stable XRD and Kubernetes CRD API surfaces; no independent maturity is assigned to the authoring pattern.
+project_history_researched_at: 2026-07-16T00:00:00Z
 ---
 
 # Preserve intentionally, not by accident

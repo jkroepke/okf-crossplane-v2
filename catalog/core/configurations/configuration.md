@@ -13,7 +13,12 @@ source_paths:
   - cluster/crds/pkg.crossplane.io_configurations.yaml
   - apis/pkg/v1/configuration_types.go
   - apis/pkg/v1/package_types.go
-feature_state: Not stated by selected sources
+documentation_repository: crossplane/docs
+documentation_commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
+documentation_paths:
+  - content/v2.3/packages/configurations.md
+feature_state: Stable by repository default
+feature_state_basis: Configuration serves only v1 in the selected release, with no explicit non-stable label or deprecation metadata; v1 alone is not used as proof.
 ---
 
 # Overview
@@ -50,7 +55,10 @@ Changes to a Configuration produce controller-managed [ConfigurationRevisions](r
 
 # Limitations
 
-Feature maturity is not stated. Pull-policy values are documented but are not encoded as an OpenAPI enum in the generated CRD. There is no rollback field; rollback behavior is not claimed from this schema.
+The Configuration API is Stable by repository default; unlabelled installation
+workflow behavior has no separate maturity statement. Pull-policy values are
+documented but are not encoded as an OpenAPI enum in the generated CRD. There
+is no rollback field; rollback behavior is not claimed from this schema.
 
 # Citations
 

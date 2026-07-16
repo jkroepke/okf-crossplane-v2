@@ -123,6 +123,16 @@ sources:
     commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
     selected_by: crossplane/v2.3.3 go.mod
     resolved_at: 2026-07-12
+  crossplane-runtime-pr-788:
+    repository: crossplane/crossplane-runtime
+    commit: 5faceb9d8a2cf6d839ab193d91a503dd619f8f2c
+    selected_by: PR #788 merge containment base for management-policy project history
+    resolved_at: 2026-07-16
+  crossplane-runtime-pr-906:
+    repository: crossplane/crossplane-runtime
+    commit: 311ca76bbd30f86e196438771062091a39e39e0d
+    selected_by: PR #906 merge containment base for real-time composition project history
+    resolved_at: 2026-07-16
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
     tag: v0.12.2
@@ -130,12 +140,22 @@ sources:
     previous_tag: v0.12.1
     previous_commit: 548ae34fd9c843f0747981894fb7fa0ff1ba47fa
     resolved_at: 2026-07-14
+  function-go-templating-pr-498:
+    repository: crossplane-contrib/function-go-templating
+    commit: fba11b570e75660b1ff52b05979ba805baae1a51
+    selected_by: PR #498 merge containment base for ExtraResources namespace project history
+    resolved_at: 2026-07-16
   function-sequencer:
     repository: crossplane-contrib/function-sequencer
     tag: v0.6.0
     commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
     previous_tag: v0.5.0
     previous_commit: 33505d3c6fb203b1f5f7a0257c28a8de3001ebf9
+    resolved_at: 2026-07-16
+  crossplane-pr-6345:
+    repository: crossplane/crossplane
+    commit: b90c89203554e2a4a0d5af0eecd72846a4b48c6d
+    selected_by: PR #6345 diverged merge comparison for Usage API historical context
     resolved_at: 2026-07-16
   function-environment-configs:
     repository: crossplane-contrib/function-environment-configs
@@ -242,6 +262,12 @@ sources:
     tag: go1.25.3
     commit: 28622c19591d95c9a83f706f2ed1b303d58da85f
     selected_by: Go text/template whitespace-trimming behavior for function-go-templating YAML rendering guidance
+    resolved_at: 2026-07-16
+  go-text-template-v1.25.11:
+    repository: golang/go
+    tag: go1.25.11
+    commit: d563bc4ba3301156c1e6b115a89c659b00d71fe7
+    selected_by: Go text/template variable assignment and break behavior for ExtraResources consumption filtering
     resolved_at: 2026-07-16
   yq:
     repository: mikefarah/yq
