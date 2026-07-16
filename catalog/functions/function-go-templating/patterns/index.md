@@ -6,3 +6,5 @@
 * [Safe database status and connection publication](safe-status-and-connection-publication.md) - Publish consumer-facing XR status and connection references only after named dependencies are ready.
 * [provider-kubernetes Object readiness](provider-kubernetes-object-readiness.md) - Choose wrapper readiness deliberately and avoid using wrapper status as a durable Secret store.
 * [Provider-backed external queries](provider-backed-external-query.md) - Query external APIs through a provider-opentofu Workspace and consume observed outputs safely.
+* [Readiness-gated staging](readiness-gated-staging.md) - Introduce dependent resources after observed readiness, then retain them across later reconciliations.
+* [YAML document boundaries](yaml-document-boundaries.md) - Preserve separators and field newlines when conditions change a rendered multi-document template.

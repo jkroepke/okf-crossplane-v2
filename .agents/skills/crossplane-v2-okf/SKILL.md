@@ -20,4 +20,4 @@ Preserve cited versions, feature states, limitations, and original source links.
 
 When the bundle does not contain enough information, state that the available OKF knowledge is incomplete and identify what is missing. Do not silently switch to another retrieval source.
 
-When the OKF MCP server or required tools are unavailable, report that dependency as unavailable and stop the Crossplane-specific retrieval workflow.
+When the OKF MCP server or required tools are unavailable, report that dependency as unavailable and stop the Crossplane-specific retrieval workflow. Do not fall back to web search, `curl`, raw GitHub URLs, `gh`, Context7, or another documentation source to retrieve Crossplane material. Local project files and user-supplied material remain in scope.

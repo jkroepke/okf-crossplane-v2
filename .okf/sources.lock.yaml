@@ -106,6 +106,11 @@ sources:
     commit: 45a0b5b7e6b292c0a59c899aa50a3662a0c1cf7d
     selected_by: crossplane/crossplane issue 2672 maintainer reference
     resolved_at: 2026-07-14
+  crd-catalog:
+    repository: CustomResourceDefinition/catalog
+    commit: 0584c9f7e6eaef8367cd65e59266d8ad49764f0c
+    selected_by: community CRD definition discovery for local validation coverage
+    resolved_at: 2026-07-16
   flux-website:
     repository: fluxcd/website
     series: v2-9
@@ -125,6 +130,13 @@ sources:
     previous_tag: v0.12.1
     previous_commit: 548ae34fd9c843f0747981894fb7fa0ff1ba47fa
     resolved_at: 2026-07-14
+  function-sequencer:
+    repository: crossplane-contrib/function-sequencer
+    tag: v0.6.0
+    commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
+    previous_tag: v0.5.0
+    previous_commit: 33505d3c6fb203b1f5f7a0257c28a8de3001ebf9
+    resolved_at: 2026-07-16
   function-environment-configs:
     repository: crossplane-contrib/function-environment-configs
     tag: v0.7.2
@@ -220,6 +232,18 @@ sources:
     commit: e708470d529a10ac1a3f02ab6fdd339b65958372
     selected_by: function-go-templating/go.mod
     resolved_at: 2026-07-12
+  go-text-template:
+    repository: golang/go
+    tag: go1.25.3
+    commit: 28622c19591d95c9a83f706f2ed1b303d58da85f
+    selected_by: Go text/template whitespace-trimming behavior for function-go-templating YAML rendering guidance
+    resolved_at: 2026-07-16
+  yq:
+    repository: mikefarah/yq
+    tag: v4.53.3
+    commit: 1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d
+    selected_by: multi-document YAML parse and pretty-print validation guidance
+    resolved_at: 2026-07-16
   external-secrets:
     repository: external-secrets/external-secrets
     tag: v2.7.0
