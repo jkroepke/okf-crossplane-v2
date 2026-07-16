@@ -88,6 +88,24 @@ primary_sources:
   - id: function-sequencer
     repository: crossplane-contrib/function-sequencer
     kind: function
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-sequencer-researcher
+    paths:
+      - README.md
+      - package/crossplane.yaml
+      - package/input
+      - input
+      - fn.go
+      - fn_test.go
+      - main.go
+      - example
+      - examples
+      - go.mod
+    legacy_exclusions:
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
   - id: function-auto-ready
     repository: crossplane-contrib/function-auto-ready
     kind: function
