@@ -220,6 +220,18 @@ sources:
     commit: e708470d529a10ac1a3f02ab6fdd339b65958372
     selected_by: function-go-templating/go.mod
     resolved_at: 2026-07-12
+  go-text-template:
+    repository: golang/go
+    tag: go1.25.3
+    commit: 28622c19591d95c9a83f706f2ed1b303d58da85f
+    selected_by: Go text/template whitespace-trimming behavior for function-go-templating YAML rendering guidance
+    resolved_at: 2026-07-16
+  yq:
+    repository: mikefarah/yq
+    tag: v4.53.3
+    commit: 1b9b4ac5187171d2e5e3129be0cfa827c7f9d53d
+    selected_by: multi-document YAML parse and pretty-print validation guidance
+    resolved_at: 2026-07-16
   external-secrets:
     repository: external-secrets/external-secrets
     tag: v2.7.0
