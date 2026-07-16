@@ -122,6 +122,17 @@ tag. A hit establishes only that a community schema snapshot exists; validate
 it separately with a schema-capable Kubernetes tool, then verify the exact
 installed operator CRD. A miss does not prove that the CRD does not exist.[11]
 
+Use the catalog's documented raw-schema location template with a pinned
+catalog commit:
+
+```text
+https://raw.githubusercontent.com/CustomResourceDefinition/catalog/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/schema/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json
+```
+
+The consumer of this template resolves its GVK placeholders while processing
+each rendered document. Do not use this CRD-schema lookup for built-in
+Kubernetes resources such as `v1/Secret`; they have no CRD in the catalog.[11]
+
 Do not treat the catalog as a `resource validate` input integration: its
 documented use is standalone schema validation, and the selected CLI has no
 documented built-in-schema loader. Keep built-in Kubernetes resources in the
