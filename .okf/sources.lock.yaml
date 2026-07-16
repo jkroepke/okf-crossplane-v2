@@ -11,6 +11,17 @@ sources:
     tag: v2.3.3
     commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     resolved_at: 2026-07-14
+  crossplane-v2.0.0:
+    repository: crossplane/crossplane
+    tag: v2.0.0
+    commit: b639502e2f93680ff83417a0f517ec459ce079cc
+    selected_by: PR #6588 release containment and initial released behavior
+    resolved_at: 2026-07-16
+  crossplane-pr-6588:
+    repository: crossplane/crossplane
+    commit: b22c2bb24d30ef2c199e198353e33402484efed3
+    selected_by: merged PR #6588 project-history provenance
+    resolved_at: 2026-07-16
   crossplane-v2.2.0:
     repository: crossplane/crossplane
     tag: v2.2.0
