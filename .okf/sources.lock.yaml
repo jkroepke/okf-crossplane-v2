@@ -151,6 +151,11 @@ sources:
     previous_tag: v0.6.6
     previous_commit: 046fe9eca400dfdb835911d8b22da9b0e27a5547
     resolved_at: 2026-07-14
+  function-sequencer-post-v060:
+    repository: crossplane-contrib/function-sequencer
+    commit: e277a4070f65fc50dfb08b03d2acdcbdbfe1350b
+    selected_by: user-requested post-v0.6.0 Input-property research; not a released stable source
+    resolved_at: 2026-07-16
   sveltos-addon-controller:
     repository: projectsveltos/addon-controller
     tag: v1.12.0

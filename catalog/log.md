@@ -1,6 +1,8 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Creation**: Added complete function-sequencer v0.6.0 Input property coverage, explicit UsageVersion mixed-scope safety, and post-release `createOnly` boundaries.
+* **Update**: Cross-linked Core Usage/ClusterUsage scope guidance with function-sequencer issue #114 and generated-reference limitations.
 * **Update**: Added local validation schema-coverage triage for built-in Kubernetes resources, non-Crossplane custom resources, and community CRD catalog discovery boundaries.
 * **Creation**: Added release-pinned function-sequencer knowledge covering declared desired-resource sequencing, observed-successor retention, Input controls, and XR Events; clarified that manual template readiness does not sequence resource introduction.
 * **Creation**: Added readiness-gated staged resource introduction for function-go-templating, distinguishing reconciliation-round admission and retention from provider-side ordering.

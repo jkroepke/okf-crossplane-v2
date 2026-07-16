@@ -4,7 +4,7 @@ title: Usage and ClusterUsage deletion protection
 description: Beta Core APIs that block deletion of used resources and model deletion ordering across supported Kubernetes scopes.
 resource: https://docs.crossplane.io/v2.3/managed-resources/usages/
 tags: [crossplane, core, usage, deletion-protection, beta]
-timestamp: 2026-07-14T00:00:00Z
+timestamp: 2026-07-16T00:00:00Z
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
@@ -79,7 +79,8 @@ This concept is distinct from provider-defined `ProviderConfigUsage` tracking de
 
 # Limitations and project history
 
-Research timestamp: **2026-07-14**.
+Research timestamp: **2026-07-16**. Core evidence remains selected at v2.3.3;
+the function-sequencer cross-reference was researched on this date.
 
 - [Issue #7123](https://github.com/crossplane/crossplane/issues/7123), opened by a human author on 2026-02-06 and still open at the research timestamp,
   reports the inability to reliably model dependencies between namespaced and cluster-scoped resources. It proposes expanding `ClusterUsage`, allowing selected
@@ -90,7 +91,7 @@ Research timestamp: **2026-07-14**.
 - [Issue #6336](https://github.com/crossplane/crossplane/issues/6336), opened by a human maintainer and still open at the research timestamp,
   tracks promotion of the `protection.crossplane.io` Usage APIs to GA. It is an enhancement and roadmap-tracking issue, not evidence that GA promotion
   is released or committed to a particular release; the selected v2.3.3 APIs remain Beta.[2][3][4][21]
-- [function-sequencer issue #114](https://github.com/crossplane-contrib/function-sequencer/issues/114), opened by a human author and still open at the research timestamp,
+- [function-sequencer issue #114](https://github.com/crossplane-contrib/function-sequencer/issues/114), opened by human author `@jkroepke` on 2026-03-09, updated 2026-03-10, and still open at the 2026-07-16 research timestamp,
   reports a downstream manifestation in function-sequencer v0.5.0. A cluster-scoped Composition sequencing a namespaced resource produces a `ClusterUsage`
   that cannot encode the resource namespace and remains unready indefinitely.[20] This report illustrates the Core scope gap but does not independently establish Core behavior.
 - [PR #6345](https://github.com/crossplane/crossplane/pull/6345) is human-authored historical context for introducing the v2 Usage APIs on the former `v2` branch.
@@ -99,6 +100,15 @@ Research timestamp: **2026-07-14**.
 - Bot-authored stale notices and other automation activity were excluded from project-history evidence.
 
 The in-use label alone is therefore not proof that mixed-scope deletion protection works. For v2.3.3, use `Usage` for documented namespaced relationships and `ClusterUsage` when both endpoints are cluster-scoped.
+
+Composition Functions that generate Usage resources need an additional scope
+guard. In function-sequencer v0.6.0, `usageVersion: v2` chooses `ClusterUsage`
+when the predecessor (`of`) has no namespace. Do not enable deletion sequencing
+for a cluster-scoped predecessor to a namespaced successor: `ClusterUsage` has
+no namespace fields and Core cannot resolve that mixed-scope relationship.
+This is a function-specific authoring rule derived from the selected function
+implementation and the Core scope model, not a general claim that every
+function generates Usage resources.[22]
 
 # Citations
 
@@ -123,3 +133,4 @@ The in-use label alone is therefore not proof that mixed-scope deletion protecti
 [19] [Diverged PR merge and v2.3.3 commits](https://github.com/crossplane/crossplane/compare/b90c89203554e2a4a0d5af0eecd72846a4b48c6d...09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d)
 [20] [function-sequencer report #114](https://github.com/crossplane-contrib/function-sequencer/issues/114)
 [21] [Open GA promotion tracker #6336](https://github.com/crossplane/crossplane/issues/6336)
+[22] [function-sequencer v0.6.0 Usage generation](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L310-L387)
