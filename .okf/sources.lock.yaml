@@ -106,6 +106,11 @@ sources:
     commit: 45a0b5b7e6b292c0a59c899aa50a3662a0c1cf7d
     selected_by: crossplane/crossplane issue 2672 maintainer reference
     resolved_at: 2026-07-14
+  crd-catalog:
+    repository: CustomResourceDefinition/catalog
+    commit: 0584c9f7e6eaef8367cd65e59266d8ad49764f0c
+    selected_by: community CRD schema snapshot discovery for local validation coverage
+    resolved_at: 2026-07-16
   flux-website:
     repository: fluxcd/website
     series: v2-9

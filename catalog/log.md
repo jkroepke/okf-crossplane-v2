@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-16
+* **Update**: Added local validation schema-coverage triage for built-in Kubernetes resources, non-Crossplane custom resources, and community CRD catalog discovery boundaries.
 * **Creation**: Added release-pinned function-sequencer knowledge covering declared desired-resource sequencing, observed-successor retention, Input controls, and XR Events; clarified that manual template readiness does not sequence resource introduction.
 * **Creation**: Added readiness-gated staged resource introduction for function-go-templating, distinguishing reconciliation-round admission and retention from provider-side ordering.
 * **Creation**: Added Go-template whitespace-boundary guidance for staged, multi-document function-go-templating output, including initial and fully observed render verification.

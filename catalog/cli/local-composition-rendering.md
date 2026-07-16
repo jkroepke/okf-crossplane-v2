@@ -107,6 +107,33 @@ schema extensions and `-` as the rendered-resource stream. The
 `--error-on-missing-schemas` flag makes a missing schema fail the command, so a
 successful round trip has zero missing schemas and zero validation failures.
 
+## Schema-coverage triage
+
+`crossplane resource validate` builds its offline validators from XRDs and
+CRDs supplied as extensions or unpacked from Crossplane packages. It does not
+load Kubernetes built-in OpenAPI schemas. A rendered core `v1` resource such
+as a `Secret` therefore reports a missing CRD/XRD by design; it is a coverage
+gap, not evidence that the built-in resource needs a CRD.[10]
+
+For a non-Crossplane custom GVK that is missing from the XRD/provider schema
+set, look up the normalized Group, Kind, and version in the community
+`CustomResourceDefinition/catalog` at a pinned commit or Kubernetes-version
+tag. A hit establishes only that a community schema snapshot exists; validate
+it separately with a schema-capable Kubernetes tool, then verify the exact
+installed operator CRD. A miss does not prove that the CRD does not exist.[11]
+
+Do not treat the catalog as a `resource validate` input integration: its
+documented use is standalone schema validation, and the selected CLI has no
+documented built-in-schema loader. Keep built-in Kubernetes resources in the
+render output, but validate them with Kubernetes-aware tooling or cluster
+admission/dry-run separately. Use `--error-on-missing-schemas` only when every
+rendered GVK is expected to have an XRD/CRD schema, or expect it to fail for
+built-ins.[10]
+
+Issue #195 is an open v2.4.0 report by human author `@jkroepke` of the
+`v1/Secret` message; it does not establish a released fix or a supported
+workaround.[12]
+
 ## Image-version boundary
 
 In CLI v2.4.0, omitting `--crossplane-image` selects a Crossplane image whose
@@ -139,3 +166,9 @@ not change the documented v2.4.0 behavior.
 [8] [Validation inputs, missing-schema failure, and image selection](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/cmd.go#L74-L156)
 
 [9] [PR #148: change validation image default to `:stable`](https://github.com/crossplane/cli/pull/148), merged 2026-06-25; release containment checked 2026-07-16.
+
+[10] [CLI extension-only schema inputs](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L1-L27), [CRD validator construction](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92), and [missing-schema exit behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140)
+
+[11] [CRD Catalog validation scope and pinned-schema examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L1-L28)
+
+[12] [CLI issue #195: built-in Secret missing-schema report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
