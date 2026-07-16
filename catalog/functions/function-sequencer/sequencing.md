@@ -24,6 +24,19 @@ Once a successor is observed, sequencer preserves it even if a predecessor
 later becomes unready.[1] This supplies the observed-key retention that a
 Go-template staged-introduction pattern otherwise implements manually.
 
+# When to use it
+
+As inferred authoring guidance, use manual readiness when one
+already-rendered resource needs an application-specific readiness decision. Use
+a Go-template observed-key latch only for a small exceptional
+staged-introduction graph. Use sequencer for a declared or branching graph
+where the resource-producing function should emit all resources and sequencing
+should decide which unobserved successors enter the final desired state.
+
+Sequencer does not make provider operations transactional and does not perform
+rollback. Use provider lifecycle capabilities or a separate workflow for those
+requirements.
+
 # Bucket-stage mapping
 
 For a Bucket, ownership controls, public-access block, and ACL, first render
@@ -41,6 +54,38 @@ particular order. As inferred authoring guidance, it is a better fit than
 manual template latches when the dependency graph is more than a small
 exceptional case.
 
+# Pipeline order and minimal Input
+
+Run the resource-producing function first, then a readiness-producing step,
+then sequencer:
+
+```text
+resource-producing function (including any manual readiness annotation)
+  -> optional function-auto-ready
+  -> function-sequencer
+```
+
+For the Bucket-stage mapping, the sequencer step is:
+
+```yaml
+- step: sequence-creation
+  functionRef:
+    name: function-sequencer
+  input:
+    apiVersion: sequencer.fn.crossplane.io/v1beta1
+    kind: Input
+    rules:
+      - sequence: [bucket, ownership-controls]
+      - sequence: [bucket, public-access-block]
+      - sequence: [ownership-controls, public-acl]
+      - sequence: [public-access-block, public-acl]
+```
+
+The preceding resource-producing step must emit all four named resources. If
+automatic readiness is used, place `function-auto-ready` between that step and
+this one; if the template sets explicit readiness, it already supplies the
+predecessor readiness consumed here.[1][6][7]
+
 # Events and readiness
 
 When a rule blocks a successor or a rule condition is false, the function
@@ -48,10 +93,8 @@ returns actionable Normal results.[1] Crossplane converts these nonfatal
 function results into Kubernetes Events; the ordinary target is the composite
 resource, so the stage wait is visible on the XR.[2]
 
-Place `function-auto-ready` before sequencer when both are used. Auto-ready can
-derive predecessor readiness from matched observation; a prior manual
-readiness annotation can instead set it explicitly. Sequencer then determines
-whether an unobserved successor remains in the desired set. Set
+Sequencer then determines whether an unobserved successor remains in the
+desired set. Set
 `resetCompositeReadiness: true` only when the XR must not report ready while
 sequencer has withheld a successor.[3]
 
@@ -80,3 +123,5 @@ override. For the lower-level template-latch alternative, see
 [3] [README pipeline order and composite readiness option](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L54-L91)
 [4] [Rule conditions and missing predecessor behavior](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L196-L250)
 [5] [Deletion sequencing and v2 Usage handling](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L93-L153)
+[6] [Minimal Input pipeline step](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L7-L21)
+[7] [function-auto-ready writes matched desired-resource readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L102-L119)

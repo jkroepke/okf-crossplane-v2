@@ -100,12 +100,11 @@ readiness.[2][7]
 
 Use manual readiness for an application-specific condition or field on an
 already-rendered resource, including non-composed observed state. For a
-multi-stage dependency graph that needs declared rules, observed-successor
-retention, and XR Events, use
-[function-sequencer](../../function-sequencer/sequencing.md). The two can be
-combined: auto-ready can derive predecessor readiness before sequencer filters
-unobserved successors, while a manual annotation can set that readiness
-explicitly.[5][8]
+multi-stage dependency graph, see
+[function-sequencer](../../function-sequencer/sequencing.md). It is a separate
+desired-resource-introduction concern. The two can be combined: auto-ready can
+derive predecessor readiness before sequencer filters unobserved successors,
+while a manual annotation can set that readiness explicitly.[5][8]
 
 # Limitations
 

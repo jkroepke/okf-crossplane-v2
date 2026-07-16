@@ -96,17 +96,19 @@ observed-key latches are moderate and auditable complexity. Keep the pattern
 only when a downstream API must not be created until a prerequisite reaches a
 specific observed condition.
 
-It becomes high-complexity and fragile when stages branch, require rollback,
-duplicate latches across many resources, or rely on cross-controller
-convergence. Prefer provider-native references and ordinary readiness when
-they express the dependency. If staging is necessary, use one named gate per
-stage and state the retention rule explicitly: once introduced, keep rendering
-the named resource unless deletion is intentional.
+It becomes high-complexity and fragile when stages branch, duplicate latches
+across many resources, or rely on cross-controller convergence. Prefer
+provider-native references and ordinary readiness when they express the
+dependency. If staging is necessary, use one named gate per stage and state the
+retention rule explicitly: once introduced, keep rendering the named resource
+unless deletion is intentional.
 
-For a declared multi-stage graph, prefer
+For a declared or branching creation-introduction graph, prefer
 [function-sequencer](../../function-sequencer/sequencing.md): it performs the
 same unobserved-successor gating and observed-successor retention without
 duplicating latches in the template, and reports blocked stages as XR Events.[7]
+It does not provide rollback or a provider-side transaction; use provider
+lifecycle capabilities or a separate workflow for those requirements.
 
 # Verification matrix
 
