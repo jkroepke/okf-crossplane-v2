@@ -68,7 +68,7 @@ def get_versions(name: str) -> dict[str, Any]:
 
 
 @mcp.tool()
-def search_resources(
+def provider_crd_search(
     provider: str,
     pattern: str = "*",
     version: str = "latest",
@@ -84,7 +84,7 @@ def search_resources(
 
 
 @mcp.tool()
-def get_definitions(
+def provider_crd_get(
     provider: str,
     resource: str,
     version: str = "latest",
