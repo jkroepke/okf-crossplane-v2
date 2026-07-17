@@ -48,11 +48,14 @@ class FakeMarketplace:
         limit: int = 100,
     ) -> dict[str, Any]:
         self.search_calls.append((provider, pattern, version, limit))
+        needle = pattern.lower().strip("*")
         matches = [
             resource
             for resource in RESOURCES
             if pattern == "*"
-            or pattern.lower().strip("*") in str(resource["kind"]).lower()
+            or needle in str(resource["kind"]).lower()
+            or needle
+            == f"{resource['group']}/{resource['kind']}".lower()
         ]
         return {
             "provider": provider,
@@ -121,6 +124,15 @@ class ProviderCRDToolsTest(unittest.TestCase):
             "apiVersion: apigatewayv2.aws.m.upbound.io/v1beta1\nkind: API",
         )
 
+        self.assertEqual(
+            marketplace.search_calls[0],
+            (
+                "upbound/provider-aws",
+                "apigatewayv2.aws.m.upbound.io/API",
+                "v2.3.0",
+                500,
+            ),
+        )
         self.assertEqual(
             marketplace.definition_calls[0],
             (
