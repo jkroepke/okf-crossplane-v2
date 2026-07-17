@@ -10,6 +10,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from crossplane_marketplace import MarketplaceClient
+from provider_crd_tools import ProviderCRDTools
 
 
 def env_bool(name: str, default: bool) -> bool:
@@ -32,6 +33,13 @@ db_path = Path(os.environ.get("DB_PATH", "/data/catalog.duckdb")).resolve()
 bundle_name = os.environ.get("BUNDLE_NAME", "crossplane-v2-okf")
 marketplace = MarketplaceClient(
     base_url=os.environ.get("UPBOUND_API_URL", "https://api.upbound.io"),
+    timeout=float(os.environ.get("UPBOUND_API_TIMEOUT", "15")),
+)
+provider_crds = ProviderCRDTools(
+    marketplace,
+    github_raw_url=os.environ.get(
+        "GITHUB_RAW_URL", "https://raw.githubusercontent.com"
+    ),
     timeout=float(os.environ.get("UPBOUND_API_TIMEOUT", "15")),
 )
 
@@ -69,33 +77,60 @@ def get_versions(name: str) -> dict[str, Any]:
 
 @mcp.tool()
 def provider_crd_search(
-    provider: str,
-    pattern: str = "*",
-    version: str = "latest",
-    limit: int = 100,
+    provider_name: str,
+    provider_version: str,
+    crd_search_term: str,
 ) -> dict[str, Any]:
-    """Search a provider's CRDs with a case-insensitive wildcard pattern.
+    """Search CRDs in one explicit provider package version.
 
-    The pattern is matched against the resource group, kind, ``group/kind``,
-    and ``Kind.group``. It supports shell-style wildcards such as ``*`` and
-    ``?``. The latest stable provider version is used by default.
+    The search term is a case-insensitive shell wildcard matched against the
+    group, kind, group/kind, Kind.group, and group/version/kind identities.
     """
-    return marketplace.search_resources(provider, pattern, version, limit)
+    return provider_crds.search(provider_name, provider_version, crd_search_term)
 
 
 @mcp.tool()
-def provider_crd_get(
-    provider: str,
-    resource: str,
-    version: str = "latest",
+def provider_crd_get_definition(
+    provider_name: str,
+    provider_version: str,
+    crd_name: str,
 ) -> dict[str, Any]:
-    """Get the CRD definition for one resource from a provider.
+    """Get one provider CRD definition from an explicit package version.
 
-    Resource accepts a kind such as ``Bucket`` or a qualified
-    ``group/Kind`` value such as ``s3.aws.upbound.io/Bucket``. Use the
-    qualified form when the kind exists in more than one API group.
+    ``crd_name`` accepts Kind, group/Kind, group/version/Kind, or a YAML fragment
+    containing apiVersion and kind.
     """
-    return marketplace.get_definitions(provider, resource, version)
+    return provider_crds.get_definition(provider_name, provider_version, crd_name)
+
+
+@mcp.tool()
+def provider_crd_get_examples(
+    provider_name: str,
+    provider_version: str,
+    crd_name: str,
+) -> dict[str, Any]:
+    """Get GitHub repository paths for generated and handwritten CRD examples.
+
+    When no API version is included in ``crd_name``, the latest served CRD API
+    version is used for the example directory.
+    """
+    return provider_crds.get_examples(provider_name, provider_version, crd_name)
+
+
+@mcp.tool()
+def provider_crd_get_terraform_docs(
+    provider_name: str,
+    provider_version: str,
+    crd_name: str,
+) -> dict[str, Any]:
+    """Get the Terraform documentation repository and path for an Upjet CRD.
+
+    The provider Makefile selects the Terraform repository and version. The
+    generated controller identifies the exact Terraform resource name.
+    """
+    return provider_crds.get_terraform_docs(
+        provider_name, provider_version, crd_name
+    )
 
 
 @mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)
