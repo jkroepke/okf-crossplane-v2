@@ -161,36 +161,46 @@ export TERRAFORM_PROVIDER_SOURCE := hashicorp/aws
 export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-aws
 export TERRAFORM_DOCS_PATH ?= website/docs/r
 """
-        controller_path = (
-            "internal/controller/namespaced/apigatewayv2/routeresponse/"
-            "zz_controller.go"
-        )
-        tools = FakeProviderCRDTools(
-            marketplace,
-            {
-                f"{source}:Makefile": makefile,
-                f"{source}:{controller_path}": (
-                    'o.Provider.Resources["aws_apigatewayv2_route_response"]'
-                ),
-            },
-        )
+        github_files = {f"{source}:Makefile": makefile}
+        cases = [
+            (
+                "API",
+                "api",
+                "aws_apigatewayv2_api",
+                "website/docs/r/apigatewayv2_api.html.markdown",
+            ),
+            (
+                "RouteResponse",
+                "routeresponse",
+                "aws_apigatewayv2_route_response",
+                "website/docs/r/apigatewayv2_route_response.html.markdown",
+            ),
+        ]
+        for kind, directory, terraform_name, docs_path in cases:
+            controller_path = (
+                f"internal/controller/namespaced/apigatewayv2/{directory}/"
+                "zz_controller.go"
+            )
+            github_files[f"{source}:{controller_path}"] = (
+                f'o.Provider.Resources["{terraform_name}"]'
+            )
+        tools = FakeProviderCRDTools(marketplace, github_files)
 
-        result = tools.get_terraform_docs(
-            "upbound/provider-aws",
-            "v2.3.0",
-            "apigatewayv2.aws.m.upbound.io/v1beta1/RouteResponse",
-        )
-
-        self.assertEqual(result["repository"], "hashicorp/terraform-provider-aws")
-        self.assertEqual(result["ref"], "v6.53.0")
-        self.assertEqual(
-            result["path"],
-            "website/docs/r/apigatewayv2_route_response.html.markdown",
-        )
-        self.assertEqual(
-            result["terraform_resource_name"],
-            "aws_apigatewayv2_route_response",
-        )
+        for kind, _, terraform_name, docs_path in cases:
+            with self.subTest(kind=kind):
+                result = tools.get_terraform_docs(
+                    "upbound/provider-aws",
+                    "v2.3.0",
+                    f"apigatewayv2.aws.m.upbound.io/v1beta1/{kind}",
+                )
+                self.assertEqual(
+                    result["repository"], "hashicorp/terraform-provider-aws"
+                )
+                self.assertEqual(result["ref"], "v6.53.0")
+                self.assertEqual(result["path"], docs_path)
+                self.assertEqual(
+                    result["terraform_resource_name"], terraform_name
+                )
 
     def test_missing_crd_returns_clear_error(self) -> None:
         tools = FakeProviderCRDTools(FakeMarketplace())
