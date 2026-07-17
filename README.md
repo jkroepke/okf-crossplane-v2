@@ -51,15 +51,19 @@ The MCP tools are read-only, but the public endpoint has no application-level au
 
 ### Crossplane package tools
 
-The server adds three tools backed by the public Upbound Marketplace API:
+The server adds these tools backed by the public Upbound Marketplace API and provider source repositories:
 
 - `get_versions(name)` resolves a provider or function package and returns its latest stable version, latest published version, and available versions.
-- `provider_crd_search(provider, pattern="*", version="latest", limit=100)` searches the CRDs in a provider with case-insensitive shell-style wildcards. Patterns are matched against the API group, kind, `group/kind`, and `Kind.group`.
-- `provider_crd_get(provider, resource, version="latest")` returns the CRD definition for a kind or qualified `group/Kind` resource.
+- `provider_crd_search(provider_name, provider_version, crd_search_term)` searches CRDs in one explicit provider package version. The search term supports case-insensitive shell-style wildcards.
+- `provider_crd_get_definition(provider_name, provider_version, crd_name)` returns the complete CRD definition.
+- `provider_crd_get_examples(provider_name, provider_version, crd_name)` returns GitHub repository paths for generated and handwritten examples. Without an API version, it selects the latest served CRD API version, for example `examples-generated/namespaced/ec2/v1beta2/route.yaml`.
+- `provider_crd_get_terraform_docs(provider_name, provider_version, crd_name)` returns the Terraform provider repository, version, and documentation path. It reads the Crossplane provider Makefile and the generated controller mapping instead of inferring the Terraform resource name.
 
-Package names can be short names such as `provider-aws` and `function-go-templating`, qualified names such as `crossplane-contrib/provider-aws`, or full `xpkg.upbound.io` references. Short-name resolution prefers packages published by `crossplane-contrib`, then `crossplane`, then `upbound`. Use a qualified name to select another publisher explicitly.
+`crd_name` accepts a Kind, `group/Kind`, `group/version/Kind`, or a YAML fragment containing `apiVersion` and `kind`.
 
-The default `latest` value selects the highest stable semantic version. Set an explicit version to inspect another published package version. Self-hosted deployments need outbound HTTPS access to the configured `UPBOUND_API_URL`, which defaults to `https://api.upbound.io`.
+Package names can be qualified names such as `upbound/provider-aws`, aliases such as `crossplane-contrib/provider-upjet-aws`, or full `xpkg.upbound.io` references. Use a qualified provider package name when multiple packages share the same short name.
+
+The CRD tools require an explicit provider version. The value `latest` is also supported and selects the highest stable semantic version. Self-hosted deployments need outbound HTTPS access to `UPBOUND_API_URL` and `GITHUB_RAW_URL`.
 
 ## Why this repository exists
 
