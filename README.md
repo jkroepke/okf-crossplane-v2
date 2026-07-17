@@ -54,8 +54,8 @@ The MCP tools are read-only, but the public endpoint has no application-level au
 The server adds three tools backed by the public Upbound Marketplace API:
 
 - `get_versions(name)` resolves a provider or function package and returns its latest stable version, latest published version, and available versions.
-- `search_resources(provider, pattern="*", version="latest", limit=100)` searches the CRDs in a provider with case-insensitive shell-style wildcards. Patterns are matched against the API group, kind, `group/kind`, and `Kind.group`.
-- `get_definitions(provider, resource, version="latest")` returns the CRD definition for a kind or qualified `group/Kind` resource.
+- `provider_crd_search(provider, pattern="*", version="latest", limit=100)` searches the CRDs in a provider with case-insensitive shell-style wildcards. Patterns are matched against the API group, kind, `group/kind`, and `Kind.group`.
+- `provider_crd_get(provider, resource, version="latest")` returns the CRD definition for a kind or qualified `group/Kind` resource.
 
 Package names can be short names such as `provider-aws` and `function-go-templating`, qualified names such as `crossplane-contrib/provider-aws`, or full `xpkg.upbound.io` references. Short-name resolution prefers packages published by `crossplane-contrib`, then `crossplane`, then `upbound`. Use a qualified name to select another publisher explicitly.
 
