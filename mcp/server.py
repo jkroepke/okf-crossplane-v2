@@ -84,7 +84,7 @@ def provider_crd_search(
     """Search CRDs in one explicit provider package version.
 
     The search term is a case-insensitive shell wildcard matched against the
-    group, kind, group/kind, Kind.group, and group/version/kind identities.
+    group, kind, group/kind, and Kind.group identities.
     """
     return provider_crds.search(provider_name, provider_version, crd_search_term)
 
