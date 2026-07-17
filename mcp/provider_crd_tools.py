@@ -193,7 +193,9 @@ class ProviderCRDTools:
             "terraform_resource_name": terraform_resource,
             "repository": terraform_repository,
             "ref": self._version_tag(terraform_version),
-            "path": f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown",
+            "path": (
+                f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown"
+            ),
         }
 
     def _resolve_resource(
@@ -203,8 +205,12 @@ class ProviderCRDTools:
         crd_name: str,
     ) -> tuple[str, str, dict[str, Any]]:
         group, api_version, kind = self._parse_crd_name(crd_name)
+        search_pattern = f"{group}/{kind}" if group else kind
         result = self.marketplace.search_resources(
-            self._provider_alias(provider_name), "*", provider_version, 500
+            self._provider_alias(provider_name),
+            search_pattern,
+            provider_version,
+            500,
         )
         resources = result.get("resources", [])
         if not isinstance(resources, list):
