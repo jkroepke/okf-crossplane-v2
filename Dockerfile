@@ -23,6 +23,7 @@ RUN groupadd --gid 65532 okf \
 WORKDIR /app
 
 COPY mcp/server.py /app/server.py
+COPY mcp/crossplane_marketplace.py /app/crossplane_marketplace.py
 COPY mcp/entrypoint.sh /app/entrypoint.sh
 
 RUN chmod 0755 /app/entrypoint.sh \
@@ -43,6 +44,8 @@ ENV BUNDLE_URL="https://github.com/jkroepke/okf-crossplane-v2.git" \
     MCP_STATELESS_HTTP="true" \
     MCP_ALLOWED_HOSTS="crossplane.mcp.jkroepke.de,crossplane.mcp.jkroepke.de:*,127.0.0.1:*,localhost:*" \
     MCP_ALLOWED_ORIGINS="https://crossplane.mcp.jkroepke.de,http://127.0.0.1:*,http://localhost:*" \
+    UPBOUND_API_URL="https://api.upbound.io" \
+    UPBOUND_API_TIMEOUT="15" \
     PYTHONUNBUFFERED="1" \
     UV_NO_PROGRESS="1"
 
