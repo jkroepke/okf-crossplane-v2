@@ -40,6 +40,7 @@ github_source = GitHubSourceClient(
     base_url=os.environ.get("GITHUB_API_URL", "https://api.github.com"),
     timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
     cache=fetch_cache,
+    token=os.environ.get("GITHUB_TOKEN"),
 )
 provider_crds = ProviderCRDTools(
     github_source,
@@ -48,6 +49,7 @@ provider_crds = ProviderCRDTools(
     ),
     timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
     cache=fetch_cache,
+    token=os.environ.get("GITHUB_TOKEN"),
 )
 
 if not db_path.is_file():

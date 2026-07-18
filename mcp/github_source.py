@@ -54,11 +54,13 @@ class GitHubSourceClient:
         timeout: float = 15.0,
         opener: Callable[..., Any] = urlopen,
         cache: FetchCache | None = None,
+        token: str | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self._opener = opener
         self.cache = cache or FetchCache()
+        self.token = token
 
     def get_versions(self, name: str) -> dict[str, Any]:
         source = self.resolve_source(name)
@@ -364,14 +366,14 @@ class GitHubSourceClient:
         url = f"{self.base_url}{path}"
         if query:
             url = f"{url}?{urlencode(query)}"
-        request = Request(
-            url,
-            headers={
-                "Accept": "application/vnd.github+json",
-                "User-Agent": "okf-crossplane-v2-mcp/1.0",
-                "X-GitHub-Api-Version": "2026-03-10",
-            },
-        )
+        headers = {
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "okf-crossplane-v2-mcp/1.0",
+            "X-GitHub-Api-Version": "2026-03-10",
+        }
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        request = Request(url, headers=headers)
         try:
             response = self._opener(request, timeout=self.timeout)
             with response:

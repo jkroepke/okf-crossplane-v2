@@ -43,6 +43,9 @@ The included container fetches this repository, ingests `catalog/` into a DuckDB
 docker compose up --build --detach
 ```
 
+To authenticate the server's GitHub requests, export `GITHUB_TOKEN` before
+starting the container. The token is optional.
+
 The local MCP endpoint is `http://127.0.0.1:8000/mcp`. Put it behind a TLS reverse proxy for `crossplane.mcp.jkroepke.de`.
 
 The catalog is refreshed at container startup. If fetching or ingestion fails and a previous catalog exists in the volume, the server continues with that last successful catalog.
