@@ -1,7 +1,8 @@
 # Catalog Update Log
 
 ## 2026-07-18
-* **Creation**: Documented how to retrieve Upjet provider-published connection Secret keys from release-pinned resource configuration, distinguishing destination-only CRD fields from provider `AdditionalConnectionDetailsFn` behavior and preserving conditional-key boundaries.
+* **Creation**: Documented how to retrieve Crossplane provider-published connection Secret keys from release-pinned implementation sources, distinguishing destination-only CRD fields from `AdditionalConnectionDetailsFn` behavior and preserving conditional-key boundaries.
+* **Update**: Extended provider connection-detail retrieval with the typed `managed.ConnectionDetails` and runtime-publisher path used by provider-sql, separating it from Upjet-based Crossplane provider configuration.
 
 ## 2026-07-16
 * **Reorganization**: Kept readiness concepts atomic while expanding the Composition developer route by outcome, grouping function-go-templating patterns by the state they change, and renaming the Sveltos specialization so it cannot be mistaken for the generic non-composed-resource pattern.

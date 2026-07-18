@@ -237,6 +237,18 @@ sources:
     commit: 9665c434424129d54f2bc265f5921fa3dab29581
     selected_by: provider CRD source-tree navigation snapshot
     resolved_at: 2026-07-16
+  provider-sql-connection-details:
+    repository: crossplane-contrib/provider-sql
+    tag: v0.15.0
+    commit: 0c8113bf3811a8b7d469d1dc88fed4f46ad5ec96
+    selected_by: provider connection-detail source retrieval
+    resolved_at: 2026-07-18
+  crossplane-runtime-provider-sql:
+    repository: crossplane/crossplane-runtime
+    tag: v2.1.0
+    commit: 9711defba79c6128064740b18b38a4991a0e9db2
+    selected_by: provider-sql v0.15.0 connection-detail type and publisher
+    resolved_at: 2026-07-18
   provider-gitlab-schema-navigation:
     repository: crossplane-contrib/provider-gitlab
     commit: c2a24e3ffe91fc25926c2f558f6b1cc97d60e3ee

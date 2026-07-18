@@ -115,11 +115,11 @@ The last option is constrained by [namespaced composition boundaries](namespaced
 available keys, but the docs warn that many Providers do not populate that metadata.[6]
 
 For a Crossplane managed resource, retrieve the selected provider release's
-resource-specific connection-detail implementation. In providers that use
-Upjet configuration, inspect the resource configurator and its
-`AdditionalConnectionDetailsFn` to determine literal, conditional, or dynamic
-key behavior. The CRD destination schema and `status.atProvider` do not replace
-that provider-specific implementation evidence; see [provider connection-detail source retrieval](../providers/provider-connection-details-source-retrieval.md).
+resource-specific connection-detail implementation. An Upjet-based Crossplane
+provider may configure `AdditionalConnectionDetailsFn`; another provider may
+return typed `managed.ConnectionDetails` and pass it to its reconciler. The CRD
+destination schema and `status.atProvider` do not replace that provider-specific
+implementation evidence; see [provider connection-detail source retrieval](../providers/provider-connection-details-source-retrieval.md).
 
 # Citations
 
