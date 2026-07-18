@@ -23,6 +23,7 @@ RUN uv sync --frozen --no-dev
 
 COPY mcp/server.py /app/server.py
 COPY mcp/fetch_cache.py /app/fetch_cache.py
+COPY mcp/git_source.py /app/git_source.py
 COPY mcp/github_source.py /app/github_source.py
 COPY mcp/provider_crd_tools.py /app/provider_crd_tools.py
 COPY mcp/entrypoint.sh /app/entrypoint.sh
