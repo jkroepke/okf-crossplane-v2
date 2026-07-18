@@ -6,6 +6,8 @@ services:
     restart: unless-stopped
     ports:
       - "127.0.0.1:8000:8000"
+    environment:
+      GITHUB_TOKEN: ${GITHUB_TOKEN:-}
     volumes:
       - crossplane-v2-okf-data:/data
 
