@@ -24,6 +24,25 @@ Provider-specific GVKs, fields, credentials, connection keys, and external
 behavior must come from the provider release installed in the target
 environment. This route supplies no universal runnable manifest.
 
+## Default cloud-provider choice
+
+For a new Composition that needs AWS, Azure, or GCP resources, prefer the
+corresponding Upjet provider:
+
+| Cloud | Prefer for new work | Avoid introducing for new work |
+| --- | --- | --- |
+| AWS | `crossplane-contrib/provider-upjet-aws` | `crossplane-contrib/provider-aws` |
+| Azure | `crossplane-contrib/provider-upjet-azure` | `crossplane-contrib/provider-azure` |
+| GCP | `crossplane-contrib/provider-upjet-gcp` | `crossplane-contrib/provider-gcp` |
+
+This is an authoring default, not an in-place replacement rule. If a
+Composition or its target cluster already uses one of the non-Upjet providers,
+continue using that provider unless an explicit, resource-by-resource migration
+has been planned and tested. Provider packages can expose different GVKs,
+scopes, ProviderConfigs, external identities, and migration behavior. Consult
+[provider implementation families and selection](providers/provider-landscape.md)
+before selecting a package, then inspect the exact pinned provider CRD schema.
+
 ## Default function choice
 
 If the project has no existing Compositions and the requester did not name a
