@@ -141,6 +141,16 @@ Selected Core release and requested design snapshot `v2.3.3` at `09ffaea39ccaea0
 
 Unresolved: this bounded review does not determine whether the accepted proposal is intended for a future release, has been replaced by another design, or exists outside the selected v2.3.3 release. It makes no roadmap claim.
 
+## Provider connection-detail source retrieval
+
+Selected Core documentation series: `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`. Selected provider sources: `provider-upjet-aws` `v2.6.0` at `857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60` and `provider-upjet-azure` `v2.6.0` at `e0398bae1693e229c9060631e048b93177df6fa4`. Runtime key constants are pinned at `504c43e478d7364d73a1834ba277e3a9f94b8e0a`. Claims, deprecated XRD v1, and legacy v1 XR semantics are excluded. No source text is copied.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| providers/provider-connection-details-source-retrieval | `writeConnectionSecretToRef` selects the connection Secret destination; resource-specific key availability remains provider-defined. | API and documented-guidance | primary and official-documentation | corroborated | Not stated by selected sources for the provider behavior; [v2.3 guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L453-L504), [Azure CRD](https://github.com/crossplane-contrib/provider-upjet-azure/blob/e0398bae1693e229c9060631e048b93177df6fa4/package/crds/sql.azure.upbound.io_mssqlservers.yaml#L2750-L2766) |
+| providers/provider-connection-details-source-retrieval | The selected AWS EFS FileSystem configurator returns `id` only when Terraform attribute `id` is a string. | behavior | primary | direct | Not stated by selected sources; [EFS configurator](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/config/cluster/efs/config.go#L48-L63) |
+| providers/provider-connection-details-source-retrieval | The selected Azure MSSQLServer configurator returns `username` and `endpoint` after required attribute extraction, and returns `password` only when the password attribute is available. | behavior | primary | corroborated | Not stated by selected sources; [Azure function](https://github.com/crossplane-contrib/provider-upjet-azure/blob/e0398bae1693e229c9060631e048b93177df6fa4/config/cluster/sql/config.go#L18-L50), [runtime keys](https://github.com/crossplane/crossplane-runtime/blob/504c43e478d7364d73a1834ba277e3a9f94b8e0a/apis/common/v1/resource.go#L25-L43) |
+
 ## Provider-domain foundation
 
 Selected Core release: `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation series `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`. Selected provider sources: `provider-upjet-aws` `v2.6.0` at `857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60`, `provider-aws` `v0.58.0` at `405d4d48d20c332ee427beb4187f80cc4b0af4ea`, `provider-opentofu` `v1.1.4` at `6a1a4f3a3c174b4f6d91c84e74c4a5b6781b0609`, and supporting Upjet `v2.3.0` at `b02902e67b336b94e6bd119b86d14077ed0a0a32`. The user-supplied Upbound provider-family documentation is pinned at `889d144d40620e05129a935824c592aece77657a`. Claims, deprecated XRD v1, and legacy v1 XR semantics are excluded. No source text is copied.

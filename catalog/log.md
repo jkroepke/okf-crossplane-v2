@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-07-18
+* **Creation**: Documented how to retrieve Upjet provider-published connection Secret keys from release-pinned resource configuration, distinguishing destination-only CRD fields from provider `AdditionalConnectionDetailsFn` behavior and preserving conditional-key boundaries.
+
 ## 2026-07-16
 * **Reorganization**: Kept readiness concepts atomic while expanding the Composition developer route by outcome, grouping function-go-templating patterns by the state they change, and renaming the Sveltos specialization so it cannot be mistaken for the generic non-composed-resource pattern.
 * **Update**: Taught the Crossplane v2 OKF skill to retrieve the Composition developer starter as the primary routing concept for Composition authoring and substantial review tasks.
