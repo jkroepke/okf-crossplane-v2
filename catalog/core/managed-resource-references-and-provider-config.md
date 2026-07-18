@@ -114,11 +114,12 @@ The last option is constrained by [namespaced composition boundaries](namespaced
 `writeConnectionSecretToRef` selects a Secret destination for provider-published credentials or endpoints. Providers decide whether to publish and which keys exist. Alpha MRDs can document
 available keys, but the docs warn that many Providers do not populate that metadata.[6]
 
-For a Crossplane managed resource supplied by an Upjet provider, retrieve the selected provider release's
-resource configurator and its `AdditionalConnectionDetailsFn` to determine
-literal, conditional, or dynamic key behavior. The CRD destination schema and
-`status.atProvider` do not replace that provider-specific implementation
-evidence; see [provider connection-detail source retrieval](../providers/provider-connection-details-source-retrieval.md).
+For a Crossplane managed resource, retrieve the selected provider release's
+resource-specific connection-detail implementation. In providers that use
+Upjet configuration, inspect the resource configurator and its
+`AdditionalConnectionDetailsFn` to determine literal, conditional, or dynamic
+key behavior. The CRD destination schema and `status.atProvider` do not replace
+that provider-specific implementation evidence; see [provider connection-detail source retrieval](../providers/provider-connection-details-source-retrieval.md).
 
 # Citations
 

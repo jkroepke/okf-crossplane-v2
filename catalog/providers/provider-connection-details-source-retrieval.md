@@ -1,7 +1,7 @@
 ---
 type: Crossplane Provider
-title: Retrieve provider-published connection Secret keys from Upjet source
-description: Determine a Crossplane managed resource's published Secret keys from its selected Upjet provider release rather than its destination-only CRD field.
+title: Retrieve provider-published connection Secret keys from source
+description: Determine a Crossplane managed resource's published Secret keys from its selected provider release rather than its destination-only CRD field.
 resource: https://github.com/crossplane-contrib/provider-upjet-azure
 tags: [crossplane, providers, upjet, connection-details, secrets]
 timestamp: 2026-07-18T00:00:00Z
@@ -16,10 +16,11 @@ feature_state_basis: This is unlabelled provider implementation behavior; indivi
 
 `spec.writeConnectionSecretToRef` selects where a Crossplane managed resource writes
 provider connection details. It does not define the resource-specific keys or
-guarantee that every possible key is present.[1][2] For Upjet providers, inspect
-the selected provider release's resource configuration to determine the
-published data map. Do not infer keys from `status.atProvider`, Terraform
-attribute names, or a similarly named managed resource.
+guarantee that every possible key is present.[1][2] For a provider that uses
+Upjet resource configuration, inspect the selected provider release's resource
+configuration to determine the published data map. Do not infer keys from
+`status.atProvider`, Terraform attribute names, or a similarly named managed
+resource.
 
 # Retrieval procedure
 
