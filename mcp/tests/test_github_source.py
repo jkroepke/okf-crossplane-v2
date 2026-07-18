@@ -4,6 +4,7 @@ import base64
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import MagicMock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -43,6 +44,59 @@ class FakeProviderCRDTools(ProviderCRDTools):
 
 
 class GitHubSourceClientTest(unittest.TestCase):
+    def test_api_requests_include_configured_token(self) -> None:
+        request_log = []
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"{}"
+
+        def opener(request, timeout):
+            request_log.append((request, timeout))
+            return response
+
+        client = GitHubSourceClient(opener=opener, token="test-token")
+
+        self.assertEqual(client._request_bytes("/rate_limit"), b"{}")
+        self.assertEqual(
+            request_log[0][0].get_header("Authorization"), "Bearer test-token"
+        )
+
+    def test_api_requests_omit_authorization_without_token(self) -> None:
+        request_log = []
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"{}"
+
+        def opener(request, timeout):
+            request_log.append((request, timeout))
+            return response
+
+        client = GitHubSourceClient(opener=opener)
+
+        client._request_bytes("/rate_limit")
+
+        self.assertIsNone(request_log[0][0].get_header("Authorization"))
+
+    def test_raw_source_requests_include_configured_token(self) -> None:
+        request_log = []
+        response = MagicMock()
+        response.__enter__.return_value = response
+        response.read.return_value = b"content"
+
+        def opener(request, timeout):
+            request_log.append((request, timeout))
+            return response
+
+        tools = ProviderCRDTools(MagicMock(), opener=opener, token="test-token")
+
+        self.assertEqual(
+            tools._fetch_github_file("crossplane/crossplane", "v2.0.0", "README.md"),
+            b"content",
+        )
+        self.assertEqual(
+            request_log[0][0].get_header("Authorization"), "Bearer test-token"
+        )
+
     def _terraform_docs_tools(
         self,
         repository: str,

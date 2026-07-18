@@ -58,12 +58,14 @@ class ProviderCRDTools:
         timeout: float = 15.0,
         opener: Callable[..., Any] = urlopen,
         cache: FetchCache | None = None,
+        token: str | None = None,
     ) -> None:
         self.source_catalog = source_catalog
         self.github_raw_url = github_raw_url.rstrip("/")
         self.timeout = timeout
         self._opener = opener
         self.cache = cache or FetchCache()
+        self.token = token
 
     def search(
         self,
@@ -458,7 +460,10 @@ class ProviderCRDTools:
             f"{self.github_raw_url}/{repository}/{quote(ref, safe='')}/"
             f"{quote(path, safe='/')}"
         )
-        request = Request(url, headers={"User-Agent": "okf-crossplane-v2-mcp/1.0"})
+        headers = {"User-Agent": "okf-crossplane-v2-mcp/1.0"}
+        if self.token:
+            headers["Authorization"] = f"Bearer {self.token}"
+        request = Request(url, headers=headers)
         try:
             response = self._opener(request, timeout=self.timeout)
             with response:

@@ -6,6 +6,11 @@ Format catalog and provides read-only provider package and CRD tools.
 It is intentionally not a distributable Python package: the server retains its
 small, flat module layout and is deployed by the repository's container image.
 
+## GitHub authentication
+
+Set `GITHUB_TOKEN` to authenticate GitHub API and raw-source requests. This is
+optional; without it, the server continues to use unauthenticated requests.
+
 ## Development
 
 Run commands from this directory:
