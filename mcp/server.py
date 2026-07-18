@@ -9,7 +9,8 @@ from okf_mcp import server as upstream
 from starlette.requests import Request
 from starlette.responses import JSONResponse
 
-from crossplane_marketplace import MarketplaceClient
+from fetch_cache import FetchCache
+from github_source import GitHubSourceClient
 from provider_crd_tools import ProviderCRDTools
 
 
@@ -31,16 +32,22 @@ def env_csv(name: str) -> list[str]:
 
 db_path = Path(os.environ.get("DB_PATH", "/data/catalog.duckdb")).resolve()
 bundle_name = os.environ.get("BUNDLE_NAME", "crossplane-v2-okf")
-marketplace = MarketplaceClient(
-    base_url=os.environ.get("UPBOUND_API_URL", "https://api.upbound.io"),
-    timeout=float(os.environ.get("UPBOUND_API_TIMEOUT", "15")),
+fetch_cache = FetchCache(
+    ttl_seconds=float(os.environ.get("FETCH_CACHE_TTL_SECONDS", "300")),
+    max_entries=int(os.environ.get("FETCH_CACHE_MAX_ENTRIES", "512")),
+)
+github_source = GitHubSourceClient(
+    base_url=os.environ.get("GITHUB_API_URL", "https://api.github.com"),
+    timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
+    cache=fetch_cache,
 )
 provider_crds = ProviderCRDTools(
-    marketplace,
+    github_source,
     github_raw_url=os.environ.get(
         "GITHUB_RAW_URL", "https://raw.githubusercontent.com"
     ),
-    timeout=float(os.environ.get("UPBOUND_API_TIMEOUT", "15")),
+    timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
+    cache=fetch_cache,
 )
 
 if not db_path.is_file():
@@ -66,13 +73,16 @@ mcp.settings.transport_security = TransportSecuritySettings(
 
 @mcp.tool()
 def get_versions(name: str) -> dict[str, Any]:
-    """Get the latest stable and available versions for a provider or function.
+    """Resolve an OSS source and list its available versions.
 
     The name can be a short package name such as ``provider-aws`` or
     ``function-go-templating``, an ``account/package`` reference, or a full
-    ``xpkg.upbound.io/account/package:version`` reference.
+    ``xpkg.upbound.io/account/package:version`` reference. The returned
+    ``provider`` is the canonical OSS GitHub repository. Pass that value to
+    the provider CRD tools with ``versions.latest`` or a listed recent stable
+    version. Counts summarize additional historical and prerelease tags.
     """
-    return marketplace.get_versions(name)
+    return github_source.get_versions(name)
 
 
 @mcp.tool()
@@ -94,13 +104,15 @@ def provider_crd_get_definition(
     provider_name: str,
     provider_version: str,
     crd_name: str,
+    path: str | None = None,
 ) -> dict[str, Any]:
-    """Get one provider CRD definition from an explicit package version.
+    """Get one provider CRD definition as YAML from an explicit package version.
 
     ``crd_name`` accepts Kind, group/Kind, group/version/Kind, or a YAML fragment
-    containing apiVersion and kind.
+    containing apiVersion and kind. Optionally select a subtree with a dotted
+    path such as ``.spec`` or ``.spec.versions[0]``.
     """
-    return provider_crds.get_definition(provider_name, provider_version, crd_name)
+    return provider_crds.get_definition(provider_name, provider_version, crd_name, path)
 
 
 @mcp.tool()
@@ -128,9 +140,7 @@ def provider_crd_get_terraform_docs(
     The provider Makefile selects the Terraform repository and version. The
     generated controller identifies the exact Terraform resource name.
     """
-    return provider_crds.get_terraform_docs(
-        provider_name, provider_version, crd_name
-    )
+    return provider_crds.get_terraform_docs(provider_name, provider_version, crd_name)
 
 
 @mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)

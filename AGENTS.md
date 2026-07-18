@@ -4,6 +4,7 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 
 ## Default behavior
 
+- The `mcp/` directory contains the project-owned MCP server; a customer MCP server is out of scope.
 - Do not start the OKF generation or enrichment workflow automatically.
 - Run the normal workflow only when the user explicitly invokes `$okf`, `/skill:okf`, or `/okf`, or selects a feature candidate returned by an explicitly invoked `$okf-updates`, `/skill:okf-updates`, or `/okf-updates` workflow.
 - Run update discovery only when the user explicitly invokes `$okf-updates`, `/skill:okf-updates`, or `/okf-updates`.

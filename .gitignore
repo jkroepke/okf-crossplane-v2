@@ -1,3 +1,5 @@
 .idea
 .vscode
 *.duckdb
+__pycache__/
+.venv/

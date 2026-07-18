@@ -41,7 +41,8 @@ packages such as [function-go-templating](../functions/function-go-templating/in
 Because a Composition has no native status, GitOps tools need special treatment
 when users expect a meaningful [health assessment](composition-gitops-health.md).
 For an ordered authoring route, use the
-[Composition developer starter guide](../composition-developer-starter.md) and
+[Composition developer starter guide](../composition-developer-starter.md),
+[pipeline and security design](../composition-pipeline-and-security.md), and
 the [reference project layout](composition-project-layout.md).
 
 # Limitations

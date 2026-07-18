@@ -48,6 +48,8 @@ provider CRD tools use the argument order shown here.
    from name similarity.
 2. Select an exact result and retrieve its schema with
    `provider_crd_get_definition(provider_name, provider_version, crd_name)`.
+   Add the optional `path` selector such as `.spec` or `.spec.versions[0]`
+   when only part of the CRD is needed; the tool returns that subtree as YAML.
 3. When creating or reviewing manifests, retrieve example locations with
    `provider_crd_get_examples(provider_name, provider_version, crd_name)`.
 4. For an Upjet-managed resource, retrieve the mapped Terraform documentation

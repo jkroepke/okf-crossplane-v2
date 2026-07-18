@@ -1,7 +1,7 @@
 # function-go-templating Patterns
 
 When a Composition task spans multiple patterns, start with the
-[developer starter's pipeline-by-outcome route](../../../composition-developer-starter.md#3-design-the-pipeline-by-outcome).
+[pipeline and security design route](../../../composition-pipeline-and-security.md).
 The leaf concepts remain separate because readiness evaluation, consumer
 publication, and desired-resource introduction change different state.
 

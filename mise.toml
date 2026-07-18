@@ -11,4 +11,4 @@ run = "okf validate catalog/"
 
 [tasks.test]
 description = "Run MCP unit tests"
-run = "python -m unittest discover -s mcp/tests -v"
+run = "uv run --project mcp python -m unittest discover -s mcp/tests -v"

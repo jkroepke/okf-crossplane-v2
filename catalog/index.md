@@ -6,7 +6,7 @@ okf_version: "0.1"
 
 # Start here
 
-* [Develop a Crossplane v2 Composition](composition-developer-starter.md) - An evidence-bounded route from XR API design through provider selection, pipeline behavior, security, validation, and packaging.
+* [Develop a Crossplane v2 Composition](composition-developer-starter.md) - Route through [API and provider contracts](composition-api-and-provider-contracts.md), [pipeline and security](composition-pipeline-and-security.md), and the mandatory [testing and packaging gate](composition-testing-and-packaging.md).
 
 # Core
 
