@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-07-18
+* **Update**: Added a Composition-authoring default that prefers the Upjet AWS, Azure, and GCP providers for new work while retaining already-used non-Upjet providers unless a tested, resource-by-resource migration is explicitly planned.
 * **Creation**: Documented how to retrieve Crossplane provider-published connection Secret keys from release-pinned implementation sources, distinguishing destination-only CRD fields from `AdditionalConnectionDetailsFn` behavior and preserving conditional-key boundaries.
 * **Update**: Extended provider connection-detail retrieval with the typed `managed.ConnectionDetails` and runtime-publisher path used by provider-sql, separating it from Upjet-based Crossplane provider configuration.
 
