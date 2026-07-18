@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import re
+from collections.abc import Callable
 from dataclasses import dataclass
-from typing import Any, Callable, Protocol
+from typing import Any, Protocol
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+
+from fetch_cache import IMMUTABLE_SOURCE_TTL_SECONDS, FetchCache
 
 
 class ProviderToolError(RuntimeError):
@@ -16,7 +19,7 @@ class SourceFileNotFound(ProviderToolError):
     """Raised when an expected source file does not exist."""
 
 
-class Marketplace(Protocol):
+class SourceCatalog(Protocol):
     def search_resources(
         self,
         provider: str,
@@ -30,6 +33,7 @@ class Marketplace(Protocol):
         provider: str,
         resource: str,
         version: str = "latest",
+        path: str | None = None,
     ) -> dict[str, Any]: ...
 
 
@@ -39,19 +43,6 @@ class ProviderSource:
     ref: str
 
 
-_PROVIDER_ALIASES = {
-    "provider-upjet-aws": "upbound/provider-aws",
-    "crossplane-contrib/provider-upjet-aws": "upbound/provider-aws",
-    "provider-upjet-azure": "upbound/provider-azure",
-    "crossplane-contrib/provider-upjet-azure": "upbound/provider-azure",
-    "provider-upjet-gcp": "upbound/provider-gcp",
-    "crossplane-contrib/provider-upjet-gcp": "upbound/provider-gcp",
-}
-_UPJET_SOURCE_REPOSITORIES = {
-    "aws": "crossplane-contrib/provider-upjet-aws",
-    "azure": "crossplane-contrib/provider-upjet-azure",
-    "gcp": "crossplane-contrib/provider-upjet-gcp",
-}
 _KUBERNETES_API_VERSION = re.compile(
     r"^v(?P<major>[1-9]\d*)(?:(?P<stage>alpha|beta)(?P<number>[1-9]\d*))?$"
 )
@@ -62,15 +53,17 @@ _MAX_CRD_RESULTS = 100
 class ProviderCRDTools:
     def __init__(
         self,
-        marketplace: Marketplace,
+        source_catalog: SourceCatalog,
         github_raw_url: str = "https://raw.githubusercontent.com",
         timeout: float = 15.0,
         opener: Callable[..., Any] = urlopen,
+        cache: FetchCache | None = None,
     ) -> None:
-        self.marketplace = marketplace
+        self.source_catalog = source_catalog
         self.github_raw_url = github_raw_url.rstrip("/")
         self.timeout = timeout
         self._opener = opener
+        self.cache = cache or FetchCache()
 
     def search(
         self,
@@ -78,22 +71,41 @@ class ProviderCRDTools:
         provider_version: str,
         crd_search_term: str,
     ) -> dict[str, Any]:
-        result = self.marketplace.search_resources(
-            self._provider_alias(provider_name),
+        return self.cache.get_or_load(
+            ("provider-search", provider_name, provider_version, crd_search_term),
+            lambda: self._search(provider_name, provider_version, crd_search_term),
+            ttl_seconds=self._source_ttl(provider_version),
+        )
+
+    def _search(
+        self,
+        provider_name: str,
+        provider_version: str,
+        crd_search_term: str,
+    ) -> dict[str, Any]:
+        result = self.source_catalog.search_resources(
+            provider_name,
             crd_search_term.strip() or "*",
             provider_version,
             500,
         )
         crds = result.get("resources", [])
         if not isinstance(crds, list):
-            raise ProviderToolError("Provider resource search returned an invalid CRD list")
+            raise ProviderToolError(
+                "Provider resource search returned an invalid CRD list"
+            )
+        filtered_crds = [
+            crd
+            for crd in crds
+            if isinstance(crd, dict) and not self._is_provider_config_usage(crd)
+        ]
         return {
             "provider_name": result.get("provider"),
             "provider_version": result.get("version"),
             "crd_search_term": result.get("pattern"),
-            "count": result.get("count", len(crds)),
-            "truncated": len(crds) > _MAX_CRD_RESULTS,
-            "crds": crds[:_MAX_CRD_RESULTS],
+            "count": len(filtered_crds),
+            "truncated": len(filtered_crds) > _MAX_CRD_RESULTS,
+            "crds": filtered_crds[:_MAX_CRD_RESULTS],
         }
 
     def get_definition(
@@ -101,21 +113,53 @@ class ProviderCRDTools:
         provider_name: str,
         provider_version: str,
         crd_name: str,
+        path: str | None = None,
+    ) -> dict[str, Any]:
+        return self.cache.get_or_load(
+            ("provider-definition", provider_name, provider_version, crd_name, path),
+            lambda: self._get_definition(
+                provider_name, provider_version, crd_name, path
+            ),
+            ttl_seconds=self._source_ttl(provider_version),
+        )
+
+    def _get_definition(
+        self,
+        provider_name: str,
+        provider_version: str,
+        crd_name: str,
+        path: str | None,
     ) -> dict[str, Any]:
         provider, version, resource = self._resolve_resource(
             provider_name, provider_version, crd_name
         )
-        result = self.marketplace.get_definitions(
-            provider, f"{resource['group']}/{resource['kind']}", version
+        result = self.source_catalog.get_definitions(
+            provider, f"{resource['group']}/{resource['kind']}", version, path
         )
-        return {
+        output = {
             "provider_name": provider,
             "provider_version": version,
             "crd": resource,
+            "definition_format": result.get("definition_format", "yaml"),
             "definition": result.get("definition"),
         }
+        if path:
+            output["definition_path"] = path
+        return output
 
     def get_examples(
+        self,
+        provider_name: str,
+        provider_version: str,
+        crd_name: str,
+    ) -> dict[str, Any]:
+        return self.cache.get_or_load(
+            ("provider-examples", provider_name, provider_version, crd_name),
+            lambda: self._get_examples(provider_name, provider_version, crd_name),
+            ttl_seconds=self._source_ttl(provider_version),
+        )
+
+    def _get_examples(
         self,
         provider_name: str,
         provider_version: str,
@@ -168,6 +212,18 @@ class ProviderCRDTools:
         provider_version: str,
         crd_name: str,
     ) -> dict[str, Any]:
+        return self.cache.get_or_load(
+            ("provider-terraform-docs", provider_name, provider_version, crd_name),
+            lambda: self._get_terraform_docs(provider_name, provider_version, crd_name),
+            ttl_seconds=self._source_ttl(provider_version),
+        )
+
+    def _get_terraform_docs(
+        self,
+        provider_name: str,
+        provider_version: str,
+        crd_name: str,
+    ) -> dict[str, Any]:
         provider, version, resource = self._resolve_resource(
             provider_name, provider_version, crd_name
         )
@@ -176,12 +232,8 @@ class ProviderCRDTools:
         terraform_repository = self._github_repository_from_url(
             self._make_variable(makefile, "TERRAFORM_PROVIDER_REPO")
         )
-        terraform_version = self._make_variable(
-            makefile, "TERRAFORM_PROVIDER_VERSION"
-        )
-        terraform_source = self._make_variable(
-            makefile, "TERRAFORM_PROVIDER_SOURCE"
-        )
+        terraform_version = self._make_variable(makefile, "TERRAFORM_PROVIDER_VERSION")
+        terraform_source = self._make_variable(makefile, "TERRAFORM_PROVIDER_SOURCE")
         docs_path = self._make_variable(makefile, "TERRAFORM_DOCS_PATH")
         terraform_resource = self._terraform_resource_name(source, resource)
         provider_prefix = terraform_source.rsplit("/", 1)[-1]
@@ -193,9 +245,7 @@ class ProviderCRDTools:
             "terraform_resource_name": terraform_resource,
             "repository": terraform_repository,
             "ref": self._version_tag(terraform_version),
-            "path": (
-                f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown"
-            ),
+            "path": (f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown"),
         }
 
     def _resolve_resource(
@@ -206,18 +256,22 @@ class ProviderCRDTools:
     ) -> tuple[str, str, dict[str, Any]]:
         group, api_version, kind = self._parse_crd_name(crd_name)
         search_pattern = f"{group}/{kind}" if group else kind
-        result = self.marketplace.search_resources(
-            self._provider_alias(provider_name),
+        result = self.source_catalog.search_resources(
+            provider_name,
             search_pattern,
             provider_version,
             500,
         )
         resources = result.get("resources", [])
         if not isinstance(resources, list):
-            raise ProviderToolError("Provider resource search returned an invalid CRD list")
+            raise ProviderToolError(
+                "Provider resource search returned an invalid CRD list"
+            )
         matches = []
         for resource in resources:
             if not isinstance(resource, dict):
+                continue
+            if self._is_provider_config_usage(resource):
                 continue
             if str(resource.get("kind", "")).lower() != kind.lower():
                 continue
@@ -271,19 +325,8 @@ class ProviderCRDTools:
         return matches[0]
 
     @staticmethod
-    def _provider_alias(provider_name: str) -> str:
-        value = provider_name.strip()
-        return _PROVIDER_ALIASES.get(value, value)
-
-    @staticmethod
     def _provider_source(provider: str, version: str) -> ProviderSource:
-        repository = provider
-        account, separator, package = provider.partition("/")
-        if separator and account == "upbound":
-            parts = package.split("-")
-            if len(parts) >= 2:
-                repository = _UPJET_SOURCE_REPOSITORIES.get(parts[1], repository)
-        return ProviderSource(repository=repository, ref=version)
+        return ProviderSource(repository=provider, ref=version)
 
     @staticmethod
     def _parse_crd_name(crd_name: str) -> tuple[str, str, str]:
@@ -352,6 +395,18 @@ class ProviderCRDTools:
         )
 
     @staticmethod
+    def _is_provider_config_usage(resource: dict[str, Any]) -> bool:
+        return str(resource.get("kind", "")).casefold() == "providerconfigusage"
+
+    @staticmethod
+    def _source_ttl(version: str) -> float | None:
+        return (
+            None
+            if version.strip().lower() == "latest"
+            else IMMUTABLE_SOURCE_TTL_SECONDS
+        )
+
+    @staticmethod
     def _kind_directory(kind: str) -> str:
         value = re.sub(r"[^0-9A-Za-z]", "", kind).lower()
         if not value:
@@ -366,7 +421,7 @@ class ProviderCRDTools:
         match = pattern.search(makefile)
         if match is None:
             raise ProviderToolError(f"{name} was not found in the provider Makefile")
-        value = match.group("value").strip().strip('"\'')
+        value = match.group("value").strip().strip("\"'")
         if not value or "$" in value:
             raise ProviderToolError(
                 f"{name} is empty or requires Make variable expansion"
@@ -392,6 +447,13 @@ class ProviderCRDTools:
         return version if version.startswith("v") else f"v{version}"
 
     def _read_github_file(self, repository: str, ref: str, path: str) -> bytes:
+        return self.cache.get_or_load(
+            ("github-raw", repository, ref, path),
+            lambda: self._fetch_github_file(repository, ref, path),
+            ttl_seconds=IMMUTABLE_SOURCE_TTL_SECONDS,
+        )
+
+    def _fetch_github_file(self, repository: str, ref: str, path: str) -> bytes:
         url = (
             f"{self.github_raw_url}/{repository}/{quote(ref, safe='')}/"
             f"{quote(path, safe='/')}"

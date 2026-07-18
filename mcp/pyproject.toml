@@ -1,0 +1,49 @@
+[project]
+name = "crossplane-v2-okf-mcp"
+version = "0.1.0"
+description = "MCP server for the Crossplane v2 Open Knowledge Format bundle"
+readme = "README.md"
+requires-python = ">=3.14,<3.15"
+dependencies = [
+  "okf-mcp==0.3.0",
+  "pyyaml>=6.0",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.15.0",
+  "ty>=0.0.18",
+]
+
+[tool.uv]
+package = false
+
+[tool.ruff]
+target-version = "py314"
+src = [".", "tests"]
+line-length = 88
+exclude = [".venv", ".agents"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]
+extend-select = ["ANN", "PYI"]
+ignore = ["E501"]
+preview = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN"]
+
+[tool.ruff.format]
+quote-style = "double"
+
+[tool.ty.environment]
+python-version = "3.14"
+
+[tool.ty.src]
+include = ["server.py", "fetch_cache.py", "github_source.py", "provider_crd_tools.py"]
+exclude = [".agents"]
+
+[tool.ty.rules]
+all = "error"
+missing-type-argument = "error"
+possibly-unresolved-reference = "warn"

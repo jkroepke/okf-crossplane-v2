@@ -1,15 +1,11 @@
 FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
 
-ARG OKF_MCP_VERSION=0.3.0
-
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
         ca-certificates \
         git \
         tini \
     && rm -rf /var/lib/apt/lists/*
-
-RUN uv pip install --system --no-cache "okf-mcp==${OKF_MCP_VERSION}"
 
 RUN groupadd --gid 65532 okf \
     && useradd \
@@ -22,8 +18,12 @@ RUN groupadd --gid 65532 okf \
 
 WORKDIR /app
 
+COPY mcp/pyproject.toml mcp/uv.lock /app/
+RUN uv sync --frozen --no-dev
+
 COPY mcp/server.py /app/server.py
-COPY mcp/crossplane_marketplace.py /app/crossplane_marketplace.py
+COPY mcp/fetch_cache.py /app/fetch_cache.py
+COPY mcp/github_source.py /app/github_source.py
 COPY mcp/provider_crd_tools.py /app/provider_crd_tools.py
 COPY mcp/entrypoint.sh /app/entrypoint.sh
 
@@ -45,9 +45,12 @@ ENV BUNDLE_URL="https://github.com/jkroepke/okf-crossplane-v2.git" \
     MCP_STATELESS_HTTP="true" \
     MCP_ALLOWED_HOSTS="crossplane.mcp.jkroepke.de,crossplane.mcp.jkroepke.de:*,127.0.0.1:*,localhost:*" \
     MCP_ALLOWED_ORIGINS="https://crossplane.mcp.jkroepke.de,http://127.0.0.1:*,http://localhost:*" \
-    UPBOUND_API_URL="https://api.upbound.io" \
+    GITHUB_API_URL="https://api.github.com" \
     GITHUB_RAW_URL="https://raw.githubusercontent.com" \
-    UPBOUND_API_TIMEOUT="15" \
+    GITHUB_API_TIMEOUT="15" \
+    FETCH_CACHE_TTL_SECONDS="300" \
+    FETCH_CACHE_MAX_ENTRIES="512" \
+    PATH="/app/.venv/bin:${PATH}" \
     PYTHONUNBUFFERED="1" \
     UV_NO_PROGRESS="1"
 

@@ -9,8 +9,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from provider_crd_tools import ProviderCRDTools, ProviderToolError, SourceFileNotFound
 
-
 RESOURCES = [
+    {
+        "group": "aws.upbound.io",
+        "kind": "ProviderConfig",
+        "versions": ["v1beta1"],
+        "storage_version": "v1beta1",
+        "scope": "Cluster",
+    },
+    {
+        "group": "identity.example.io",
+        "kind": "ProviderConfigUsage",
+        "versions": ["v1beta1"],
+        "storage_version": "v1beta1",
+        "scope": "Cluster",
+    },
     {
         "group": "apigatewayv2.aws.m.upbound.io",
         "kind": "API",
@@ -54,8 +67,7 @@ class FakeMarketplace:
             for resource in RESOURCES
             if pattern == "*"
             or needle in str(resource["kind"]).lower()
-            or needle
-            == f"{resource['group']}/{resource['kind']}".lower()
+            or needle == f"{resource['group']}/{resource['kind']}".lower()
         ]
         return {
             "provider": provider,
@@ -70,6 +82,7 @@ class FakeMarketplace:
         provider: str,
         resource: str,
         version: str = "latest",
+        path: str | None = None,
     ) -> dict[str, Any]:
         self.definition_calls.append((provider, resource, version))
         return {
@@ -105,21 +118,60 @@ class ProviderCRDToolsTest(unittest.TestCase):
         tools = FakeProviderCRDTools(marketplace)
 
         result = tools.search(
-            "upbound/provider-aws", "v2.3.0", "*RouteResponse*"
+            "crossplane-contrib/provider-upjet-aws", "v2.3.0", "*RouteResponse*"
         )
 
         self.assertEqual(
             marketplace.search_calls[0],
-            ("upbound/provider-aws", "*RouteResponse*", "v2.3.0", 500),
+            ("crossplane-contrib/provider-upjet-aws", "*RouteResponse*", "v2.3.0", 500),
         )
         self.assertEqual(result["crds"][0]["kind"], "RouteResponse")
+
+    def test_search_supports_provider_config_wildcards(self) -> None:
+        marketplace = FakeMarketplace()
+        tools = FakeProviderCRDTools(marketplace)
+
+        result = tools.search(
+            "crossplane-contrib/provider-upjet-aws", "v2.3.0", "*ProviderConfig*"
+        )
+
+        self.assertEqual(
+            marketplace.search_calls[0],
+            (
+                "crossplane-contrib/provider-upjet-aws",
+                "*ProviderConfig*",
+                "v2.3.0",
+                500,
+            ),
+        )
+        self.assertEqual(result["count"], 1)
+        self.assertEqual(result["crds"][0]["kind"], "ProviderConfig")
+
+    def test_crd_search_results_are_cached(self) -> None:
+        marketplace = FakeMarketplace()
+        tools = FakeProviderCRDTools(marketplace)
+
+        tools.search("crossplane-contrib/provider-upjet-aws", "v2.3.0", "*Route*")
+        tools.search("crossplane-contrib/provider-upjet-aws", "v2.3.0", "*Route*")
+
+        self.assertEqual(len(marketplace.search_calls), 1)
+
+    def test_provider_config_usage_is_excluded_from_all_crd_tools(self) -> None:
+        tools = FakeProviderCRDTools(FakeMarketplace())
+
+        with self.assertRaisesRegex(ProviderToolError, "was not found"):
+            tools.get_definition(
+                "crossplane-contrib/provider-upjet-aws",
+                "v2.3.0",
+                "identity.example.io/ProviderConfigUsage",
+            )
 
     def test_definition_accepts_api_version_and_kind_yaml(self) -> None:
         marketplace = FakeMarketplace()
         tools = FakeProviderCRDTools(marketplace)
 
         result = tools.get_definition(
-            "upbound/provider-aws",
+            "crossplane-contrib/provider-upjet-aws",
             "v2.3.0",
             "apiVersion: apigatewayv2.aws.m.upbound.io/v1beta1\nkind: API",
         )
@@ -127,7 +179,7 @@ class ProviderCRDToolsTest(unittest.TestCase):
         self.assertEqual(
             marketplace.search_calls[0],
             (
-                "upbound/provider-aws",
+                "crossplane-contrib/provider-upjet-aws",
                 "apigatewayv2.aws.m.upbound.io/API",
                 "v2.3.0",
                 500,
@@ -136,7 +188,7 @@ class ProviderCRDToolsTest(unittest.TestCase):
         self.assertEqual(
             marketplace.definition_calls[0],
             (
-                "upbound/provider-aws",
+                "crossplane-contrib/provider-upjet-aws",
                 "apigatewayv2.aws.m.upbound.io/API",
                 "v2.3.0",
             ),
@@ -157,7 +209,9 @@ class ProviderCRDToolsTest(unittest.TestCase):
         )
 
         result = tools.get_examples(
-            "upbound/provider-aws", "v2.3.0", "ec2.aws.m.upbound.io/Route"
+            "crossplane-contrib/provider-upjet-aws",
+            "v2.3.0",
+            "ec2.aws.m.upbound.io/Route",
         )
 
         self.assertEqual(result["examples"][0]["path"], generated)
@@ -201,7 +255,7 @@ export TERRAFORM_DOCS_PATH ?= website/docs/r
         for kind, _, terraform_name, docs_path in cases:
             with self.subTest(kind=kind):
                 result = tools.get_terraform_docs(
-                    "upbound/provider-aws",
+                    "crossplane-contrib/provider-upjet-aws",
                     "v2.3.0",
                     f"apigatewayv2.aws.m.upbound.io/v1beta1/{kind}",
                 )
@@ -210,25 +264,26 @@ export TERRAFORM_DOCS_PATH ?= website/docs/r
                 )
                 self.assertEqual(result["ref"], "v6.53.0")
                 self.assertEqual(result["path"], docs_path)
-                self.assertEqual(
-                    result["terraform_resource_name"], terraform_name
-                )
+                self.assertEqual(result["terraform_resource_name"], terraform_name)
 
     def test_missing_crd_returns_clear_error(self) -> None:
         tools = FakeProviderCRDTools(FakeMarketplace())
 
         with self.assertRaisesRegex(ProviderToolError, "was not found"):
-            tools.get_definition("upbound/provider-aws", "v2.3.0", "Database")
+            tools.get_definition(
+                "crossplane-contrib/provider-upjet-aws", "v2.3.0", "Database"
+            )
 
-    def test_upjet_source_alias_resolves_to_package_name(self) -> None:
+    def test_oss_provider_name_is_preserved(self) -> None:
         marketplace = FakeMarketplace()
         tools = FakeProviderCRDTools(marketplace)
 
-        tools.search(
-            "crossplane-contrib/provider-upjet-aws", "v2.3.0", "API"
-        )
+        tools.search("crossplane-contrib/provider-upjet-aws", "v2.3.0", "API")
 
-        self.assertEqual(marketplace.search_calls[0][0], "upbound/provider-aws")
+        self.assertEqual(
+            marketplace.search_calls[0][0],
+            "crossplane-contrib/provider-upjet-aws",
+        )
 
 
 if __name__ == "__main__":

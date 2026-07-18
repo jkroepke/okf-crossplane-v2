@@ -51,19 +51,21 @@ The MCP tools are read-only, but the public endpoint has no application-level au
 
 ### Crossplane package tools
 
-The server adds these tools backed by the public Upbound Marketplace API and provider source repositories:
+The server adds these tools backed by OSS GitHub repositories:
 
-- `get_versions(name)` resolves a provider or function package and returns its latest stable version, latest published version, and available versions.
+- `get_versions(name)` resolves an OSS provider or function repository and returns its canonical repository name, `versions.latest`, a compact list of recent stable versions, and tag counts. Pass the returned provider name to the CRD tools.
 - `provider_crd_search(provider_name, provider_version, crd_search_term)` searches CRDs in one explicit provider package version. The search term supports case-insensitive shell-style wildcards.
-- `provider_crd_get_definition(provider_name, provider_version, crd_name)` returns the complete CRD definition.
+- `provider_crd_get_definition(provider_name, provider_version, crd_name, path?)` returns the complete CRD definition as token-efficient YAML. Use a dotted path such as `.spec` or `.spec.versions[0]` to return only a subtree.
 - `provider_crd_get_examples(provider_name, provider_version, crd_name)` returns GitHub repository paths for generated and handwritten examples. Without an API version, it selects the latest served CRD API version, for example `examples-generated/namespaced/ec2/v1beta2/route.yaml`.
 - `provider_crd_get_terraform_docs(provider_name, provider_version, crd_name)` returns the Terraform provider repository, version, and documentation path. It reads the Crossplane provider Makefile and the generated controller mapping instead of inferring the Terraform resource name.
 
 `crd_name` accepts a Kind, `group/Kind`, `group/version/Kind`, or a YAML fragment containing `apiVersion` and `kind`.
 
-Package names can be qualified names such as `upbound/provider-aws`, aliases such as `crossplane-contrib/provider-upjet-aws`, or full `xpkg.upbound.io` references. Use a qualified provider package name when multiple packages share the same short name.
+Use an OSS GitHub repository name such as `crossplane-contrib/provider-upjet-aws` or `crossplane-contrib/function-go-templating`. A small set of historical package aliases is mapped to their known OSS source repositories; unmapped `upbound/...` names are rejected rather than guessed.
 
-The CRD tools require an explicit provider version. The value `latest` is also supported and selects the highest stable semantic version. Self-hosted deployments need outbound HTTPS access to `UPBOUND_API_URL` and `GITHUB_RAW_URL`.
+The CRD tools require an explicit provider version. The value `latest` is also supported and selects the highest stable semantic-version Git tag. Self-hosted deployments need outbound HTTPS access to `GITHUB_API_URL` and `GITHUB_RAW_URL`.
+
+Successful remote fetches are cached in memory. Git tag listings use the configurable short `FETCH_CACHE_TTL_SECONDS` (default: 300 seconds); CRDs, definitions, examples, and Terraform metadata resolved at immutable Git tags are cached for 30 days. `FETCH_CACHE_MAX_ENTRIES` (default: 512) bounds memory use.
 
 ## Why this repository exists
 
@@ -85,10 +87,10 @@ This repository connects these sources in one versioned catalog without replacin
 Knowledge is stored as small Markdown documents under [`catalog/`](catalog/index.md). Each document represents an independently useful concept and includes OKF metadata, relationships to related concepts, and citations to the original sources.
 
 If the task is to build a Crossplane v2 Composition, start with the
-[Composition developer starter guide](catalog/composition-developer-starter.md).
-It connects the API, provider, function, security, readiness, identity,
-testing, and packaging concepts without pretending that provider-specific
-schemas or credentials are universal.
+[Composition developer route](catalog/composition-developer-starter.md).
+It routes agents through separate API/provider, pipeline/security, and
+testing/packaging concepts without pretending that provider-specific schemas or
+credentials are universal.
 
 The catalog is intended to be:
 
