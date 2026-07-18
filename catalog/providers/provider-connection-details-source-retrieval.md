@@ -1,7 +1,7 @@
 ---
 type: Crossplane Provider
 title: Retrieve provider-published connection Secret keys from Upjet source
-description: Determine an Upjet managed resource's published Secret keys from its selected-release resource configuration rather than its destination-only CRD field.
+description: Determine a Crossplane managed resource's published Secret keys from its selected Upjet provider release rather than its destination-only CRD field.
 resource: https://github.com/crossplane-contrib/provider-upjet-azure
 tags: [crossplane, providers, upjet, connection-details, secrets]
 timestamp: 2026-07-18T00:00:00Z
@@ -14,7 +14,7 @@ feature_state_basis: This is unlabelled provider implementation behavior; indivi
 
 # Overview
 
-`spec.writeConnectionSecretToRef` selects where a managed resource writes
+`spec.writeConnectionSecretToRef` selects where a Crossplane managed resource writes
 provider connection details. It does not define the resource-specific keys or
 guarantee that every possible key is present.[1][2] For Upjet providers, inspect
 the selected provider release's resource configuration to determine the
@@ -45,7 +45,7 @@ unresolved and inspect the provider's resource-specific implementation.
 
 # Selected-release examples
 
-| Managed resource and mapping | Provider function result | Connection Secret consequence |
+| Crossplane managed resource and mapping | Provider function result | Connection Secret consequence |
 | --- | --- | --- |
 | AWS cluster `efs.aws.upbound.io/v1beta2` `FileSystem` → `aws_efs_file_system` | The configurator assigns an inline `AdditionalConnectionDetailsFn`. When Terraform attribute `id` is a string, it adds the literal `id` key; otherwise it returns no such entry.[3][4] | The destination Secret can contain `data.id` with the EFS file-system ID. Do not assume other EFS resources use this key. |
 | Azure cluster `sql.azure.upbound.io/v1beta2` `MSSQLServer` → `azurerm_mssql_server` | `msSQLConnectionDetails` requires `name`, `administrator_login`, and `fully_qualified_domain_name`; it returns `username` as `<administrator_login>@<name>` and `endpoint` as the FQDN. It adds `password` only when `administrator_login_password` is available.[5][6] | Treat `username` and `endpoint` as function-required output values; treat `password` as conditional rather than promising a fixed three-key Secret. |
