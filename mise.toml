@@ -2,9 +2,13 @@
 "pipx:okf-ingest" = "latest"
 
 [tasks.lint]
-description = "Run OKF linter"
-depends = ['validate']
+description = "Run all checks"
+depends = ['validate', 'test']
 
 [tasks.validate]
 description = "Run OKF linter"
 run = "okf validate catalog/"
+
+[tasks.test]
+description = "Run MCP unit tests"
+run = "python -m unittest discover -s mcp/tests -v"
