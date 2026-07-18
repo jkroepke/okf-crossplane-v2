@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -10,6 +11,7 @@ from starlette.requests import Request
 from starlette.responses import JSONResponse
 
 from fetch_cache import FetchCache
+from git_source import GitSourceCache
 from github_source import GitHubSourceClient
 from provider_crd_tools import ProviderCRDTools
 
@@ -30,17 +32,42 @@ def env_csv(name: str) -> list[str]:
     return [value.strip() for value in os.getenv(name, "").split(",") if value.strip()]
 
 
+def ensure_writable_directory(path: Path) -> Path:
+    """Create and verify the directory used for persistent source snapshots."""
+    probe_path: Path | None = None
+    try:
+        path.mkdir(parents=True, exist_ok=True)
+        descriptor, probe = tempfile.mkstemp(prefix=".write-probe-", dir=path)
+        os.close(descriptor)
+        probe_path = Path(probe)
+    except OSError as error:
+        raise RuntimeError(f"CACHE_DIR must be writable: {path}") from error
+    finally:
+        if probe_path is not None:
+            probe_path.unlink(missing_ok=True)
+    return path
+
+
 db_path = Path(os.environ.get("DB_PATH", "/data/catalog.duckdb")).resolve()
+cache_dir = ensure_writable_directory(
+    Path(os.environ.get("CACHE_DIR", "/data/cache")).resolve()
+)
 bundle_name = os.environ.get("BUNDLE_NAME", "crossplane-v2-okf")
 fetch_cache = FetchCache(
     ttl_seconds=float(os.environ.get("FETCH_CACHE_TTL_SECONDS", "300")),
     max_entries=int(os.environ.get("FETCH_CACHE_MAX_ENTRIES", "512")),
+)
+git_source_cache = GitSourceCache(
+    cache_dir=cache_dir,
+    timeout=float(os.environ.get("GITHUB_GIT_TIMEOUT", "30")),
+    git_base_url=os.environ.get("GITHUB_GIT_URL", "https://github.com"),
 )
 github_source = GitHubSourceClient(
     base_url=os.environ.get("GITHUB_API_URL", "https://api.github.com"),
     timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
     cache=fetch_cache,
     token=os.environ.get("GITHUB_TOKEN"),
+    source_cache=git_source_cache,
 )
 provider_crds = ProviderCRDTools(
     github_source,
@@ -50,6 +77,7 @@ provider_crds = ProviderCRDTools(
     timeout=float(os.environ.get("GITHUB_API_TIMEOUT", "15")),
     cache=fetch_cache,
     token=os.environ.get("GITHUB_TOKEN"),
+    source_cache=git_source_cache,
 )
 
 if not db_path.is_file():
