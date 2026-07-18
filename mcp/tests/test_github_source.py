@@ -12,6 +12,24 @@ from github_source import GitHubSourceClient, GitHubSourceError
 from provider_crd_tools import ProviderCRDTools, ProviderToolError, SourceFileNotFound
 
 
+class FakeGitSourceCache:
+    def __init__(self, files: dict[str, bytes]) -> None:
+        self.files = files
+        self.read_calls: list[tuple[str, str, str]] = []
+
+    def list_files(self, repository: str, ref: str, prefix: str) -> list[str]:
+        return [
+            path
+            for key in self.files
+            if (path := key.removeprefix(f"{repository}@{ref}:")) != key
+            and path.startswith(prefix)
+        ]
+
+    def read_file(self, repository: str, ref: str, path: str) -> bytes:
+        self.read_calls.append((repository, ref, path))
+        return self.files[f"{repository}@{ref}:{path}"]
+
+
 class FakeGitHubSourceClient(GitHubSourceClient):
     def __init__(
         self, responses: dict[tuple[str, tuple[tuple[str, str | int], ...]], object]
@@ -44,6 +62,50 @@ class FakeProviderCRDTools(ProviderCRDTools):
 
 
 class GitHubSourceClientTest(unittest.TestCase):
+    def test_search_reads_crds_from_the_local_git_cache(self) -> None:
+        repository = "crossplane-contrib/provider-upjet-aws"
+        version = "v2.6.0"
+        source_cache = FakeGitSourceCache(
+            {
+                f"{repository}@{version}:package/crds/bucket.yaml": b"""
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+spec:
+  group: s3.aws.m.upbound.io
+  scope: Namespaced
+  names:
+    kind: Bucket
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+"""
+            }
+        )
+        client = GitHubSourceClient(source_cache=source_cache)  # type: ignore[arg-type]
+
+        result = client.search_resources(repository, "*Bucket*", version)
+
+        self.assertEqual(result["count"], 1)
+        self.assertEqual(result["resources"][0]["kind"], "Bucket")
+        self.assertEqual(
+            source_cache.read_calls,
+            [(repository, version, "package/crds/bucket.yaml")],
+        )
+
+    def test_provider_files_read_from_the_local_git_cache(self) -> None:
+        repository = "crossplane-contrib/provider-upjet-aws"
+        version = "v2.6.0"
+        source_cache = FakeGitSourceCache(
+            {f"{repository}@{version}:Makefile": b"local source"}
+        )
+        tools = ProviderCRDTools(MagicMock(), source_cache=source_cache)  # type: ignore[arg-type]
+
+        self.assertEqual(
+            tools._read_github_file(repository, version, "Makefile"), b"local source"
+        )
+        self.assertEqual(source_cache.read_calls, [(repository, version, "Makefile")])
+
     def test_api_requests_include_configured_token(self) -> None:
         request_log = []
         response = MagicMock()

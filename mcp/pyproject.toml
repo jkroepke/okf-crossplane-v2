@@ -5,6 +5,7 @@ description = "MCP server for the Crossplane v2 Open Knowledge Format bundle"
 readme = "README.md"
 requires-python = ">=3.14,<3.15"
 dependencies = [
+  "gitpython>=3.1.24",
   "okf-mcp==0.3.0",
   "pyyaml>=6.0",
 ]
@@ -40,7 +41,7 @@ quote-style = "double"
 python-version = "3.14"
 
 [tool.ty.src]
-include = ["server.py", "fetch_cache.py", "github_source.py", "provider_crd_tools.py"]
+include = ["server.py", "fetch_cache.py", "git_source.py", "github_source.py", "provider_crd_tools.py"]
 exclude = [".agents"]
 
 [tool.ty.rules]

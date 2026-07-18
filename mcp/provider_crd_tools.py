@@ -9,6 +9,7 @@ from urllib.parse import quote
 from urllib.request import Request, urlopen
 
 from fetch_cache import IMMUTABLE_SOURCE_TTL_SECONDS, FetchCache
+from git_source import GitSourceCache
 
 
 class ProviderToolError(RuntimeError):
@@ -59,6 +60,7 @@ class ProviderCRDTools:
         opener: Callable[..., Any] = urlopen,
         cache: FetchCache | None = None,
         token: str | None = None,
+        source_cache: GitSourceCache | None = None,
     ) -> None:
         self.source_catalog = source_catalog
         self.github_raw_url = github_raw_url.rstrip("/")
@@ -66,6 +68,7 @@ class ProviderCRDTools:
         self._opener = opener
         self.cache = cache or FetchCache()
         self.token = token
+        self.source_cache = source_cache
 
     def search(
         self,
@@ -449,6 +452,11 @@ class ProviderCRDTools:
         return version if version.startswith("v") else f"v{version}"
 
     def _read_github_file(self, repository: str, ref: str, path: str) -> bytes:
+        if self.source_cache is not None:
+            try:
+                return self.source_cache.read_file(repository, ref, path)
+            except FileNotFoundError as error:
+                raise SourceFileNotFound(path) from error
         return self.cache.get_or_load(
             ("github-raw", repository, ref, path),
             lambda: self._fetch_github_file(repository, ref, path),

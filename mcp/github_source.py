@@ -14,6 +14,7 @@ from urllib.request import Request, urlopen
 import yaml
 
 from fetch_cache import IMMUTABLE_SOURCE_TTL_SECONDS, FetchCache
+from git_source import GitSourceCache
 
 
 class GitHubSourceError(RuntimeError):
@@ -55,12 +56,14 @@ class GitHubSourceClient:
         opener: Callable[..., Any] = urlopen,
         cache: FetchCache | None = None,
         token: str | None = None,
+        source_cache: GitSourceCache | None = None,
     ) -> None:
         self.base_url = base_url.rstrip("/")
         self.timeout = timeout
         self._opener = opener
         self.cache = cache or FetchCache()
         self.token = token
+        self.source_cache = source_cache
 
     def get_versions(self, name: str) -> dict[str, Any]:
         source = self.resolve_source(name)
@@ -196,6 +199,8 @@ class GitHubSourceClient:
         )
 
     def _fetch_resources(self, repository: str, ref: str) -> list[dict[str, Any]]:
+        if self.source_cache is not None:
+            return self._fetch_local_resources(repository, ref)
         tree = self._request_json(
             f"/repos/{repository}/git/trees/{quote(ref, safe='')}", {"recursive": 1}
         )
@@ -219,8 +224,26 @@ class GitHubSourceClient:
                 resources.append(resource)
         return resources
 
+    def _fetch_local_resources(self, repository: str, ref: str) -> list[dict[str, Any]]:
+        assert self.source_cache is not None
+        paths = self.source_cache.list_files(repository, ref, "package/crds/")
+        resources = []
+        for path in paths:
+            if not path.endswith((".yaml", ".yml")):
+                continue
+            resource = self._crd_from_yaml(
+                self.source_cache.read_file(repository, ref, path).decode("utf-8"),
+            )
+            if resource:
+                resources.append(resource)
+        return resources
+
     def _crd(self, repository: str, ref: str, path: str) -> dict[str, Any] | None:
         definition_yaml = self._read_contents(repository, path, ref)
+        return self._crd_from_yaml(definition_yaml)
+
+    @staticmethod
+    def _crd_from_yaml(definition_yaml: str) -> dict[str, Any] | None:
         document = yaml.safe_load(definition_yaml)
         if (
             not isinstance(document, dict)
@@ -290,6 +313,9 @@ class GitHubSourceClient:
     def _select_version(self, repository: str, version: str) -> str:
         requested = version.strip()
         if requested and requested.lower() != "latest":
+            if self.source_cache is not None:
+                # The shallow clone below resolves and validates this exact Git tag.
+                return requested
             if requested not in {tag["name"] for tag in self._list_tags(repository)}:
                 raise GitHubSourceError(
                     f"Version {requested!r} is not an OSS GitHub tag for {repository}"
