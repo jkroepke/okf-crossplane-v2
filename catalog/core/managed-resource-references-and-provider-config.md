@@ -114,6 +114,13 @@ The last option is constrained by [namespaced composition boundaries](namespaced
 `writeConnectionSecretToRef` selects a Secret destination for provider-published credentials or endpoints. Providers decide whether to publish and which keys exist. Alpha MRDs can document
 available keys, but the docs warn that many Providers do not populate that metadata.[6]
 
+For a Crossplane managed resource, retrieve the selected provider release's
+resource-specific connection-detail implementation. An Upjet-based Crossplane
+provider may configure `AdditionalConnectionDetailsFn`; another provider may
+return typed `managed.ConnectionDetails` and pass it to its reconciler. The CRD
+destination schema and `status.atProvider` do not replace that provider-specific
+implementation evidence; see [provider connection-detail source retrieval](../providers/provider-connection-details-source-retrieval.md).
+
 # Citations
 
 [1] [Documented references and selectors](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L80-L183)

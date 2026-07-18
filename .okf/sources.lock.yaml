@@ -197,6 +197,18 @@ sources:
     commit: 857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60
     selected_by: provider-domain foundation and AWS provider comparison
     resolved_at: 2026-07-15
+  provider-upjet-azure:
+    repository: crossplane-contrib/provider-upjet-azure
+    tag: v2.6.0
+    commit: e0398bae1693e229c9060631e048b93177df6fa4
+    selected_by: provider connection-detail source retrieval
+    resolved_at: 2026-07-18
+  crossplane-runtime-provider-upjet-azure:
+    repository: crossplane/crossplane-runtime
+    tag: v2.2.1
+    commit: 504c43e478d7364d73a1834ba277e3a9f94b8e0a
+    selected_by: provider-upjet-azure v2.6.0 connection-detail key constants
+    resolved_at: 2026-07-18
   provider-aws:
     repository: crossplane-contrib/provider-aws
     tag: v0.58.0
@@ -225,6 +237,18 @@ sources:
     commit: 9665c434424129d54f2bc265f5921fa3dab29581
     selected_by: provider CRD source-tree navigation snapshot
     resolved_at: 2026-07-16
+  provider-sql-connection-details:
+    repository: crossplane-contrib/provider-sql
+    tag: v0.15.0
+    commit: 0c8113bf3811a8b7d469d1dc88fed4f46ad5ec96
+    selected_by: provider connection-detail source retrieval
+    resolved_at: 2026-07-18
+  crossplane-runtime-provider-sql:
+    repository: crossplane/crossplane-runtime
+    tag: v2.1.0
+    commit: 9711defba79c6128064740b18b38a4991a0e9db2
+    selected_by: provider-sql v0.15.0 connection-detail type and publisher
+    resolved_at: 2026-07-18
   provider-gitlab-schema-navigation:
     repository: crossplane-contrib/provider-gitlab
     commit: c2a24e3ffe91fc25926c2f558f6b1cc97d60e3ee
