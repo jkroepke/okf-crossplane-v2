@@ -11,11 +11,11 @@ from provider_crd_tools import ProviderCRDTools, ProviderToolError, SourceFileNo
 
 RESOURCES = [
     {
-        "group": "aws.upbound.io",
+        "group": "aws.m.upbound.io",
         "kind": "ProviderConfig",
         "versions": ["v1beta1"],
         "storage_version": "v1beta1",
-        "scope": "Cluster",
+        "scope": "Namespaced",
     },
     {
         "group": "identity.example.io",
@@ -217,6 +217,33 @@ class ProviderCRDToolsTest(unittest.TestCase):
         self.assertEqual(result["examples"][0]["path"], generated)
         self.assertTrue(result["examples"][0]["generated"])
         self.assertEqual(result["examples"][1]["path"], handwritten)
+
+    def test_examples_support_package_level_provider_config_layout(self) -> None:
+        marketplace = FakeMarketplace()
+        source = "crossplane-contrib/provider-upjet-aws@v2.6.0"
+        package_level = "examples/providerconfig/namespaced/v1beta1/providerconfig.yaml"
+        tools = FakeProviderCRDTools(
+            marketplace,
+            {f"{source}:{package_level}": "provider config"},
+        )
+
+        result = tools.get_examples(
+            "crossplane-contrib/provider-upjet-aws",
+            "v2.6.0",
+            "aws.m.upbound.io/v1beta1/ProviderConfig",
+        )
+
+        self.assertEqual(
+            result["examples"],
+            [
+                {
+                    "repository": "crossplane-contrib/provider-upjet-aws",
+                    "ref": "v2.6.0",
+                    "path": package_level,
+                    "generated": False,
+                }
+            ],
+        )
 
     def test_terraform_docs_use_makefile_and_generated_controller(self) -> None:
         marketplace = FakeMarketplace()

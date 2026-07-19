@@ -187,6 +187,10 @@ class ProviderCRDTools:
                 False,
                 f"examples/{service}/{scope}/{api_version}/{filename}",
             ),
+            (
+                False,
+                f"examples/{self._kind_directory(resource['kind'])}/{scope}/{api_version}/{filename}",
+            ),
         ]
         examples = [
             {
