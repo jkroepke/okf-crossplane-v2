@@ -8,6 +8,8 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
 
+import yaml
+
 from fetch_cache import IMMUTABLE_SOURCE_TTL_SECONDS, FetchCache
 from git_source import GitSourceCache
 
@@ -175,9 +177,105 @@ class ProviderCRDTools:
         )
         source = self._provider_source(provider, version)
         api_version = self._resource_api_version(resource)
+        examples = self._source_cache_examples(source, resource, api_version)
+        if examples is None:
+            examples = self._candidate_examples(source, resource, api_version)
+        if not examples:
+            target = f"{resource['group']}/{api_version}/{resource['kind']}"
+            raise ProviderToolError(
+                f"No examples found in {source.repository}@{source.ref}. "
+                f"No example document matches {target}"
+            )
+        return {
+            "provider_name": provider,
+            "provider_version": version,
+            "crd": resource,
+            "examples": examples,
+        }
+
+    def _source_cache_examples(
+        self,
+        source: ProviderSource,
+        resource: dict[str, Any],
+        api_version: str,
+    ) -> list[dict[str, Any]] | None:
+        if self.source_cache is None:
+            return None
+        inventory = self.cache.get_or_load(
+            ("provider-example-inventory", source.repository, source.ref),
+            lambda: self._source_cache_example_inventory(source),
+            ttl_seconds=self._source_ttl(source.ref),
+        )
+        target_api_version = f"{resource['group']}/{api_version}"
+        matches: dict[tuple[str, bool], list[int]] = {}
+        for entry in inventory:
+            if (
+                entry["api_version"] != target_api_version
+                or entry["kind"] != resource["kind"]
+            ):
+                continue
+            key = (entry["path"], entry["generated"])
+            matches.setdefault(key, []).append(entry["document_index"])
+        return [
+            {
+                "repository": source.repository,
+                "ref": source.ref,
+                "path": path,
+                "generated": generated,
+                "document_indexes": document_indexes,
+            }
+            for (path, generated), document_indexes in sorted(matches.items())
+        ]
+
+    def _source_cache_example_inventory(
+        self, source: ProviderSource
+    ) -> list[dict[str, Any]]:
+        assert self.source_cache is not None
+        inventory: list[dict[str, Any]] = []
+        for prefix, generated in (("examples/", False), ("examples-generated/", True)):
+            for path in self.source_cache.list_files(
+                source.repository, source.ref, prefix
+            ):
+                if not path.endswith((".yaml", ".yml")):
+                    continue
+                try:
+                    documents = yaml.safe_load_all(
+                        self.source_cache.read_file(
+                            source.repository, source.ref, path
+                        ).decode("utf-8")
+                    )
+                    for document_index, document in enumerate(documents):
+                        if not isinstance(document, dict):
+                            continue
+                        api_version = document.get("apiVersion")
+                        kind = document.get("kind")
+                        if not isinstance(api_version, str) or not isinstance(
+                            kind, str
+                        ):
+                            continue
+                        inventory.append(
+                            {
+                                "path": path,
+                                "generated": generated,
+                                "api_version": api_version,
+                                "kind": kind,
+                                "document_index": document_index,
+                            }
+                        )
+                except UnicodeDecodeError, yaml.YAMLError:
+                    continue
+        return inventory
+
+    def _candidate_examples(
+        self,
+        source: ProviderSource,
+        resource: dict[str, Any],
+        api_version: str,
+    ) -> list[dict[str, Any]]:
         service = self._resource_service(resource)
         scope = self._resource_scope(resource)
-        filename = f"{self._kind_directory(resource['kind'])}.yaml"
+        kind_directory = self._kind_directory(str(resource["kind"]))
+        filename = f"{kind_directory}.yaml"
         candidates = [
             (
                 True,
@@ -187,8 +285,27 @@ class ProviderCRDTools:
                 False,
                 f"examples/{service}/{scope}/{api_version}/{filename}",
             ),
+            (
+                False,
+                f"examples/{kind_directory}/{scope}/{api_version}/{filename}",
+            ),
+            (
+                False,
+                f"examples/{kind_directory}/{filename}",
+            ),
+            (
+                False,
+                f"examples/{scope}/{service}/{filename}",
+            ),
         ]
-        examples = [
+        if str(resource["kind"]).casefold() == "providerconfig":
+            candidates.append(
+                (
+                    False,
+                    f"examples/{scope}/{service}/config.yaml",
+                )
+            )
+        return [
             {
                 "repository": source.repository,
                 "ref": source.ref,
@@ -198,18 +315,6 @@ class ProviderCRDTools:
             for generated, path in candidates
             if self._github_file_exists(source.repository, source.ref, path)
         ]
-        if not examples:
-            attempted = ", ".join(path for _, path in candidates)
-            raise ProviderToolError(
-                f"No examples found in {source.repository}@{source.ref}. "
-                f"Tried: {attempted}"
-            )
-        return {
-            "provider_name": provider,
-            "provider_version": version,
-            "crd": resource,
-            "examples": examples,
-        }
 
     def get_terraform_docs(
         self,
