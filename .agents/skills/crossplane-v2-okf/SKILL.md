@@ -1,6 +1,6 @@
 ---
 name: crossplane-v2-okf
-description: Use the Crossplane v2 OKF MCP server as the exclusive external knowledge source for questions about Crossplane v2 core, APIs, Compositions, providers, functions, runtime, Upjet, security, multi-tenancy, and examples. Do not use generic documentation or library retrieval tools for content covered by this bundle.
+description: Use the Crossplane v2 OKF MCP server as the exclusive external knowledge source for Crossplane v2 core, API, Composition, provider, function, runtime, Upjet, security, multi-tenancy, and example facts. For an external service's behavior or security guidance, use its primary vendor documentation as defined by the evidence boundary.
 ---
 
 # Crossplane v2 OKF
@@ -53,8 +53,10 @@ The Terraform documentation tool establishes the Crossplane-to-Terraform resourc
 
 ## Evidence boundaries
 
-Treat the OKF bundle and its provider tools as the exclusive external retrieval sources for covered Crossplane content; local project files and user-supplied material remain in scope. Do not supplement, verify, or replace results with generic documentation or library-retrieval tools. The sole external fetch allowed here is an exact GitHub location returned by `provider_crd_get_examples` or `provider_crd_get_terraform_docs`.
+Treat the OKF bundle and its provider tools as the exclusive external retrieval sources for Crossplane-specific facts. Local project files and user-supplied material remain in scope. Do not supplement, verify, or replace a Crossplane API, Composition, provider-package, function, runtime, or CRD result with general documentation. The sole external fetch for a returned provider example or Terraform document is its exact GitHub location.
 
-Preserve cited versions, feature states, limitations, CRD API versions, and original source locations. Do not introduce Crossplane v1 Claims unless explicitly requested. If the bundle or provider tools lack information, say the available OKF knowledge is incomplete and identify the gap; do not switch retrieval sources or guess a provider schema, example path, or Terraform mapping.
+An external service configured by a Composition is a separate evidence domain. When its behavior materially affects the requested result—such as access controls, data retention, encryption, networking, billing, or service limits—use the service vendor's official documentation. Prefer the mapped Terraform documentation first when it answers the field-level question. Use vendor documentation to establish service behavior and recommended safeguards; never use it to infer Crossplane API shape, provider package identity, or a Terraform mapping. Cite service evidence separately and describe it as service guidance.
 
-If the OKF MCP server or required tools are unavailable, report that dependency as unavailable and stop Crossplane-specific retrieval. Do not fall back to web search, `curl`, arbitrary raw GitHub URLs, `gh`, Context7, or another documentation source for Crossplane material. Local project files and user-supplied material remain in scope.
+Preserve cited versions, feature states, limitations, CRD API versions, and original source locations. Do not introduce Crossplane v1 Claims unless explicitly requested. If the bundle or provider tools lack Crossplane information, say the available OKF knowledge is incomplete and identify the gap; do not guess a provider schema, example path, or Terraform mapping.
+
+If the OKF MCP server or required tools are unavailable, report that dependency as unavailable and stop Crossplane-specific retrieval. This does not prevent use of primary vendor documentation for the independent external-service question, but do not use it as a substitute for missing Crossplane evidence.
