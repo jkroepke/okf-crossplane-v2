@@ -51,24 +51,25 @@ class GitSourceCache:
     def list_files(self, repository: str, ref: str, prefix: str) -> list[str]:
         """List blob paths below ``prefix`` in one cached provider snapshot."""
         snapshot = self._snapshot(repository, ref)
-        repo = Repo(snapshot.path)
-        tree: Any = repo.commit(snapshot.commit).tree
-        return sorted(
-            str(item.path)
-            for item in tree.traverse()
-            if item.type == "blob" and item.path.startswith(prefix)
-        )
+        with Repo(snapshot.path) as repo:
+            tree: Any = repo.commit(snapshot.commit).tree
+            return sorted(
+                str(item.path)
+                for item in tree.traverse()
+                if item.type == "blob" and item.path.startswith(prefix)
+            )
 
     def read_file(self, repository: str, ref: str, path: str) -> bytes:
         """Read one file from a cached provider snapshot without a checkout."""
         snapshot = self._snapshot(repository, ref)
         try:
-            blob: Any = Repo(snapshot.path).commit(snapshot.commit).tree / path
+            with Repo(snapshot.path) as repo:
+                blob: Any = repo.commit(snapshot.commit).tree / path
+                if blob.type != "blob":
+                    raise FileNotFoundError(path)
+                return cast(bytes, blob.data_stream.read())
         except KeyError as error:
             raise FileNotFoundError(path) from error
-        if blob.type != "blob":
-            raise FileNotFoundError(path)
-        return cast(bytes, blob.data_stream.read())
 
     def _snapshot(self, repository: str, ref: str) -> GitSnapshot:
         owner, name = self._repository_parts(repository)
@@ -102,7 +103,7 @@ class GitSourceCache:
             )
             if not tag_listing.strip():
                 raise GitSourceError(f"Provider version is not a Git tag: {ref}")
-            repo = Repo.clone_from(
+            with Repo.clone_from(
                 source_url,
                 temporary_path,
                 bare=True,
@@ -110,8 +111,8 @@ class GitSourceCache:
                 depth=1,
                 single_branch=True,
                 kill_after_timeout=self.timeout,
-            )
-            commit = repo.commit(f"{tag_ref}^{{commit}}").hexsha
+            ) as repo:
+                commit = repo.commit(f"{tag_ref}^{{commit}}").hexsha
             metadata = {
                 "commit": commit,
                 "fetched_at": time.time(),
