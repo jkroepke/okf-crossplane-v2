@@ -28,8 +28,8 @@ feature_state: Not stated by selected sources
 
 # Reference layout
 
-For an empty Composition project, use this deliberately small layout as an
-authoring convention:
+Use this deliberately small layout only when the Composition project contains
+no files and the user has not provided other layout instructions:
 
 ```text
 .
@@ -40,8 +40,8 @@ authoring convention:
 ├── providerconfig.yaml
 ├── mrap.yaml
 ├── example.yaml
-├── observed-resources.yaml
 └── tests/
+    └── observed-resources.yaml
 ```
 
 This is a recommendation, not a required Crossplane repository layout. Add
@@ -59,7 +59,7 @@ suites as the project needs them.
 | `providerconfig.yaml` | The provider configuration manifests selected by those managed resources. |
 | `mrap.yaml` | ManagedResourceActivationPolicy manifests when the selected provider setup uses explicit managed-resource activation.[5] |
 | `example.yaml` | A representative XR used for local rendering and authoring checks. |
-| `observed-resources.yaml` | Optional render fixture for a later reconciliation stage. Keep it separate from desired manifests and pass it with `--observed-resources`.[8] |
+| `tests/observed-resources.yaml` | Optional render fixture for a later reconciliation stage. Keep it separate from desired manifests and pass it with `--observed-resources`.[8] |
 | `tests/` | Optional assertion suites, for example xprin tests over initial and observed render stages. |
 
 `provider.yaml`, `providerconfig.yaml`, and `mrap.yaml` are intentionally
@@ -81,9 +81,10 @@ crossplane composition render example.yaml composition.yaml functions.yaml
 
 The CLI validates Pipeline mode and XR GVK compatibility before rendering.[1]
 
-If a Function needs managed-resource status as input, add an observed-resource
-fixture and pass it with `--observed-resources`. Keep that fixture separate
-from the baseline layout so it is clear which data is a test double.
+If a Function needs managed-resource status as input, add
+`tests/observed-resources.yaml` and pass it with `--observed-resources`. Keep
+that fixture separate from desired manifests so it is clear which data is a
+test double.
 
 For the current Composition API, see [Composition](/core/composition.md) and
 [CompositeResourceDefinition v2](/core/composite-resource-definition.md).
