@@ -22,11 +22,10 @@ function or an established Composition pattern with this default.
 - resource-producing functions render desired objects;
 - readiness functions decide whether an observed object is usable;
 - publication functions gate XR status or connection data on readiness and key completeness;
-- staging or [function-sequencer](functions/function-sequencer/sequencing.md) controls desired-resource introduction;
 - [Usage and ClusterUsage](core/usages-and-clusterusages.md) protect deletion, not creation ordering.
 
-Readiness, consumer publication, desired-resource membership, and deletion
-protection are separate control planes. Keep identity (logical desired-map key,
+Readiness, consumer publication, and deletion protection are separate control
+planes. Keep identity (logical desired-map key,
 Kubernetes name, and provider external identity) separate as well; see
 [composed-resource identity](core/composed-resource-identity-and-replacement.md).
 

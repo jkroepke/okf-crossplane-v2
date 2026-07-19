@@ -16,7 +16,7 @@
 
 # Patterns and examples
 
-* [Pattern decision routes](patterns/index.md) - Choose among readiness evaluation, consumer publication, desired-resource introduction, and external-integration patterns by outcome.
+* [Pattern decision routes](patterns/index.md) - Choose among readiness evaluation, consumer publication, and external-integration patterns by outcome.
 
 # Reference and history
 

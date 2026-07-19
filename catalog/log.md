@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-07-19
+* **Removal**: Removed the reusable readiness-gated desired-resource-introduction pattern and its template-latch, Bucket-stage, and authoring-choice guidance. The function-sequencer reference now documents behavior without recommending creation gating.
+
 ## 2026-07-18
 * **Update**: Added a Composition-authoring default that prefers the Upjet AWS, Azure, and GCP providers for new work while retaining already-used non-Upjet providers unless a tested, resource-by-resource migration is explicitly planned.
 * **Creation**: Documented how to retrieve Crossplane provider-published connection Secret keys from release-pinned implementation sources, distinguishing destination-only CRD fields from `AdditionalConnectionDetailsFn` behavior and preserving conditional-key boundaries.
@@ -19,8 +22,7 @@
 * **Update**: Cross-linked Core Usage/ClusterUsage scope guidance with function-sequencer issue #114 and generated-reference limitations.
 * **Update**: Added local validation schema-coverage triage for built-in Kubernetes resources, non-Crossplane custom resources, and community CRD catalog discovery boundaries.
 * **Creation**: Added release-pinned function-sequencer knowledge covering declared desired-resource sequencing, observed-successor retention, Input controls, and XR Events; clarified that manual template readiness does not sequence resource introduction.
-* **Creation**: Added readiness-gated staged resource introduction for function-go-templating, distinguishing reconciliation-round admission and retention from provider-side ordering.
-* **Creation**: Added Go-template whitespace-boundary guidance for staged, multi-document function-go-templating output, including initial and fully observed render verification.
+* **Creation**: Added Go-template whitespace-boundary guidance for multi-document function-go-templating output and YAML render verification.
 * **Correction**: Clarified that the XRD `referenceable` version, rather than an XRD `storage` field, determines the generated CRD storage version; confirmed a referenceable `v1alpha1` renders as `storage: true`.
 * **Update**: Added release-contained PR #6588 source and test proof for the namespaced-XR cluster-scoped-resource rejection.
 * **Creation**: Added provider-kubernetes Object wrapper readiness and Secret-status boundaries, including Alpha API scope, derived-condition limits, and random-secret churn risk.
