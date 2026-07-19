@@ -177,7 +177,8 @@ class ProviderCRDTools:
         api_version = self._resource_api_version(resource)
         service = self._resource_service(resource)
         scope = self._resource_scope(resource)
-        filename = f"{self._kind_directory(resource['kind'])}.yaml"
+        kind_directory = self._kind_directory(str(resource["kind"]))
+        filename = f"{kind_directory}.yaml"
         candidates = [
             (
                 True,
@@ -189,9 +190,24 @@ class ProviderCRDTools:
             ),
             (
                 False,
-                f"examples/{self._kind_directory(resource['kind'])}/{scope}/{api_version}/{filename}",
+                f"examples/{kind_directory}/{scope}/{api_version}/{filename}",
+            ),
+            (
+                False,
+                f"examples/{kind_directory}/{filename}",
+            ),
+            (
+                False,
+                f"examples/{scope}/{service}/{filename}",
             ),
         ]
+        if str(resource["kind"]).casefold() == "providerconfig":
+            candidates.append(
+                (
+                    False,
+                    f"examples/{scope}/{service}/config.yaml",
+                )
+            )
         examples = [
             {
                 "repository": source.repository,

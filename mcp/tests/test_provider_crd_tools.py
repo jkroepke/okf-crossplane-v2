@@ -45,6 +45,34 @@ RESOURCES = [
         "storage_version": "v1beta1",
         "scope": "Namespaced",
     },
+    {
+        "group": "mysql.sql.m.crossplane.io",
+        "kind": "ProviderConfig",
+        "versions": ["v1alpha1"],
+        "storage_version": "v1alpha1",
+        "scope": "Namespaced",
+    },
+    {
+        "group": "mssql.sql.m.crossplane.io",
+        "kind": "ProviderConfig",
+        "versions": ["v1alpha1"],
+        "storage_version": "v1alpha1",
+        "scope": "Namespaced",
+    },
+    {
+        "group": "postgresql.sql.m.crossplane.io",
+        "kind": "Grant",
+        "versions": ["v1alpha1"],
+        "storage_version": "v1alpha1",
+        "scope": "Namespaced",
+    },
+    {
+        "group": "keycloak.crossplane.io",
+        "kind": "ProviderConfig",
+        "versions": ["v1beta1"],
+        "storage_version": "v1beta1",
+        "scope": "Namespaced",
+    },
 ]
 
 
@@ -144,8 +172,10 @@ class ProviderCRDToolsTest(unittest.TestCase):
                 500,
             ),
         )
-        self.assertEqual(result["count"], 1)
-        self.assertEqual(result["crds"][0]["kind"], "ProviderConfig")
+        self.assertTrue(result["crds"])
+        self.assertTrue(
+            all(resource["kind"] == "ProviderConfig" for resource in result["crds"])
+        )
 
     def test_crd_search_results_are_cached(self) -> None:
         marketplace = FakeMarketplace()
@@ -244,6 +274,57 @@ class ProviderCRDToolsTest(unittest.TestCase):
                 }
             ],
         )
+
+    def test_examples_support_sql_service_subpaths(self) -> None:
+        marketplace = FakeMarketplace()
+        source = "crossplane-contrib/provider-sql@v0.15.0"
+        cases = [
+            (
+                "mysql.sql.m.crossplane.io/v1alpha1/ProviderConfig",
+                "examples/namespaced/mysql/config.yaml",
+            ),
+            (
+                "mssql.sql.m.crossplane.io/v1alpha1/ProviderConfig",
+                "examples/namespaced/mssql/config.yaml",
+            ),
+            (
+                "postgresql.sql.m.crossplane.io/v1alpha1/Grant",
+                "examples/namespaced/postgresql/grant.yaml",
+            ),
+        ]
+        tools = FakeProviderCRDTools(
+            marketplace,
+            {f"{source}:{path}": "example" for _, path in cases},
+        )
+
+        for crd_name, path in cases:
+            with self.subTest(crd_name=crd_name):
+                result = tools.get_examples(
+                    "crossplane-contrib/provider-sql",
+                    "v0.15.0",
+                    crd_name,
+                )
+
+                self.assertEqual(result["examples"][0]["path"], path)
+                self.assertFalse(result["examples"][0]["generated"])
+
+    def test_examples_support_kind_directory_layout_without_scope(self) -> None:
+        marketplace = FakeMarketplace()
+        source = "crossplane-contrib/provider-keycloak@main"
+        path = "examples/providerconfig/providerconfig.yaml"
+        tools = FakeProviderCRDTools(
+            marketplace,
+            {f"{source}:{path}": "provider config"},
+        )
+
+        result = tools.get_examples(
+            "crossplane-contrib/provider-keycloak",
+            "main",
+            "keycloak.crossplane.io/v1beta1/ProviderConfig",
+        )
+
+        self.assertEqual(result["examples"][0]["path"], path)
+        self.assertFalse(result["examples"][0]["generated"])
 
     def test_terraform_docs_use_makefile_and_generated_controller(self) -> None:
         marketplace = FakeMarketplace()
