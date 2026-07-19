@@ -3,6 +3,9 @@
 This `uv`-managed Python application serves the Crossplane v2 Open Knowledge
 Format catalog and provides read-only provider package and CRD tools.
 
+`provider_crd_get_terraform_docs` returns the Terraform documentation content
+together with its immutable repository, ref, and source path.
+
 It is intentionally not a distributable Python package: the server retains its
 small, flat module layout and is deployed by the repository's container image.
 
@@ -20,6 +23,10 @@ examples, and Terraform metadata are then read from that local snapshot.
 
 Set `GITHUB_GIT_URL` (default: `https://github.com`) to use another Git host
 and `GITHUB_GIT_TIMEOUT` (default: 30 seconds) to bound a Git fetch.
+
+Provider-source work runs in a bounded thread pool so one cold-cache request
+does not block MCP health checks or unrelated clients. Set
+`MCP_BLOCKING_WORKERS` (default: 4) to tune its concurrency.
 
 ## Development
 

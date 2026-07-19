@@ -93,6 +93,37 @@ spec:
             [(repository, version, "package/crds/bucket.yaml")],
         )
 
+    def test_search_skips_unrelated_local_crd_schemas(self) -> None:
+        repository = "crossplane-contrib/provider-upjet-aws"
+        version = "v2.6.0"
+        source_cache = FakeGitSourceCache(
+            {
+                f"{repository}@{version}:package/crds/buckets.yaml": b"""
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+spec:
+  group: s3.aws.m.upbound.io
+  scope: Namespaced
+  names:
+    kind: Bucket
+  versions:
+    - name: v1beta1
+      served: true
+      storage: true
+""",
+                f"{repository}@{version}:package/crds/instances.yaml": b"invalid",
+            }
+        )
+        client = GitHubSourceClient(source_cache=source_cache)  # type: ignore[arg-type]
+
+        result = client.search_resources(repository, "*Bucket*", version)
+
+        self.assertEqual(result["count"], 1)
+        self.assertEqual(
+            source_cache.read_calls,
+            [(repository, version, "package/crds/buckets.yaml")],
+        )
+
     def test_provider_files_read_from_the_local_git_cache(self) -> None:
         repository = "crossplane-contrib/provider-upjet-aws"
         version = "v2.6.0"
@@ -202,6 +233,8 @@ spec:
             }
         )
         source_scope = "namespaced" if scope == "Namespaced" else "cluster"
+        provider_prefix = terraform_source.rsplit("/", 1)[-1]
+        docs_resource = terraform_resource.removeprefix(f"{provider_prefix}_")
         return FakeProviderCRDTools(
             source,
             {
@@ -214,6 +247,7 @@ export TERRAFORM_DOCS_PATH := website/docs/r
                 f"{repository}@{version}:internal/controller/{source_scope}/{service}/{directory}/zz_controller.go": (
                     f'o.Provider.Resources["{terraform_resource}"]'
                 ),
+                f"{terraform_repository}@v1.2.3:website/docs/r/{docs_resource}.html.markdown": "# Terraform documentation\n",
             },
         )
 
@@ -379,6 +413,7 @@ export TERRAFORM_DOCS_PATH := website/docs/r
                 f"{repository}@{version}:internal/controller/namespaced/s3/bucket/zz_controller.go": (
                     'o.Provider.Resources["aws_s3_bucket"]'
                 ),
+                "hashicorp/terraform-provider-aws@v6.53.0:website/docs/r/s3_bucket.html.markdown": "# S3 bucket\n",
             },
         )
 
@@ -394,6 +429,7 @@ export TERRAFORM_DOCS_PATH := website/docs/r
         self.assertEqual(result["repository"], "hashicorp/terraform-provider-aws")
         self.assertEqual(result["ref"], "v6.53.0")
         self.assertEqual(result["path"], "website/docs/r/s3_bucket.html.markdown")
+        self.assertEqual(result["content"], "# S3 bucket\n")
 
     def test_keycloak_and_openstack_terraform_docs_resolve_end_to_end(self) -> None:
         cases = [
@@ -449,6 +485,7 @@ export TERRAFORM_DOCS_PATH := website/docs/r
                 self.assertEqual(result["repository"], terraform_repository)
                 self.assertEqual(result["ref"], "v1.2.3")
                 self.assertEqual(result["path"], f"website/docs/r/{documentation}")
+                self.assertEqual(result["content"], "# Terraform documentation\n")
 
     def test_non_upjet_examples_resolve_without_terraform_metadata(
         self,

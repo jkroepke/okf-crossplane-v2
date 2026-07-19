@@ -114,8 +114,14 @@ class GitHubSourceClient:
         self, repository: str, pattern: str, version: str, limit: int
     ) -> dict[str, Any]:
         selected_version = self._select_version(repository, version)
-        resources = self._resources(repository, selected_version)
         normalized_pattern = pattern.strip() or "*"
+        resources = (
+            self._fetch_local_resources(
+                repository, selected_version, normalized_pattern
+            )
+            if self.source_cache is not None
+            else self._resources(repository, selected_version)
+        )
         matches = [
             resource
             for resource in resources
@@ -153,7 +159,11 @@ class GitHubSourceClient:
         selected_version = self._select_version(repository, version)
         matches = [
             item
-            for item in self._resources(repository, selected_version)
+            for item in (
+                self._fetch_local_resources(repository, selected_version, resource)
+                if self.source_cache is not None
+                else self._resources(repository, selected_version)
+            )
             if self._resource_matches(item, resource)
         ]
         if not matches:
@@ -224,12 +234,16 @@ class GitHubSourceClient:
                 resources.append(resource)
         return resources
 
-    def _fetch_local_resources(self, repository: str, ref: str) -> list[dict[str, Any]]:
+    def _fetch_local_resources(
+        self, repository: str, ref: str, pattern: str = "*"
+    ) -> list[dict[str, Any]]:
         assert self.source_cache is not None
         paths = self.source_cache.list_files(repository, ref, "package/crds/")
         resources = []
         for path in paths:
             if not path.endswith((".yaml", ".yml")):
+                continue
+            if not self._local_crd_path_might_match(path, pattern):
                 continue
             resource = self._crd_from_yaml(
                 self.source_cache.read_file(repository, ref, path).decode("utf-8"),
@@ -455,3 +469,22 @@ class GitHubSourceClient:
             fnmatch.fnmatchcase(identity.lower(), pattern.lower())
             for identity in identities
         )
+
+    @staticmethod
+    def _local_crd_path_might_match(path: str, pattern: str) -> bool:
+        """Cheaply exclude generated CRD files that cannot satisfy simple queries.
+
+        Provider CRD filenames encode the group and plural kind. A search for
+        ``*Bucket*`` therefore need not parse every generated OpenAPI schema.
+        Patterns whose identities cannot be represented by the filename retain
+        the complete scan, preserving the public wildcard semantics.
+        """
+        normalized_pattern = pattern.casefold()
+        if normalized_pattern == "*" or "?" in normalized_pattern:
+            return True
+        if "." in normalized_pattern and "/" not in normalized_pattern:
+            return True
+        literal = normalized_pattern.replace("*", "").replace("/", "_")
+        if not literal:
+            return True
+        return literal in path.casefold()

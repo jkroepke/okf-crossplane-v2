@@ -250,6 +250,9 @@ export TERRAFORM_DOCS_PATH ?= website/docs/r
             github_files[f"{source}:{controller_path}"] = (
                 f'o.Provider.Resources["{terraform_name}"]'
             )
+            github_files[f"hashicorp/terraform-provider-aws@v6.53.0:{docs_path}"] = (
+                f"# {terraform_name}\n"
+            )
         tools = FakeProviderCRDTools(marketplace, github_files)
 
         for kind, _, terraform_name, docs_path in cases:
@@ -265,6 +268,7 @@ export TERRAFORM_DOCS_PATH ?= website/docs/r
                 self.assertEqual(result["ref"], "v6.53.0")
                 self.assertEqual(result["path"], docs_path)
                 self.assertEqual(result["terraform_resource_name"], terraform_name)
+                self.assertEqual(result["content"], f"# {terraform_name}\n")
 
     def test_missing_crd_returns_clear_error(self) -> None:
         tools = FakeProviderCRDTools(FakeMarketplace())

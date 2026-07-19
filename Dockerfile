@@ -1,8 +1,9 @@
-FROM ghcr.io/astral-sh/uv:python3.14-trixie-slim
+FROM ghcr.io/astral-sh/uv:0.11.29-debian-slim
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
         ca-certificates \
+        build-essential \
         git \
         tini \
     && rm -rf /var/lib/apt/lists/*
@@ -19,7 +20,10 @@ RUN groupadd --gid 65532 okf \
 WORKDIR /app
 
 COPY mcp/pyproject.toml mcp/uv.lock /app/
-RUN uv sync --frozen --no-dev
+ENV UV_PYTHON_INSTALL_DIR="/opt/uv/python" \
+    UV_PYTHON="3.14t"
+RUN uv python install "$UV_PYTHON" \
+    && uv sync --frozen --no-dev --python "$UV_PYTHON"
 
 COPY mcp/server.py /app/server.py
 COPY mcp/fetch_cache.py /app/fetch_cache.py
@@ -51,6 +55,7 @@ ENV BUNDLE_URL="https://github.com/jkroepke/okf-crossplane-v2.git" \
     GITHUB_API_TIMEOUT="15" \
     GITHUB_GIT_URL="https://github.com" \
     GITHUB_GIT_TIMEOUT="30" \
+    MCP_BLOCKING_WORKERS="4" \
     CACHE_DIR="/data/cache" \
     FETCH_CACHE_TTL_SECONDS="300" \
     FETCH_CACHE_MAX_ENTRIES="512" \

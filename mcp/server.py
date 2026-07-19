@@ -1,7 +1,11 @@
 from __future__ import annotations
 
+import asyncio
 import os
 import tempfile
+from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -32,6 +36,29 @@ def env_csv(name: str) -> list[str]:
     return [value.strip() for value in os.getenv(name, "").split(",") if value.strip()]
 
 
+def env_positive_int(name: str, default: int) -> int:
+    raw = os.getenv(name)
+    if raw is None:
+        return default
+    try:
+        value = int(raw)
+    except ValueError as error:
+        raise ValueError(
+            f"{name} must be a positive integer, received {raw!r}"
+        ) from error
+    if value < 1:
+        raise ValueError(f"{name} must be a positive integer, received {raw!r}")
+    return value
+
+
+async def run_blocking(
+    function: Callable[..., dict[str, Any]], *args: object
+) -> dict[str, Any]:
+    """Run blocking source work outside the Streamable HTTP event loop."""
+    loop = asyncio.get_running_loop()
+    return await loop.run_in_executor(blocking_work_pool, partial(function, *args))
+
+
 def ensure_writable_directory(path: Path) -> Path:
     """Create and verify the directory used for persistent source snapshots."""
     probe_path: Path | None = None
@@ -53,6 +80,10 @@ cache_dir = ensure_writable_directory(
     Path(os.environ.get("CACHE_DIR", "/data/cache")).resolve()
 )
 bundle_name = os.environ.get("BUNDLE_NAME", "crossplane-v2-okf")
+blocking_work_pool = ThreadPoolExecutor(
+    max_workers=env_positive_int("MCP_BLOCKING_WORKERS", 4),
+    thread_name_prefix="mcp-source",
+)
 fetch_cache = FetchCache(
     ttl_seconds=float(os.environ.get("FETCH_CACHE_TTL_SECONDS", "300")),
     max_entries=int(os.environ.get("FETCH_CACHE_MAX_ENTRIES", "512")),
@@ -102,7 +133,7 @@ mcp.settings.transport_security = TransportSecuritySettings(
 
 
 @mcp.tool()
-def get_versions(name: str) -> dict[str, Any]:
+async def get_versions(name: str) -> dict[str, Any]:
     """Resolve an OSS source and list its available versions.
 
     The name can be a short package name such as ``provider-aws`` or
@@ -112,11 +143,11 @@ def get_versions(name: str) -> dict[str, Any]:
     the provider CRD tools with ``versions.latest`` or a listed recent stable
     version. Counts summarize additional historical and prerelease tags.
     """
-    return github_source.get_versions(name)
+    return await run_blocking(github_source.get_versions, name)
 
 
 @mcp.tool()
-def provider_crd_search(
+async def provider_crd_search(
     provider_name: str,
     provider_version: str,
     crd_search_term: str,
@@ -126,11 +157,13 @@ def provider_crd_search(
     The search term is a case-insensitive shell wildcard matched against the
     group, kind, group/kind, and Kind.group identities.
     """
-    return provider_crds.search(provider_name, provider_version, crd_search_term)
+    return await run_blocking(
+        provider_crds.search, provider_name, provider_version, crd_search_term
+    )
 
 
 @mcp.tool()
-def provider_crd_get_definition(
+async def provider_crd_get_definition(
     provider_name: str,
     provider_version: str,
     crd_name: str,
@@ -142,11 +175,13 @@ def provider_crd_get_definition(
     containing apiVersion and kind. Optionally select a subtree with a dotted
     path such as ``.spec`` or ``.spec.versions[0]``.
     """
-    return provider_crds.get_definition(provider_name, provider_version, crd_name, path)
+    return await run_blocking(
+        provider_crds.get_definition, provider_name, provider_version, crd_name, path
+    )
 
 
 @mcp.tool()
-def provider_crd_get_examples(
+async def provider_crd_get_examples(
     provider_name: str,
     provider_version: str,
     crd_name: str,
@@ -156,21 +191,26 @@ def provider_crd_get_examples(
     When no API version is included in ``crd_name``, the latest served CRD API
     version is used for the example directory.
     """
-    return provider_crds.get_examples(provider_name, provider_version, crd_name)
+    return await run_blocking(
+        provider_crds.get_examples, provider_name, provider_version, crd_name
+    )
 
 
 @mcp.tool()
-def provider_crd_get_terraform_docs(
+async def provider_crd_get_terraform_docs(
     provider_name: str,
     provider_version: str,
     crd_name: str,
 ) -> dict[str, Any]:
-    """Get the Terraform documentation repository and path for an Upjet CRD.
+    """Get Terraform documentation content and source metadata for an Upjet CRD.
 
     The provider Makefile selects the Terraform repository and version. The
-    generated controller identifies the exact Terraform resource name.
+    generated controller identifies the exact Terraform resource name. The
+    response includes the immutable repository, ref, path, and document content.
     """
-    return provider_crds.get_terraform_docs(provider_name, provider_version, crd_name)
+    return await run_blocking(
+        provider_crds.get_terraform_docs, provider_name, provider_version, crd_name
+    )
 
 
 @mcp.custom_route("/healthz", methods=["GET"], include_in_schema=False)
