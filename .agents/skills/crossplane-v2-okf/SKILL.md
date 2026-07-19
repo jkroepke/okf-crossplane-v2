@@ -7,111 +7,54 @@ description: Use the Crossplane v2 OKF MCP server as the exclusive external know
 
 For every Crossplane v2 ecosystem question, use the OKF MCP tools before answering or creating artifacts.
 
-## General workflow
+## Workflow
 
-1. Call `okf_list_bundles` and confirm that the Crossplane v2 bundle is available.
+1. Call `okf_list_bundles` and confirm the Crossplane v2 bundle is available.
 2. Call `okf_context` with the user's focused question.
-3. When the task is to build, author, design, or substantially review a
-   Crossplane v2 Composition, retrieve the **Develop a Crossplane v2
-   Composition** concept with concept ID `composition-developer-starter` as
-   the primary routing guide. Follow its links to the required API, provider,
-   function, security, readiness, identity, testing, and packaging concepts.
-4. Use `okf_search` and `okf_get_concept` when exact concepts or API details are needed.
-5. Use `okf_related` or `okf_impact` only when relationships matter.
+3. For building, authoring, designing, or substantially reviewing a Crossplane v2 Composition, retrieve **Develop a Crossplane v2 Composition** (`composition-developer-starter`) as the primary routing guide. Follow its links to required API, provider, function, security, readiness, identity, testing, and packaging concepts.
+4. Use `okf_search` and `okf_get_concept` for exact concepts or API details; use `okf_related` or `okf_impact` only when relationships matter.
 
-The Composition developer starter is a navigation route, not a substitute for
-provider-specific evidence. Use the provider workflow below for concrete
-managed-resource schemas, examples, and upstream Terraform documentation.
+The Composition developer starter is a navigation route, not provider-specific evidence. Use the provider workflow below for concrete managed-resource schemas, examples, and upstream Terraform documentation.
 
-## Package versions
+## Provider-family packages
 
-Use `get_versions(name)` before selecting a provider or function release when
-an exact version was not supplied by the user or the local project.
+Before emitting a `pkg.crossplane.io/v1` `Provider`, retrieve provider-family guidance and determine whether the selected release is monolithic or split into family and service packages.
 
-- Pass a short package name, an `account/package` name, or a full
-  `xpkg.upbound.io` package reference.
-- Prefer `latest`, which is the highest stable semantic version returned by the
-  tool. Do not replace it with the latest prerelease.
-- Preserve the resolved package name and selected version in all later tool
-  calls and in the answer.
-- When the user or local project pins a version, use that exact version and do
-  not silently upgrade it.
+- A source repository is not necessarily an installable package: do not turn `crossplane-contrib/provider-upjet-aws` into `xpkg.upbound.io/crossplane-contrib/provider-upjet-aws` without selected-release package evidence.
+- For a new AWS, Azure, or GCP Upjet composition that needs one service, select its service package. For example, an S3-only AWS composition uses `xpkg.upbound.io/upbound/provider-aws-s3:<version>`, not the deprecated AWS monolithic package. Resolve Azure and GCP identities from selected-release family evidence, never from an API group or service name. Each selected service package installs its shared family/config package through its declared dependency.
+- Do not install a family/configuration package directly unless selected package documentation requires it. Do not install an unrelated family service merely to obtain a `ProviderConfig`.
+- Check for an existing monolithic provider: family packages do not take over its resource endpoints. Require an explicit, resource-by-resource migration plan before changing that topology.
+- If selected-release evidence does not identify the installable service package, stop and report the gap. Never infer it from a CRD group, Terraform resource, or source repository name.
 
-## Provider CRD workflow
+## Versions
 
-For provider-specific resource questions, use the following sequence. All
-provider CRD tools use the argument order shown here.
+Use `get_versions(name)` before choosing a provider or function release unless the user or local project supplied an exact version. Pass a short name, `account/package`, or full `xpkg.upbound.io` reference. Prefer `latest` (the tool's highest stable semantic version), never the latest prerelease. Preserve the resolved name and version in later calls and the answer; honor supplied pins without silently upgrading.
 
-1. Discover candidates with
-   `provider_crd_search(provider_name, provider_version, crd_search_term)`.
-   Use a focused kind, API-group, or wildcard term. Do not assume a resource
-   from name similarity.
-2. Select an exact result and retrieve its schema with
-   `provider_crd_get_definition(provider_name, provider_version, crd_name)`.
-   Add the optional `path` selector such as `.spec` or `.spec.versions[0]`
-   when only part of the CRD is needed; the tool returns that subtree as YAML.
-3. When creating or reviewing manifests, retrieve example locations with
-   `provider_crd_get_examples(provider_name, provider_version, crd_name)`.
-4. For an Upjet-managed resource, retrieve the mapped Terraform documentation
-   location with
-   `provider_crd_get_terraform_docs(provider_name, provider_version, crd_name)`
-   when field semantics, constraints, import behavior, or upstream examples are
-   relevant.
+## Provider CRDs
 
-`crd_name` may be a kind, `group/Kind`, `group/version/Kind`, or a YAML fragment
-containing `apiVersion` and `kind`. Prefer `group/version/Kind` after discovery
-because it keeps the API surface explicit and avoids ambiguous kinds.
+For provider-specific resource questions, use this sequence and argument order. Preserve the resolved provider name and version throughout; never mix a CRD definition from one release with examples or Terraform documentation from another.
 
-Keep the same resolved provider name and provider version across search,
-definition, examples, and Terraform documentation calls. Never combine a CRD
-definition from one provider release with examples or Terraform documentation
-resolved from another release.
+1. Discover candidates: `provider_crd_search(provider_name, provider_version, crd_search_term)`. Use a focused kind, API group, or wildcard; do not infer a resource from name similarity.
+2. Select one and retrieve its schema: `provider_crd_get_definition(provider_name, provider_version, crd_name)`. Optionally use `path` (for example, `.spec` or `.spec.versions[0]`) when only a YAML subtree is needed; the tool returns that subtree.
+3. For manifest creation or review, retrieve example locations: `provider_crd_get_examples(provider_name, provider_version, crd_name)`.
+4. For an Upjet-managed resource, retrieve the mapped Terraform documentation with `provider_crd_get_terraform_docs(provider_name, provider_version, crd_name)` when field semantics, constraints, import behavior, or upstream examples matter.
 
-## Fetching returned source locations
+`crd_name` may be a kind, `group/Kind`, `group/version/Kind`, or a YAML fragment containing `apiVersion` and `kind`. After discovery, prefer `group/version/Kind` to make the API explicit and avoid ambiguous kinds.
 
-`provider_crd_get_examples` and `provider_crd_get_terraform_docs` may return
-only a GitHub `repository`, immutable or versioned `ref`, and `path`. A connected
-GitHub integration may fetch those exact returned locations.
+## Returned source locations
 
-This is a narrow source-following exception, not permission for independent
-GitHub research:
+`provider_crd_get_examples` and `provider_crd_get_terraform_docs` may return only a GitHub `repository`, immutable or versioned `ref`, and `path`; a connected GitHub integration may fetch that exact location. This narrow exception does not allow independent GitHub research:
 
-- Fetch only the repository, ref, and path returned by the MCP tool.
-- Do not broaden the search to adjacent files, branches, issues, pull requests,
-  or repository-wide code search unless the user explicitly requests source
-  investigation beyond the MCP result.
-- Do not replace the returned ref with `main`, `master`, or another version.
-- Treat a missing returned file as incomplete provider evidence and report it.
-- Preserve the returned location in the final answer so the evidence remains
-  traceable.
+- Fetch only the returned repository, ref, and path; do not expand to adjacent files, branches, issues, pull requests, or repository-wide search unless the user explicitly requests source investigation beyond the MCP result.
+- Do not substitute `main`, `master`, or another version for the returned ref. Treat a missing returned file as incomplete provider evidence and report it.
+- Preserve the returned location in the final answer for traceability.
 
-The Terraform documentation tool establishes the Crossplane-to-Terraform
-resource mapping from provider source. Do not infer Terraform resource names by
-converting the CRD kind or API group yourself.
+The Terraform documentation tool establishes the Crossplane-to-Terraform resource mapping from provider source. Never infer a Terraform resource name by converting a CRD kind or API group.
 
 ## Evidence boundaries
 
-Treat the OKF bundle and the provider tools exposed by the same MCP server as
-the exclusive external retrieval sources for covered Crossplane ecosystem
-content. Local project files and materials supplied by the user may still be
-inspected.
+Treat the OKF bundle and its provider tools as the exclusive external retrieval sources for covered Crossplane content; local project files and user-supplied material remain in scope. Do not supplement, verify, or replace results with generic documentation or library-retrieval tools. The sole external fetch allowed here is an exact GitHub location returned by `provider_crd_get_examples` or `provider_crd_get_terraform_docs`.
 
-Do not supplement, verify, or replace bundle results with generic documentation
-or library retrieval tools. The only external source fetch allowed by this
-skill is an exact GitHub location returned by
-`provider_crd_get_examples` or `provider_crd_get_terraform_docs`.
+Preserve cited versions, feature states, limitations, CRD API versions, and original source locations. Do not introduce Crossplane v1 Claims unless explicitly requested. If the bundle or provider tools lack information, say the available OKF knowledge is incomplete and identify the gap; do not switch retrieval sources or guess a provider schema, example path, or Terraform mapping.
 
-Preserve cited versions, feature states, limitations, CRD API versions, and
-original source locations. Do not introduce Crossplane v1 Claims unless
-explicitly requested.
-
-When the bundle or provider tools do not contain enough information, state that
-the available OKF knowledge is incomplete and identify what is missing. Do not
-silently switch to another retrieval source or guess a provider schema,
-example path, or Terraform mapping.
-
-When the OKF MCP server or required tools are unavailable, report that
-dependency as unavailable and stop the Crossplane-specific retrieval workflow.
-Do not fall back to web search, `curl`, arbitrary raw GitHub URLs, `gh`,
-Context7, or another documentation source to retrieve Crossplane material.
-Local project files and user-supplied material remain in scope.
+If the OKF MCP server or required tools are unavailable, report that dependency as unavailable and stop Crossplane-specific retrieval. Do not fall back to web search, `curl`, arbitrary raw GitHub URLs, `gh`, Context7, or another documentation source for Crossplane material. Local project files and user-supplied material remain in scope.
