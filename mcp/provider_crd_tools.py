@@ -243,14 +243,19 @@ class ProviderCRDTools:
         terraform_resource = self._terraform_resource_name(source, resource)
         provider_prefix = terraform_source.rsplit("/", 1)[-1]
         docs_resource = terraform_resource.removeprefix(f"{provider_prefix}_")
+        docs_ref = self._version_tag(terraform_version)
+        docs_path = f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown"
         return {
             "provider_name": provider,
             "provider_version": version,
             "crd": resource,
             "terraform_resource_name": terraform_resource,
             "repository": terraform_repository,
-            "ref": self._version_tag(terraform_version),
-            "path": (f"{docs_path.rstrip('/')}/{docs_resource}.html.markdown"),
+            "ref": docs_ref,
+            "path": docs_path,
+            "content": self._read_github_text(
+                terraform_repository, docs_ref, docs_path
+            ),
         }
 
     def _resolve_resource(

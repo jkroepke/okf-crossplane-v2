@@ -3,3 +3,5 @@
 *.duckdb
 __pycache__/
 .venv/
+.env
+compose.override.yaml
