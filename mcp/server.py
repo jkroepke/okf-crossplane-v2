@@ -186,10 +186,12 @@ async def provider_crd_get_examples(
     provider_version: str,
     crd_name: str,
 ) -> dict[str, Any]:
-    """Get GitHub repository paths for generated and handwritten CRD examples.
+    """Get all matching YAML examples from an immutable provider source snapshot.
 
-    When no API version is included in ``crd_name``, the latest served CRD API
-    version is used for the example directory.
+    Every YAML document under ``examples/`` and ``examples-generated/`` is
+    considered. Each result includes the zero-based indexes of matching
+    documents when a file contains multiple YAML documents. When no API version
+    is included in ``crd_name``, the latest served CRD API version is selected.
     """
     return await run_blocking(
         provider_crds.get_examples, provider_name, provider_version, crd_name
