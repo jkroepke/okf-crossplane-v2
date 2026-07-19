@@ -2,8 +2,8 @@
 
 When a Composition task spans multiple patterns, start with the
 [pipeline and security design route](../../../composition-pipeline-and-security.md).
-The leaf concepts remain separate because readiness evaluation, consumer
-publication, and desired-resource introduction change different state.
+The leaf concepts remain separate because readiness evaluation and consumer
+publication change different state.
 
 # Readiness evaluation
 
@@ -19,11 +19,6 @@ publication, and desired-resource introduction change different state.
 # Consumer publication
 
 * [Safe database status and connection publication](safe-status-and-connection-publication.md) - Publish consumer-facing XR status and connection references only after named dependencies are ready and required data is complete.
-
-# Desired-resource introduction
-
-* [Readiness-gated staging](readiness-gated-staging.md) - Introduce one exceptional dependent stage after observed readiness, then retain it across later reconciliations.
-* [function-sequencer](../../function-sequencer/sequencing.md) - Move a declared or branching introduction graph out of the template while retaining observed successors.
 
 # External integration
 

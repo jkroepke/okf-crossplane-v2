@@ -1,7 +1,7 @@
 ---
 type: Crossplane Example
-title: Preserve YAML document boundaries in conditional templates
-description: Keep Go-template trim markers away from YAML document and field boundaries, then render every reconciliation stage that changes conditional output.
+title: Preserve YAML document boundaries in templates
+description: Keep Go-template trim markers away from YAML document and field boundaries, then parse rendered output as YAML.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, composition-function, go-template, yaml, rendering]
 timestamp: 2026-07-16T00:00:00Z
@@ -22,23 +22,9 @@ Consequently, trimming at a structural YAML boundary can join a `---` document
 separator to adjacent YAML text. Treat this as an output-formatting hazard, not
 a provider-reference problem.
 
-# Safe conditional boundaries
+# Safe field boundaries
 
-For a conditional whole document, leave the separator and the first YAML token
-on distinct output lines. Use untrimmed actions around that boundary:
-
-```gotemplate
-{{ if $bucketReady }}
----
-apiVersion: s3.aws.m.upbound.io/v1beta1
-kind: BucketACL
-metadata:
-  annotations:
-    gotemplating.fn.crossplane.io/composition-resource-name: public-acl
-{{ end }}
-```
-
-Likewise, when a conditional field follows a required field, preserve its
+When a conditional field follows a required field, preserve its
 indentation and newline rather than using trim markers:
 
 ```gotemplate
@@ -53,19 +39,6 @@ The examples are an inferred authoring pattern from the Go-template whitespace
 rules; they are not a special `function-go-templating` syntax. Trim markers
 remain useful on directive-only lines when removing whitespace cannot join YAML
 syntax or values.
-
-# Stage-oriented verification
-
-Render at least the initial stage, where observed prerequisite values are
-absent, and a fully observed stage, where every conditional document is
-eligible. Check both rendered artifacts as YAML documents and verify the
-expected composed-resource names and count. This catches a template that
-executes successfully yet silently changes its YAML token boundaries when a
-condition becomes true.
-
-The motivating bucket, ownership, public-access, and ACL sequence was supplied
-by the user. It is an illustrative composition pattern and was not
-independently executed against the pinned releases.
 
 # Identifier and optional-input safety
 

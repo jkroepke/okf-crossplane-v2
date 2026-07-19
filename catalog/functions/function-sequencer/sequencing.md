@@ -19,9 +19,6 @@ supporting_sources:
   - repository: crossplane-contrib/function-auto-ready
     commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
     paths: [fn.go]
-  - repository: crossplane-contrib/function-go-templating
-    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
-    paths: [fn.go]
 feature_state: Beta
 feature_state_basis: The selected Input API is served as sequencer.fn.crossplane.io/v1beta1.
 ---
@@ -35,38 +32,7 @@ names. For an unobserved successor, every matched predecessor must be
 from desired state.[1]
 
 Once a successor is observed, sequencer preserves it even if a predecessor
-later becomes unready.[1] This supplies the observed-key retention that a
-Go-template staged-introduction pattern otherwise implements manually.
-
-# When to use it
-
-As inferred authoring guidance, use manual readiness when one
-already-rendered resource needs an application-specific readiness decision. Use
-a Go-template observed-key latch only for a small exceptional
-staged-introduction graph. Use sequencer for a declared or branching graph
-where the resource-producing function should emit all resources and sequencing
-should decide which unobserved successors enter the final desired state.
-
-Sequencer does not make provider operations transactional and does not perform
-rollback. Use provider lifecycle capabilities or a separate workflow for those
-requirements.
-
-# Bucket-stage mapping
-
-For a Bucket, ownership controls, public-access block, and ACL, first render
-all four resources with stable composition-resource names, then use rules that
-express:
-
-1. `bucket` precedes `ownership-controls`.
-2. `bucket` precedes `public-access-block`.
-3. `ownership-controls` precedes `public-acl`.
-4. `public-access-block` precedes `public-acl`.
-
-This is sequencing of **desired-resource introduction**, not a provider-side
-transaction or a promise that Kubernetes applies the resource manifests in a
-particular order. As inferred authoring guidance, it is a better fit than
-manual template latches when the dependency graph is more than a small
-exceptional case.
+later becomes unready.[1]
 
 # Pipeline order and minimal Input
 
@@ -78,27 +44,6 @@ resource-producing function (including any manual readiness annotation)
   -> optional function-auto-ready
   -> function-sequencer
 ```
-
-For the Bucket-stage mapping, the sequencer step is:
-
-```yaml
-- step: sequence-creation
-  functionRef:
-    name: function-sequencer
-  input:
-    apiVersion: sequencer.fn.crossplane.io/v1beta1
-    kind: Input
-    rules:
-      - sequence: [bucket, ownership-controls]
-      - sequence: [bucket, public-access-block]
-      - sequence: [ownership-controls, public-acl]
-      - sequence: [public-access-block, public-acl]
-```
-
-The preceding resource-producing step must emit all four named resources. If
-automatic readiness is used, place `function-auto-ready` between that step and
-this one; if the template sets explicit readiness, it already supplies the
-predecessor readiness consumed here.[1][6][7]
 
 # Events and readiness
 
@@ -121,16 +66,10 @@ sequencer has withheld a successor.[3]
   sequencing uses v2 Usage or ClusterUsage relationships and has its own
   scope and foreground-deletion requirements.[5] Composition Functions do not
   run during XR deletion, so deletion relationships must already exist before
-  deletion begins.[8]
-- Sequencer filters desired state; it cannot reverse an external action already
-  taken by a provider.
+  deletion begins.[6]
 
 # Relationships
 
-For a small, custom condition or non-composed observed state, retain a
-[manual readiness](../function-go-templating/patterns/manual-readiness.md)
-override. For the lower-level template-latch alternative, see
-[readiness-gated staging](../function-go-templating/patterns/readiness-gated-staging.md).
 For the Core deletion-protection contract, see
 [Usage and ClusterUsage](../../core/usages-and-clusterusages.md).
 The [Input reference](input.md) documents defaults, CEL conditions, cache TTL,
@@ -143,6 +82,4 @@ and the mixed-scope deletion-sequencing guard.
 [3] [README pipeline order and composite readiness option](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L54-L91)
 [4] [Rule conditions and missing predecessor behavior](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L196-L250)
 [5] [Deletion sequencing and v2 Usage handling](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L93-L153)
-[6] [Minimal Input pipeline step](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/README.md#L7-L21)
-[7] [function-auto-ready writes observation-derived desired-resource readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L193)
-[8] [Function pipelines do not run during XR deletion](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L143-L148)
+[6] [Function pipelines do not run during XR deletion](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/composition/compositions.md#L143-L148)
