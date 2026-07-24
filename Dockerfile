@@ -1,4 +1,4 @@
-FROM ghcr.io/astral-sh/uv:0.11.31-debian-slim
+FROM ghcr.io/astral-sh/uv:0.11.32-debian-slim
 
 RUN apt-get update \
     && apt-get install --yes --no-install-recommends \
