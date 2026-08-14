@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.14,<3.15"
 dependencies = [
   "gitpython>=3.1.24",
-  "okf-mcp==0.3.0",
+  "okf-mcp==0.4.0",
   "pyyaml>=6.0",
 ]
 
