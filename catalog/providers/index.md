@@ -6,4 +6,3 @@
 * [Provider connection-detail source retrieval](provider-connection-details-source-retrieval.md) - Read a selected-release provider's connection-detail implementation to determine Secret keys, conditionality, and dynamic-key boundaries.
 * [Provider package revisions and activation scope](provider-package-revisions.md) - Plan upgrades with the parent-scoped active-revision boundary and cluster-wide API/controller effects in view.
 * [Provider CRD schema discovery](crd-schema-discovery.md) - Find provider schemas through version-addressed registry routes or pinned package CRD directories.
-* [Custom-resource gate CRD cache schema stripping](crd-cache-schema-stripping.md) - Configure the opt-in crossplane-runtime cache transform while preserving data required by other CRD cache consumers.

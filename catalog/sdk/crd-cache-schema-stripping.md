@@ -56,7 +56,7 @@ one of those fields.
 
 For authoring or validating managed-resource manifests, retrieve the selected
 provider package's immutable CRD artifact using [provider CRD schema
-discovery](crd-schema-discovery.md); a transformed informer-cache object no
+discovery](../providers/crd-schema-discovery.md); a transformed informer-cache object no
 longer contains that schema.
 
 # Limitations

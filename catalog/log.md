@@ -1,7 +1,7 @@
 # Catalog Update Log
 
 ## 2026-08-19
-* **Creation**: Added release-pinned provider-development guidance for crossplane-runtime's opt-in custom-resource gate CRD cache transform and its shared-cache data boundary.
+* **Creation**: Added release-pinned SDK guidance for crossplane-runtime's opt-in custom-resource gate CRD cache transform and its shared-cache data boundary.
 
 ## 2026-07-19
 * **Removal**: Removed the reusable readiness-gated desired-resource-introduction pattern and its template-latch, Bucket-stage, and authoring-choice guidance. The function-sequencer reference now documents behavior without recommending creation gating.
