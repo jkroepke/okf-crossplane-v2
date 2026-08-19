@@ -119,10 +119,12 @@ sources:
     resolved_at: 2026-07-14
   crossplane-runtime:
     repository: crossplane/crossplane-runtime
-    tag: v2.3.3
-    commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
-    selected_by: crossplane/v2.3.3 go.mod
-    resolved_at: 2026-07-12
+    tag: v2.4.0
+    commit: 71f319796d597c2c6cf004cc4bf5f44011a5aeaa
+    previous_tag: v2.3.3
+    previous_commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+    selected_by: crossplane-runtime@v2.4.0:F01 CRD cache schema-stripping transform
+    resolved_at: 2026-08-19
   crossplane-runtime-pr-788:
     repository: crossplane/crossplane-runtime
     commit: 5faceb9d8a2cf6d839ab193d91a503dd619f8f2c
