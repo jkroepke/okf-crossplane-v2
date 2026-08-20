@@ -3,7 +3,32 @@ type: Crossplane Development Guide
 title: Reference layout for a Composition project
 description: A small manifest layout that keeps Composition authoring inputs distinct from the CLI Functions-only render input.
 tags: [crossplane, composition, authoring, cli, project-layout]
-timestamp: 2026-07-16T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: pipeline-composition-and-xr-gvk-validation
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158'
+    title: 'Pipeline Composition and XR GVK validation'
+  - id: functions-only-loader-validation
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113'
+    title: 'Functions-only loader validation'
+  - id: standalone-render-requires-the-functions-input
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413'
+    title: 'Standalone render requires the Functions input'
+  - id: current-composition-identity-type-reference-and-pipeline-mode
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L7-L98'
+    title: 'Current Composition identity, type reference, and Pipeline mode'
+  - id: mrap-activation-policy-guidance
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L166-L191'
+    title: 'MRAP activation-policy guidance'
+  - id: xrd-referenceable-gvk-derivation
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v2/xrd_types.go#L287-L298'
+    title: 'XRD referenceable GVK derivation'
+  - id: current-xrd-v2-identity-and-schema
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml#L702-L1266'
+    title: 'Current XRD v2 identity and schema'
+  - id: cli-observed-resource-fixtures
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74'
+    title: 'CLI observed-resource fixtures'
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
@@ -52,14 +77,14 @@ suites as the project needs them.
 
 | File | Put in it |
 | --- | --- |
-| `definition.yaml` | One current `apiextensions.crossplane.io/v2` CompositeResourceDefinition defining the XR group, names, scope, versions, and schema.[7] |
-| `composition.yaml` | One current `apiextensions.crossplane.io/v1` `Composition`, in Pipeline mode. Set `compositeTypeRef.apiVersion` to `<xrd.spec.group>/<referenceable-version.name>` and `compositeTypeRef.kind` to `xrd.spec.names.kind`.[4][6] |
-| `functions.yaml` | The mandatory Functions-only input for the standalone file-based render command shown below. Project-mode rendering may discover Functions through project metadata instead.[2][3] |
+| `definition.yaml` | One current `apiextensions.crossplane.io/v2` CompositeResourceDefinition defining the XR group, names, scope, versions, and schema.[^current-xrd-v2-identity-and-schema] |
+| `composition.yaml` | One current `apiextensions.crossplane.io/v1` `Composition`, in Pipeline mode. Set `compositeTypeRef.apiVersion` to `<xrd.spec.group>/<referenceable-version.name>` and `compositeTypeRef.kind` to `xrd.spec.names.kind`.[^current-composition-identity-type-reference-and-pipeline-mode][^xrd-referenceable-gvk-derivation] |
+| `functions.yaml` | The mandatory Functions-only input for the standalone file-based render command shown below. Project-mode rendering may discover Functions through project metadata instead.[^functions-only-loader-validation][^standalone-render-requires-the-functions-input] |
 | `provider.yaml` | Provider package installation manifests needed by the Composition's managed resources. |
 | `providerconfig.yaml` | The provider configuration manifests selected by those managed resources. |
-| `mrap.yaml` | ManagedResourceActivationPolicy manifests when the selected provider setup uses explicit managed-resource activation.[5] |
+| `mrap.yaml` | ManagedResourceActivationPolicy manifests when the selected provider setup uses explicit managed-resource activation.[^mrap-activation-policy-guidance] |
 | `example.yaml` | A representative XR used for local rendering and authoring checks. |
-| `tests/observed-resources.yaml` | Optional render fixture for a later reconciliation stage. Keep it separate from desired manifests and pass it with `--observed-resources`.[8] |
+| `tests/observed-resources.yaml` | Optional render fixture for a later reconciliation stage. Keep it separate from desired manifests and pass it with `--observed-resources`.[^cli-observed-resource-fixtures] |
 | `tests/` | Optional assertion suites, for example xprin tests over initial and observed render stages. |
 
 `provider.yaml`, `providerconfig.yaml`, and `mrap.yaml` are intentionally
@@ -79,7 +104,7 @@ function pipeline renders:
 crossplane composition render example.yaml composition.yaml functions.yaml
 ```
 
-The CLI validates Pipeline mode and XR GVK compatibility before rendering.[1]
+The CLI validates Pipeline mode and XR GVK compatibility before rendering.[^pipeline-composition-and-xr-gvk-validation]
 
 If a Function needs managed-resource status as input, add
 `tests/observed-resources.yaml` and pass it with `--observed-resources`. Keep
@@ -100,20 +125,11 @@ before a live apply. The
 connects these decisions and the
 [xprin test-suite model](/tools/xprin-test-suites.md).
 
-# Citations
-
-[1] [Pipeline Composition and XR GVK validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158)
-
-[2] [Functions-only loader validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113)
-
-[3] [Standalone render requires the Functions input](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)
-
-[4] [Current Composition identity, type reference, and Pipeline mode](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L7-L98)
-
-[5] [MRAP activation-policy guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L166-L191)
-
-[6] [XRD referenceable GVK derivation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v2/xrd_types.go#L287-L298)
-
-[7] [Current XRD v2 identity and schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml#L702-L1266)
-
-[8] [CLI observed-resource fixtures](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74)
+[^pipeline-composition-and-xr-gvk-validation]: [Pipeline Composition and XR GVK validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158)
+[^functions-only-loader-validation]: [Functions-only loader validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113)
+[^standalone-render-requires-the-functions-input]: [Standalone render requires the Functions input](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)
+[^current-composition-identity-type-reference-and-pipeline-mode]: [Current Composition identity, type reference, and Pipeline mode](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositions.yaml#L7-L98)
+[^mrap-activation-policy-guidance]: [MRAP activation-policy guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resource-activation-policies.md#L166-L191)
+[^xrd-referenceable-gvk-derivation]: [XRD referenceable GVK derivation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/apiextensions/v2/xrd_types.go#L287-L298)
+[^current-xrd-v2-identity-and-schema]: [Current XRD v2 identity and schema](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/apiextensions.crossplane.io_compositeresourcedefinitions.yaml#L702-L1266)
+[^cli-observed-resource-fixtures]: [CLI observed-resource fixtures](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74)

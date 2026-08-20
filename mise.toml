@@ -1,5 +1,5 @@
 [tools]
-"pipx:okf-ingest" = "latest"
+"pipx:okf-ingest" = "0.11.0"
 uv = "0.12.4"
 
 [tasks.lint]
@@ -7,7 +7,7 @@ description = "Run all checks"
 depends = ['validate', 'test']
 
 [tasks.validate]
-description = "Run OKF linter"
+description = "Validate the OKF v0.2 catalog"
 run = "okf validate catalog/"
 
 [tasks.test]

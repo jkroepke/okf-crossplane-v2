@@ -14,8 +14,8 @@ description: >
   needs.
 metadata:
   author: ft.ia.br
-  version: "1.1"
-  date: 2026-06-17
+  version: "1.2"
+  date: 2026-08-20
   repository: https://github.com/fabricioctelles/skills
   license: Apache-2.0
   category: library-and-api-reference
@@ -23,11 +23,11 @@ metadata:
 
 # Open Knowledge Format (OKF)
 
-OKF is a vendor-neutral, open spec (v0.1, announced June 12, 2026 by Sam McVeety & Amir Hormati at Google Cloud) for representing knowledge as a directory of markdown files with YAML frontmatter. No SDK required — if you can `cat` a file, you can read OKF.
+OKF is a vendor-neutral, open spec (v0.2) for representing knowledge as a directory of markdown files with YAML frontmatter. No SDK required — if you can `cat` a file, you can read OKF.
 
 It formalizes the "LLM Wiki" pattern ([Karpathy's gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f)) into an interoperable format: wikis written by different producers can be consumed by different agents without translation.
 
-For the full spec, see [references/spec-v01.md](references/spec-v01.md).
+For the full spec, see [references/spec-v02.md](references/spec-v02.md).
 
 ### Design Principles
 
@@ -46,6 +46,8 @@ For the full spec, see [references/spec-v01.md](references/spec-v01.md).
 - **Body** — Everything after the frontmatter. Standard markdown.
 - **Link** — Standard markdown link expressing a relationship between concepts.
 - **Citation** — Link to an external source backing a claim in the body.
+- **Source** — Material a concept derives from, recorded in frontmatter `sources`.
+- **Actor** — A tool, process, or human recorded in `generated.by` or `verified[].by`.
 
 ---
 
@@ -58,7 +60,11 @@ For the full spec, see [references/spec-v01.md](references/spec-v01.md).
 | `description` | Recommended | One-sentence summary |
 | `resource` | Recommended | URI identifying the underlying asset (omit for abstract concepts) |
 | `tags` | Optional | YAML list for cross-cutting categorization |
-| `timestamp` | Optional | ISO 8601 datetime of last meaningful change |
+| `sources` | Optional | Provenance entries; `resource` is required within each entry |
+| `generated` | Optional | Producer actor and time of the current representation |
+| `verified` | Optional | Actual verification events; drives the derived trust tier |
+| `status` | Optional | `draft`, `stable`, or `deprecated`; absent means `stable` |
+| `stale_after` | Optional | Absolute `YYYY-MM-DD` staleness date |
 
 Additional producer-defined keys are allowed. Never reject unknown fields.
 
@@ -69,7 +75,7 @@ Additional producer-defined keys are allowed. Never reject unknown fields.
 | `index.md` | Directory listing for progressive disclosure | NO* |
 | `log.md` | Change history, newest first | NO |
 
-*Exception: bundle-root `index.md` MAY have frontmatter with `okf_version: "0.1"` to declare spec version.
+*Exception: bundle-root `index.md` MAY have frontmatter with `okf_version: "0.2"` to declare spec version.
 
 ## Conventional Body Headings
 
@@ -77,7 +83,7 @@ Additional producer-defined keys are allowed. Never reject unknown fields.
 |---------|-------------|
 | `# Schema` | Data assets — describe columns/fields |
 | `# Examples` | Show concrete usage (code blocks, queries) |
-| `# Citations` | List external sources backing claims (numbered) |
+| `# Computation` | Sanctioned computation for an `Attested Computation` concept |
 
 ---
 
@@ -100,7 +106,7 @@ type: Metric
 title: Monthly Recurring Revenue
 description: Sum of all active subscription revenue normalized to monthly.
 tags: [revenue, saas]
-timestamp: 2026-06-13T10:00:00Z
+generated: { by: "process:metric-catalog", at: "2026-06-13T10:00:00Z" }
 ---
 
 # Monthly Recurring Revenue (MRR)
@@ -168,7 +174,7 @@ Bundle-root `index.md` may include frontmatter declaring the spec version:
 
 ```markdown
 ---
-okf_version: "0.1"
+okf_version: "0.2"
 ---
 
 # My Knowledge Bundle
@@ -267,7 +273,7 @@ For a script-based check, see [scripts/validate.sh](scripts/validate.sh).
 
 - `W1`: Missing recommended field `title` or `description`
 - `W2`: Broken cross-link `{link}` in `{file}`
-- `W3`: No `timestamp` field
+- `W3`: No `generated` field
 - `W4`: No `index.md` in directory `{dir}`
 - `W5`: `log.md` dates not in ISO 8601 format
 
@@ -296,18 +302,27 @@ For data assets, add `# Schema` with a columns table:
 
 For APIs, queries, or tools, add `# Examples` with fenced code blocks showing usage.
 
-### Add citations
+### Add provenance and claim attribution
 
-When claims reference external sources, add `# Citations` at the bottom, numbered:
+When claims derive from sources, add one `sources` entry per concrete source.
+Give claim-bearing entries stable IDs and use matching keyed Markdown footnotes:
 
 ```markdown
-# Citations
+---
+type: Playbook
+sources:
+  - id: official-docs
+    resource: https://example.com/docs
+    title: Official documentation
+---
 
-[1] [Official docs](https://example.com/docs)
-[2] [Internal runbook](https://wiki.internal/quality)
+Follow the documented procedure.[^official-docs]
+
+[^official-docs]: [Official documentation](https://example.com/docs)
 ```
 
-Citations may be absolute URLs, bundle-relative paths, or paths into a `references/` subdirectory.
+Source resources may be absolute URLs, bundle-relative paths, paths into a
+`references/` subdirectory, or scope descriptors permitted by the spec.
 
 ### Add cross-links
 
@@ -315,7 +330,7 @@ Weave links into natural prose. Don't create a standalone "links" section — ex
 
 ### Fill recommended fields
 
-If `title`, `description`, `tags`, or `timestamp` are missing, add them. Derive values from body content when possible.
+If `title`, `description`, `tags`, or warranted `generated` metadata are missing, add them. Derive values from body content when possible, but never invent actors or verification events.
 
 ### Enrichment workflow reference
 
@@ -421,4 +436,4 @@ saas-metrics/
 └── nps.md
 ```
 
-Then show each file, then confirm: "Bundle is OKF v0.1 conformant ✅"
+Then show each file, then confirm: "Bundle is OKF v0.2 conformant ✅"

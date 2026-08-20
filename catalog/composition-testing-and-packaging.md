@@ -3,7 +3,7 @@ type: Crossplane Composition Verification Guide
 title: Test, smoke-test, and package a Composition
 description: A mandatory verification gate covering rendering, assertions, admission, live reconciliation, and package activation.
 tags: [crossplane, composition, testing, validation, packaging]
-timestamp: 2026-07-18T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
 crossplane_release: v2.3.3
 documentation_series: v2.3
 feature_state: Not stated by selected sources

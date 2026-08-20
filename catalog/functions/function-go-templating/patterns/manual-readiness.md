@@ -4,7 +4,26 @@ title: Mark composed resources ready from observed state
 description: Set explicit composed-resource readiness from a condition or guarded field check in a Go template.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, composition-function, readiness, go-template]
-timestamp: 2026-07-14T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: readiness-value-parsing
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L203-L218'
+    title: 'Readiness value parsing'
+  - id: named-resource-readiness-handling-and-annotation-removal
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350'
+    title: 'Named-resource readiness handling and annotation removal'
+  - id: getresourcecondition-behavior-and-bundled-example
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L89-L99'
+    title: 'getResourceCondition behavior and bundled example'
+  - id: getcomposedresource-behavior
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132'
+    title: 'getComposedResource behavior'
+  - id: function-auto-ready-preserves-explicit-readiness
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179'
+    title: 'function-auto-ready preserves explicit readiness'
+  - id: function-auto-ready-cel-activation-contains-the-observed-object
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71'
+    title: 'function-auto-ready CEL activation contains the observed object'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -25,17 +44,17 @@ A Go template can set `gotemplating.fn.crossplane.io/ready` on a complete
 rendered composed resource. The annotation accepts exactly `"True"`, `"False"`,
 or `"Unspecified"`; another value produces a fatal function result. The
 function copies the parsed value to the desired-resource readiness field and
-removes the control annotation from the Kubernetes manifest.[1][2]
+removes the control annotation from the Kubernetes manifest.[^readiness-value-parsing][^named-resource-readiness-handling-and-annotation-removal]
 
 The rendered object must also have a composition resource name. A readiness
 annotation by itself is not a standalone instruction; render the complete
-desired object on every reconciliation.[2]
+desired object on every reconciliation.[^named-resource-readiness-handling-and-annotation-removal]
 
 # Condition example
 
 `getResourceCondition` accepts the request wrapper stored in
 `.observed.resources` and returns an `Unknown` condition when the condition or
-status path is absent.[3] This adapted fragment keeps a Deployment explicitly
+status path is absent.[^getresourcecondition-behavior-and-bundled-example] This adapted fragment keeps a Deployment explicitly
 not ready until its `Available` condition becomes true:
 
 ```gotemplate
@@ -58,7 +77,7 @@ spec:
 # Field examples
 
 `getComposedResource . "name"` returns the unwrapped observed object or `nil`.
-Guard the result before traversing it.[4]
+Guard the result before traversing it.[^getcomposedresource-behavior]
 
 ```gotemplate
 {{- $serviceReady := false }}
@@ -87,9 +106,9 @@ Kubernetes checks, generic `Ready=True` fallback, or Alpha CEL customization
 matches the observed composed resource.
 
 A later function-auto-ready step preserves explicit `True` and `False`
-decisions made by this template.[5] Its CEL expression receives only the
+decisions made by this template.[^function-auto-ready-preserves-explicit-readiness] Its CEL expression receives only the
 matched observed composed object, so CEL does not directly evaluate a separate
-`ExtraResources` result.[6]
+`ExtraResources` result.[^function-auto-ready-cel-activation-contains-the-observed-object]
 
 # Limitations
 
@@ -99,11 +118,9 @@ matched observed composed object, so CEL does not directly evaluate a separate
 - The examples are adapted integration fragments under the source project's
   Apache-2.0 license; replace abbreviated specs with complete desired objects.
 
-# Citations
-
-[1] [Readiness value parsing](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L203-L218)
-[2] [Named-resource readiness handling and annotation removal](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
-[3] [`getResourceCondition` behavior and bundled example](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L89-L99)
-[4] [`getComposedResource` behavior](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132)
-[5] [function-auto-ready preserves explicit readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
-[6] [function-auto-ready CEL activation contains the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[^readiness-value-parsing]: [Readiness value parsing](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L203-L218)
+[^named-resource-readiness-handling-and-annotation-removal]: [Named-resource readiness handling and annotation removal](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
+[^getresourcecondition-behavior-and-bundled-example]: [`getResourceCondition` behavior and bundled example](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L89-L99)
+[^getcomposedresource-behavior]: [`getComposedResource` behavior](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132)
+[^function-auto-ready-preserves-explicit-readiness]: [function-auto-ready preserves explicit readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
+[^function-auto-ready-cel-activation-contains-the-observed-object]: [function-auto-ready CEL activation contains the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)

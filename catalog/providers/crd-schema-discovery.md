@@ -3,7 +3,23 @@ type: Reference
 title: Discover provider CRD schemas
 description: Retrieve provider CRD inventories quickly from the Upbound API, then use version-pinned package and source artifacts for reproducible work.
 tags: [crossplane, providers, crd, schema, upbound]
-timestamp: 2026-07-16T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: version-pinned-upbound-package-resource-inventory
+    resource: 'https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources'
+    title: 'Version-pinned Upbound package resource inventory'
+  - id: upbound-api-bucket-crd-lookup
+    resource: 'https://api.upbound.io/v1/packages/upbound/provider-aws-s3/latest/resources/s3.aws.m.upbound.io/Bucket'
+    title: 'Upbound API Bucket CRD lookup'
+  - id: upbound-s3-package-source-identity
+    resource: 'https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.6.0'
+    title: 'Upbound S3 package source identity'
+  - id: different-community-aws-provider-package
+    resource: 'https://marketplace.upbound.io/providers/crossplane-contrib/provider-aws/latest'
+    title: 'Different community AWS provider package'
+  - id: marketplace-support-capabilities-for-an-upbound-s3-release
+    resource: 'https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.4.0'
+    title: 'Marketplace support capabilities for an Upbound S3 release'
 source_repository: crossplane-contrib/provider-upjet-aws
 source_commit: 857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60
 source_paths:
@@ -23,14 +39,14 @@ available CRDs. Use the package route, not the `/v1/` root by itself:
 https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources
 ```
 
-This version-addressed route returns the package resource inventory.[1] To fetch
+This version-addressed route returns the package resource inventory.[^version-pinned-upbound-package-resource-inventory] To fetch
 one CRD definition directly, use its group and kind:
 
 ```text
 https://api.upbound.io/v1/packages/upbound/provider-aws-s3/latest/resources/s3.aws.m.upbound.io/Bucket
 ```
 
-The latter is a fast way to inspect the `Bucket` CRD.[2] `latest` is mutable, so
+The latter is a fast way to inspect the `Bucket` CRD.[^upbound-api-bucket-crd-lookup] `latest` is mutable, so
 use it for exploration only. For a test, validation fixture, or published
 claim, select the exact package version installed by the environment and retain
 the retrieved CRD as an explicit fixture. A version in this API URL is useful
@@ -43,14 +59,14 @@ Do not conflate `upbound/provider-aws-s3` with
 their APIs are not interchangeable. Do not assume a
 `crossplane-contrib/provider-aws-s3` repository from the package name; the
 selected Upbound S3 package identifies `crossplane-contrib/provider-upjet-aws`
-as its source.[3][4]
+as its source.[^upbound-s3-package-source-identity][^different-community-aws-provider-package]
 
 The Upbound Marketplace documents supported package capabilities including
 backporting for selected releases. Do not turn that into a claim that public
 Upbound packages and an upstream repository are byte-for-byte equivalent, or
 that a particular fix is paywalled: establish the exact package version,
 digest, entitlement, and selected upstream source before making a compatibility
-or availability claim.[5]
+or availability claim.[^marketplace-support-capabilities-for-an-upbound-s3-release]
 
 # Source-tree fallback
 
@@ -69,14 +85,8 @@ These directories reflect the pinned snapshots, not moving `main` or `master`.
 Always verify that the source commit and package version correspond to the
 provider installed in the target environment.
 
-# Citations
-
-[1] [Version-pinned Upbound package resource inventory](https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources)
-
-[2] [Upbound API Bucket CRD lookup](https://api.upbound.io/v1/packages/upbound/provider-aws-s3/latest/resources/s3.aws.m.upbound.io/Bucket)
-
-[3] [Upbound S3 package source identity](https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.6.0)
-
-[4] [Different community AWS provider package](https://marketplace.upbound.io/providers/crossplane-contrib/provider-aws/latest)
-
-[5] [Marketplace support capabilities for an Upbound S3 release](https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.4.0)
+[^version-pinned-upbound-package-resource-inventory]: [Version-pinned Upbound package resource inventory](https://api.upbound.io/v1/packages/upbound/provider-aws-s3/v2.6.1/resources)
+[^upbound-api-bucket-crd-lookup]: [Upbound API Bucket CRD lookup](https://api.upbound.io/v1/packages/upbound/provider-aws-s3/latest/resources/s3.aws.m.upbound.io/Bucket)
+[^upbound-s3-package-source-identity]: [Upbound S3 package source identity](https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.6.0)
+[^different-community-aws-provider-package]: [Different community AWS provider package](https://marketplace.upbound.io/providers/crossplane-contrib/provider-aws/latest)
+[^marketplace-support-capabilities-for-an-upbound-s3-release]: [Marketplace support capabilities for an Upbound S3 release](https://marketplace.upbound.io/providers/upbound/provider-aws-s3/v2.4.0)

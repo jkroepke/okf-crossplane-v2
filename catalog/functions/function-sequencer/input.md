@@ -4,7 +4,41 @@ title: function-sequencer Input properties and scope safety
 description: Configure v1beta1 sequencing, readiness, caching, and optional Usage deletion ordering with explicit mixed-scope safeguards.
 resource: https://github.com/crossplane-contrib/function-sequencer
 tags: [crossplane, composition-function, sequencing, readiness, deletion, usages]
-timestamp: 2026-07-16T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: input-type-and-generated-definition-comments
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/input/v1beta1/input.go#L1-L79'
+    title: 'Input type and generated-definition comments'
+  - id: generated-input-definition
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/package/input/sequencer.fn.crossplane.io_inputs.yaml#L17-L95'
+    title: 'generated Input definition'
+  - id: input-parsing-rule-processing-usage-generation-and-scope-discriminator
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L105-L185'
+    title: 'Input parsing, rule processing, Usage generation, and scope discriminator'
+  - id: creation-gating
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L218-L250'
+    title: 'creation gating'
+  - id: usage-generators
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L405'
+    title: 'Usage generators'
+  - id: core-usage-clusterusage-scope-and-endpoint-resolution
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/protection/v1beta1/clusterusage_types.go#L25-L67'
+    title: 'Core Usage/ClusterUsage scope and endpoint resolution'
+  - id: reconciler-lookups
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/protection/usage/reconciler.go#L305-L312'
+    title: 'reconciler lookups'
+  - id: namespace-sensitive-finder
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/protection/usage/finder.go#L72-L144'
+    title: 'namespace-sensitive finder'
+  - id: issue-114-report
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/issues/114'
+    title: 'Issue #114 report'
+  - id: selected-v0-6-0-generation-path
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L387'
+    title: 'selected v0.6.0 generation path'
+  - id: post-v0-6-0-createonly-change
+    resource: 'https://github.com/crossplane-contrib/function-sequencer/blob/e277a4070f65fc50dfb08b03d2acdcbdbfe1350b/input/v1beta1/input.go#L18-L36'
+    title: 'Post-v0.6.0 createOnly change'
 source_repository: crossplane-contrib/function-sequencer
 source_tag: v0.6.0
 source_commit: 8ee29b46b7b9491fb307cf6caf339541a8d93422
@@ -21,7 +55,7 @@ feature_state_basis: The Input API is served as sequencer.fn.crossplane.io/v1bet
 
 The function accepts a KRM-like `sequencer.fn.crossplane.io/v1beta1` `Input`.
 It generates an Input CRD for description, but never installs that CRD; the
-function receives this object as pipeline input.[1] `rules` is the only
+function receives this object as pipeline input.[^input-type-and-generated-definition-comments][^generated-input-definition] `rules` is the only
 required field in the generated definition. The runtime does not validate an
 enum for `usageVersion`, a minimum sequence length, or other rule constraints.
 
@@ -51,14 +85,14 @@ Treat `enableDeletionSequencing` and `usageVersion` as a separate risk surface
 from creation ordering. In v0.6.0, v2 generation chooses `Usage` versus
 `ClusterUsage` from the predecessor (`spec.of`) namespace: a non-empty
 predecessor namespace creates namespaced `Usage`; an empty predecessor
-namespace creates cluster-scoped `ClusterUsage`.[2]
+namespace creates cluster-scoped `ClusterUsage`.[^input-parsing-rule-processing-usage-generation-and-scope-discriminator][^creation-gating][^usage-generators]
 
 `ClusterUsage` has no namespace fields for either endpoint. A cluster-scoped XR
 that sequences a cluster-scoped predecessor to a namespaced successor can
 therefore generate a `ClusterUsage` whose `by` reference cannot identify the
 successor namespace. Core resolves ClusterUsage endpoints in the empty
 namespace, so the generated relationship cannot become ready or reliably
-protect the namespaced resource.[3] Do not enable deletion sequencing for this
+protect the namespaced resource.[^core-usage-clusterusage-scope-and-endpoint-resolution][^reconciler-lookups][^namespace-sensitive-finder] Do not enable deletion sequencing for this
 mixed-scope relationship. Restructure the dependency, disable deletion
 sequencing, or use a released fix that explicitly supports the scope pair.
 
@@ -68,18 +102,18 @@ function-sequencer v0.5.0; it is not proof that every deployment becomes
 undeletable.
 The selected v0.6.0 implementation retains the structural risk because its
 generated references contain names but no namespace and its scope choice is
-based on the predecessor.[4]
+based on the predecessor.[^issue-114-report][^selected-v0-6-0-generation-path]
 
 `UsageVersion: v1` is an additional hazard: the v1 generator emits the legacy
 cluster-scoped Usage kind and documents support only for cluster-scoped
-resources. Do not select it for a namespaced relationship.[2]
+resources. Do not select it for a namespaced relationship.[^input-parsing-rule-processing-usage-generation-and-scope-discriminator][^creation-gating][^usage-generators]
 
 # Post-release boundary
 
 The user-supplied commit `e277a4070f65fc50dfb08b03d2acdcbdbfe1350b` is after
 v0.6.0 and is not a selected stable release. It adds `rules[].createOnly` and
 mutual exclusion with `deleteOnly`; do not use that field unless a released
-function package containing it has been selected and verified.[5]
+function package containing it has been selected and verified.[^post-v0-6-0-createonly-change]
 
 # Relationships
 
@@ -88,10 +122,14 @@ recommended pipeline position. Core
 [Usage and ClusterUsage](../../core/usages-and-clusterusages.md) establish the
 separate deletion-protection scope model.
 
-# Citations
-
-[1] [Input type and generated-definition comments](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/input/v1beta1/input.go#L1-L79) and [generated Input definition](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/package/input/sequencer.fn.crossplane.io_inputs.yaml#L17-L95)
-[2] [Input parsing, rule processing, Usage generation, and scope discriminator](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L105-L185), [creation gating](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L218-L250), and [Usage generators](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L405)
-[3] [Core Usage/ClusterUsage scope and endpoint resolution](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/protection/v1beta1/clusterusage_types.go#L25-L67), [reconciler lookups](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/protection/usage/reconciler.go#L305-L312), and [namespace-sensitive finder](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/protection/usage/finder.go#L72-L144)
-[4] [Issue #114 report](https://github.com/crossplane-contrib/function-sequencer/issues/114), researched 2026-07-16, and [selected v0.6.0 generation path](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L387)
-[5] [Post-v0.6.0 `createOnly` change](https://github.com/crossplane-contrib/function-sequencer/blob/e277a4070f65fc50dfb08b03d2acdcbdbfe1350b/input/v1beta1/input.go#L18-L36)
+[^input-type-and-generated-definition-comments]: [Input type and generated-definition comments](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/input/v1beta1/input.go#L1-L79) and [generated Input definition](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/package/input/sequencer.fn.crossplane.io_inputs.yaml#L17-L95)
+[^generated-input-definition]: [generated Input definition](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/package/input/sequencer.fn.crossplane.io_inputs.yaml#L17-L95)
+[^input-parsing-rule-processing-usage-generation-and-scope-discriminator]: [Input parsing, rule processing, Usage generation, and scope discriminator](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L105-L185), [creation gating](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L218-L250), and [Usage generators](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L405)
+[^creation-gating]: [creation gating](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L218-L250)
+[^usage-generators]: [Usage generators](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L405)
+[^core-usage-clusterusage-scope-and-endpoint-resolution]: [Core Usage/ClusterUsage scope and endpoint resolution](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/protection/v1beta1/clusterusage_types.go#L25-L67), [reconciler lookups](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/protection/usage/reconciler.go#L305-L312), and [namespace-sensitive finder](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/protection/usage/finder.go#L72-L144)
+[^reconciler-lookups]: [reconciler lookups](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/controller/protection/usage/reconciler.go#L305-L312)
+[^namespace-sensitive-finder]: [namespace-sensitive finder](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/protection/usage/finder.go#L72-L144)
+[^issue-114-report]: [Issue #114 report](https://github.com/crossplane-contrib/function-sequencer/issues/114), researched 2026-07-16, and [selected v0.6.0 generation path](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L387)
+[^selected-v0-6-0-generation-path]: [selected v0.6.0 generation path](https://github.com/crossplane-contrib/function-sequencer/blob/8ee29b46b7b9491fb307cf6caf339541a8d93422/fn.go#L268-L387)
+[^post-v0-6-0-createonly-change]: [Post-v0.6.0 `createOnly` change](https://github.com/crossplane-contrib/function-sequencer/blob/e277a4070f65fc50dfb08b03d2acdcbdbfe1350b/input/v1beta1/input.go#L18-L36)

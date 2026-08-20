@@ -80,8 +80,12 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 ## Output rules
 
 - Generated knowledge belongs under `catalog/`.
+- Target OKF v0.2. Declare `okf_version: "0.2"` only in the bundle-root `catalog/index.md` frontmatter.
 - Every non-reserved OKF Markdown document must contain parseable YAML frontmatter with a non-empty `type` field.
 - `index.md` and `log.md` follow the OKF reserved-file rules.
+- Record the current representation with `generated.by` and `generated.at`; do not emit the superseded v0.1 `timestamp` field.
+- Put provenance in frontmatter `sources`. Give each claim-bearing source a stable `id`, cite claims with matching keyed Markdown footnotes, and do not add the superseded v0.1 `# Citations` list.
+- Add `verified` only for an actual verification event. Do not infer human review from authorship, commits, pull requests, or reviewer execution.
 - Prefer small concept documents, structural Markdown, progressive disclosure, and citations over broad narrative pages.
 
 ## Catalog example convention

@@ -1,8 +1,8 @@
 # Crossplane OKF profile
 
-This profile adds authoring guidance without narrowing OKF v0.1 conformance.
+This profile adds authoring guidance without narrowing OKF v0.2 conformance.
 
-## Required by OKF v0.1
+## Required by OKF v0.2
 
 - Every non-reserved Markdown concept has parseable YAML frontmatter.
 - Every concept has a non-empty `type`.
@@ -17,7 +17,11 @@ title: function-go-templating
 description: One sentence supported by the cited sources.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, function]
-timestamp: 2026-07-11T00:00:00Z
+generated: { by: "process:crossplane-okf-generation", at: "2026-07-11T00:00:00Z" }
+sources:
+  - id: package-metadata
+    resource: https://github.com/crossplane-contrib/function-go-templating/blob/<full-SHA>/package/crossplane.yaml
+    title: Function package metadata
 source_repository: crossplane-contrib/function-go-templating
 source_commit: <full SHA>
 source_paths:
@@ -26,6 +30,12 @@ source_paths:
 ```
 
 Use extension fields only when populated by evidence. Preserve unknown fields.
+
+Use the OKF actor convention for `generated.by` and `verified[].by`:
+`<producer>/<version>` for tools or agents, `process:<id>` for automated
+processes, and `human:<id>` for people. Omit `verified` unless the recorded
+verification actually occurred. An absent `status` means `stable`; do not add
+lifecycle or staleness metadata without evidence.
 
 ## Preferred concept types
 
@@ -52,11 +62,16 @@ Use only sections that add evidence-backed value:
 - `# Schema`
 - `# Behavior`
 - `# Examples`
+- `# Computation` for an `Attested Computation`
 - `# Relationships`
 - `# Limitations`
-- `# Citations`
 
-Keep citations at the end. Use numbered Markdown links. Prefer commit-pinned GitHub blob URLs with line anchors.
+Put provenance in frontmatter `sources`, with one concrete `resource` per entry.
+Give claim-bearing entries stable `id` values and attribute claims with matching
+keyed Markdown footnotes, for example `[^package-metadata]`. Footnote definitions
+may repeat the human-readable source link. Prefer commit-pinned GitHub blob URLs
+with line anchors. Do not emit the superseded v0.1 `# Citations` section or
+`timestamp` field.
 
 ## Granularity
 

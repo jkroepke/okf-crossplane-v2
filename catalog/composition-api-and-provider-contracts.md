@@ -3,7 +3,7 @@ type: Crossplane Composition Design Guide
 title: Design the XR API and provider contracts
 description: Define a versioned XRD contract and bind it to verified provider APIs before writing the pipeline.
 tags: [crossplane, composition, xrd, providers, api-design]
-timestamp: 2026-07-18T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
 crossplane_release: v2.3.3
 documentation_series: v2.3
 feature_state: Not stated by selected sources

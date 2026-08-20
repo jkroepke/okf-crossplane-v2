@@ -4,7 +4,53 @@ title: Render a Composition locally
 description: Use the Crossplane CLI to execute a Pipeline Composition and its Functions locally against an example XR.
 resource: https://github.com/crossplane/cli
 tags: [crossplane, cli, composition, rendering, testing]
-timestamp: 2026-07-16T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: cli-render-behavior-output-and-docker-guidance
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L1-L35'
+    title: 'CLI render behavior, output, and Docker guidance'
+  - id: documented-new-xr-render-invocation
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L86-L99'
+    title: 'Documented new-XR render invocation'
+  - id: pipeline-mode-guard-and-xr-gvk-compatibility-check
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158'
+    title: 'Pipeline-mode guard and XR GVK compatibility check'
+  - id: functions-only-loader-validation
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113'
+    title: 'Functions-only loader validation'
+  - id: observed-resource-input-and-status-mocking-guidance
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74'
+    title: 'Observed-resource input and status-mocking guidance'
+  - id: full-render-to-validation-pipeline
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71'
+    title: 'Full render-to-validation pipeline'
+  - id: full-xr-output-behavior
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L327-L375'
+    title: 'Full-XR output behavior'
+  - id: validation-inputs-missing-definition-failure-and-image-selection
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/cmd.go#L74-L156'
+    title: 'Validation inputs, missing-definition failure, and image selection'
+  - id: pr-148-change-validation-image-default-to-stable
+    resource: 'https://github.com/crossplane/cli/pull/148'
+    title: 'PR #148: change validation image default to :stable'
+  - id: cli-extension-only-definition-inputs
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L1-L27'
+    title: 'CLI extension-only definition inputs'
+  - id: crd-validator-construction
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92'
+    title: 'CRD validator construction'
+  - id: missing-definition-exit-behavior
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140'
+    title: 'missing-definition exit behavior'
+  - id: crd-catalog-definition-files-and-definition-examples
+    resource: 'https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38'
+    title: 'CRD Catalog definition files and definition examples'
+  - id: cli-issue-195-built-in-secret-missing-definition-report
+    resource: 'https://github.com/crossplane/cli/issues/195'
+    title: 'CLI issue #195: built-in Secret missing-definition report'
+  - id: standalone-file-based-render-requires-the-functions-argument
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413'
+    title: 'Standalone file-based render requires the Functions argument'
 source_repository: crossplane/cli
 source_commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
 source_paths:
@@ -32,7 +78,7 @@ example XR, a `spec.mode: Pipeline` Composition, and a Functions input; the
 CLI checks that the Composition's `compositeTypeRef` matches the XR GVK. It
 prints the rendered XR and the resources a Function pipeline would create or
 mutate. By default, the XR output is limited to `metadata.name` and `status`;
-use `--include-full-xr` when the desired spec and metadata are also useful.[1][2][3]
+use `--include-full-xr` when the desired spec and metadata are also useful.[^cli-render-behavior-output-and-docker-guidance][^documented-new-xr-render-invocation][^pipeline-mode-guard-and-xr-gvk-compatibility-check]
 
 ```shell
 crossplane composition render example.yaml composition.yaml functions.yaml
@@ -46,7 +92,7 @@ cluster or for provider reconciliation.
 The default render engine and Function runtime use Docker. Have a working
 local Docker installation and daemon before running the command. Development
 runtime Functions or `--crossplane-binary` are documented alternatives for
-their respective runtime paths.[1]
+their respective runtime paths.[^cli-render-behavior-output-and-docker-guidance]
 
 # Inputs
 
@@ -59,7 +105,7 @@ their respective runtime paths.[1]
 Outside a Crossplane Project, the Functions input is required. It may be a
 multi-document YAML file or a directory of YAML files. A Functions file is a
 CLI input boundary: do not put a Provider, ProviderConfig,
-ManagedResourceActivationPolicy, Composition, or XR in it.[4][13]
+ManagedResourceActivationPolicy, Composition, or XR in it.[^functions-only-loader-validation][^standalone-file-based-render-requires-the-functions-argument]
 
 ## Strict Functions-only rule
 
@@ -85,7 +131,7 @@ Use `--observed-resources` (or `-o`) to provide mock composed resources to the
 Function pipeline as observed cluster resources. The value may be one YAML
 file or a directory and its resource definition is intentionally not validated. That makes
 it suitable for supplying representative managed-resource `status` data when
-a Function's behavior depends on observed status.[5]
+a Function's behavior depends on observed status.[^observed-resource-input-and-status-mocking-guidance]
 
 ```shell
 crossplane composition render \
@@ -116,7 +162,7 @@ standard output. `resource validate` treats `definition.yaml,provider.yaml` as
 definition extensions and `-` as the rendered-resource stream. The
 `--error-on-missing-schemas` flag makes a missing definition fail the command, so a
 successful round trip has no missing-definition diagnostics and zero validation
-failures.[6][7][8]
+failures.[^full-render-to-validation-pipeline][^full-xr-output-behavior][^validation-inputs-missing-definition-failure-and-image-selection]
 
 ## Definition-coverage triage
 
@@ -124,7 +170,7 @@ failures.[6][7][8]
 CRDs supplied as extensions or unpacked from Crossplane packages. It does not
 load Kubernetes built-in resource definitions. A rendered core `v1` resource such
 as a `Secret` therefore reports a missing CRD/XRD by design; it is a coverage
-gap, not evidence that the built-in resource needs a CRD.[10]
+gap, not evidence that the built-in resource needs a CRD.[^cli-extension-only-definition-inputs][^crd-validator-construction][^missing-definition-exit-behavior]
 
 For a non-Crossplane custom GVK that is missing from the XRD/provider definition
 set, look up the normalized Group, Kind, and version in the community
@@ -133,7 +179,7 @@ a community CRD definition exists; supply that
 definition as an extension, then verify that it matches the exact installed
 operator CRD. The `main` branch is mutable and discovery-only: resolve and
 record its commit before using a selected definition in reproducible
-validation. A miss does not prove that the CRD does not exist.[11]
+validation. A miss does not prove that the CRD does not exist.[^crd-catalog-definition-files-and-definition-examples]
 
 Use the catalog's current `main` definition path. The resource kind is
 lowercase in the catalog path:
@@ -149,18 +195,18 @@ https://raw.githubusercontent.com/CustomResourceDefinition/catalog/main/definiti
 ```
 
 Do not use this CRD-definition lookup for built-in Kubernetes resources such
-as `v1/Secret`; they have no CRD in the catalog.[11]
+as `v1/Secret`; they have no CRD in the catalog.[^crd-catalog-definition-files-and-definition-examples]
 
 Do not treat the catalog as a `resource validate` input integration: its
 definition documents must be passed to the CLI as extensions. Keep built-in
 Kubernetes resources in the render output, but validate them with
 Kubernetes-aware tooling or cluster admission/dry-run separately. Use
 `--error-on-missing-schemas` only when every rendered GVK is expected to have
-an XRD/CRD definition, or expect it to fail for built-ins.[10]
+an XRD/CRD definition, or expect it to fail for built-ins.[^cli-extension-only-definition-inputs][^crd-validator-construction][^missing-definition-exit-behavior]
 
 Issue #195 is an open v2.4.0 report by human author `@jkroepke` of the
 `v1/Secret` message; it does not establish a released fix or a supported
-workaround.[12]
+workaround.[^cli-issue-195-built-in-secret-missing-definition-report]
 
 ## Image-version boundary
 
@@ -169,36 +215,24 @@ tag equals the CLI binary version. Supply the override when that matching Core
 image is unavailable—for example, when the CLI release precedes the matching
 Core release. The `:stable` value is useful for checking against the current
 stable Core image, but it is mutable; pin a Core image tag or digest in CI for
-reproducible validation.[8]
+reproducible validation.[^validation-inputs-missing-definition-failure-and-image-selection]
 
 CLI PR #148 changes the default image to `:stable`, but it merged after v2.4.0
 and was not contained in a stable release as of 2026-07-16. It therefore does
-not change the documented v2.4.0 behavior.[9]
+not change the documented v2.4.0 behavior.[^pr-148-change-validation-image-default-to-stable]
 
-# Citations
-
-[1] [CLI render behavior, output, and Docker guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L1-L35)
-
-[2] [Documented new-XR render invocation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L86-L99)
-
-[3] [Pipeline-mode guard and XR GVK compatibility check](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158)
-
-[4] [Functions-only loader validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113)
-
-[5] [Observed-resource input and status-mocking guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74)
-
-[6] [Full render-to-validation pipeline](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71)
-
-[7] [Full-XR output behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L327-L375)
-
-[8] [Validation inputs, missing-definition failure, and image selection](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/cmd.go#L74-L156)
-
-[9] [PR #148: change validation image default to `:stable`](https://github.com/crossplane/cli/pull/148), merged 2026-06-25; release containment checked 2026-07-16.
-
-[10] [CLI extension-only definition inputs](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L1-L27), [CRD validator construction](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92), and [missing-definition exit behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140)
-
-[11] [CRD Catalog definition files and definition examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38)
-
-[12] [CLI issue #195: built-in Secret missing-definition report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
-
-[13] [Standalone file-based render requires the Functions argument](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)
+[^cli-render-behavior-output-and-docker-guidance]: [CLI render behavior, output, and Docker guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L1-L35)
+[^documented-new-xr-render-invocation]: [Documented new-XR render invocation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L86-L99)
+[^pipeline-mode-guard-and-xr-gvk-compatibility-check]: [Pipeline-mode guard and XR GVK compatibility check](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158)
+[^functions-only-loader-validation]: [Functions-only loader validation](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/load.go#L89-L113)
+[^observed-resource-input-and-status-mocking-guidance]: [Observed-resource input and status-mocking guidance](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L54-L74)
+[^full-render-to-validation-pipeline]: [Full render-to-validation pipeline](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L61-L71)
+[^full-xr-output-behavior]: [Full-XR output behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L327-L375)
+[^validation-inputs-missing-definition-failure-and-image-selection]: [Validation inputs, missing-definition failure, and image selection](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/cmd.go#L74-L156)
+[^pr-148-change-validation-image-default-to-stable]: [PR #148: change validation image default to `:stable`](https://github.com/crossplane/cli/pull/148), merged 2026-06-25; release containment checked 2026-07-16.
+[^cli-extension-only-definition-inputs]: [CLI extension-only definition inputs](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/validate/help/validate.md#L1-L27), [CRD validator construction](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92), and [missing-definition exit behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140)
+[^crd-validator-construction]: [CRD validator construction](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L48-L92)
+[^missing-definition-exit-behavior]: [missing-definition exit behavior](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L130-L140)
+[^crd-catalog-definition-files-and-definition-examples]: [CRD Catalog definition files and definition examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38)
+[^cli-issue-195-built-in-secret-missing-definition-report]: [CLI issue #195: built-in Secret missing-definition report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
+[^standalone-file-based-render-requires-the-functions-argument]: [Standalone file-based render requires the Functions argument](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)

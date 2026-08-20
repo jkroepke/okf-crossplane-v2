@@ -4,7 +4,26 @@ title: Derive readiness from a non-composed resource
 description: Fetch a controller-created object with ExtraResources and use its status to set composed-resource readiness.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, composition-function, extra-resources, readiness]
-timestamp: 2026-07-14T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: extraresources-selector-and-namespace-conversion
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62'
+    title: 'ExtraResources selector and namespace conversion'
+  - id: getextraresources-lookup
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154'
+    title: 'getExtraResources lookup'
+  - id: named-resource-readiness-handling
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350'
+    title: 'Named-resource readiness handling'
+  - id: function-auto-ready-cel-evaluates-only-the-observed-object
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71'
+    title: 'function-auto-ready CEL evaluates only the observed object'
+  - id: core-required-resource-fetcher
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227'
+    title: 'Core required-resource fetcher'
+  - id: core-client-wiring
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481'
+    title: 'Core client wiring'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -22,7 +41,7 @@ When a composed resource causes another controller to create a separate status
 object, that object is absent from `.observed.resources`. Use an Alpha
 `ExtraResources` directive to request it, read returned items with
 `getExtraResources`, calculate readiness, and emit explicit `"True"` or
-`"False"` readiness on the complete desired composed resource.[1][2][3]
+`"False"` readiness on the complete desired composed resource.[^extraresources-selector-and-namespace-conversion][^getextraresources-lookup][^named-resource-readiness-handling]
 
 ```gotemplate
 {{- $knownName := .observed.composite.resource.spec.externalStatus.name }}
@@ -64,12 +83,12 @@ resource's actual schema. The example is a generic skeleton, not a claim that
 - Prefer exact `matchName` when the object's deterministic name is known.
 - In function-go-templating v0.12.2, exact-name conversion copies `namespace`,
   but label conversion returns without it. Do not use `matchLabels` for a
-  namespaced status object in this release.[1]
+  namespaced status object in this release.[^extraresources-selector-and-namespace-conversion]
 - Treat zero or multiple results as not ready unless the external controller's
   contract explicitly supports another interpretation.
 - Ensure the Crossplane Core Deployment service account can read the requested
   API in the target namespace. Core performs the required-resource fetch; the
-  Function pod does not.[5]
+  Function pod does not.[^core-required-resource-fetcher][^core-client-wiring]
 
 # Relationships
 
@@ -84,14 +103,13 @@ principal and grant boundary.
 # Limitations
 
 function-auto-ready cannot directly evaluate the fetched object because its
-CEL activation contains only the matched observed composed resource.[4] An
+CEL activation contains only the matched observed composed resource.[^function-auto-ready-cel-evaluates-only-the-observed-object] An
 earlier function-go-templating step must therefore translate external status
 into explicit composed-resource readiness.
 
-# Citations
-
-[1] [ExtraResources selector and namespace conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62)
-[2] [`getExtraResources` lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154)
-[3] [Named-resource readiness handling](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
-[4] [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
-[5] [Core required-resource fetcher](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [Core client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
+[^extraresources-selector-and-namespace-conversion]: [ExtraResources selector and namespace conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62)
+[^getextraresources-lookup]: [`getExtraResources` lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154)
+[^named-resource-readiness-handling]: [Named-resource readiness handling](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L336-L350)
+[^function-auto-ready-cel-evaluates-only-the-observed-object]: [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[^core-required-resource-fetcher]: [Core required-resource fetcher](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [Core client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
+[^core-client-wiring]: [Core client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
