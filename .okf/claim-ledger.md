@@ -5,6 +5,61 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Provider development SDK from provider-template
+
+Selected the user-requested `crossplane/provider-template` `main` snapshot at
+`a74b386da0ec848036e16ff0a207c5a16bc9827f`. This workflow pins that immutable
+snapshot rather than assigning it a semantic-version release identity. Its
+`go.mod` selects Crossplane and crossplane-runtime `v2.3.3`; the
+runtime tag resolves to `fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827`.
+Version-matched supporting sources are crossplane/build at
+`b964dbe0ff0856a762f1a06fe554c647d22af7f0` and crossplane-tools at
+`60e57f817ad1f80dcf052a940cf923fde56fab1f`. Current orientation uses
+Crossplane `v2.4.0` and docs series `v2.4` at
+`f51137d2f8e92a167bb580be528c78b879ed406d`. Researched 2026-08-21.
+Claims, deprecated XRD v1, legacy v1 XR semantics, Core design documents, and
+project history were excluded. No source text or examples were copied or
+adapted.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| sdk/provider-development/start-here | Official v2.4 documentation assigns providers authentication, external API calls, Kubernetes APIs, and controller logic; provider-template is an official minimal hand-written-provider starting point. | documented-guidance | official-documentation and primary | corroborated | Not stated by selected sources; [provider responsibilities](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/v2.4/packages/providers.md#L7-L29), [template purpose](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/README.md#L1-L10) |
+| sdk/provider-development/start-here | The selected template snapshot selects Crossplane APIs and crossplane-runtime v2.3.3; a stable dependency tag does not establish template maturity. | API | primary | direct | Not stated by selected sources; [selected dependencies](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/go.mod#L1-L19) |
+| sdk/provider-development/start-here | The template workflow initializes the build submodule, renames the provider, adds an API type, replaces sample implementations, registers controllers, then runs reviewable and build targets. | documented-guidance | primary | direct | Not stated by selected sources; [workflow](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/README.md#L12-L32) |
+| sdk/provider-development/managed-resource-apis | The sample `MyType` is a namespaced modern managed resource with `ManagedResourceSpec`, `forProvider`, `ManagedResourceStatus`, and `atProvider`. | API | primary | direct | Alpha because the owning sample API is `sample.template.crossplane.io/v1alpha1`; [type](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/apis/sample/v1alpha1/mytype_types.go#L29-L73), [version](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/apis/sample/v1alpha1/groupversion_info.go#L17-L32) |
+| sdk/provider-development/managed-resource-apis | Runtime `ModernManaged` adds a local connection-secret target and typed ProviderConfig reference to the base managed contract; `LegacyManaged` is explicitly deprecated for new namespace-scoped MRs. | API | primary | direct | Go SDK maturity is Not stated; the legacy sub-surface is explicitly Deprecated. [interfaces](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L192-L225) |
+| sdk/provider-development/managed-resource-apis | Authored API types and generator directives are source inputs; deepcopy/methodset files and packaged CRDs are generated outputs. | behavior | primary and supporting | corroborated | Not stated by selected sources; [generation directives](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/apis/generate.go#L20-L27), [angryjet methodsets](https://github.com/crossplane/crossplane-tools/blob/60e57f817ad1f80dcf052a940cf923fde56fab1f/cmd/angryjet/main.go#L66-L118) |
+| sdk/provider-development/provider-configuration | The Alpha template API defines namespaced ProviderConfig, cluster-scoped ClusterProviderConfig, and namespaced ProviderConfigUsage with typed references. | API | primary | direct | Alpha from `template.crossplane.io/v1alpha1`; [types](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/apis/v1alpha1/types.go#L31-L110) |
+| sdk/provider-development/provider-configuration | The template declares None, Secret, InjectedIdentity, Environment, and Filesystem sources, but runtime's common extractor has no generic InjectedIdentity handler. | API and limitation | primary | corroborated | Alpha for the template credential API; helper maturity Not stated. [template credentials](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/apis/v1alpha1/types.go#L22-L34), [runtime extractor](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/providerconfig.go#L60-L113) |
+| sdk/provider-development/provider-configuration | The connector tracks typed ProviderConfig usage before fetching the selected namespaced or cluster-scoped config, then extracts credentials and constructs the external service client. | behavior | primary | corroborated | Template API Alpha; runtime behavior maturity Not stated. [template connector](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/internal/controller/mytype/mytype.go#L120-L161), [usage tracker contract](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/providerconfig.go#L157-L207) |
+| sdk/provider-development/managed-reconciler | Typed external clients must be non-blocking and idempotent; Observe must not mutate the external resource, and Create, Update, Delete, and Disconnect have explicit lifecycle roles. | API | primary | direct | Not stated by selected sources; these are unlabelled Go SDK contracts. [external client](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L274-L415) |
+| sdk/provider-development/managed-reconciler | The reconciler initializes and resolves references before connecting and observing; reference resolution is skipped during deletion, and connection/observation failures produce events and conditions. | behavior | primary | direct | Not stated by selected sources; [ordering](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L1083-L1196) |
+| sdk/provider-development/managed-reconciler | The template wires a typed connector, usage tracker, safe-start gate, management-policy option, desired-state filter, metrics, poll interval, and rate limiter, but its external service behavior is explicitly simulated and must be replaced. | behavior and illustrative-pattern | primary | direct | Runtime/template workflow maturity Not stated; sample API Alpha. [setup](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/internal/controller/mytype/mytype.go#L51-L109), [simulated client](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/internal/controller/mytype/mytype.go#L172-L254) |
+| sdk/provider-development/managed-reconciler | Runtime supplies fake modern/legacy managed resources, ProviderConfigs, typed usages, and a configurable controller-runtime mock client; the template's `TestObserve` table has no cases. | API and limitation | primary | direct | Not stated by selected sources; [runtime fakes](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/fake/mocks.go#L343-L425), [mock client](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/test/fake.go#L270-L318), [empty template test table](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/internal/controller/mytype/mytype_test.go#L39-L75) |
+| sdk/provider-development/generate-test-package | The template gitlink pins crossplane/build at b964dbe0; that build machinery defines reviewable as generation, lint, and test, while generation runs go generate and go mod tidy, tests use go test with coverage, and build compiles configured static packages. | behavior | primary and supporting | corroborated | Not stated by selected sources; [immutable template tree and build gitlink](https://api.github.com/repos/crossplane/provider-template/git/trees/a74b386da0ec848036e16ff0a207c5a16bc9827f?recursive=1), [reviewable](https://github.com/crossplane/build/blob/b964dbe0ff0856a762f1a06fe554c647d22af7f0/makelib/common.mk#L427-L446), [Go targets](https://github.com/crossplane/build/blob/b964dbe0ff0856a762f1a06fe554c647d22af7f0/makelib/golang.mk#L101-L169) |
+| sdk/provider-development/generate-test-package | The template builds a Provider runtime image and an xpkg whose metadata declares a Provider and safe-start capability; the selected xpkg machinery embeds the runtime image. | behavior and API | primary and supporting | corroborated | Workflow/package maturity Not stated; [template targets](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/Makefile#L6-L45), [xpkg build](https://github.com/crossplane/build/blob/b964dbe0ff0856a762f1a06fe554c647d22af7f0/makelib/xpkg.mk#L67-L89), [metadata](https://github.com/crossplane/provider-template/blob/a74b386da0ec848036e16ff0a207c5a16bc9827f/package/crossplane.yaml#L1-L13) |
+| sdk/provider-development/generate-test-package | Official v2.4 docs install provider packages from an OCI registry through a Provider object and support digest references for deterministic installs; the page explicitly excludes provider-building instructions. | documented-guidance | official-documentation | direct | Not stated by selected sources; [installation](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/v2.4/packages/providers.md#L33-L75), [digest](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/v2.4/packages/providers.md#L110-L136) |
+
+### Limitations and source boundaries
+
+- `provider-template` is an official primary source, while its `MyType`,
+  credentials examples, and simulated external service are illustrative
+  scaffolding that the repository directs authors to replace.
+- The selected template snapshot uses Crossplane/runtime v2.3.3 while current
+  stable Crossplane orientation is v2.4.0.
+- The older contributing provider-development guide states a runtime v0.9.0
+  target and cluster-scoped-only assumptions. Those statements were excluded
+  from current SDK guidance; current template and version-matched runtime
+  implementation establish the selected behavior.
+- The template README calls ProviderConfig Secret-only, while its types and CRD
+  admit five credential sources. The API/schema are used for shape and the
+  disagreement is preserved.
+- The integration script discovers a chart version dynamically, so it is not
+  evidence for an immutable Crossplane integration-test version.
+- provider-template, crossplane-runtime, crossplane/build, and crossplane-tools
+  are Apache-2.0 licensed. This catalog summarizes and cites without copying or
+  adapting source material.
+
 ## function-kro v0.3.0 preview
 
 The user explicitly selected function-kro `v0.3.0`, a GitHub prerelease, at

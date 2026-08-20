@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-08-21
+* **Creation**: Added a provider-development SDK route from an immutable provider-template snapshot through modern managed-resource APIs, ProviderConfig and credentials, typed reconciliation, generation, testing, and xpkg packaging.
 * **Creation**: Added a user-selected function-kro v0.3.0 preview reference for the package, Alpha ResourceGraph input, and graph evaluation behavior, backed by the exact KRO v0.9.2 documentation selected in go.mod.
 
 ## 2026-08-20
