@@ -39,6 +39,8 @@ primary_sources:
   - id: function-sdk-go
     repository: crossplane/function-sdk-go
     kind: function-sdk
+    audience: developer
+    agent: okf-function-sdk-go-researcher
   - id: function-kro
     repository: crossplane-contrib/function-kro
     kind: function

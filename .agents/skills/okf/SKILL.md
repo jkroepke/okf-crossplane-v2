@@ -96,7 +96,8 @@ Use the narrowest matching researcher:
 - `okf-function-go-templating-researcher` for user-facing `function-go-templating` installation, input schema, README guidance, examples, and additional template functions.
 - `okf-function-go-templating-sprig-researcher` for the exact Sprig version selected by `function-go-templating/go.mod`, restricted by the function map exposed by that release.
 - `okf-function-go-templating-project-history-researcher` for human-authored issues and pull requests, grouped into release changes, known reports, and post-release proposals or developments.
-- `okf-crossplane-researcher` for CLI, runtime, SDKs, tools, native providers, testing tools, examples, and domains without a dedicated researcher.
+- `okf-function-sdk-go-researcher` for developer-facing `crossplane/function-sdk-go` APIs, helpers, examples, and testing utilities.
+- `okf-crossplane-researcher` for CLI, runtime, tools, native providers, testing tools, examples, and domains without a dedicated researcher.
 - `okf-upjet-researcher` only for Upjet provider concepts that require Terraform correlation. Give it an explicit provider service or managed-resource batch.
 
 Run the Core docs and Core code researchers together when a concept needs both user-facing guidance and exact served API shape. Invoke the Core design researcher afterward only when a bounded historical question remains.

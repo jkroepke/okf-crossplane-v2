@@ -1,5 +1,5 @@
 name = "okf-crossplane-researcher"
-description = "Read-only researcher for Crossplane CLI, runtime, SDKs, tools, native providers, testing tools, official examples, and domains that do not yet have a dedicated researcher. Do not use for Crossplane Core or a function with its own agent."
+description = "Read-only researcher for Crossplane CLI, runtime, tools, native providers, testing tools, official examples, and domains that do not yet have a dedicated researcher. Do not use for Crossplane Core, function-sdk-go, or a function with its own agent."
 model = "gpt-5.6-terra"
 model_reasoning_effort = "medium"
 sandbox_mode = "read-only"
