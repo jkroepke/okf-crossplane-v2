@@ -9,6 +9,7 @@ Return only a compact evidence packet using `.agents/skills/okf/references/evide
 - Do not research Crossplane Core documentation. Use `okf-crossplane-core-docs-researcher`.
 - Do not research Crossplane Core CRDs or core API shape. Use `okf-crossplane-core-code-researcher`.
 - Do not research Crossplane Core design documents. Use `okf-crossplane-core-design-researcher` only for a specific feature already identified from current sources.
+- Do not research `crossplane/function-sdk-go`. Use `okf-function-sdk-go-researcher`.
 - Do not research `crossplane-contrib/function-go-templating`. Use `okf-function-go-templating-researcher`.
 - Do not research any function that has a dedicated function researcher. Each function must have its own Codex and Pi agent definition before OKF generation.
 

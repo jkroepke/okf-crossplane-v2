@@ -1,6 +1,6 @@
 ---
 name: okf-crossplane-researcher
-description: Read-only researcher for Crossplane CLI, runtime, SDKs, tools, native providers, testing tools, and domains without a dedicated researcher.
+description: Read-only researcher for Crossplane CLI, runtime, tools, native providers, testing tools, and domains without a dedicated researcher.
 tools: read, grep, find, ls, bash
 systemPromptMode: replace
 inheritProjectContext: true
