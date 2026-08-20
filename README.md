@@ -15,15 +15,16 @@ The goal is to make Crossplane concepts, APIs, providers, composition functions,
 > The public MCP server is a temporary early-access service for early adopters. Its availability is not guaranteed, and it may change or be removed without notice. It is intended to bridge the current tooling gap until the OKF ecosystem provides practical, end-user-friendly solutions that run locally. For reliable or production use, self-host the included container.
 
 Install the companion skill and hosted OKF-aware MCP server together as a
-Codex plugin:
+plugin for every detected supported agent:
 
 ```shell
-npx plugins add jkroepke/okf-crossplane-v2 --target codex
+npx plugins add jkroepke/okf-crossplane-v2
 ```
 
-Restart Codex after installation.
+Pass `--target codex` to install only in Codex. Restart the selected agents
+after installation.
 
-For other supported agents, install the hosted OKF-aware MCP server globally:
+Alternatively, install the hosted OKF-aware MCP server globally:
 
 ```shell
 npx add-mcp \
