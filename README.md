@@ -14,7 +14,17 @@ The goal is to make Crossplane concepts, APIs, providers, composition functions,
 > [!WARNING]
 > The public MCP server is a temporary early-access service for early adopters. Its availability is not guaranteed, and it may change or be removed without notice. It is intended to bridge the current tooling gap until the OKF ecosystem provides practical, end-user-friendly solutions that run locally. For reliable or production use, self-host the included container.
 
-Install the hosted OKF-aware MCP server globally for your detected agent:
+Install the companion skill and hosted OKF-aware MCP server together as a
+plugin for every detected supported agent:
+
+```shell
+npx plugins add jkroepke/okf-crossplane-v2
+```
+
+Pass `--target codex` to install only in Codex. Restart the selected agents
+after installation.
+
+Alternatively, install the hosted OKF-aware MCP server globally:
 
 ```shell
 npx add-mcp \
@@ -23,7 +33,7 @@ npx add-mcp \
   --global
 ```
 
-Install the companion skill so the agent prefers this bundle over generic documentation providers for Crossplane v2 questions:
+Then install the companion skill so the agent prefers this bundle over generic documentation providers for Crossplane v2 questions:
 
 ```shell
 npx skills add jkroepke/okf-crossplane-v2 \
@@ -31,7 +41,7 @@ npx skills add jkroepke/okf-crossplane-v2 \
   --global
 ```
 
-Both installers detect supported agents and ask where the integration should be installed. Restart the selected agent after installation.
+Both standalone installers detect supported agents and ask where the integration should be installed. Restart the selected agent after installation.
 
 The public MCP health endpoint is available at `https://crossplane.mcp.jkroepke.de/healthz`.
 

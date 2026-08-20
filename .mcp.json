@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "crossplane-v2-okf": {
+      "type": "http",
+      "url": "https://crossplane.mcp.jkroepke.de/mcp"
+    }
+  }
+}

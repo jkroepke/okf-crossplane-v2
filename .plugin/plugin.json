@@ -1,0 +1,21 @@
+{
+  "name": "okf-crossplane-v2",
+  "version": "0.1.0",
+  "description": "Curated Crossplane v2 knowledge and read-only MCP tools",
+  "author": {
+    "name": "Jan-Otto Kröpke",
+    "email": "mail@jkroepke.de",
+    "url": "https://github.com/jkroepke"
+  },
+  "homepage": "https://github.com/jkroepke/okf-crossplane-v2",
+  "repository": "https://github.com/jkroepke/okf-crossplane-v2",
+  "license": "Apache-2.0",
+  "keywords": [
+    "crossplane",
+    "crossplane-v2",
+    "okf",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json"
+}
