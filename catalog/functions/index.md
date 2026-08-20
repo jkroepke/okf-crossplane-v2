@@ -12,6 +12,7 @@
 * [function-go-templating](function-go-templating/index.md) - Render desired resources from Go templates in a composition pipeline.
 * [function-sequencer](function-sequencer/index.md) - Gate dependent desired resources with declared readiness sequencing and XR Events.
 * [function-auto-ready](function-auto-ready/index.md) - Determine desired composed-resource readiness from observed resources.
+* [function-kro](function-kro/index.md) - Evaluate KRO-style YAML and CEL resource graphs in a Composition pipeline.
 * [EnvironmentConfig, Go templating, and readiness pipeline](environment-config-pipeline.md) - Order the three functions by their context and desired-resource dependencies.
 
 # Operation Functions

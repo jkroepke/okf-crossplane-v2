@@ -149,6 +149,20 @@ sources:
     commit: 311ca76bbd30f86e196438771062091a39e39e0d
     selected_by: PR #906 merge containment base for real-time composition project history
     resolved_at: 2026-07-16
+  function-kro:
+    repository: crossplane-contrib/function-kro
+    tag: v0.3.0
+    commit: a0b4c088bd950cb407901d01ee29263e6d54d639
+    release_status: prerelease
+    selected_by: user-approved preview revision
+    resolved_at: 2026-08-21
+  function-kro-kro:
+    repository: kubernetes-sigs/kro
+    tag: v0.9.2
+    commit: 22f5645777c86ebd40b6143f248549f1dbe2923f
+    source_path: website/docs
+    selected_by: function-kro v0.3.0 go.mod
+    resolved_at: 2026-08-21
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
     tag: v0.12.2

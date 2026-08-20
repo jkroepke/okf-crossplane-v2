@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-08-21
+* **Creation**: Added a user-selected function-kro v0.3.0 preview reference for the package, Alpha ResourceGraph input, and graph evaluation behavior, backed by the exact KRO v0.9.2 documentation selected in go.mod.
+
 ## 2026-08-20
 * **Migration**: Migrated the catalog to OKF v0.2 by replacing legacy timestamps with generation metadata and moving numbered citation lists into frontmatter provenance with keyed claim footnotes.
 

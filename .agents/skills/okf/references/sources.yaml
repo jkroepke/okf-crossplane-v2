@@ -42,6 +42,29 @@ primary_sources:
   - id: function-kro
     repository: crossplane-contrib/function-kro
     kind: function
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-kro-researcher
+      kro: okf-function-kro-kro-researcher
+    paths:
+      - README.md
+      - package/crossplane.yaml
+      - package/input
+      - input
+      - fn.go
+      - fn_test.go
+      - main.go
+      - kro
+      - schemas
+      - example
+      - go.mod
+      - LICENSE
+    supporting_sources:
+      - function-kro-kro
+    legacy_exclusions:
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
   - id: function-go-templating
     repository: crossplane-contrib/function-go-templating
     kind: function
@@ -223,6 +246,16 @@ historical_design_sources:
       - general feature inventory
 
 supporting_sources:
+  - id: function-kro-kro
+    repository: kubernetes-sigs/kro
+    kind: resource-graph-orchestrator-documentation
+    authority: supporting
+    version_policy: exact-version-from-selected-function-kro-go-mod
+    agent: okf-function-kro-kro-researcher
+    paths:
+      - website/docs
+      - LICENSE
+    usage: version-matched KRO ResourceGraphDefinition terminology and documented semantics; function-kro source remains authoritative for exposed behavior
   - id: crd-catalog
     repository: CustomResourceDefinition/catalog
     kind: community-crd-schema-catalog
