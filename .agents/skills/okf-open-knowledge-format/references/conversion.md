@@ -19,7 +19,7 @@ Notion exports as markdown with properties in YAML-like format.
 | Type (select) | `type` (required) |
 | Name | `title` |
 | Tags (multi-select) | `tags` |
-| Last Edited | `timestamp` |
+| Last Edited | `generated.at` (with an identified importer in `generated.by`) |
 | URL | `resource` |
 
 4. **Convert links** — Notion uses `[Page Name](Page%20Name%20abc123def.md)`. Convert to clean relative paths: `[Page Name](./page-name.md)`
@@ -93,7 +93,7 @@ Each row becomes one concept document.
 | Short description | `description` field |
 | Tags / labels | `tags` field |
 | URL / link | `resource` field |
-| Last modified date | `timestamp` field |
+| Last modified date | `generated.at` (with the import process in `generated.by`) |
 | All other columns | Body content (as table or sections) |
 
 2. **Generate one `.md` per row:**
@@ -104,7 +104,7 @@ type: {category_column}
 title: {name_column}
 description: {description_column}
 tags: [{tag1}, {tag2}]
-timestamp: {date_column}T00:00:00Z
+generated: { by: "process:spreadsheet-import", at: "{date_column}T00:00:00Z" }
 ---
 
 # {name_column}

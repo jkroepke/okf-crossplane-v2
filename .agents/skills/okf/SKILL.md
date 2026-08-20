@@ -180,7 +180,10 @@ Rules:
 - package, schema, behavior, documentation guidance, historical context, examples, and project history are separate concepts or sections when each is useful alone
 - preserve existing unknown frontmatter fields
 - add natural-language cross-links, not a generic link dump
-- add a numbered `# Citations` section for externally sourced claims
+- record externally sourced provenance in frontmatter `sources`
+- give every claim-bearing source a stable `sources[].id` and cite claims with matching keyed Markdown footnotes
+- record the current representation with `generated.by` and `generated.at`; never emit the superseded v0.1 `timestamp` field
+- add `verified` only when an actual machine or human verification event occurred
 - update affected `index.md` files for progressive disclosure
 - update `log.md` only with high-level knowledge changes
 - label design-derived material as historical context and pair current facts with current implementation or documentation evidence
@@ -209,7 +212,7 @@ When any link is missing, record the mapping as unresolved. Do not infer it from
 
 ### 9. Validate deterministically
 
-Validate the three OKF v0.1 conformance rules:
+Validate the three OKF v0.2 conformance rules:
 
 1. Every non-reserved Markdown file has parseable YAML frontmatter.
 2. Every concept frontmatter has a non-empty `type`.
@@ -217,6 +220,12 @@ Validate the three OKF v0.1 conformance rules:
 
 Also check:
 
+- the bundle-root `catalog/index.md` declares `okf_version: "0.2"`
+- no concept uses the superseded v0.1 `timestamp` field or `# Citations` body section
+- every source cited by a keyed body footnote has a matching stable `sources[].id`
+- every `sources` entry contains a non-empty `resource`
+- every `generated` mapping contains a valid actor in `by`; every present `at` value is an ISO 8601 datetime
+- `verified` records only actual verification events and uses the OKF actor convention
 - source lock entries exist for all generated released-source concepts
 - released-source evidence citations contain immutable commit SHAs
 - historical-design citations pin the selected Crossplane commit and record document status and accuracy warnings

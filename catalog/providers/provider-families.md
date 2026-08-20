@@ -4,7 +4,50 @@ title: Provider families and modern managed-resource groups
 description: Release-pinned family-package evidence, Upbound family-installation guidance, and the Crossplane v2 `.m.` modern namespaced managed-resource convention.
 resource: https://github.com/crossplane-contrib/provider-upjet-aws
 tags: [crossplane, providers, provider-families, aws, managed-resources, v2]
-timestamp: 2026-07-16T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: historical-provider-family-rationale-13-june-2023
+    resource: 'https://blog.crossplane.io/crd-scaling-provider-families/'
+    title: 'Historical provider-family rationale, 13 June 2023'
+  - id: aws-family-labels-dependencies-and-monolith-deprecation
+    resource: 'https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L5-L8'
+    title: 'AWS family labels, dependencies, and monolith deprecation'
+  - id: deprecation-text
+    resource: 'https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L17-L43'
+    title: 'deprecation text'
+  - id: aws-family-providerconfig-relationship
+    resource: 'https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/docs/family/Quickstart.md#L57-L84'
+    title: 'AWS family ProviderConfig relationship'
+  - id: upbound-official-family-scope
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L7-L12'
+    title: 'Upbound official-family scope'
+  - id: service-package-installation
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L38-L68'
+    title: 'service-package installation'
+  - id: providerconfig-ownership
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L117-L130'
+    title: 'ProviderConfig ownership'
+  - id: upbound-monolith-to-family-ownership-warning
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L16-L28'
+    title: 'Upbound monolith-to-family ownership warning'
+  - id: upbound-family-dependency-resolution-behavior
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L127-L143'
+    title: 'Upbound family dependency-resolution behavior'
+  - id: upbound-offline-installation-guidance
+    resource: 'https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L74-L113'
+    title: 'Upbound offline-installation guidance'
+  - id: v2-3-modern-namespaced-m-group-definition
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L211-L224'
+    title: 'v2.3 modern namespaced .m. group definition'
+  - id: v2-3-provider-upgrade-compatibility-guidance
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L226-L244'
+    title: 'v2.3 provider upgrade compatibility guidance'
+  - id: aws-modern-bucket-crd
+    resource: 'https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.m.upbound.io_buckets.yaml#L1-L20'
+    title: 'AWS modern Bucket CRD'
+  - id: aws-non-modern-bucket-crd
+    resource: 'https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.upbound.io_buckets.yaml#L1-L20'
+    title: 'AWS non-modern Bucket CRD'
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane-contrib/provider-upjet-aws
@@ -25,7 +68,7 @@ complete CRD surface.
 
 The 2023 Crossplane blog records the historical rationale: large providers had
 hundreds or thousands of CRDs and provider families were introduced to reduce
-the installed set.[1] It is historical context, not evidence of a provider's
+the installed set.[^historical-provider-family-rationale-13-june-2023] It is historical context, not evidence of a provider's
 current package layout.
 
 # AWS family evidence
@@ -34,11 +77,11 @@ For `provider-upjet-aws` v2.6.0, package metadata is the direct classification
 source: non-monolithic packages carry a `pkg.crossplane.io/provider-family`
 label, and non-configuration resource packages depend on `provider-family-aws`.
 The same template deprecates the monolithic package in favor of family resource
-packages.[2]
+packages.[^aws-family-labels-dependencies-and-monolith-deprecation][^deprecation-text]
 
 The repository's family quickstart says the first resource-provider installation
 also installs the family Provider, which manages shared `ProviderConfig` for
-the remaining family members.[3] This establishes AWS's selected-release
+the remaining family members.[^aws-family-providerconfig-relationship] This establishes AWS's selected-release
 topology; it does not prove that every large provider, or every provider named
 `family`, follows the same contract.
 
@@ -52,21 +95,21 @@ The Upbound documentation specifies this topology for its official AWS, GCP,
 and Azure provider families: install each selected service as a separate
 `Provider` package. The first service installs a shared `provider-family`
 Provider, which manages the `ProviderConfig` for the other providers in that
-family.[4]
+family.[^upbound-official-family-scope][^service-package-installation][^providerconfig-ownership]
 
 Migration has an important ownership boundary. If a matching monolithic
 provider is already installed, the family provider does not take effect; the
 monolith continues to own the provider resource endpoints until it is
-removed.[5] Plan the family cutover rather than relying on an in-place package
+removed.[^upbound-monolith-to-family-ownership-warning] Plan the family cutover rather than relying on an in-place package
 install to transfer ownership.
 
 Each family service declares a dependency on the latest available corresponding
 family package, which Crossplane's package manager resolves automatically. An
 older service package can therefore install alongside a newer shared family
-package; the Upbound documentation calls that mismatch expected.[6] In an
+package; the Upbound documentation calls that mismatch expected.[^upbound-family-dependency-resolution-behavior] In an
 offline or deliberately version-controlled installation, the same documentation
 uses `skipDependencyResolution` on every service `Provider`; validate and stage
-the necessary package set yourself before adopting that exception.[7]
+the necessary package set yourself before adopting that exception.[^upbound-offline-installation-guidance]
 
 This is vendor-specific documentation, not proof that every Crossplane provider
 family has identical package dependencies or ownership behavior. Its historical
@@ -77,16 +120,16 @@ current Crossplane v2 guidance.
 
 The Crossplane v2.3 upgrade guide explicitly contrasts legacy cluster-scoped
 `s3.aws.upbound.io` with namespaced `s3.aws.m.upbound.io` and says `.m.` means
-“modern namespaced managed resources.”[8] For a provider version that supports
+“modern namespaced managed resources.”[^v2-3-modern-namespaced-m-group-definition] For a provider version that supports
 both forms, prefer the `.m.` API when adopting the Crossplane v2 namespaced
 model and migration guidance applies.
 
 This is not a universal rule that every `.m.` CRD is preferable in every
 deployment, nor a test for family topology. The same guide instructs upgrades
 to provider versions supporting both namespaced and cluster-scoped managed
-resources.[9] The selected AWS release packages both `*.aws.m.upbound.io` and
+resources.[^v2-3-provider-upgrade-compatibility-guidance] The selected AWS release packages both `*.aws.m.upbound.io` and
 non-`.m.` CRD groups, so group name alone cannot classify a package as family or
-monolithic.[10][11]
+monolithic.[^aws-modern-bucket-crd][^aws-non-modern-bucket-crd]
 
 # Relationships
 
@@ -102,16 +145,17 @@ release and inspect its package metadata and CRD/API schema. The historical
 blog's CRD-scale observations must not be presented as current performance
 guarantees.
 
-# Citations
-
-[1] [Historical provider-family rationale, 13 June 2023](https://blog.crossplane.io/crd-scaling-provider-families/)
-[2] [AWS family labels, dependencies, and monolith deprecation](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L5-L8) and [deprecation text](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L17-L43)
-[3] [AWS family ProviderConfig relationship](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/docs/family/Quickstart.md#L57-L84)
-[4] [Upbound official-family scope](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L7-L12), [service-package installation](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L38-L68), and [ProviderConfig ownership](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L117-L130)
-[5] [Upbound monolith-to-family ownership warning](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L16-L28)
-[6] [Upbound family dependency-resolution behavior](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L127-L143)
-[7] [Upbound offline-installation guidance](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L74-L113)
-[8] [v2.3 modern namespaced `.m.` group definition](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L211-L224)
-[9] [v2.3 provider upgrade compatibility guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L226-L244)
-[10] [AWS modern Bucket CRD](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.m.upbound.io_buckets.yaml#L1-L20)
-[11] [AWS non-modern Bucket CRD](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.upbound.io_buckets.yaml#L1-L20)
+[^historical-provider-family-rationale-13-june-2023]: [Historical provider-family rationale, 13 June 2023](https://blog.crossplane.io/crd-scaling-provider-families/)
+[^aws-family-labels-dependencies-and-monolith-deprecation]: [AWS family labels, dependencies, and monolith deprecation](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L5-L8) and [deprecation text](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L17-L43)
+[^deprecation-text]: [deprecation text](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crossplane.yaml.tmpl#L17-L43)
+[^aws-family-providerconfig-relationship]: [AWS family ProviderConfig relationship](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/docs/family/Quickstart.md#L57-L84)
+[^upbound-official-family-scope]: [Upbound official-family scope](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L7-L12), [service-package installation](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L38-L68), and [ProviderConfig ownership](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L117-L130)
+[^service-package-installation]: [service-package installation](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L38-L68)
+[^providerconfig-ownership]: [ProviderConfig ownership](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L117-L130)
+[^upbound-monolith-to-family-ownership-warning]: [Upbound monolith-to-family ownership warning](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L16-L28)
+[^upbound-family-dependency-resolution-behavior]: [Upbound family dependency-resolution behavior](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L127-L143)
+[^upbound-offline-installation-guidance]: [Upbound offline-installation guidance](https://github.com/upbound/docs/blob/889d144d40620e05129a935824c592aece77657a/docs/manuals/packages/providers/provider-families.md#L74-L113)
+[^v2-3-modern-namespaced-m-group-definition]: [v2.3 modern namespaced `.m.` group definition](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L211-L224)
+[^v2-3-provider-upgrade-compatibility-guidance]: [v2.3 provider upgrade compatibility guidance](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/upgrade-to-crossplane-v2.md#L226-L244)
+[^aws-modern-bucket-crd]: [AWS modern Bucket CRD](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.m.upbound.io_buckets.yaml#L1-L20)
+[^aws-non-modern-bucket-crd]: [AWS non-modern Bucket CRD](https://github.com/crossplane-contrib/provider-upjet-aws/blob/857b535dd0eb9b8242ad9d7c4e54aaa3e4616d60/package/crds/s3.aws.upbound.io_buckets.yaml#L1-L20)

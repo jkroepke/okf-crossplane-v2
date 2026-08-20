@@ -27,10 +27,16 @@ title: Orders
 description: One row per completed customer order across all channels.
 resource: https://console.cloud.google.com/bigquery?p=acme&d=sales&t=orders
 tags: [sales, orders, revenue]
-timestamp: 2026-05-28T14:30:00Z
+generated: { by: "process:example-catalog", at: "2026-05-28T14:30:00Z" }
+sources:
+  - id: bigquery-schema-docs
+    resource: https://cloud.google.com/bigquery/docs/schemas
+    title: BigQuery schema documentation
 ---
 
 # Schema
+
+The table uses BigQuery schema conventions.[^bigquery-schema-docs]
 
 | Column | Type | Description |
 |--------|------|-------------|
@@ -45,9 +51,7 @@ timestamp: 2026-05-28T14:30:00Z
 - Join with [customers](./customers.md) on `customer_id`
 - Referenced by [gross revenue](/metrics/gross-revenue.md) metric
 
-# Citations
-
-[1] [BigQuery schema docs](https://cloud.google.com/bigquery/docs/schemas)
+[^bigquery-schema-docs]: [BigQuery schema documentation](https://cloud.google.com/bigquery/docs/schemas)
 ```
 
 ### tables/customers.md
@@ -59,7 +63,7 @@ title: Customers
 description: One row per registered customer with profile and lifetime data.
 resource: https://console.cloud.google.com/bigquery?p=acme&d=sales&t=customers
 tags: [sales, customers]
-timestamp: 2026-05-28T14:30:00Z
+generated: { by: "process:example-catalog", at: "2026-05-28T14:30:00Z" }
 ---
 
 # Schema
@@ -84,7 +88,7 @@ type: Metric
 title: Gross Revenue
 description: Total revenue before refunds and discounts.
 tags: [revenue, finance, kpi]
-timestamp: 2026-05-28T14:30:00Z
+generated: { by: "process:example-catalog", at: "2026-05-28T14:30:00Z" }
 ---
 
 # Definition
@@ -141,7 +145,11 @@ title: API Latency P99 > 2s
 description: Fires when 99th percentile API latency exceeds 2 seconds for 5 minutes.
 tags: [api, latency, critical]
 severity: critical
-timestamp: 2026-06-01T09:00:00Z
+generated: { by: "process:example-catalog", at: "2026-06-01T09:00:00Z" }
+sources:
+  - id: api-latency-sla
+    resource: https://wiki.internal/sla/api-latency
+    title: API latency SLA definition
 ---
 
 # Trigger Condition
@@ -152,7 +160,7 @@ histogram_quantile(0.99, rate(http_request_duration_seconds_bucket[5m])) > 2
 
 # Impact
 
-Users experience timeouts. Downstream services may cascade-fail.
+Users experience timeouts. Downstream services may cascade-fail.[^api-latency-sla]
 
 # Response
 
@@ -160,9 +168,7 @@ Users experience timeouts. Downstream services may cascade-fail.
 2. Follow [escalation runbook](/runbooks/escalate-incident.md) if not resolved in 10 min
 3. Check deployment log for recent changes
 
-# Citations
-
-[1] [SLA definition](https://wiki.internal/sla/api-latency)
+[^api-latency-sla]: [API latency SLA definition](https://wiki.internal/sla/api-latency)
 ```
 
 ### runbooks/escalate-incident.md
@@ -173,7 +179,7 @@ type: Runbook
 title: Escalate Incident
 description: Steps to escalate when on-call cannot resolve within SLA.
 tags: [oncall, incident, escalation]
-timestamp: 2026-06-01T09:00:00Z
+generated: { by: "process:example-catalog", at: "2026-06-01T09:00:00Z" }
 ---
 
 # When to Escalate
@@ -227,7 +233,7 @@ description: Creates a new order for an authenticated customer.
 resource: https://api.acme.com/v2/orders
 tags: [orders, write, v2]
 method: POST
-timestamp: 2026-05-20T10:00:00Z
+generated: { by: "process:example-catalog", at: "2026-05-20T10:00:00Z" }
 ---
 
 # POST /v2/orders
@@ -277,7 +283,7 @@ type: Policy
 title: Rate Limits
 description: Per-plan rate limits for all API endpoints.
 tags: [policy, rate-limit, api]
-timestamp: 2026-05-20T10:00:00Z
+generated: { by: "process:example-catalog", at: "2026-05-20T10:00:00Z" }
 ---
 
 # Limits by Plan

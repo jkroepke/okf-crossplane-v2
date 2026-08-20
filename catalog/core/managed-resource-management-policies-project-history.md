@@ -4,7 +4,56 @@ title: Managed resource management policies project history
 description: Human-authored GA tracking, known limitation reports, proposals, and selected-release containment for Management Policies.
 resource: https://github.com/crossplane/crossplane/issues/4952
 tags: [crossplane, core, managed-resources, management-policies, project-history]
-timestamp: 2026-07-14T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: beta-maturity-and-provider-support
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305'
+    title: 'Beta maturity and provider support'
+  - id: open-management-policies-ga-tracker
+    resource: 'https://github.com/crossplane/crossplane/issues/4952'
+    title: 'Open Management Policies GA tracker'
+  - id: initprovider-change-report-upjet-298
+    resource: 'https://github.com/crossplane/upjet/issues/298'
+    title: 'initProvider change report: Upjet #298'
+  - id: nested-list-ignore-changes-report-upjet-295
+    resource: 'https://github.com/crossplane/upjet/issues/295'
+    title: 'Nested-list ignore_changes report: Upjet #295'
+  - id: set-field-update-loop-report-upjet-299
+    resource: 'https://github.com/crossplane/upjet/issues/299'
+    title: 'Set-field update-loop report: Upjet #299'
+  - id: immutable-initprovider-field-proposal-upjet-384
+    resource: 'https://github.com/crossplane/upjet/issues/384'
+    title: 'Immutable initProvider field proposal: Upjet #384'
+  - id: provider-restart-identity-report-crossplane-5918
+    resource: 'https://github.com/crossplane/crossplane/issues/5918'
+    title: 'Provider-restart identity report: Crossplane #5918'
+  - id: observe-only-adoption-proposal-3999
+    resource: 'https://github.com/crossplane/crossplane/issues/3999'
+    title: 'Observe-only adoption proposal #3999'
+  - id: supported-policy-combinations
+    resource: 'https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/policies.go#L45-L171'
+    title: 'Supported policy combinations'
+  - id: runtime-policy-semantics-proposal-930
+    resource: 'https://github.com/crossplane/crossplane-runtime/issues/930'
+    title: 'Runtime policy-semantics proposal #930'
+  - id: deletionpolicy-migration-proposal-5283
+    resource: 'https://github.com/crossplane/crossplane/issues/5283'
+    title: 'deletionPolicy migration proposal #5283'
+  - id: runtime-pr-788
+    resource: 'https://github.com/crossplane/crossplane-runtime/pull/788'
+    title: 'Runtime PR #788'
+  - id: pr-788-containment-in-runtime-v2-3-3
+    resource: 'https://github.com/crossplane/crossplane-runtime/compare/5faceb9d8a2cf6d839ab193d91a503dd619f8f2c...fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827'
+    title: 'PR #788 containment in runtime v2.3.3'
+  - id: crossplane-v2-3-3-runtime-dependency
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/go.mod#L7-L13'
+    title: 'Crossplane v2.3.3 runtime dependency'
+  - id: upjet-reference-request-307
+    resource: 'https://github.com/crossplane/upjet/issues/307'
+    title: 'Upjet reference request #307'
+  - id: merged-upjet-pr-315
+    resource: 'https://github.com/crossplane/upjet/pull/315'
+    title: 'Merged Upjet PR #315'
 crossplane_release: v2.3.3
 documentation_series: v2.3
 project_history_researched_at: 2026-07-14
@@ -16,7 +65,7 @@ Crossplane issue #4952 is the open tracker for promoting Management Policies
 from Beta to GA. Its checklist still leaves the API-version update and several
 linked limitations unchecked. It is a proposal and work tracker, not evidence
 that GA is scheduled or released; the selected v2.3 documentation continues to
-label the feature Beta.[1][2]
+label the feature Beta.[^beta-maturity-and-provider-support][^open-management-policies-ga-tracker]
 
 As of the project-history research timestamp, the tracker links these open
 user-facing themes:
@@ -30,24 +79,24 @@ user-facing themes:
   from generated `initProvider` schemas. A Crossplane report also describes a
   provider restart losing external identity when `LateInitialize` is omitted.
   These items remain reports or proposals, not general behavior established by
-  Crossplane Core.[3][4][5][6][7]
+  Crossplane Core.[^initprovider-change-report-upjet-298][^nested-list-ignore-changes-report-upjet-295][^set-field-update-loop-report-upjet-299][^immutable-initprovider-field-proposal-upjet-384][^provider-restart-identity-report-crossplane-5918]
 - **Observe-only adoption:** an open proposal would populate required
   `forProvider` fields from observed state when moving an existing resource
-  from observe-only toward active management.[8]
+  from observe-only toward active management.[^observe-only-adoption-proposal-3999]
 - **Policy semantics:** an open runtime proposal discusses stronger
   “must-create” semantics and an orphan shorthand. The current selected-release
   action set remains the one documented in
-  [Management Policies](managed-resource-management-policies.md).[9][10]
+  [Management Policies](managed-resource-management-policies.md).[^supported-policy-combinations][^runtime-policy-semantics-proposal-930]
 - **Deletion migration:** an open proposal asks when and how to remove the
   deprecated `deletionPolicy` field while preserving a migration path to
-  Management Policies.[11]
+  Management Policies.[^deletionpolicy-migration-proposal-5283]
 
 # Included in the selected release
 
 One linked request is implemented in the selected release dependency graph:
 runtime PR #788 added the `Observe + LateInitialize` and
 `Observe + Update + LateInitialize` combinations. Its merge commit is an
-ancestor of runtime v2.3.3, which Crossplane v2.3.3 requires.[12][13][14] This resolves
+ancestor of runtime v2.3.3, which Crossplane v2.3.3 requires.[^runtime-pr-788][^pr-788-containment-in-runtime-v2-3-3][^crossplane-v2-3-3-runtime-dependency] This resolves
 that bounded combination request; it does not complete the GA checklist.
 
 # Release relationship unresolved
@@ -55,7 +104,7 @@ that bounded combination request; it does not complete the GA checklist.
 Upjet PR #315 implemented generated references and resolvers for
 `initProvider`, but Upjet is a provider generator rather than a dependency
 whose feature inclusion can be inferred from the Crossplane v2.3.3 commit.
-Specific generated Provider releases require separate containment evidence.[15][16]
+Specific generated Provider releases require separate containment evidence.[^upjet-reference-request-307][^merged-upjet-pr-315]
 
 Bot-authored stale activity was excluded. Open issues are retained only as
 reports or proposals, and closed items are not treated as fixed without linked
@@ -66,21 +115,19 @@ implementation and selected-release containment.
 See [Management Policies](managed-resource-management-policies.md) for the
 selected-release action gates and lifecycle effects.
 
-# Citations
-
-[1] [Beta maturity and provider support](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305)
-[2] [Open Management Policies GA tracker](https://github.com/crossplane/crossplane/issues/4952)
-[3] [`initProvider` change report: Upjet #298](https://github.com/crossplane/upjet/issues/298)
-[4] [Nested-list `ignore_changes` report: Upjet #295](https://github.com/crossplane/upjet/issues/295)
-[5] [Set-field update-loop report: Upjet #299](https://github.com/crossplane/upjet/issues/299)
-[6] [Immutable `initProvider` field proposal: Upjet #384](https://github.com/crossplane/upjet/issues/384)
-[7] [Provider-restart identity report: Crossplane #5918](https://github.com/crossplane/crossplane/issues/5918)
-[8] [Observe-only adoption proposal #3999](https://github.com/crossplane/crossplane/issues/3999)
-[9] [Supported policy combinations](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/policies.go#L45-L171)
-[10] [Runtime policy-semantics proposal #930](https://github.com/crossplane/crossplane-runtime/issues/930)
-[11] [`deletionPolicy` migration proposal #5283](https://github.com/crossplane/crossplane/issues/5283)
-[12] [Runtime PR #788](https://github.com/crossplane/crossplane-runtime/pull/788)
-[13] [PR #788 containment in runtime v2.3.3](https://github.com/crossplane/crossplane-runtime/compare/5faceb9d8a2cf6d839ab193d91a503dd619f8f2c...fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827)
-[14] [Crossplane v2.3.3 runtime dependency](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/go.mod#L7-L13)
-[15] [Upjet reference request #307](https://github.com/crossplane/upjet/issues/307)
-[16] [Merged Upjet PR #315](https://github.com/crossplane/upjet/pull/315)
+[^beta-maturity-and-provider-support]: [Beta maturity and provider support](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305)
+[^open-management-policies-ga-tracker]: [Open Management Policies GA tracker](https://github.com/crossplane/crossplane/issues/4952)
+[^initprovider-change-report-upjet-298]: [`initProvider` change report: Upjet #298](https://github.com/crossplane/upjet/issues/298)
+[^nested-list-ignore-changes-report-upjet-295]: [Nested-list `ignore_changes` report: Upjet #295](https://github.com/crossplane/upjet/issues/295)
+[^set-field-update-loop-report-upjet-299]: [Set-field update-loop report: Upjet #299](https://github.com/crossplane/upjet/issues/299)
+[^immutable-initprovider-field-proposal-upjet-384]: [Immutable `initProvider` field proposal: Upjet #384](https://github.com/crossplane/upjet/issues/384)
+[^provider-restart-identity-report-crossplane-5918]: [Provider-restart identity report: Crossplane #5918](https://github.com/crossplane/crossplane/issues/5918)
+[^observe-only-adoption-proposal-3999]: [Observe-only adoption proposal #3999](https://github.com/crossplane/crossplane/issues/3999)
+[^supported-policy-combinations]: [Supported policy combinations](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/policies.go#L45-L171)
+[^runtime-policy-semantics-proposal-930]: [Runtime policy-semantics proposal #930](https://github.com/crossplane/crossplane-runtime/issues/930)
+[^deletionpolicy-migration-proposal-5283]: [`deletionPolicy` migration proposal #5283](https://github.com/crossplane/crossplane/issues/5283)
+[^runtime-pr-788]: [Runtime PR #788](https://github.com/crossplane/crossplane-runtime/pull/788)
+[^pr-788-containment-in-runtime-v2-3-3]: [PR #788 containment in runtime v2.3.3](https://github.com/crossplane/crossplane-runtime/compare/5faceb9d8a2cf6d839ab193d91a503dd619f8f2c...fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827)
+[^crossplane-v2-3-3-runtime-dependency]: [Crossplane v2.3.3 runtime dependency](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/go.mod#L7-L13)
+[^upjet-reference-request-307]: [Upjet reference request #307](https://github.com/crossplane/upjet/issues/307)
+[^merged-upjet-pr-315]: [Merged Upjet PR #315](https://github.com/crossplane/upjet/pull/315)

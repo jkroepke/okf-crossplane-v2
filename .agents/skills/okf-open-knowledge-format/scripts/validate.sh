@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# OKF Bundle Validator v0.1
+# OKF Bundle Validator v0.2
 # Usage: validate.sh <bundle-path>
-# Checks conformance with OKF v0.1 spec:
+# Checks the three core conformance rules from OKF v0.2:
 #   E1: All non-reserved .md files have YAML frontmatter
 #   E2: All frontmatter has non-empty 'type' field
 #   E3: Reserved files follow structure rules
@@ -91,7 +91,7 @@ done < <(find "$BUNDLE" -name "*.md" -type f -print0 | sort -z)
 echo "---"
 echo "Files scanned: $TOTAL"
 if [ $ERRORS -eq 0 ]; then
-  echo -e "${GREEN}✅ Bundle is OKF v0.1 conformant${NC}"
+  echo -e "${GREEN}✅ Bundle is OKF v0.2 conformant${NC}"
 else
   echo -e "${RED}❌ $ERRORS error(s) — bundle is NOT conformant${NC}"
 fi

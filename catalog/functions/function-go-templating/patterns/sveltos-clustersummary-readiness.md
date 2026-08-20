@@ -4,7 +4,44 @@ title: Observe Sveltos ClusterSummary deployment status
 description: Fetch a Sveltos Profile's deterministic ClusterSummary and evaluate the deployment status of its copied configuration.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, composition-function, extra-resources, readiness, sveltos]
-timestamp: 2026-07-14T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: extraresources-selector-and-namespace-conversion
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62'
+    title: 'ExtraResources selector and namespace conversion'
+  - id: getextraresources-lookup
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154'
+    title: 'getExtraResources lookup'
+  - id: sveltos-clustersummary-creation-namespace-labels-and-owner-reference
+    resource: 'https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L570-L632'
+    title: 'Sveltos ClusterSummary creation, namespace, labels, and owner reference'
+  - id: sveltos-deterministic-clustersummary-names
+    resource: 'https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/lib/clusterops/clustersummary.go#L83-L104'
+    title: 'Sveltos deterministic ClusterSummary names'
+  - id: clustersummary-status-and-feature-summary-fields
+    resource: 'https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/api/v1beta1/clustersummary_types.go#L43-L80'
+    title: 'ClusterSummary status and feature-summary fields'
+  - id: provisioned-feature-status
+    resource: 'https://github.com/projectsveltos/libsveltos/blob/82cc79ba33929ffd061ee75f106a3bd8b70addcd/api/v1beta1/common_types.go#L413-L443'
+    title: 'Provisioned feature status'
+  - id: sveltos-complete-deployment-check
+    resource: 'https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/utils.go#L157-L212'
+    title: 'Sveltos complete-deployment check'
+  - id: label-selection-omits-namespace-while-exact-name-selection-copies-it
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62'
+    title: 'Label selection omits namespace while exact-name selection copies it'
+  - id: function-auto-ready-cel-evaluates-only-the-observed-object
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71'
+    title: 'function-auto-ready CEL evaluates only the observed object'
+  - id: sveltos-compares-profile-and-clustersummary-configuration-before-accepting-provisioned-status
+    resource: 'https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L147-L185'
+    title: 'Sveltos compares Profile and ClusterSummary configuration before accepting provisioned status'
+  - id: core-required-resource-fetcher-and-client-wiring
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227'
+    title: 'Core required-resource fetcher and client wiring'
+  - id: wiring
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481'
+    title: 'wiring'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -38,7 +75,7 @@ The Sveltos example below is an adapted community integration pattern. Sveltos
 creates one namespaced `ClusterSummary` for every cluster selected by a
 `Profile` or `ClusterProfile`. A namespaced `Profile` summary is named
 `p--<profile>-<capi|sveltos>-<cluster>` and lives in the selected cluster's
-namespace.[3][4]
+namespace.[^sveltos-clustersummary-creation-namespace-labels-and-owner-reference][^sveltos-deterministic-clustersummary-names]
 
 # Profile and summary example
 
@@ -51,10 +88,10 @@ Assumptions for this adaptable readiness fragment:
   Kustomize references; and
 - the Crossplane Core Deployment service account can `get` Sveltos
   `ClusterSummary` objects in the target namespace; the Function pod does not
-  perform this read.[11]
+  perform this read.[^core-required-resource-fetcher-and-client-wiring][^wiring]
 
 The directive below requests one exact-name required resource, and the helper
-reads its returned items from the Function request.[1][2]
+reads its returned items from the Function request.[^extraresources-selector-and-namespace-conversion][^getextraresources-lookup]
 
 ```gotemplate
 {{- $xr := .observed.composite.resource }}
@@ -114,10 +151,10 @@ requirements:
 ```
 
 Sveltos records one entry per feature class under
-`status.featureSummaries[]`. `Provisioned` is the successful state.[5][6]
+`status.featureSummaries[]`. `Provisioned` is the successful state.[^clustersummary-status-and-feature-summary-fields][^provisioned-feature-status]
 The example matches `Helm`, `Resources`, and `Kustomize` by `featureID`, requires
 every configured class, and rejects any reported non-`Provisioned` entry. This
-follows Sveltos's per-summary complete-deployment check.[7] It evaluates the
+follows Sveltos's per-summary complete-deployment check.[^sveltos-complete-deployment-check] It evaluates the
 configuration snapshot already copied into the `ClusterSummary`; it does not
 prove that this snapshot matches a just-updated Profile.
 
@@ -127,7 +164,7 @@ Sveltos also labels summaries with profile, cluster name, and cluster type.
 However, function-go-templating v0.12.2 returns from label-selector conversion
 before copying `namespace`. Namespaced label lookup is therefore not reliable
 in this release. Exact-name selection copies the namespace and is the supported
-path for this pattern.[8]
+path for this pattern.[^label-selection-omits-namespace-while-exact-name-selection-copies-it]
 
 # Limitations
 
@@ -142,16 +179,16 @@ path for this pattern.[8]
   require its Helm charts, policy references, and Kustomize references to
   `deepEqual` the corresponding `ClusterSummary.spec.clusterProfileSpec`
   fields before setting readiness true. Sveltos performs this separate sync
-  check before its per-summary provisioned check.[10]
+  check before its per-summary provisioned check.[^sveltos-compares-profile-and-clustersummary-configuration-before-accepting-provisioned-status]
 - The exact-name strategy requires the cluster name and namespace. A
-  `ClusterProfile` summary omits the `p--` prefix.[4]
+  `ClusterProfile` summary omits the `p--` prefix.[^sveltos-deterministic-clustersummary-names]
 - The example treats a zero-feature Profile as not ready and must be updated if
   Sveltos adds another deployable feature class.
 - Sveltos's ownership documentation depicts `controller: true`, but v1.12.0
   creation code does not set that owner-reference field. Runtime claims here
-  follow the released implementation.[3]
+  follow the released implementation.[^sveltos-clustersummary-creation-namespace-labels-and-owner-reference]
 - function-auto-ready cannot directly evaluate this fetched summary: its CEL
-  activation contains only the matched observed composed object.[9]
+  activation contains only the matched observed composed object.[^function-auto-ready-cel-evaluates-only-the-observed-object]
 - Sveltos addon-controller and libsveltos are Apache-2.0 licensed. No source
   code was copied; the example adapts their API and naming contracts.
 
@@ -164,16 +201,15 @@ generic pattern,
 [function-auto-ready CEL](../../function-auto-ready/cel-health-checks.md) for the
 composed-resource-only alternative.
 
-# Citations
-
-[1] [ExtraResources selector and namespace conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62)
-[2] [`getExtraResources` lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154)
-[3] [Sveltos ClusterSummary creation, namespace, labels, and owner reference](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L570-L632)
-[4] [Sveltos deterministic ClusterSummary names](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/lib/clusterops/clustersummary.go#L83-L104)
-[5] [ClusterSummary status and feature-summary fields](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/api/v1beta1/clustersummary_types.go#L43-L80)
-[6] [`Provisioned` feature status](https://github.com/projectsveltos/libsveltos/blob/82cc79ba33929ffd061ee75f106a3bd8b70addcd/api/v1beta1/common_types.go#L413-L443)
-[7] [Sveltos complete-deployment check](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/utils.go#L157-L212)
-[8] [Label selection omits namespace while exact-name selection copies it](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)
-[9] [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
-[10] [Sveltos compares Profile and ClusterSummary configuration before accepting provisioned status](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L147-L185)
-[11] [Core required-resource fetcher and client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
+[^extraresources-selector-and-namespace-conversion]: [ExtraResources selector and namespace conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L16-L62)
+[^getextraresources-lookup]: [`getExtraResources` lookup](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L143-L154)
+[^sveltos-clustersummary-creation-namespace-labels-and-owner-reference]: [Sveltos ClusterSummary creation, namespace, labels, and owner reference](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L570-L632)
+[^sveltos-deterministic-clustersummary-names]: [Sveltos deterministic ClusterSummary names](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/lib/clusterops/clustersummary.go#L83-L104)
+[^clustersummary-status-and-feature-summary-fields]: [ClusterSummary status and feature-summary fields](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/api/v1beta1/clustersummary_types.go#L43-L80)
+[^provisioned-feature-status]: [`Provisioned` feature status](https://github.com/projectsveltos/libsveltos/blob/82cc79ba33929ffd061ee75f106a3bd8b70addcd/api/v1beta1/common_types.go#L413-L443)
+[^sveltos-complete-deployment-check]: [Sveltos complete-deployment check](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/utils.go#L157-L212)
+[^label-selection-omits-namespace-while-exact-name-selection-copies-it]: [Label selection omits namespace while exact-name selection copies it](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)
+[^function-auto-ready-cel-evaluates-only-the-observed-object]: [function-auto-ready CEL evaluates only the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[^sveltos-compares-profile-and-clustersummary-configuration-before-accepting-provisioned-status]: [Sveltos compares Profile and ClusterSummary configuration before accepting provisioned status](https://github.com/projectsveltos/addon-controller/blob/b528b72dedf369566470709796d23d93fa1827b1/controllers/profile_utils.go#L147-L185)
+[^core-required-resource-fetcher-and-client-wiring]: [Core required-resource fetcher and client wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/internal/xfn/required_resources.go#L67-L227) and [wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)
+[^wiring]: [wiring](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cmd/crossplane/core/core.go#L476-L481)

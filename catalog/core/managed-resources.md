@@ -4,7 +4,20 @@ title: Managed resources
 description: Provider-defined Kubernetes APIs that continuously manage external resources through a shared Crossplane runtime contract.
 resource: https://docs.crossplane.io/v2.3/managed-resources/managed-resources/
 tags: [crossplane, core, managed-resources, providers]
-timestamp: 2026-07-12T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: managed-resource-model
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L7-L47'
+    title: 'Managed resource model'
+  - id: modern-managed-resource-runtime-contract
+    resource: 'https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L200-L219'
+    title: 'Modern managed-resource runtime contract'
+  - id: external-client-operations-and-observation-result
+    resource: 'https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L383-L410'
+    title: 'External client operations and observation result'
+  - id: management-policies-maturity-and-provider-support
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305'
+    title: 'Management policies maturity and provider support'
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/docs
@@ -17,10 +30,10 @@ feature_state_basis: Stable applies to the selected common managed-resource API 
 # Overview
 
 A managed resource (MR) is the Kubernetes representation of an external resource. Its Provider defines the concrete group, version, kind, desired fields, observed fields,
-references, credentials, and external API behavior.[1]
+references, credentials, and external API behavior.[^managed-resource-model]
 
 Crossplane Core publishes reusable MR contracts, but no single generic concrete `ManagedResource` CRD. The common runtime requires conditions, management policies, and a typed
-ProviderConfig reference, then delegates external `Observe`, `Create`, `Update`, and `Delete` behavior to the Provider.[2][3]
+ProviderConfig reference, then delegates external `Observe`, `Create`, `Update`, and `Delete` behavior to the Provider.[^modern-managed-resource-runtime-contract][^external-client-operations-and-observation-result]
 
 The common managed-resource API contract is **Stable by repository default**
 because selected API sources have no non-stable label or served alpha/beta API.
@@ -42,11 +55,9 @@ the separately Beta and Alpha features below.
 # Limitations
 
 `managementPolicies` and `initProvider` are explicitly Beta. MRD and MRAP are Alpha. Provider support varies, and concrete schemas or behavior require separately pinned provider
-sources.[4] Legacy managed-resource interfaces, deletion-policy compatibility paths, Claims, and legacy v1 XR semantics are excluded.
+sources.[^management-policies-maturity-and-provider-support] Legacy managed-resource interfaces, deletion-policy compatibility paths, Claims, and legacy v1 XR semantics are excluded.
 
-# Citations
-
-[1] [Managed resource model](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L7-L47)
-[2] [Modern managed-resource runtime contract](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L200-L219)
-[3] [External client operations and observation result](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L383-L410)
-[4] [Management policies maturity and provider support](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305)
+[^managed-resource-model]: [Managed resource model](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L7-L47)
+[^modern-managed-resource-runtime-contract]: [Modern managed-resource runtime contract](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/resource/interfaces.go#L200-L219)
+[^external-client-operations-and-observation-result]: [External client operations and observation result](https://github.com/crossplane/crossplane-runtime/blob/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827/pkg/reconciler/managed/reconciler.go#L383-L410)
+[^management-policies-maturity-and-provider-support]: [Management policies maturity and provider support](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/managed-resources/managed-resources.md#L285-L305)

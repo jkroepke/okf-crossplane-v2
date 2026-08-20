@@ -4,7 +4,32 @@ title: EnvironmentConfig, Go templating, and readiness pipeline
 description: Evidence-backed ordering and data flow across function-environment-configs, function-go-templating, and function-auto-ready.
 resource: https://github.com/crossplane-contrib/function-auto-ready/tree/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck
 tags: [crossplane, composition, environment-config, go-template, readiness]
-timestamp: 2026-07-14T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: current-auto-ready-three-function-composition
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/composition.yaml#L10-L48'
+    title: 'Current auto-ready three-function composition'
+  - id: function-environment-configs-context-output
+    resource: 'https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/fn.go#L101-L134'
+    title: 'function-environment-configs context output'
+  - id: function-go-templating-environment-loader
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/template.go#L103-L122'
+    title: 'function-go-templating Environment loader'
+  - id: auto-ready-desired-and-observed-resource-ordering
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L119'
+    title: 'auto-ready desired and observed resource ordering'
+  - id: current-v1beta1-environmentconfig-cel-rule
+    resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/extra-resources.yaml#L1-L7'
+    title: 'Current v1beta1 EnvironmentConfig CEL rule'
+  - id: older-go-templating-environment-pipeline-snapshot
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/example/environment/composition.yaml#L1-L36'
+    title: 'Older go-templating environment pipeline snapshot'
+  - id: function-go-templating-context-deep-merge
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/context.go#L10-L20'
+    title: 'function-go-templating Context deep merge'
+  - id: response-writes
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L270-L310'
+    title: 'response writes'
 source_repository: crossplane-contrib/function-auto-ready
 source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 source_paths:
@@ -27,14 +52,14 @@ The three functions have separate responsibilities and must be ordered by their 
 
 1. `function-environment-configs` selects Beta `EnvironmentConfig` objects and writes the merged map to `apiextensions.crossplane.io/environment`.
 2. `function-go-templating` reads the map directly or loads template text with `source: Environment`, then produces desired composed resources and may publish Alpha Context updates.
-3. `function-auto-ready` evaluates desired resources against their observed counterparts. Its optional Alpha CEL feature may also load rules from the environment context.[1][2][3]
+3. `function-auto-ready` evaluates desired resources against their observed counterparts. Its optional Alpha CEL feature may also load rules from the environment context.[^current-auto-ready-three-function-composition][^function-environment-configs-context-output][^function-go-templating-environment-loader]
 
 The selected auto-ready example uses the order go-templating →
 environment-configs → auto-ready because the template is inline and does not
 consume the environment. If template text or rendering data comes from an
 EnvironmentConfig, environment-configs must instead precede go-templating.
 Auto-ready remains last because it consumes the desired resource and optional
-context produced earlier.[1][4]
+context produced earlier.[^current-auto-ready-three-function-composition][^auto-ready-desired-and-observed-resource-ordering]
 
 # Shared-context ownership
 
@@ -42,7 +67,7 @@ Both function-environment-configs and function-go-templating can update the
 reserved `apiextensions.crossplane.io/environment` context key. The environment
 function merges selected EnvironmentConfig data over the incoming environment,
 while a rendered Alpha `Context` instruction deep-merges its values over the
-incoming context.[2][7] Pipeline order therefore changes the winner at a
+incoming context.[^function-environment-configs-context-output][^function-go-templating-context-deep-merge][^response-writes] Pipeline order therefore changes the winner at a
 conflicting path.
 
 Assign one owner to each reserved-key subtree. If go-templating writes the
@@ -62,25 +87,24 @@ Auto-ready reads it with:
 
 `[apiextensions.crossplane.io/environment].celHealthCheckCustomizations`
 
-The rule requires the observed package to have `Installed=True` and `Healthy=True`.[1][5]
+The rule requires the observed package to have `Installed=True` and `Healthy=True`.[^current-auto-ready-three-function-composition][^current-v1beta1-environmentconfig-cel-rule]
 
 # Adaptation boundary
 
 This page summarizes repository-owned Apache-2.0 examples; it does not reproduce a complete manifest set.
 
-- The auto-ready v0.7.0 CEL example uses current `EnvironmentConfig/v1beta1` and `Input/v1beta1` and is the preferred basis for the readiness integration.[1][5]
+- The auto-ready v0.7.0 CEL example uses current `EnvironmentConfig/v1beta1` and `Input/v1beta1` and is the preferred basis for the readiness integration.[^current-auto-ready-three-function-composition][^current-v1beta1-environmentconfig-cel-rule]
 - The go-templating environment example demonstrates Environment source and
   all three functions, but pins older function packages, uses
   `EnvironmentConfig/v1alpha1`, includes legacy XRD `connectionSecretKeys`, and
-  configures local Development runtime. Do not apply it unchanged.[6]
+  configures local Development runtime. Do not apply it unchanged.[^older-go-templating-environment-pipeline-snapshot]
 - A v2 adaptation should use current namespaced or cluster-scoped v2 XR semantics, current function tags, `EnvironmentConfig/v1beta1`, and matching Function object names.
 
-# Citations
-
-[1] [Current auto-ready three-function composition](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/composition.yaml#L10-L48)
-[2] [function-environment-configs context output](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/fn.go#L101-L134)
-[3] [function-go-templating Environment loader](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/template.go#L103-L122)
-[4] [auto-ready desired and observed resource ordering](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L119)
-[5] [Current v1beta1 EnvironmentConfig CEL rule](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/extra-resources.yaml#L1-L7)
-[6] [Older go-templating environment pipeline snapshot](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/example/environment/composition.yaml#L1-L36)
-[7] [function-go-templating Context deep merge](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/context.go#L10-L20) and [response writes](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L270-L310)
+[^current-auto-ready-three-function-composition]: [Current auto-ready three-function composition](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/composition.yaml#L10-L48)
+[^function-environment-configs-context-output]: [function-environment-configs context output](https://github.com/crossplane-contrib/function-environment-configs/blob/5589092483aea1d65b9988f5116106585c4b516b/fn.go#L101-L134)
+[^function-go-templating-environment-loader]: [function-go-templating Environment loader](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/template.go#L103-L122)
+[^auto-ready-desired-and-observed-resource-ordering]: [auto-ready desired and observed resource ordering](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L81-L119)
+[^current-v1beta1-environmentconfig-cel-rule]: [Current v1beta1 EnvironmentConfig CEL rule](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/example/cel-healthcheck/extra-resources.yaml#L1-L7)
+[^older-go-templating-environment-pipeline-snapshot]: [Older go-templating environment pipeline snapshot](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/example/environment/composition.yaml#L1-L36)
+[^function-go-templating-context-deep-merge]: [function-go-templating Context deep merge](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/context.go#L10-L20) and [response writes](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L270-L310)
+[^response-writes]: [response writes](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L270-L310)

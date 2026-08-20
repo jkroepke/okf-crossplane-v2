@@ -4,7 +4,29 @@ title: ConfigurationRevision
 description: A controller-managed revision created when a Crossplane Configuration changes.
 resource: https://github.com/crossplane/crossplane
 tags: [crossplane, core, configurations, revisions, api]
-timestamp: 2026-07-12T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+sources:
+  - id: configurationrevision-identity-and-ownership
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L7-L53'
+    title: 'ConfigurationRevision identity and ownership'
+  - id: required-revision-fields
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L91-L154'
+    title: 'Required revision fields'
+  - id: revision-state-source-types
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/pkg/v1/revision_types.go#L25-L114'
+    title: 'Revision state source types'
+  - id: configurationrevision-status
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L155-L275'
+    title: 'ConfigurationRevision status'
+  - id: revision-lifecycle-and-retention
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L102-L142'
+    title: 'Revision lifecycle and retention'
+  - id: automatic-and-manual-activation
+    resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L177-L208'
+    title: 'Automatic and manual activation'
+  - id: generated-artifact-annotation
+    resource: 'https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L1-L7'
+    title: 'Generated artifact annotation'
 crossplane_release: v2.3.3
 documentation_series: v2.3
 source_repository: crossplane/crossplane
@@ -24,21 +46,21 @@ feature_state_basis: ConfigurationRevision serves only v1 in the selected releas
 # Overview
 
 `ConfigurationRevision` is a cluster-scoped `pkg.crossplane.io/v1` API, served and stored without deprecation metadata.
-Crossplane creates a revision when a [Configuration](configuration.md) changes, manages it, and directs users not to edit it directly.[1]
+Crossplane creates a revision when a [Configuration](configuration.md) changes, manages it, and directs users not to edit it directly.[^configurationrevision-identity-and-ownership]
 
 # Schema
 
 The required fields are `desiredState`, `image`, and `revision`.
 Desired state is `Active` or `Inactive`; the image is used for package installation, and the revision number participates in garbage collection according to the parent Configuration's history
-limit.[2] The Go revision types directly define the desired-state constants and provide the source types for the generated schema.[3]
+limit.[^required-revision-fields] The Go revision types directly define the desired-state constants and provide the source types for the generated schema.[^revision-state-source-types]
 
-Status exposes conditions, dependency counts, owned object references, applied image configurations, a potentially rewritten resolved image, and opaque capabilities.[4]
+Status exposes conditions, dependency counts, owned object references, applied image configurations, a potentially rewritten resolved image, and opaque capabilities.[^configurationrevision-status]
 
 # Behavior
 
 Installing a newer package version creates a new revision.
-One revision is active and determines the installed Composition and XRD resources; by default one inactive revision is retained.[5] Automatic activation selects the newest revision, while manual
-activation leaves activation under user control.[6]
+One revision is active and determines the installed Composition and XRD resources; by default one inactive revision is retained.[^revision-lifecycle-and-retention] Automatic activation selects the newest revision, while manual
+activation leaves activation under user control.[^automatic-and-manual-activation]
 
 The selected v2.3 documentation establishes that `Manual` prevents automatic
 activation, but it does not state the exact supported mutation or command for
@@ -52,15 +74,13 @@ supported workflow before relying on manual activation.
 The ConfigurationRevision API is Stable by repository default. Manual
 activation workflow behavior has no separate maturity statement, and the
 supported promotion procedure remains unresolved by the selected sources.
-The generated CRD reports `controller-gen` v0.19.0.[7] Desired state is defined by Go constants but not encoded as an OpenAPI enum.
+The generated CRD reports `controller-gen` v0.19.0.[^generated-artifact-annotation] Desired state is defined by Go constants but not encoded as an OpenAPI enum.
 No rollback-specific field or status exists, so this page does not claim a rollback procedure. The exact manual-promotion action is unresolved by the selected official documentation.
 
-# Citations
-
-[1] [ConfigurationRevision identity and ownership](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L7-L53)
-[2] [Required revision fields](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L91-L154)
-[3] [Revision state source types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/pkg/v1/revision_types.go#L25-L114)
-[4] [ConfigurationRevision status](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L155-L275)
-[5] [Revision lifecycle and retention](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L102-L142)
-[6] [Automatic and manual activation](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L177-L208)
-[7] [Generated artifact annotation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L1-L7)
+[^configurationrevision-identity-and-ownership]: [ConfigurationRevision identity and ownership](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L7-L53)
+[^required-revision-fields]: [Required revision fields](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L91-L154)
+[^revision-state-source-types]: [Revision state source types](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/apis/pkg/v1/revision_types.go#L25-L114)
+[^configurationrevision-status]: [ConfigurationRevision status](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L155-L275)
+[^revision-lifecycle-and-retention]: [Revision lifecycle and retention](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L102-L142)
+[^automatic-and-manual-activation]: [Automatic and manual activation](https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/packages/configurations.md#L177-L208)
+[^generated-artifact-annotation]: [Generated artifact annotation](https://github.com/crossplane/crossplane/blob/09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d/cluster/crds/pkg.crossplane.io_configurationrevisions.yaml#L1-L7)

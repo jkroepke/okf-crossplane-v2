@@ -1,5 +1,19 @@
 version: 1
 sources:
+  okf-spec-v0.2:
+    repository: GoogleCloudPlatform/knowledge-catalog
+    branch: main
+    commit: 8e389230b1056946cbf98825da29ec75e5748b73
+    source_path: okf/SPEC.md
+    selected_by: user-requested OKF v0.2 migration
+    resolved_at: 2026-08-20
+  okf-ingest-v0.11.0:
+    repository: travisjakel/okf-ingest
+    version: 0.11.0
+    commit: f3b58994e54870dde37b2d42a7bff1c0ddbe17b0
+    source_path: py/okf/okf.py
+    selected_by: OKF v0.2 validation support
+    resolved_at: 2026-08-20
   upbound-docs:
     repository: upbound/docs
     commit: 889d144d40620e05129a935824c592aece77657a

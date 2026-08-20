@@ -4,7 +4,7 @@ title: Crossplane v2 Composition developer route
 description: A routing guide for designing, implementing, testing, and packaging a Crossplane v2 Composition.
 resource: https://docs.crossplane.io/v2.3/composition/compositions/
 tags: [crossplane, composition, composition-authoring, development]
-timestamp: 2026-07-18T00:00:00Z
+generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
 crossplane_release: v2.3.3
 documentation_series: v2.3
 feature_state: Not stated by selected sources
