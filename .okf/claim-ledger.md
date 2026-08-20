@@ -5,6 +5,36 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Custom-resource gate CRD cache schema stripping
+
+Selected crossplane-runtime `v2.4.0` at
+`71f319796d597c2c6cf004cc4bf5f44011a5aeaa`; comparison baseline `v2.3.3`
+at `fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827`. The release histories
+diverge but retain common merge base
+`1ed37b54bfd85825ea7a739d6295c60369e31533`; availability was established
+from the exact base and head states. Researched 2026-08-19. Primary
+implementation evidence only; Claims, deprecated XRD v1, and legacy v1 XR
+semantics were excluded. No source text was copied or adapted.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| sdk/crd-cache-schema-stripping | `TransformStripCRDSchema` is an exported controller-runtime cache transform, and its source shows it configured in `cache.Options.ByObject` for `CustomResourceDefinition` objects. | API | primary | direct | Not stated by selected sources; this is an unlabelled non-API Go helper. [API and cache configuration](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache.go#L23-L43) |
+| sdk/crd-cache-schema-stripping | For CRDs, the transform nils every version schema and managed fields, deletes only the last-applied annotation, mutates and returns the same pointer, and preserves other annotations; non-CRDs pass through unchanged. | behavior | primary | corroborated | Not stated by selected sources; [implementation](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache.go#L43-L57) and [tests](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache_test.go#L43-L235) |
+| sdk/crd-cache-schema-stripping | The transform retains the CRD group, kind, version names, served flags, and Established status condition used by the custom-resources gate reconciler. | behavior | primary | corroborated | Not stated by selected sources; [reconciler reads](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/reconciler.go#L39-L85) and [transform tests](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache_test.go#L85-L112) |
+| sdk/crd-cache-schema-stripping | The helper is opt-in: `customresourcesgate.Setup` registers the controller but does not configure the manager cache. | behavior | primary | direct | Not stated by selected sources; [cache configuration example](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache.go#L23-L42) and [setup](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/setup.go#L30-L45) |
+| sdk/crd-cache-schema-stripping | A shared cache using the transform cannot supply schemas, managed fields, or the removed annotation to another reader; use immutable provider CRD artifacts rather than transformed cache objects for schema inspection. | authoring guidance | primary | inferred from direct transformation behavior | Not stated by selected sources; [removed fields](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/pkg/reconciler/customresourcesgate/cache.go#L43-L57) |
+| sdk/crd-cache-schema-stripping | The helper is absent at the bounded v2.3.3 baseline and present at v2.4.0; a stable tag establishes release availability, not feature maturity. | release history | primary | direct | Not stated by selected sources; [immutable release comparison](https://github.com/crossplane/crossplane-runtime/compare/fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827...71f319796d597c2c6cf004cc4bf5f44011a5aeaa) |
+
+### Limitations and unresolved evidence
+
+- The selected source does not quantify memory savings or recommend the
+  transform for every controller.
+- No selected source documents or tests typed-nil CRD input behavior.
+- No third-party or historical-design evidence was used. The repository is
+  [Apache-2.0 licensed](https://github.com/crossplane/crossplane-runtime/blob/71f319796d597c2c6cf004cc4bf5f44011a5aeaa/LICENSE#L1-L16),
+  and the catalog summarizes and cites without copying or adapting source
+  material.
+
 ## Composed-resource identity and replacement
 
 Selected Core release: `v2.3.3` at `09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d`; matching documentation series `v2.3` at `f1315464e35d40d25a28e4c15b6725b0e21adf91`; selected crossplane-runtime `v2.3.3` at `fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827`; supporting Kubernetes `v1.35.0` at `66452049f3d692768c39c797b21b793dce80314e`. Researched 2026-07-16. Claims, deprecated XRD v1, legacy v1 XR semantics, CLI material, design documents, and project history were excluded. No source text was copied or adapted.

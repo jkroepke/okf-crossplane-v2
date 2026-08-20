@@ -24,6 +24,10 @@ okf_version: "0.1"
 
 * [Crossplane Providers](providers/index.md) - Provider implementation families, selection boundaries, and release-pinned package revision behavior.
 
+# SDKs
+
+* [Crossplane SDKs](sdk/index.md) - Release-pinned development guidance for Crossplane runtime and SDK helpers.
+
 # Development tools
 
 * [Crossplane development tools](tools/index.md) - Test and authoring tools for Crossplane projects.
