@@ -1,0 +1,37 @@
+{
+  "name": "okf-crossplane-v2",
+  "version": "0.1.0",
+  "description": "Curated Crossplane v2 knowledge and read-only MCP tools",
+  "author": {
+    "name": "Jan-Otto Kröpke",
+    "email": "mail@jkroepke.de",
+    "url": "https://github.com/jkroepke"
+  },
+  "homepage": "https://github.com/jkroepke/okf-crossplane-v2",
+  "repository": "https://github.com/jkroepke/okf-crossplane-v2",
+  "license": "Apache-2.0",
+  "keywords": [
+    "crossplane",
+    "crossplane-v2",
+    "okf",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Crossplane v2 OKF",
+    "shortDescription": "Ground Crossplane v2 work in curated knowledge.",
+    "longDescription": "Adds a Crossplane v2 guidance skill and read-only MCP tools backed by the Open Knowledge Format catalog.",
+    "developerName": "Jan-Otto Kröpke",
+    "category": "Developer Tools",
+    "capabilities": [
+      "Read"
+    ],
+    "websiteURL": "https://github.com/jkroepke/okf-crossplane-v2",
+    "defaultPrompt": [
+      "Explain a Crossplane v2 concept using the curated catalog.",
+      "Help me develop a Crossplane v2 Composition.",
+      "Find the right Crossplane provider resource and version."
+    ]
+  }
+}
