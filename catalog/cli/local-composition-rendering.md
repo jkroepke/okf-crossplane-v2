@@ -4,7 +4,7 @@ title: Render a Composition locally
 description: Use the Crossplane CLI to execute a Pipeline Composition and its Functions locally against an example XR.
 resource: https://github.com/crossplane/cli
 tags: [crossplane, cli, composition, rendering, testing]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-08-20T23:35:21Z" }
 sources:
   - id: cli-render-behavior-output-and-docker-guidance
     resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L1-L35'
@@ -51,6 +51,9 @@ sources:
   - id: standalone-file-based-render-requires-the-functions-argument
     resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413'
     title: 'Standalone file-based render requires the Functions argument'
+  - id: project-mode-render-discovers-functions
+    resource: 'https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L936'
+    title: 'Project-mode render discovers and builds Functions'
 source_repository: crossplane/cli
 source_commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
 source_paths:
@@ -61,6 +64,10 @@ source_paths:
   - cmd/crossplane/validate/help/validate.md
   - pkg/validate/validate.go
 supporting_sources:
+  - repository: crossplane/docs
+    commit: f51137d2f8e92a167bb580be528c78b879ed406d
+    paths:
+      - content/cli/v2.4/get-started/get-started-with-control-plane-projects.md
   - repository: CustomResourceDefinition/catalog
     commit: 0584c9f7e6eaef8367cd65e59266d8ad49764f0c
     paths:
@@ -106,6 +113,11 @@ Outside a Crossplane Project, the Functions input is required. It may be a
 multi-document YAML file or a directory of YAML files. A Functions file is a
 CLI input boundary: do not put a Provider, ProviderConfig,
 ManagedResourceActivationPolicy, Composition, or XR in it.[^functions-only-loader-validation][^standalone-file-based-render-requires-the-functions-argument]
+
+For project-managed rendering, first follow the catalog's
+[control plane project opt-in](/cli/control-plane-projects.md). In a project
+directory, the CLI can discover and build embedded Functions instead of taking
+the standalone Functions manifest described here.[^project-mode-render-discovers-functions]
 
 ## Strict Functions-only rule
 
@@ -236,3 +248,4 @@ not change the documented v2.4.0 behavior.[^pr-148-change-validation-image-defau
 [^crd-catalog-definition-files-and-definition-examples]: [CRD Catalog definition files and definition examples](https://github.com/CustomResourceDefinition/catalog/blob/0584c9f7e6eaef8367cd65e59266d8ad49764f0c/README.md#L20-L38)
 [^cli-issue-195-built-in-secret-missing-definition-report]: [CLI issue #195: built-in Secret missing-definition report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
 [^standalone-file-based-render-requires-the-functions-argument]: [Standalone file-based render requires the Functions argument](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)
+[^project-mode-render-discovers-functions]: [Project-mode render discovers and builds Functions](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L936)

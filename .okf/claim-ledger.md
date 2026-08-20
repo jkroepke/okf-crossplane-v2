@@ -5,6 +5,33 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Optional Crossplane control plane projects for new Compositions
+
+Reused the existing `crossplane-docs-v2.4` lock at
+`f51137d2f8e92a167bb580be528c78b879ed406d` and the existing
+`crossplane-cli` v2.4.0 lock at
+`ef9b974770a45e085aacee3b2cdda6284ab6cf51`; neither source identity was
+advanced. The official CLI documentation is the authority for the documented
+workflow and explicit Beta state. CLI source is used only to establish the
+project metadata boundary. Claims, deprecated XRD v1, legacy v1 XR semantics,
+historical design, and project history were excluded. No source text or
+examples were copied or adapted.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| cli/control-plane-projects | The `crossplane project` command group is explicitly Beta and may change in a future release. | documented-guidance | official-documentation | direct | Beta; [project command lifecycle](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/command-reference.md#L1095-L1103) |
+| cli/control-plane-projects | A control plane project groups API definitions, Compositions, embedded Functions, examples, and `crossplane-project.yaml`; `project init` creates the standard directories. | documented-guidance | official-documentation | direct | Beta project workflow; [project contents](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L91-L145), [initialization](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/command-reference.md#L1184-L1238) |
+| cli/control-plane-projects | The documented route can generate an XRD from an example XR or SimpleSchema, generate a Composition, add dependencies, and scaffold an embedded Function. | documented-guidance | official-documentation | direct | Beta because the route uses the Beta project capability; [XRD generation](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L162-L317), [Composition and Function workflow](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L323-L424) |
+| cli/control-plane-projects | In a project directory, local Composition rendering discovers and builds embedded Functions without the standalone Functions manifest argument. | documented-guidance | official-documentation | direct | Beta project workflow; [project-mode rendering](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L1032) |
+| cli/control-plane-projects | `crossplane project run` creates a KIND development control plane and local registry, builds and pushes embedded Function and Configuration packages, installs the Configuration, and selects that cluster in kubectl. | documented-guidance | official-documentation | direct | Beta project workflow; [local project run](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1034-L1058) |
+| cli/control-plane-projects | Project build and push provide the documented route to package a project for an existing Crossplane cluster. | documented-guidance | official-documentation | direct | Beta project workflow; [build and push](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1105-L1128) |
+| cli/control-plane-projects | The Project metadata type is not a Kubernetes resource; it describes a buildable Configuration and its repository, dependencies, Functions, paths, architectures, and schema generation. | API | primary | direct | The containing project command workflow is explicitly Beta; [Project API](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120), [project paths](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L150-L171) |
+
+The instruction to ask before wrapping a new Composition is a user-requested
+catalog authoring policy. It is intentionally labelled as such and is not
+attributed to Crossplane documentation. Project mode remains opt-in; the
+standalone manifest route remains available.
+
 ## Provider development SDK from provider-template
 
 Selected the user-requested `crossplane/provider-template` `main` snapshot at

@@ -4,11 +4,27 @@ title: Crossplane v2 Composition developer route
 description: A routing guide for designing, implementing, testing, and packaging a Crossplane v2 Composition.
 resource: https://docs.crossplane.io/v2.3/composition/compositions/
 tags: [crossplane, composition, composition-authoring, development]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-08-20T23:35:21Z" }
 crossplane_release: v2.3.3
 documentation_series: v2.3
 feature_state: Not stated by selected sources
 ---
+
+# Ask about the project wrapper first
+
+When a user requests a new Composition or a new Composition-backed API and has
+not already chosen a repository structure, ask:
+
+> Would you like this wrapped as a Crossplane control plane project (CLI Beta),
+> or should I create standalone Composition manifests?
+
+Treat the project wrapper as an explicit opt-in. Do not scaffold or migrate to
+project mode unless the user chooses it. When the user opts in, follow the
+[control plane project workflow](cli/control-plane-projects.md). When the user
+chooses standalone manifests, use the
+[standalone manifest layout](core/composition-project-layout.md).
+
+This question is a catalog authoring policy, not a Crossplane requirement.
 
 # Use this as a route, not a checklist to stop reading
 
