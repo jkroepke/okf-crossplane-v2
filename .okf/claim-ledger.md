@@ -5,6 +5,41 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## function-kro v0.3.0 preview
+
+The user explicitly selected function-kro `v0.3.0`, a GitHub prerelease, at
+`a0b4c088bd950cb407901d01ee29263e6d54d639`. Its `go.mod` selects
+`github.com/kubernetes-sigs/kro v0.9.2`; the annotated KRO tag resolves to
+`22f5645777c86ebd40b6143f248549f1dbe2923f`, whose `website/docs` provide the
+version-matched supporting documentation. Researched 2026-08-21. Claims,
+claim references, deprecated XRD v1, and legacy v1 XR semantics were excluded.
+No source text or examples were copied or adapted.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-kro/package | Package metadata declares a Crossplane Function named `function-kro`; the README places it in a Composition pipeline with a `ResourceGraph` input. | API and documented-guidance | primary | direct | Package maturity is Not stated by selected sources; explicit preview selection is source scope, not a maturity label. [metadata](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/package/crossplane.yaml#L2-L6), [pipeline](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/README.md#L20-L65) |
+| functions/function-kro/package | The selected preview directly depends on KRO v0.9.2; KRO semantics are sourced only from that tag's peeled commit. | API | primary and supporting | direct | Not stated by selected sources; [function dependency](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/go.mod#L5-L14), [version-matched KRO docs](https://github.com/kubernetes-sigs/kro/tree/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs) |
+| functions/function-kro/input | `ResourceGraph` is a non-installed KRM-like Function input at `kro.fn.crossplane.io/v1alpha1`; its optional fields are `status` and `resources`. | API | primary | direct | Alpha, from the served `v1alpha1` input API. [type](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/input/v1alpha1/input.go#L1-L30) |
+| functions/function-kro/input | Each resource has an ID and exactly one of `template` or `externalRef`; the schema also exposes `forEach`, `includeWhen`, and `readyWhen`. | API | primary | direct | Alpha input API. [packaged schema](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/package/input/kro.fn.crossplane.io_resourcegraphs.yaml#L41-L203) |
+| functions/function-kro/input | `${...}` expressions are CEL; whole-field expressions preserve their result type while embedded string expressions require strings. | documented-guidance | supporting | direct | Pattern is Alpha because it requires the function's Alpha input API. [KRO v0.9.2 CEL syntax](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/docs/concepts/rgd/03-cel-expressions.md#L34-L114) |
+| functions/function-kro/graph-evaluation | The function requests schemas for the XR and graph GVKs, uses `required_schemas` when advertised, otherwise requests CRDs, and waits without a fatal result while schemas are unavailable. | behavior | primary | direct | Alpha, inherited from the required ResourceGraph input. [request path](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L81-L102), [schema paths](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L277-L375) |
+| functions/function-kro/graph-evaluation | CEL references infer graph dependencies; the function evaluates runtime nodes topologically and defers resources whose expression data is pending. | behavior and documented-guidance | primary and supporting | corroborated | Alpha, inherited from the required ResourceGraph input. [KRO dependency semantics](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/docs/concepts/rgd/04-dependencies-ordering.md#L5-L43), [desired evaluation](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L614-L689) |
+| functions/function-kro/graph-evaluation | External references are read-only and excluded from desired output; name and selector modes are mutually exclusive. | behavior and API | primary and supporting | corroborated | Alpha, inherited from the required ResourceGraph input. [function behavior](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L117-L173), [KRO v0.9.2 guidance](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/docs/concepts/rgd/02-resource-definitions/05-external-references.md#L5-L89) |
+| functions/function-kro/graph-evaluation | Single desired resources use their node ID; collection members use `{id}-{metadata.name}`. `readyWhen` sets explicit readiness; absent `readyWhen`, readiness remains unspecified for later functions. | behavior | primary | direct | Alpha, inherited from the required ResourceGraph input. [desired identity and readiness](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L651-L685) |
+| functions/function-kro/graph-evaluation | Desired XR output contains only resolved status paths declared by the ResourceGraph, limiting SSA ownership. | behavior | primary | direct | Alpha, inherited from the required ResourceGraph input. [status projection](https://github.com/crossplane-contrib/function-kro/blob/a0b4c088bd950cb407901d01ee29263e6d54d639/fn.go#L692-L720) |
+
+### Limitations and source boundaries
+
+- The selected sources do not provide an immutable package image reference or
+  a package-installation command.
+- KRO controller installation, generated CRDs, GraphRevisions, permissions,
+  and controller lifecycle are not transferred to function-kro.
+- The KRO upstream `kro.run/v1alpha1` API is Alpha, but that state is not used
+  to label the function package. The function's own `kro.fn.crossplane.io/v1alpha1`
+  input independently establishes the Alpha ceiling for input-dependent patterns.
+- Both repositories are Apache-2.0 licensed; this catalog summarizes and cites
+  without copying source text or examples.
+
 ## Custom-resource gate CRD cache schema stripping
 
 Selected crossplane-runtime `v2.4.0` at
