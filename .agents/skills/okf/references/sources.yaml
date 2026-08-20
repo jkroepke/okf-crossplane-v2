@@ -200,6 +200,29 @@ primary_sources:
   - id: function-tag-manager
     repository: crossplane-contrib/function-tag-manager
     kind: function
+    audience: user
+    release_policy: discover-highest-stable-semver-tag
+    agent_set:
+      primary: okf-function-tag-manager-researcher
+    paths:
+      - README.md
+      - package/crossplane.yaml
+      - package/input/tag-manager.fn.crossplane.io_managedtags.yaml
+      - input
+      - fn.go
+      - fn_test.go
+      - filter.go
+      - filter_test.go
+      - filters
+      - tags.go
+      - tags_test.go
+      - main.go
+      - examples
+      - go.mod
+      - LICENSE
+    legacy_exclusions:
+      - examples requiring Claims or claim references
+      - examples requiring deprecated v1 XRD or legacy v1 XR semantics
 
 documentation_sources:
   - id: crossplane-docs
