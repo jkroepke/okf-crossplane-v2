@@ -36,6 +36,37 @@ primary_sources:
   - id: crossplane-tools
     repository: crossplane/crossplane-tools
     kind: development-tools
+  - id: provider-template
+    repository: crossplane/provider-template
+    kind: provider-development-template
+    audience: developer
+    revision_policy: pin-current-main-commit-at-research-time
+    agent: okf-crossplane-researcher
+    paths:
+      - README.md
+      - PROVIDER_CHECKLIST.md
+      - .gitmodules
+      - Makefile
+      - go.mod
+      - apis
+      - internal/controller
+      - cmd/provider
+      - hack/helpers
+      - examples
+      - package
+      - cluster/local/integration_tests.sh
+      - LICENSE
+    version_dependencies:
+      crossplane-runtime: exact-version-from-go-mod
+      crossplane-build: exact-submodule-commit
+      crossplane-tools: exact-version-from-go-mod
+    supporting_sources:
+      - crossplane-build
+      - crossplane-tools
+    legacy_exclusions:
+      - Claims and claim references
+      - deprecated XRD v1 and legacy v1 XR semantics
+      - deprecated generator modes not selected by the template's modern APIs
   - id: function-sdk-go
     repository: crossplane/function-sdk-go
     kind: function-sdk
@@ -271,6 +302,19 @@ historical_design_sources:
       - general feature inventory
 
 supporting_sources:
+  - id: crossplane-build
+    repository: crossplane/build
+    kind: shared-build-tooling
+    authority: supporting
+    version_policy: exact-submodule-commit-from-selected-provider-template
+    paths:
+      - makelib/common.mk
+      - makelib/golang.mk
+      - makelib/k8s_tools.mk
+      - makelib/imagelight.mk
+      - makelib/xpkg.mk
+      - LICENSE
+    usage: version-matched build, test, image, and xpkg behavior invoked by provider-template
   - id: function-kro-kro
     repository: kubernetes-sigs/kro
     kind: resource-graph-orchestrator-documentation

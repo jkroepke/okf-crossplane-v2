@@ -65,6 +65,42 @@ sources:
     commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
     selected_by: crossplane/v2.3.3
     resolved_at: 2026-07-14
+  crossplane-v2.4.0:
+    repository: crossplane/crossplane
+    tag: v2.4.0
+    commit: 61fa450c0c14a75bf5632872bd4a5b6945ec5a26
+    selected_by: current stable release for provider-development orientation
+    resolved_at: 2026-08-21
+  crossplane-docs-v2.4:
+    repository: crossplane/docs
+    series: v2.4
+    commit: f51137d2f8e92a167bb580be528c78b879ed406d
+    selected_by: crossplane/v2.4.0 provider documentation
+    resolved_at: 2026-08-21
+  provider-template:
+    repository: crossplane/provider-template
+    branch: main
+    commit: a74b386da0ec848036e16ff0a207c5a16bc9827f
+    revision: immutable-main-snapshot
+    selected_by: user-requested provider-development SDK starting point
+    resolved_at: 2026-08-21
+  crossplane-runtime-provider-template:
+    repository: crossplane/crossplane-runtime
+    tag: v2.3.3
+    commit: fcf6aaa11ef4b56b9a8b1b91a446e0f6b8fc2827
+    selected_by: provider-template@a74b386da0ec848036e16ff0a207c5a16bc9827f go.mod
+    resolved_at: 2026-08-21
+  crossplane-build-provider-template:
+    repository: crossplane/build
+    commit: b964dbe0ff0856a762f1a06fe554c647d22af7f0
+    selected_by: provider-template@a74b386da0ec848036e16ff0a207c5a16bc9827f build submodule
+    resolved_at: 2026-08-21
+  crossplane-tools-provider-template:
+    repository: crossplane/crossplane-tools
+    version: v0.0.0-20260715161912-60e57f817ad1
+    commit: 60e57f817ad1f80dcf052a940cf923fde56fab1f
+    selected_by: provider-template@a74b386da0ec848036e16ff0a207c5a16bc9827f go.mod
+    resolved_at: 2026-08-21
   crossplane-cli:
     repository: crossplane/cli
     tag: v2.4.0
