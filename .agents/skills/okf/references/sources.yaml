@@ -256,6 +256,27 @@ primary_sources:
       - examples requiring deprecated v1 XRD or legacy v1 XR semantics
 
 documentation_sources:
+  - id: crossplane-cli-docs
+    repository: crossplane/docs
+    kind: official-documentation
+    domain: crossplane-cli
+    core_scope: false
+    agent: okf-crossplane-researcher
+    revision_policy: reuse-existing-lock
+    lock_id: crossplane-docs-v2.4
+    paths:
+      - content/cli/v2.4/get-started/get-started-with-control-plane-projects.md
+      - content/cli/v2.4/command-reference.md
+    focus:
+      - control-plane-projects
+      - composition-authoring
+      - local-development
+      - package-build-and-push
+    legacy_exclusions:
+      - Claims and claim workflows
+      - deprecated CompositeResourceDefinition v1 schema
+      - legacy v1 composite-resource semantics
+    version_scope: cli-v2.4
   - id: crossplane-docs
     repository: crossplane/docs
     kind: official-documentation

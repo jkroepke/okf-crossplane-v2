@@ -1,9 +1,9 @@
 ---
 type: Crossplane Development Guide
-title: Reference layout for a Composition project
-description: A small manifest layout that keeps Composition authoring inputs distinct from the CLI Functions-only render input.
+title: Reference layout for standalone Composition manifests
+description: A small standalone manifest layout that keeps Composition authoring inputs distinct from the CLI Functions-only render input.
 tags: [crossplane, composition, authoring, cli, project-layout]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-08-20T23:35:21Z" }
 sources:
   - id: pipeline-composition-and-xr-gvk-validation
     resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L118-L158'
@@ -51,10 +51,18 @@ supporting_sources:
 feature_state: Not stated by selected sources
 ---
 
+# Scope boundary
+
+This is a catalog convention for standalone manifests, not the Crossplane CLI
+control plane project structure. Use it when the requester chooses standalone
+authoring. If the requester opts in to a project wrapper, use the
+[control plane project workflow](/cli/control-plane-projects.md) instead.
+
 # Reference layout
 
-Use this deliberately small layout only when the Composition project contains
-no files and the user has not provided other layout instructions:
+Use this deliberately small layout only when the standalone Composition
+workspace contains no files and the user has not provided other layout
+instructions:
 
 ```text
 .
