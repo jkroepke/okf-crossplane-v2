@@ -22,7 +22,9 @@ Check exactly these configured components unless the requester narrows the scope
 | Component ID | Repository | Current identity in `.okf/sources.lock.yaml` | Latest stable identity | Researcher |
 | --- | --- | --- | --- | --- |
 | `crossplane-core` | `crossplane/crossplane` | `sources.crossplane.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-crossplane-core-update-researcher` |
+| `crossplane-cli` | `crossplane/cli` | `sources.crossplane-cli.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-crossplane-cli-update-researcher` |
 | `crossplane-runtime` | `crossplane/crossplane-runtime` | `sources.crossplane-runtime.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-crossplane-runtime-update-researcher` |
+| `xprin` | `crossplane-contrib/xprin` | `sources.xprin.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-xprin-update-researcher` |
 | `function-sequencer` | `crossplane-contrib/function-sequencer` | `sources.function-sequencer.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-function-sequencer-update-researcher` |
 | `function-go-templating` | `crossplane-contrib/function-go-templating` | `sources.function-go-templating.tag` and `commit` | highest stable semantic-version tag and its full commit | `okf-function-go-templating-update-researcher` |
 | `crossplane-docs` | `crossplane/docs` | `sources.crossplane-docs.series` and `commit` | documentation series matching the latest stable Crossplane major.minor plus the newest commit touching `content/v<major>.<minor>/**` | `okf-crossplane-docs-update-researcher` |
@@ -87,7 +89,7 @@ Researchers must use only the assigned repository and comparison range, except w
 Report a candidate only when the stable comparison adds a user-facing capability that could improve this OKF bundle, such as:
 
 - a new public API, resource, field, command, interface, helper, template function, input option, or supported workflow
-- a new composition, reconciliation, readiness, dependency, rendering, provider-development, or documentation capability
+- a new composition, reconciliation, readiness, dependency, rendering, testing, assertion, provider-development, or documentation capability
 - a previously prerelease capability that becomes available in a stable release
 - a new official stable-series guide that explains a released capability not already represented in the catalog
 

@@ -38,12 +38,14 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 - Use `okf-crossplane-core-docs-researcher` for current stable Crossplane Core documentation.
 - Use `okf-crossplane-core-code-researcher` for current stable Crossplane Core CRDs under `cluster/crds`.
 - Use `okf-crossplane-core-design-researcher` only as a last-resort historical-context source for a specific Core feature already identified from current stable documentation or implementation evidence. Never use it for general feature discovery.
+- Use `okf-crossplane-cli-update-researcher` only for stable-release CLI update discovery, including new commands, flags, project workflows, rendering, packaging, and validation behavior.
+- Use `okf-xprin-update-researcher` only for stable-release xprin update discovery, including new assertion, suite, rendering, and test-runner capabilities.
 - Use `okf-function-go-templating-researcher` for user-facing `function-go-templating` installation, input schema, examples, and additional template functions.
 - Use `okf-function-go-templating-sprig-researcher` for the exact Sprig version exposed by the selected stable `function-go-templating` release.
 - Use `okf-function-go-templating-project-history-researcher` for human-authored issues and pull requests related to that function.
 - Use `okf-function-sdk-go-researcher` for developer-facing `crossplane/function-sdk-go` APIs, helpers, examples, and testing utilities.
 - Use `okf-function-tag-manager-researcher` for user-facing `crossplane-contrib/function-tag-manager` installation, input schema, tag-management behavior, supported-resource filters, and examples.
-- Use the matching `*-update-researcher` only from the explicit `$okf-updates` workflow and only after its component identity changes.
+- Use every matching `*-update-researcher` only from the explicit `$okf-updates` workflow and only after its component identity changes.
 - Every composition function must have its own canonical instruction files and matching Codex and Pi adapters before its OKF concepts are generated.
 - Use the generic `okf-crossplane-researcher` only for domains without a dedicated agent, such as CLI, runtime, tools, native providers, and testing tools.
 - The Crossplane CLI is a separate catalog domain and is not part of Crossplane Core.
