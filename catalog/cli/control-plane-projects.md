@@ -4,7 +4,7 @@ title: Opt in to a Crossplane control plane project
 description: Choose the Beta CLI project wrapper explicitly before scaffolding, locally running, and packaging a new Composition-backed API.
 resource: https://docs.crossplane.io/cli/latest/get-started/get-started-with-control-plane-projects/
 tags: [crossplane, cli, composition, project, authoring, packaging]
-generated: { by: "process:crossplane-okf-generation", at: "2026-08-20T23:35:21Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-09-05T14:34:46Z" }
 sources:
   - id: project-command-beta-state
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/command-reference.md#L1095-L1103
@@ -36,6 +36,9 @@ sources:
   - id: project-api-boundary
     resource: https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120
     title: Project metadata API boundary
+  - id: project-metadata-api-version
+    resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L127-L141
+    title: Project metadata API version
 documentation_series: cli-v2.4
 source_repository: crossplane/docs
 source_commit: f51137d2f8e92a167bb580be528c78b879ed406d
@@ -48,7 +51,9 @@ supporting_sources:
     paths:
       - apis/dev/v1alpha1/project_types.go
 feature_state: Beta
-feature_state_basis: The locked CLI v2.4 command reference explicitly labels the crossplane project command group Beta and warns that Beta features may change.
+feature_state_basis: The locked CLI v2.4 command reference explicitly labels the crossplane project command workflow Beta and warns that Beta features may change.
+project_metadata_api_feature_state: Alpha
+project_metadata_api_feature_state_basis: The project file uses dev.crossplane.io/v1alpha1; this state applies only to the Project metadata API.
 ---
 
 # Agent opt-in gate
@@ -111,8 +116,10 @@ authoring lifecycle:
 
 - Project commands are Beta; do not hide that lifecycle state when offering
   the option.[^project-command-beta-state]
-- `crossplane-project.yaml` uses the CLI's Project metadata type. It describes
-  a buildable Configuration and its dependencies, Functions, paths,
+- `crossplane-project.yaml` uses the CLI's `dev.crossplane.io/v1alpha1`
+  Project metadata API, so that API is **Alpha** even though the surrounding
+  command workflow is Beta.[^project-metadata-api-version] The metadata
+  describes a buildable Configuration and its dependencies, Functions, paths,
   architectures, and schema generation; it is not a Kubernetes resource and
   has no status.[^project-api-boundary]
 - Local project execution requires a Docker-compatible runtime because the
@@ -136,3 +143,4 @@ authoring lifecycle:
 [^project-build-and-push-workflow]: [Project build and push workflow](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1105-L1128)
 [^xrd-generation-boundary]: [Example-XR XRD generation boundary](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L235-L238)
 [^project-api-boundary]: [Project metadata API boundary](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120)
+[^project-metadata-api-version]: [Project metadata API version](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L127-L141)
