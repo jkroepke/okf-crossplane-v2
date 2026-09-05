@@ -14,6 +14,17 @@ For every Crossplane v2 ecosystem question, use the OKF MCP tools before answeri
 3. For building, authoring, designing, or substantially reviewing a Crossplane v2 Composition, retrieve **Develop a Crossplane v2 Composition** (`composition-developer-starter`) as the primary routing guide. Follow its links to required API, provider, function, security, readiness, identity, testing, and packaging concepts.
 4. Use `okf_search` and `okf_get_concept` for exact concepts or API details; use `okf_related` or `okf_impact` only when relationships matter.
 
+Before creating files for a new Composition or Composition-backed API, ask the
+requester this question unless they already selected a structure:
+
+> Would you like this wrapped as a Crossplane control plane project (CLI Beta),
+> or should I create standalone Composition manifests?
+
+Treat the project wrapper as an explicit opt-in. Do not initialize a project,
+add `crossplane-project.yaml`, or reorganize existing manifests unless the
+requester chooses project mode. This is an agent authoring policy, not a
+Crossplane requirement.
+
 The Composition developer starter is a navigation route, not provider-specific evidence. Use the provider workflow below for concrete managed-resource schemas, examples, and upstream Terraform documentation.
 
 ## Provider-family packages

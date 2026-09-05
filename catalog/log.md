@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-09-05
+* **Correction**: Distinguished the Beta `crossplane project` command workflow from the Alpha `dev.crossplane.io/v1alpha1` Project metadata API, and made the project-versus-standalone question explicit in the agent-facing Crossplane skill.
+
 ## 2026-08-21
 * **Creation**: Added an explicit opt-in decision for wrapping new Compositions as Beta Crossplane control plane projects, while preserving and clarifying the standalone manifest route.
 * **Creation**: Added a provider-development SDK route from an immutable provider-template snapshot through modern managed-resource APIs, ProviderConfig and credentials, typed reconciliation, generation, testing, and xpkg packaging.

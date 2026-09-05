@@ -15,7 +15,9 @@ advanced. The official CLI documentation is the authority for the documented
 workflow and explicit Beta state. CLI source is used only to establish the
 project metadata boundary. Claims, deprecated XRD v1, legacy v1 XR semantics,
 historical design, and project history were excluded. No source text or
-examples were copied or adapted.
+examples were copied or adapted. Revalidated 2026-09-05: the Beta state applies
+to the command workflow, while the separate `dev.crossplane.io/v1alpha1`
+Project metadata API is Alpha.
 
 | Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
 |---|---|---|---|---|---|
@@ -25,7 +27,7 @@ examples were copied or adapted.
 | cli/control-plane-projects | In a project directory, local Composition rendering discovers and builds embedded Functions without the standalone Functions manifest argument. | documented-guidance | official-documentation | direct | Beta project workflow; [project-mode rendering](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L1032) |
 | cli/control-plane-projects | `crossplane project run` creates a KIND development control plane and local registry, builds and pushes embedded Function and Configuration packages, installs the Configuration, and selects that cluster in kubectl. | documented-guidance | official-documentation | direct | Beta project workflow; [local project run](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1034-L1058) |
 | cli/control-plane-projects | Project build and push provide the documented route to package a project for an existing Crossplane cluster. | documented-guidance | official-documentation | direct | Beta project workflow; [build and push](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1105-L1128) |
-| cli/control-plane-projects | The Project metadata type is not a Kubernetes resource; it describes a buildable Configuration and its repository, dependencies, Functions, paths, architectures, and schema generation. | API | primary | direct | The containing project command workflow is explicitly Beta; [Project API](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120), [project paths](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L150-L171) |
+| cli/control-plane-projects | The Project metadata type is not a Kubernetes resource; it describes a buildable Configuration and its repository, dependencies, Functions, paths, architectures, and schema generation. | API | primary | direct | Alpha for the Project metadata API because the project file uses `dev.crossplane.io/v1alpha1`; [Project API](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120), [project paths](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L150-L171), [documented API version](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L127-L141) |
 
 The instruction to ask before wrapping a new Composition is a user-requested
 catalog authoring policy. It is intentionally labelled as such and is not
