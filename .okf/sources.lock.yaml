@@ -22,9 +22,12 @@ sources:
     resolved_at: 2026-07-16
   crossplane:
     repository: crossplane/crossplane
-    tag: v2.3.3
-    commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
-    resolved_at: 2026-07-14
+    tag: v2.4.0
+    commit: 61fa450c0c14a75bf5632872bd4a5b6945ec5a26
+    previous_tag: v2.3.3
+    previous_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
+    selected_by: user-requested update-discovery checkpoint and provider-development orientation; no feature selected
+    resolved_at: 2026-09-05
   crossplane-v2.0.0:
     repository: crossplane/crossplane
     tag: v2.0.0
@@ -61,16 +64,10 @@ sources:
     resolved_at: 2026-07-14
   crossplane-docs:
     repository: crossplane/docs
-    series: v2.3
-    commit: f1315464e35d40d25a28e4c15b6725b0e21adf91
-    selected_by: crossplane/v2.3.3
-    resolved_at: 2026-07-14
-  crossplane-v2.4.0:
-    repository: crossplane/crossplane
-    tag: v2.4.0
-    commit: 61fa450c0c14a75bf5632872bd4a5b6945ec5a26
-    selected_by: current stable release for provider-development orientation
-    resolved_at: 2026-08-21
+    series: v2.4
+    commit: 1c17fdbf7fbadbb2399a40f86885deac0a35b867
+    selected_by: user-requested update-discovery checkpoint; no feature selected
+    resolved_at: 2026-09-05
   crossplane-docs-v2.4:
     repository: crossplane/docs
     series: v2.4
@@ -201,11 +198,12 @@ sources:
     resolved_at: 2026-08-21
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
-    tag: v0.12.2
-    commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
-    previous_tag: v0.12.1
-    previous_commit: 548ae34fd9c843f0747981894fb7fa0ff1ba47fa
-    resolved_at: 2026-07-14
+    tag: v0.12.4
+    commit: fe17e68927afd64046232f39a2376e87b45e2f58
+    previous_tag: v0.12.2
+    previous_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
+    selected_by: user-requested update-discovery checkpoint; no feature selected
+    resolved_at: 2026-09-05
   function-go-templating-pr-498:
     repository: crossplane-contrib/function-go-templating
     commit: fba11b570e75660b1ff52b05979ba805baae1a51
