@@ -1,6 +1,6 @@
 [tools]
 "pipx:okf-ingest" = "0.12.3"
-uv = "0.12.16"
+uv = "0.12.19"
 
 [tasks.lint]
 description = "Run all checks"
