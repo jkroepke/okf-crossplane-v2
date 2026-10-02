@@ -1,5 +1,5 @@
 [tools]
-"pipx:okf-ingest" = "0.12.3"
+"pipx:okf-ingest" = "0.13.0"
 uv = "0.12.19"
 
 [tasks.lint]
