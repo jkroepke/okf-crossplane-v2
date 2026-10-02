@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.14.*"
 
 [[package]]
@@ -107,7 +107,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "gitpython", specifier = ">=3.1.24" },
-    { name = "okf-mcp", specifier = "==0.5.0" },
+    { name = "okf-mcp", specifier = "==0.5.1" },
     { name = "pyyaml", specifier = ">=6.0" },
 ]
 
@@ -342,15 +342,15 @@ wheels = [
 
 [[package]]
 name = "okf-mcp"
-version = "0.5.0"
+version = "0.5.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "mcp" },
     { name = "okf-ingest" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/7b/5c/458ec778b78210c38a87c2fc9f6b5f2a25b14c7a23d286686dc85696726c/okf_mcp-0.5.0.tar.gz", hash = "sha256:70447cc3f0d499f65fa2667d9d115dfd3ee9f293059ddc3abbf1d3a7ce29e7ec", size = 16712, upload-time = "2026-09-17T18:31:20.292Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/17/41/6bfacb85373af79f78cfbfd673f49fccffc16e6f3612d3a4eb818b935c5a/okf_mcp-0.5.1.tar.gz", hash = "sha256:dd68c4562d83ad70ce7a3a5781dff59d97286e659b21a22c8ae38ebe782ca798", size = 16849, upload-time = "2026-09-22T19:53:24.438Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/aa/9f/57b386d2d9876afa64517608e22e6003f04a34c41983eb35d44cdf4c945a/okf_mcp-0.5.0-py3-none-any.whl", hash = "sha256:ab3491da4fc6af9aab8bbebc29197f8909aecd7961285b3925220417658d8aed", size = 14799, upload-time = "2026-09-17T18:31:19.404Z" },
+    { url = "https://files.pythonhosted.org/packages/11/59/aea584778e8ce58517d969c0d26c07f38e1b2bd96142c82681001061a80c/okf_mcp-0.5.1-py3-none-any.whl", hash = "sha256:3807e668b0a73b5061c2e74db41dc5e85f9f40372f973e8a1958dd33d1424e71", size = 14802, upload-time = "2026-09-22T19:53:22.971Z" },
 ]
 
 [[package]]
