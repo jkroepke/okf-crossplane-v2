@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>jkroepke/renovate-config"]
+  "extends": ["github>jkroepke/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Delay MCP Python updates so duckdb, pydantic-core and pyyaml can publish wheels for the new release; otherwise CI compiles them from source.",
+      "matchManagers": ["pep621"],
+      "matchDepNames": ["python"],
+      "minimumReleaseAge": "90 days"
+    }
+  ]
 }
