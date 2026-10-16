@@ -21,6 +21,30 @@ legacy.
 | functions/function-go-templating/patterns/manual-readiness | From v0.13.0 the ready annotation accepts exact `Unknown`, treated as `Unspecified`; the error text still lists three values. | behavior | primary | corroborated | Beta pattern ceiling unchanged; [alias](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258), [test](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1439-L1470) |
 | functions/function-go-templating/rendered-output | The alias applies to composed and composite resources. | behavior | primary | direct | Not stated by selected sources; [alias](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258), [composite apply](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L302-L305), [composed apply](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L377-L380) |
 
+## function-go-templating v0.13.0 getComposedConnectionDetails helper
+
+Selected update candidate `function-go-templating@v0.13.0:F01`. Advanced the
+`function-go-templating` lock from v0.12.4 (`fe17e68927afd64046232f39a2376e87b45e2f58`)
+to the highest stable tag v0.13.0 (`9b7ea49394a7cef38fe517d2b60f55d64c4c8511`). Commit
+`162e6052d98e71ce8b7d3d9bc55f740c33f49b66` (PR #566) is an ancestor of v0.13.0
+and is not contained in v0.12.6; containment was established with git ancestry
+because the GitHub API was unavailable at research time (2026-10-16). The
+template-functions reference was re-pinned to v0.13.0 after confirming that the
+other helpers are unchanged apart from moved line ranges and the condition type
+moving from crossplane-runtime `xpv1` to crossplane `apis/v2` `core/v2`. The
+upstream example's `functions.yaml` pins package v0.12.5, which does not contain
+the helper, and contains a stray cluster-scoped XR; it was summarized, not
+copied. The README section `v1 Composite Resources (Legacy)` was excluded.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-go-templating/template-functions | `getComposedConnectionDetails request name` reads `observed.resources[<name>].connectionDetails` and returns the map or `nil` when the resource or details are absent; dotted names work. | behavior | primary | direct | Not stated by selected sources; [lookup](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps.go#L144-L152), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps_test.go#L502-L589) |
+| functions/function-go-templating/template-functions | Returned values are base64-encoded strings. | behavior | primary | inferred | Not stated by selected sources; [protojson request conversion](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L432-L440), [test fixture](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps_test.go#L502-L589) |
+| functions/function-go-templating/template-functions | Connection details exist only in real observed state; `crossplane render` cannot simulate them. | documented-guidance | supporting | direct | Not stated by selected sources; [example notes](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/example/functions/getComposedConnectionDetails/README.md#L1-L18) |
+| functions/function-go-templating/template-functions | Indexing a nil result renders `<no value>` under default options. | behavior | primary | inferred | Not stated by selected sources; Go `text/template` semantics, labelled as inference |
+| functions/function-go-templating/connection-details | A top-level observed-resources nil check covers only the first reconciliation; a source resource can be observed before its connection details exist. | behavior | primary | inferred | Labelled inference from the observed-state flow; no selected source states it |
+| functions/function-go-templating/connection-details | From v0.13.0 the helper returns the same observed `connectionDetails` map; the Crossplane v2.3 guide predates it. | behavior | primary | direct | Beta input API unchanged; [lookup](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps.go#L144-L152) |
+
 ## Optional Crossplane control plane projects for new Compositions
 
 Reused the existing `crossplane-docs-v2.4` lock at
