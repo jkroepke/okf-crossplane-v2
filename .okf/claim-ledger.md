@@ -5,6 +5,21 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Crossplane CLI v2.5.0 xrd generate --replace
+
+Selected update candidate `crossplane-cli@v2.5.0:F03`. Advanced the
+`crossplane-cli` lock to v2.5.0 (`1acb525095a4e43c9a765954efa66a47667a432b`) and added the CLI v2.5 docs lock
+(`d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d`). Commit `b1c20a42a03f74bb0437eccb56d7ba999e8298f6` (PR #243) is an
+ancestor of v2.5.0 and not of v2.4.0 (git ancestry; GitHub API unavailable at
+research time, 2026-10-16). Loss of hand edits is an inference from the
+full-file write. No legacy material; nothing copied.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| cli/control-plane-projects | `xrd generate` writes `<plural>/definition.yaml` or `--path` in the APIs directory and refuses to overwrite without `--replace`. | behavior | primary | corroborated | Beta; [handling](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L129-L151), [tests](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L837-L933), [docs](https://github.com/crossplane/docs/blob/d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d/content/cli/v2.5/command-reference.md#L2755-L2823) |
+| cli/control-plane-projects | CLI v2.4.0 had no `--replace` and told users to delete the file or use `--path`. | release-history | primary | direct | Beta; [v2.4.0 flags without Replace](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/xrd/generate.go#L50-L55), [v2.4.0 error](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/xrd/generate.go#L131) |
+| cli/control-plane-projects | Replacing loses hand edits. | behavior | primary | inferred | Beta; [full write](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L129-L151) |
+
 ## Crossplane CLI v2.5.0 SimpleSchema customTypes
 
 Selected update candidate `crossplane-cli@v2.5.0:F02`. Advanced the
