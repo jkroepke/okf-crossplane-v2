@@ -4,7 +4,7 @@ title: Mark composed resources ready from observed state
 description: Set explicit composed-resource readiness from a condition or guarded field check in a Go template.
 resource: https://github.com/crossplane-contrib/function-go-templating
 tags: [crossplane, composition-function, readiness, go-template]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T20:00:00Z" }
 sources:
   - id: readiness-value-parsing
     resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/fn.go#L203-L218'
@@ -24,6 +24,12 @@ sources:
   - id: function-auto-ready-cel-activation-contains-the-observed-object
     resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71'
     title: 'function-auto-ready CEL activation contains the observed object'
+  - id: v0-13-0-unknown-ready-alias
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258'
+    title: 'v0.13.0 Unknown ready-annotation alias'
+  - id: v0-13-0-unknown-alias-test
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1439-L1470'
+    title: 'v0.13.0 CompositeResourceReadyUnknownAlias test'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -41,8 +47,12 @@ feature_state_basis: The containing GoTemplate input serves v1beta1, which sets 
 # Overview
 
 A Go template can set `gotemplating.fn.crossplane.io/ready` on a complete
-rendered composed resource. The annotation accepts exactly `"True"`, `"False"`,
-or `"Unspecified"`; another value produces a fatal function result. The
+rendered composed resource. In v0.12.2 the annotation accepts exactly `"True"`,
+`"False"`, or `"Unspecified"`; another value produces a fatal function result.
+From v0.13.0 it also accepts `"Unknown"`, an exact case-sensitive match treated
+as `"Unspecified"`, so a Kubernetes condition status from `getResourceCondition`
+can be passed through unchanged. The fatal error text still lists only `True`,
+`False`, or `Unspecified`.[^v0-13-0-unknown-ready-alias][^v0-13-0-unknown-alias-test] The
 function copies the parsed value to the desired-resource readiness field and
 removes the control annotation from the Kubernetes manifest.[^readiness-value-parsing][^named-resource-readiness-handling-and-annotation-removal]
 
@@ -114,6 +124,9 @@ matched observed composed object, so CEL does not directly evaluate a separate
 
 - Explicit `False` is authoritative to a later auto-ready step. Use
   `Unspecified` only when a later step should decide readiness.
+- Passing a condition status straight through on v0.13.0 or later turns an
+  absent or `Unknown` condition into `Unspecified`, which hands the decision to
+  a later step instead of forcing not ready.[^getresourcecondition-behavior-and-bundled-example][^v0-13-0-unknown-ready-alias]
 - Guard field paths that may be absent during initial reconciliation.
 - The examples are adapted integration fragments under the source project's
   Apache-2.0 license; replace abbreviated specs with complete desired objects.
@@ -124,3 +137,5 @@ matched observed composed object, so CEL does not directly evaluate a separate
 [^getcomposedresource-behavior]: [`getComposedResource` behavior](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/function_maps.go#L124-L132)
 [^function-auto-ready-preserves-explicit-readiness]: [function-auto-ready preserves explicit readiness](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
 [^function-auto-ready-cel-activation-contains-the-observed-object]: [function-auto-ready CEL activation contains the observed object](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/cel/resolver.go#L30-L71)
+[^v0-13-0-unknown-ready-alias]: [v0.13.0 `Unknown` ready-annotation alias](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258)
+[^v0-13-0-unknown-alias-test]: [v0.13.0 `CompositeResourceReadyUnknownAlias` test](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1439-L1470)

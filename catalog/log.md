@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Update**: Recorded that function-go-templating v0.13.0 accepts `Unknown` as an alias for `Unspecified` in the ready annotation.
 * **Update**: Documented the function-go-templating v0.13.0 `getComposedConnectionDetails` helper and linked it from the composed connection-details Secret pattern.
 
 ## 2026-09-05
