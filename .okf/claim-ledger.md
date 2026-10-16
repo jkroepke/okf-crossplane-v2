@@ -5,6 +5,29 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.5.0 test artifacts export
+
+Selected update candidate `xprin@v0.5.0:F02`. Advanced the `xprin` lock from
+v0.2.0 to v0.5.0 (`eb5d7131c596e9a5663da349149184d54d704f42`), the highest stable tag. Commit
+`3965f41144409dc5adf01c2bea5a53aaa3e8a076` (merged through PR #153) is an ancestor of v0.3.0, v0.4.0 and
+v0.5.0 and not of v0.2.0, so the flag is available since v0.3.0 (git ancestry;
+GitHub API unavailable, research timestamp 2026-10-16). The existing suite page
+stays pinned to v0.2.0; its export step was clarified as `id`-based test
+chaining, which the v0.2.0 execution sequence describes, and cross-linked. No
+legacy content applies. Nothing was copied beyond one command line and a
+paraphrased directory layout.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-test-artifacts-export | The flag first appears in v0.3.0. | release-history | primary | direct | Not stated by selected sources; [v0.3.0 flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47) |
+| tools/xprin-test-artifacts-export | The run-directory timestamp uses local time. | behavior | primary | direct | Not stated by selected sources; [run dir](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/artifacts.go#L120-L143) |
+| tools/xprin-test-artifacts-export | `xprin test -a/--artifacts-dir` exports each test case's inputs and outputs; empty disables export. | API | primary and project-documentation | corroborated | Not stated by selected sources; [flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L48), [default](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/utils/options.go#L44-L47), [guide](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/getting-started.md#L91-L95) |
+| tools/xprin-test-artifacts-export | One `xprin-artifacts-<YYYYMMDDHHMMSS>` run directory per invocation, with suite and `NN_name` test-case directories holding inputs and outputs. | behavior | primary | direct | Not stated by selected sources; [run dir](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/artifacts.go#L120-L143), [layout](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/artifacts.go#L27-L118), [tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/artifacts_test.go#L26-L85) |
+| tools/xprin-test-artifacts-export | Copies run on every exit path before cleanup; copy errors only warn. | behavior | primary | direct | Not stated by selected sources; [copy](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/artifacts.go#L145-L172), [defer](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L238-L256) |
+| tools/xprin-test-artifacts-export | The suite artifacts path is printed to standard error. | behavior | primary | corroborated | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L197-L200), [guide](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/getting-started.md#L91-L95) |
+| tools/xprin-test-artifacts-export | Outputs can include assertions.txt with all executed assertion results. | behavior | primary | direct | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L770-L793) |
+| tools/xprin-test-artifacts-export | Test chaining is separate: `id`-based outputs referenced through `.Tests.<id>.Outputs` and cleaned up. | behavior | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L456-L492) |
+
 ## xprin v0.5.0 update-goldens command
 
 Selected update candidate `xprin@v0.5.0:F01`. Advanced the `xprin` lock from

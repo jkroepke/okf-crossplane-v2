@@ -18,6 +18,9 @@ sources:
   - id: xr-oriented-assertion-examples
     resource: 'https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110'
     title: 'XR-oriented assertion examples'
+  - id: v0-3-0-artifacts-dir-flag
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47'
+    title: 'xprin v0.3.0 --artifacts-dir flag'
   - id: v0-3-0-update-goldens
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42'
     title: 'xprin v0.3.0 registers update-goldens'
@@ -54,8 +57,10 @@ assertions are another optional check.[^xr-oriented-assertion-examples] From xpr
 [`xprin update-goldens`](xprin-update-goldens.md) regenerates their expected files.[^v0-3-0-update-goldens]
 
 The suite sequence is setup; optional XR patching; rendering; optional
-validation; optional assertions; hooks; and optional artifact export or
-chaining.[^execution-sequence] Treat assertions as a repeatable test suite around a known input,
+validation; optional assertions; hooks; and optional artifact export for
+`id`-based test chaining.[^execution-sequence] From xprin v0.3.0, a separate
+[`--artifacts-dir` export](xprin-test-artifacts-export.md) keeps a persistent
+copy of every test case for inspection.[^v0-3-0-artifacts-dir-flag] Treat assertions as a repeatable test suite around a known input,
 not proof that providers will successfully reconcile the generated resources.
 
 # Relationship to CLI rendering
@@ -74,4 +79,5 @@ workflows.
 [^test-suite-inputs-and-assertion-configuration]: [Test-suite inputs and assertion configuration](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/docs/testsuite-specification.md#L1-L29)
 [^execution-sequence]: [Execution sequence](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L123-L168)
 [^xr-oriented-assertion-examples]: [XR-oriented assertion examples](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110)
+[^v0-3-0-artifacts-dir-flag]: [xprin v0.3.0 --artifacts-dir flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47)
 [^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)
