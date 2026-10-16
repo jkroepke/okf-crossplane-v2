@@ -4,7 +4,7 @@ title: Render a Composition locally
 description: Use the Crossplane CLI to execute a Pipeline Composition and its Functions locally against an example XR.
 resource: https://github.com/crossplane/cli
 tags: [crossplane, cli, composition, rendering, testing]
-generated: { by: "process:crossplane-okf-generation", at: "2026-08-20T23:35:21Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T22:00:00Z" }
 sources:
   - id: cli-render-behavior-output-and-docker-guidance
     resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/help/render.md#L1-L35'
@@ -54,6 +54,30 @@ sources:
   - id: project-mode-render-discovers-functions
     resource: 'https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L936'
     title: 'Project-mode render discovers and builds Functions'
+  - id: v2-5-builtin-fallback
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L125-L134'
+    title: 'CLI v2.5.0 built-in fallback for GVKs without definitions'
+  - id: v2-5-builtin-scheme
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L42-L68'
+    title: 'CLI v2.5.0 built-in Kubernetes scheme and strict decoder'
+  - id: v2-5-builtin-strict-decode
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L173-L205'
+    title: 'CLI v2.5.0 strict decoding of built-in resources'
+  - id: v2-5-builtin-tests
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate_test.go#L295-L336'
+    title: 'CLI v2.5.0 built-in validation tests'
+  - id: v2-5-validate-exit
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L207-L218'
+    title: 'CLI v2.5.0 validation exit behavior'
+  - id: v2-5-validate-command-exit
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/validate/cmd.go#L154-L163'
+    title: 'CLI v2.5.0 resource validate returns the validation result error'
+  - id: v2-4-missing-schema-fallback
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L87-L91'
+    title: 'CLI v2.4.0 missing-schema result for unknown GVKs'
+  - id: pr-197-merge-commit
+    resource: 'https://github.com/crossplane/cli/commit/cf03c1d2c1db3f8a67fc4785373e50c71a9038c4'
+    title: 'PR #197 merge commit: validate Kubernetes built-ins'
 source_repository: crossplane/cli
 source_commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
 source_paths:
@@ -68,13 +92,19 @@ supporting_sources:
     commit: f51137d2f8e92a167bb580be528c78b879ed406d
     paths:
       - content/cli/v2.4/get-started/get-started-with-control-plane-projects.md
+  - repository: crossplane/cli
+    tag: v2.5.0
+    commit: 1acb525095a4e43c9a765954efa66a47667a432b
+    paths:
+      - pkg/validate/validate.go
+      - pkg/validate/validate_test.go
   - repository: CustomResourceDefinition/catalog
     commit: 0584c9f7e6eaef8367cd65e59266d8ad49764f0c
     paths:
       - README.md
 project_history_repository: crossplane/cli
-project_history_items: [pull/148, issues/195]
-project_history_researched_at: 2026-07-16T00:00:00Z
+project_history_items: [pull/148, issues/195, pull/197]
+project_history_researched_at: 2026-10-16T00:00:00Z
 feature_state: Not stated by selected sources
 ---
 
@@ -179,10 +209,21 @@ failures.[^full-render-to-validation-pipeline][^full-xr-output-behavior][^valida
 ## Definition-coverage triage
 
 `crossplane resource validate` builds its offline validators from XRDs and
-CRDs supplied as extensions or unpacked from Crossplane packages. It does not
-load Kubernetes built-in resource definitions. A rendered core `v1` resource such
-as a `Secret` therefore reports a missing CRD/XRD by design; it is a coverage
-gap, not evidence that the built-in resource needs a CRD.[^cli-extension-only-definition-inputs][^crd-validator-construction][^missing-definition-exit-behavior]
+CRDs supplied as extensions or unpacked from Crossplane packages. In CLI
+v2.4.0 it does not load Kubernetes built-in resource definitions, so a rendered
+core `v1` resource such as a `Secret` reports a missing CRD/XRD; that is a
+coverage gap, not evidence that the built-in resource needs a CRD.[^cli-extension-only-definition-inputs][^crd-validator-construction][^missing-definition-exit-behavior][^v2-4-missing-schema-fallback]
+
+From CLI v2.5.0, a resource whose GVK has no supplied definition but is a
+Kubernetes built-in type is strictly decoded instead. Built-in types are those
+in client-go's built-in scheme plus `apiextensions.k8s.io/v1`
+CustomResourceDefinition and `apiregistration.k8s.io/v1` APIService. A supplied
+definition for the same GVK still takes precedence, and only unrecognized GVKs
+still report a missing CRD/XRD.[^v2-5-builtin-fallback][^v2-5-builtin-scheme]
+Strict decoding rejects unknown fields and values that do not fit the typed Go
+fields, and each error is reported as a schema validation error; it is not
+API-server admission or semantic validation.[^v2-5-builtin-strict-decode][^v2-5-builtin-tests]
+An invalid built-in resource makes the command fail.[^v2-5-validate-exit][^v2-5-validate-command-exit]
 
 For a non-Crossplane custom GVK that is missing from the XRD/provider definition
 set, look up the normalized Group, Kind, and version in the community
@@ -211,14 +252,20 @@ as `v1/Secret`; they have no CRD in the catalog.[^crd-catalog-definition-files-a
 
 Do not treat the catalog as a `resource validate` input integration: its
 definition documents must be passed to the CLI as extensions. Keep built-in
-Kubernetes resources in the render output, but validate them with
-Kubernetes-aware tooling or cluster admission/dry-run separately. Use
+Kubernetes resources in the render output. With CLI v2.4.0, validate them with
+Kubernetes-aware tooling or cluster admission/dry-run separately, and use
 `--error-on-missing-schemas` only when every rendered GVK is expected to have
 an XRD/CRD definition, or expect it to fail for built-ins.[^cli-extension-only-definition-inputs][^crd-validator-construction][^missing-definition-exit-behavior]
+From CLI v2.5.0, built-in types no longer count as missing definitions, so the
+flag fails only for unrecognized GVKs without a supplied definition; CLI
+v2.5.0 checks only the structure of built-ins; following from that stated
+non-admission scope, use server-side dry-run or admission for semantic checks.[^v2-5-builtin-fallback][^v2-5-builtin-strict-decode][^v2-5-validate-exit]
 
-Issue #195 is an open v2.4.0 report by human author `@jkroepke` of the
-`v1/Secret` message; it does not establish a released fix or a supported
-workaround.[^cli-issue-195-built-in-secret-missing-definition-report]
+Issue #195 is a v2.4.0 report by human author `@jkroepke` of the `v1/Secret`
+message.[^cli-issue-195-built-in-secret-missing-definition-report] CLI PR #197
+adds built-in decoding; its merge commit is contained in v2.5.0 and not in
+v2.4.0 (git ancestry, 2026-10-16). The issue's current state and any closing
+link were not checked.[^pr-197-merge-commit]
 
 ## Image-version boundary
 
@@ -249,3 +296,11 @@ not change the documented v2.4.0 behavior.[^pr-148-change-validation-image-defau
 [^cli-issue-195-built-in-secret-missing-definition-report]: [CLI issue #195: built-in Secret missing-definition report](https://github.com/crossplane/cli/issues/195), opened by human author `@jkroepke` on 2026-07-16; researched 2026-07-16.
 [^standalone-file-based-render-requires-the-functions-argument]: [Standalone file-based render requires the Functions argument](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/render/xr/cmd.go#L396-L413)
 [^project-mode-render-discovers-functions]: [Project-mode render discovers and builds Functions](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L925-L936)
+[^v2-5-builtin-fallback]: [CLI v2.5.0 built-in fallback for GVKs without definitions](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L125-L134)
+[^v2-5-builtin-scheme]: [CLI v2.5.0 built-in Kubernetes scheme and strict decoder](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L42-L68)
+[^v2-5-builtin-strict-decode]: [CLI v2.5.0 strict decoding of built-in resources](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L173-L205)
+[^v2-5-builtin-tests]: [CLI v2.5.0 built-in validation tests](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate_test.go#L295-L336)
+[^v2-5-validate-exit]: [CLI v2.5.0 validation exit behavior](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L207-L218)
+[^v2-5-validate-command-exit]: [CLI v2.5.0 resource validate returns the validation result error](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/validate/cmd.go#L154-L163)
+[^v2-4-missing-schema-fallback]: [CLI v2.4.0 missing-schema result for unknown GVKs](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L87-L91)
+[^pr-197-merge-commit]: [PR #197 merge commit: validate Kubernetes built-ins](https://github.com/crossplane/cli/commit/cf03c1d2c1db3f8a67fc4785373e50c71a9038c4); release containment checked by git ancestry on 2026-10-16.

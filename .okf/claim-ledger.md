@@ -5,6 +5,29 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Crossplane CLI v2.5.0 resource validate Kubernetes built-ins
+
+Selected update candidate `crossplane-cli@v2.5.0:F06`. Advanced the
+`crossplane-cli` lock from v2.4.0 to v2.5.0 (`1acb525095a4e43c9a765954efa66a47667a432b`); the shared
+`crossplane-docs-cli-v2.5` lock entry is carried for the CLI v2.5.0 candidate
+set. PR #197 merge commit `cf03c1d2c1db3f8a67fc4785373e50c71a9038c4` and its commits 687fbe5 and b4e956e are
+ancestors of v2.5.0 and not of v2.4.0 (git ancestry; GitHub API, issue #195
+state and release notes unavailable at research time, 2026-10-16). The CLI v2.5
+command reference and help do not mention built-in validation, so source and
+tests are the evidence. Existing v2.4.0 statements were version-scoped rather
+than removed. The PR #148 image-default change in v2.5.0 is a separate,
+unselected change and was left untouched. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| cli/local-composition-rendering | In CLI v2.4.0 any GVK without a supplied definition reports a missing schema. | release-history | primary | direct | Beta command group; [v2.4.0](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/pkg/validate/validate.go#L87-L91) |
+| cli/local-composition-rendering | From v2.5.0, GVKs without a supplied definition fall back to built-in strict decoding; supplied definitions take precedence; only unrecognized GVKs report missing. | behavior | primary | direct | Beta command group; [fallback](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L125-L134) |
+| cli/local-composition-rendering | Built-ins are client-go's scheme plus apiextensions.k8s.io/v1 and apiregistration.k8s.io/v1. | behavior | primary | direct | Beta command group; [scheme](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L42-L68) |
+| cli/local-composition-rendering | Strict decoding rejects unknown fields and mistyped values, reports them as schema errors, and is not admission or semantic validation. | behavior | primary | corroborated | Beta command group; [decode](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L173-L205), [tests](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate_test.go#L295-L336) |
+| cli/local-composition-rendering | Invalid resources make the command fail; missing schemas fail only with --error-on-missing-schemas. | behavior | primary | direct | Beta command group; [exit](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L207-L218) |
+| cli/local-composition-rendering | PR #197 adds built-in decoding and is contained in v2.5.0, not v2.4.0. | release-history | project-history | direct | [merge commit](https://github.com/crossplane/cli/commit/cf03c1d2c1db3f8a67fc4785373e50c71a9038c4) |
+| cli/local-composition-rendering | Use server-side dry-run or admission for semantic checks of built-ins. | guidance | primary | inferred | Follows from the stated non-admission scope; [decode](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/pkg/validate/validate.go#L173-L205) |
+
 ## Crossplane CLI v2.5.0 Go model runtime objects
 
 Selected update candidate `crossplane-cli@v2.5.0:F05`. Advanced the
