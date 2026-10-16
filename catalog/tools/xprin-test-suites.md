@@ -18,6 +18,9 @@ sources:
   - id: xr-oriented-assertion-examples
     resource: 'https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110'
     title: 'XR-oriented assertion examples'
+  - id: v0-3-0-update-goldens
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42'
+    title: 'xprin v0.3.0 registers update-goldens'
 source_repository: crossplane-contrib/xprin
 source_commit: b5a100aa3e7118c1acdd2096b7993929939624b2
 source_paths:
@@ -47,7 +50,8 @@ legacy-free catalog.[^test-suite-inputs-and-assertion-configuration]
 After rendering, a suite may validate rendered manifests and check declarative
 assertions. The project's XR-oriented examples demonstrate count, existence,
 field-existence, field-type, and field-value assertions. Golden-file diff
-assertions are another optional check.[^xr-oriented-assertion-examples]
+assertions are another optional check.[^xr-oriented-assertion-examples] From xprin v0.3.0,
+[`xprin update-goldens`](xprin-update-goldens.md) regenerates their expected files.[^v0-3-0-update-goldens]
 
 The suite sequence is setup; optional XR patching; rendering; optional
 validation; optional assertions; hooks; and optional artifact export or
@@ -70,3 +74,4 @@ workflows.
 [^test-suite-inputs-and-assertion-configuration]: [Test-suite inputs and assertion configuration](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/docs/testsuite-specification.md#L1-L29)
 [^execution-sequence]: [Execution sequence](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L123-L168)
 [^xr-oriented-assertion-examples]: [XR-oriented assertion examples](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110)
+[^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)

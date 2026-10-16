@@ -120,10 +120,12 @@ sources:
     resolved_at: 2026-10-16
   xprin:
     repository: crossplane-contrib/xprin
-    tag: v0.2.0
-    commit: b5a100aa3e7118c1acdd2096b7993929939624b2
-    selected_by: local Composition render assertion suites
-    resolved_at: 2026-07-16
+    tag: v0.5.0
+    commit: eb5d7131c596e9a5663da349149184d54d704f42
+    previous_tag: v0.2.0
+    previous_commit: b5a100aa3e7118c1acdd2096b7993929939624b2
+    selected_by: user-selected okf-updates candidates xprin@v0.5.0:F01-F05
+    resolved_at: 2026-10-16
   kubernetes-website-v1.35:
     repository: kubernetes/website
     branch: release-1.35

@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Creation**: Added the `xprin update-goldens` command, available since xprin v0.3.0, for regenerating diff and dyff golden files.
 * **Update**: Recorded that CLI v2.5.0 `crossplane resource validate` strictly decodes Kubernetes built-in resources without supplied definitions, and scoped the earlier missing-definition guidance to v2.4.0.
 * **Creation**: Added the CLI v2.5.0 `features.generateGoRuntimeObjects` setting that makes control plane project Go models implement `runtime.Object` with per-package `AddToScheme` helpers.
 * **Creation**: Added the CLI v2.5.0 `features.generateGoModelAccessors` setting that generates GetX and SetX accessors on control plane project Go models.
