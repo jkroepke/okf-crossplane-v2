@@ -20,6 +20,6 @@
 
 # Reference and history
 
-* [Template functions](template-functions.md) - Use project-specific helpers and understand the Sprig boundary.
+* [Template functions](template-functions.md) - Use project-specific helpers, including the v0.13.0 `getComposedConnectionDetails` helper, and understand the Sprig boundary.
 * [Sprig v3.3.0](sprig.md) - Use the exact supporting function library exposed by this release.
 * [Project history](project-history.md) - Distinguish included changes, reports, and post-release proposals.

@@ -4,7 +4,7 @@ title: Compose connection details with function-go-templating
 description: Aggregate observed connection details into a composed Kubernetes Secret.
 resource: https://docs.crossplane.io/latest/guides/connection-details-composition/
 tags: [crossplane, composition-function, connection-details, secret]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T19:00:00Z" }
 sources:
   - id: crossplane-v2-3-connection-details-guide
     resource: 'https://github.com/crossplane/docs/blob/f1315464e35d40d25a28e4c15b6725b0e21adf91/content/v2.3/guides/connection-details-composition.md#L227-L315'
@@ -33,6 +33,9 @@ sources:
   - id: explicit-readiness-is-preserved
     resource: 'https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179'
     title: 'explicit readiness is preserved'
+  - id: getcomposedconnectiondetails-helper
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps.go#L144-L152'
+    title: 'v0.13.0 getComposedConnectionDetails helper'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -52,6 +55,8 @@ supporting_source_commit: ed7886de159af73b9d6976f04f9171ec7a4cb411
 supporting_source_paths: [healthchecks/secret.go, healthchecks/registry.go, fn.go]
 crossplane_release: v2.3.3
 feature_state: Beta
+helper_source_tag: v0.13.0
+helper_source_commit: 9b7ea49394a7cef38fe517d2b60f55d64c4c8511
 ---
 
 # Overview
@@ -70,6 +75,10 @@ The `GoTemplate` input API is Beta because the selected function release serves 
 4. Populate `Secret.data` from the named observed resources. Values in observed
    `connectionDetails` are already base64-encoded and can be copied directly;
    other values must be base64-encoded, for example with `b64enc`.[^crossplane-v2-3-connection-details-guide][^function-go-templating-v2-connection-details-guidance]
+   From function-go-templating v0.13.0, `getComposedConnectionDetails . "<name>"`
+   returns the same observed `connectionDetails` map for one named resource,
+   or `nil` when it is absent.[^getcomposedconnectiondetails-helper] See
+   [template functions](template-functions.md).
 
 The guide lets the XR consumer select the aggregate Secret name through `.spec.writeConnectionSecretToRef.name`. This is an example API convention, not automatic v2 connection-secret publication.[^official-function-go-templating-composition-manifest]
 
@@ -80,12 +89,12 @@ reconciliation. The template must still emit valid YAML before
 `$.observed.resources` and its named entries exist. The guide emits an empty
 `data: {}` until observed resources are available.[^crossplane-v2-3-connection-details-guide][^official-function-go-templating-composition-manifest]
 
-Guard every resource and field that the template indexes when its presence is not guaranteed. The function README's minimal nil-map guard does not prove that a particular named resource or connection-detail key exists.[^function-go-templating-v2-connection-details-guidance]
+Guard every resource and field that the template indexes when its presence is not guaranteed. A top-level `$.observed.resources` nil check covers only the first reconciliation; a source resource can be observed before its connection details are populated (inferred from the observed-state flow, not stated by the selected sources). The function README's minimal nil-map guard does not prove that a particular named resource or connection-detail key exists.[^function-go-templating-v2-connection-details-guidance]
 
 # Boundaries
 
 - Connection-detail keys and availability are provider-specific. The guide's AWS `AccessKey` resources illustrate the pattern but are not required by it.[^crossplane-v2-3-connection-details-guide][^official-function-go-templating-composition-manifest]
-- The guide pins function-go-templating v0.11.2, while this catalog uses the selected stable v0.12.2 release. The v0.12.2 schema and behavior corroborate the documented pattern.[^gotemplate-v1beta1-generated-crd][^guide-selected-function-package]
+- The guide pins function-go-templating v0.11.2, while this catalog uses the selected stable v0.12.2 release. The v0.12.2 schema and behavior corroborate the documented pattern.[^gotemplate-v1beta1-generated-crd][^guide-selected-function-package] The guide predates the v0.13.0 `getComposedConnectionDetails` helper and indexes `$.observed.resources` directly.[^getcomposedconnectiondetails-helper]
 - A later readiness function may be useful, but it is separate from connection-detail aggregation.[^official-function-go-templating-composition-manifest]
 
 An empty aggregate Secret is intentionally valid during initial convergence.[^official-function-go-templating-composition-manifest]
@@ -112,3 +121,4 @@ documents the separate Secret-existence rule.
 [^secret-registers-the-existence-only-check]: [Secret registers the existence-only check](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/secret.go#L7-L13), [`alwaysReady` returns true](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L27-L32), and [explicit readiness is preserved](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
 [^alwaysready-returns-true]: [`alwaysReady` returns true](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/healthchecks/registry.go#L27-L32)
 [^explicit-readiness-is-preserved]: [explicit readiness is preserved](https://github.com/crossplane-contrib/function-auto-ready/blob/ed7886de159af73b9d6976f04f9171ec7a4cb411/fn.go#L133-L179)
+[^getcomposedconnectiondetails-helper]: [v0.13.0 `getComposedConnectionDetails` helper](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/function_maps.go#L144-L152)
