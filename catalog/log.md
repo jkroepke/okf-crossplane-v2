@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Update**: Documented CLI v2.5.0 SimpleSchema `customTypes` for `crossplane xrd generate` and the naming difference from kro `types`.
 * **Creation**: Added the Beta `crossplane xrd convert` command with its CLI v2.5.0 `--format=jsonschema` output for YAML language server validation.
 * **Creation**: Added function-go-templating v0.13.0 function-wide default template options and the `MAX_RECV_MESSAGE_SIZE` setting, and recorded that PR #593 is now contained in v0.13.0.
 * **Creation**: Added the function-go-templating v0.13.0 response TTL concept covering the `--ttl` flag, the Beta `ttl` input field, and the XR TTL annotation.

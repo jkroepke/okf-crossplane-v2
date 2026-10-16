@@ -4,7 +4,7 @@ title: Opt in to a Crossplane control plane project
 description: Choose the Beta CLI project wrapper explicitly before scaffolding, locally running, and packaging a new Composition-backed API.
 resource: https://docs.crossplane.io/cli/latest/get-started/get-started-with-control-plane-projects/
 tags: [crossplane, cli, composition, project, authoring, packaging]
-generated: { by: "process:crossplane-okf-generation", at: "2026-09-05T14:34:46Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T20:30:00Z" }
 sources:
   - id: project-command-beta-state
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/command-reference.md#L1095-L1103
@@ -33,6 +33,24 @@ sources:
   - id: xrd-generation-boundary
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L235-L238
     title: Example-XR XRD generation boundary
+  - id: simpleschema-custom-types-input
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L324-L332'
+    title: 'CLI v2.5.0 SimpleSchema input with customTypes'
+  - id: simpleschema-custom-types-conversion
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L260-L276'
+    title: 'CLI v2.5.0 customTypes passed to spec and status conversion'
+  - id: simpleschema-custom-types-test
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L739-L830'
+    title: 'CLI v2.5.0 customTypes expansion test'
+  - id: example-xr-top-level-keys
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L336-L346'
+    title: 'CLI v2.5.0 example-XR allowed top-level keys'
+  - id: xrd-command-group-beta
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/main.go#L88'
+    title: 'CLI v2.5.0 xrd command group maturity label'
+  - id: kro-simpleschema-custom-types
+    resource: 'https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/api/specifications/simple-schema.md#L173-L210'
+    title: 'kro v0.9.2 SimpleSchema custom types'
   - id: project-api-boundary
     resource: https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120
     title: Project metadata API boundary
@@ -46,6 +64,18 @@ source_paths:
   - content/cli/v2.4/get-started/get-started-with-control-plane-projects.md
   - content/cli/v2.4/command-reference.md
 supporting_sources:
+  - repository: crossplane/cli
+    tag: v2.5.0
+    commit: 1acb525095a4e43c9a765954efa66a47667a432b
+    paths:
+      - cmd/crossplane/xrd/generate.go
+      - cmd/crossplane/xrd/generate_test.go
+      - cmd/crossplane/main.go
+  - repository: kubernetes-sigs/kro
+    tag: v0.9.2
+    commit: 22f5645777c86ebd40b6143f248549f1dbe2923f
+    paths:
+      - website/docs/api/specifications/simple-schema.md
   - repository: crossplane/cli
     commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
     paths:
@@ -127,6 +157,18 @@ authoring lifecycle:
 - Generating an XRD from an example XR cannot express field types, defaults,
   validation rules, or descriptions. Use the guide's SimpleSchema route or
   author the XRD schema directly when those controls are required.[^xrd-generation-boundary]
+- From CLI v2.5.0, a `crossplane xrd generate --from simpleschema` input can
+  declare reusable types in a top-level `customTypes` map. Spec and status
+  fields reference them by name, and the generated XRD expands them inline as
+  object schemas.[^simpleschema-custom-types-input][^simpleschema-custom-types-conversion][^simpleschema-custom-types-test]
+  The example-XR route rejects the key because it allows only `apiVersion`,
+  `kind`, `metadata`, `spec`, `status`, and `additionalPrinterColumns`.[^example-xr-top-level-keys]
+  The SimpleSchema parser comes from kro v0.9.2, whose documentation names the
+  same section `types` and describes types that reference other types. Use
+  `customTypes` with the Crossplane CLI. The CLI test ignores `Required` when
+  comparing schemas, so it does not check how `required` propagates inside a
+  custom type.[^simpleschema-custom-types-test] The `xrd` command group is
+  Beta.[^kro-simpleschema-custom-types][^xrd-command-group-beta]
 - Project wrapping does not replace the Composition design and verification
   gates. Continue through the
   [Composition developer route](/composition-developer-starter.md), including
@@ -144,3 +186,9 @@ authoring lifecycle:
 [^xrd-generation-boundary]: [Example-XR XRD generation boundary](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L235-L238)
 [^project-api-boundary]: [Project metadata API boundary](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120)
 [^project-metadata-api-version]: [Project metadata API version](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L127-L141)
+[^simpleschema-custom-types-input]: [CLI v2.5.0 SimpleSchema input with `customTypes`](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L324-L332)
+[^simpleschema-custom-types-conversion]: [CLI v2.5.0 `customTypes` passed to spec and status conversion](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L260-L276)
+[^simpleschema-custom-types-test]: [CLI v2.5.0 `customTypes` expansion test](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L739-L830)
+[^example-xr-top-level-keys]: [CLI v2.5.0 example-XR allowed top-level keys](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L336-L346)
+[^xrd-command-group-beta]: [CLI v2.5.0 `xrd` command group maturity label](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/main.go#L88)
+[^kro-simpleschema-custom-types]: [kro v0.9.2 SimpleSchema custom types](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/api/specifications/simple-schema.md#L173-L210)

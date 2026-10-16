@@ -5,6 +5,26 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Crossplane CLI v2.5.0 SimpleSchema customTypes
+
+Selected update candidate `crossplane-cli@v2.5.0:F02`. Advanced the
+`crossplane-cli` lock to v2.5.0 (`1acb525095a4e43c9a765954efa66a47667a432b`). Commit
+`410f1d8c3aa250a719676f851cf819ff05592d83` (PR #238) is an ancestor of v2.5.0
+and not of v2.4.0, where both conversions passed no custom types (git ancestry;
+GitHub API unavailable at research time, 2026-10-16). The SimpleSchema parser is
+kro v0.9.2 (`22f5645777c86ebd40b6143f248549f1dbe2923f`, selected by the CLI
+go.mod) and is used only as supporting evidence; its documentation names the
+section `types`, which conflicts with the CLI key `customTypes` and is
+recorded as a note. The CLI v2.5 docs (`d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d`) do not document the key. No legacy
+material; nothing copied.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| cli/control-plane-projects | `xrd generate --from simpleschema` reads a top-level `customTypes` map used by spec and status conversion. | API | primary | direct | Beta (`xrd` group); [input](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L324-L332), [conversion](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L260-L276), [label](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/main.go#L88) |
+| cli/control-plane-projects | Custom types are expanded inline as object schemas in the generated XRD. | behavior | primary | corroborated | Beta; [test](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L739-L830), [kro docs](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/api/specifications/simple-schema.md#L173-L210) |
+| cli/control-plane-projects | The example-XR route rejects `customTypes`. | behavior | primary | direct | Beta; [allowed keys](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L336-L346) |
+| cli/control-plane-projects | kro documents the section as `types` and supports types referencing types. | documented-guidance | supporting | direct | Not stated by selected sources; [kro docs](https://github.com/kubernetes-sigs/kro/blob/22f5645777c86ebd40b6143f248549f1dbe2923f/website/docs/api/specifications/simple-schema.md#L173-L210) |
+
 ## Crossplane CLI v2.5.0 xrd convert JSON Schema output
 
 Selected update candidate `crossplane-cli@v2.5.0:F01`. Advanced the
