@@ -60,6 +60,9 @@ sources:
   - id: containment-in-v0-12-2
     resource: 'https://github.com/crossplane-contrib/function-go-templating/compare/fba11b570e75660b1ff52b05979ba805baae1a51...0a1e6d386f4363fae257ddbfb5b497416370e830'
     title: 'containment in v0.12.2'
+  - id: pr-593-merge-commit
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/commit/8495fe5735358bf6e76816b35d1c9c36596f0b0d'
+    title: 'PR #593 merge commit'
   - id: released-extraresources-selector-conversion
     resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62'
     title: 'Released ExtraResources selector conversion'
@@ -127,7 +130,7 @@ was present at the research timestamp.[^issue-579-reporter-follow-up][^issue-579
 
 # Post-release proposals or developments
 
-After v0.12.2, issue #591 and merged PR #592 addressed a function-specific gRPC receive-size setting on `main`; this is not contained in v0.12.2.[^issue-591][^pr-592] Open PR #593 proposes renaming that setting and remains an unmerged proposal.[^pr-593]
+After v0.12.2, issue #591 and merged PR #592 addressed a function-specific gRPC receive-size setting on `main`; this is not contained in v0.12.2.[^issue-591][^pr-592] At the 2026-07-14 research timestamp, open PR #593 proposed renaming that setting and was an unmerged proposal.[^pr-593] Update 2026-10-16: PR #593 has since merged; its merge commit `8495fe5735358bf6e76816b35d1c9c36596f0b0d` and the #592 commit are ancestors of v0.13.0, which exposes the setting as `MAX_RECV_MESSAGE_SIZE` (git ancestry; see [default options and receive size](runtime-options.md)).[^pr-593-merge-commit]
 
 # Research boundaries
 
@@ -155,3 +158,4 @@ Project history is not used to establish API shape, runtime behavior, recommenda
 [^pr-498-and-its-merge-commit]: [PR #498 and its merge commit](https://github.com/crossplane-contrib/function-go-templating/pull/498) and [containment in v0.12.2](https://github.com/crossplane-contrib/function-go-templating/compare/fba11b570e75660b1ff52b05979ba805baae1a51...0a1e6d386f4363fae257ddbfb5b497416370e830)
 [^containment-in-v0-12-2]: [containment in v0.12.2](https://github.com/crossplane-contrib/function-go-templating/compare/fba11b570e75660b1ff52b05979ba805baae1a51...0a1e6d386f4363fae257ddbfb5b497416370e830)
 [^released-extraresources-selector-conversion]: [Released ExtraResources selector conversion](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/extraresources.go#L41-L62)
+[^pr-593-merge-commit]: [PR #593 merge commit](https://github.com/crossplane-contrib/function-go-templating/commit/8495fe5735358bf6e76816b35d1c9c36596f0b0d)

@@ -5,6 +5,27 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## function-go-templating v0.13.0 default template options and receive size
+
+Selected update candidate `function-go-templating@v0.13.0:F03`. Advanced the
+`function-go-templating` lock from v0.12.4 to v0.13.0 (`9b7ea49394a7cef38fe517d2b60f55d64c4c8511`). Commit
+`ee0dd5d8bd99b9e341ed2ccdeec655e44e4fb33d` (PR #563, `--default-options`),
+`cd51c130161746d5ed7a6dd7c67b3b71ffbd8e32` (PR #592) and merge commit
+`8495fe5735358bf6e76816b35d1c9c36596f0b0d` (PR #593, final name
+`MAX_RECV_MESSAGE_SIZE`) are ancestors of v0.13.0 and not of v0.12.6. The
+`--max-recv-message-size` flag itself predates v0.12.2. Containment was
+established with git ancestry because the GitHub API was unavailable at research
+time (2026-10-16); the dated project-history note is labelled accordingly.
+Nothing was copied. No legacy material was involved.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-go-templating/runtime-options | `--default-options` / `FUNCTION_GO_TEMPLATING_DEFAULT_OPTIONS` supply comma-separated options used only when input `options` is unset. | behavior | primary | corroborated | Not stated by selected sources; [flags](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L22-L24), [selection](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1249-L1339) |
+| functions/function-go-templating/runtime-options | The value is split on commas without trimming; invalid options produce a fatal result. | behavior | primary | direct | Not stated by selected sources; [selection](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125), [recovery](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L454-L463) |
+| functions/function-go-templating/runtime-options | The README describes `missingkey=default` as the effective default; `missingkey=error` makes missing keys fatal. | documented-guidance | supporting | corroborated | Not stated by selected sources; [README](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/README.md#L75-L82), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1249-L1339) |
+| functions/function-go-templating/runtime-options | `MAX_RECV_MESSAGE_SIZE` sets the existing `--max-recv-message-size` flag (MB, default 4) from v0.13.0. | behavior | primary | direct | Not stated by selected sources; [flags](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L22-L24), [v0.12.2 flag](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/main.go#L18) |
+| functions/function-go-templating/project-history | PR #593's merge commit is contained in v0.13.0. | release-history | project-history | direct | git ancestry; [merge commit](https://github.com/crossplane-contrib/function-go-templating/commit/8495fe5735358bf6e76816b35d1c9c36596f0b0d) |
+
 ## function-go-templating v0.13.0 response TTL
 
 Selected update candidate `function-go-templating@v0.13.0:F02`. Advanced the
