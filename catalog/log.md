@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Creation**: Added the CLI v2.5.0 `features.generateGoRuntimeObjects` setting that makes control plane project Go models implement `runtime.Object` with per-package `AddToScheme` helpers.
 * **Creation**: Added the CLI v2.5.0 `features.generateGoModelAccessors` setting that generates GetX and SetX accessors on control plane project Go models.
 * **Update**: Documented the CLI v2.5.0 `crossplane xrd generate --replace` flag for regenerating an XRD in a control plane project.
 * **Update**: Documented CLI v2.5.0 SimpleSchema `customTypes` for `crossplane xrd generate` and the naming difference from kro `types`.
