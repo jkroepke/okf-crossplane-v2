@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Update**: Recorded that CLI v2.5.0 `crossplane resource validate` strictly decodes Kubernetes built-in resources without supplied definitions, and scoped the earlier missing-definition guidance to v2.4.0.
 * **Creation**: Added the CLI v2.5.0 `features.generateGoRuntimeObjects` setting that makes control plane project Go models implement `runtime.Object` with per-package `AddToScheme` helpers.
 * **Creation**: Added the CLI v2.5.0 `features.generateGoModelAccessors` setting that generates GetX and SetX accessors on control plane project Go models.
 * **Update**: Documented the CLI v2.5.0 `crossplane xrd generate --replace` flag for regenerating an XRD in a control plane project.
