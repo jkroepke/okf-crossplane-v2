@@ -5,6 +5,26 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.5.0 Crossplane version pinning
+
+Selected update candidate `xprin@v0.5.0:F04`. Advanced the `xprin` lock from
+v0.2.0 to v0.5.0 (`eb5d7131c596e9a5663da349149184d54d704f42`), the highest stable tag. Commit c12006b
+(PR #145) is an ancestor of v0.3.0 and not of v0.2.0, so `xprin test
+--crossplane-version` is available since v0.3.0; `update-goldens` with the
+same flag also arrived in v0.3.0 (git ancestry; GitHub API unavailable,
+research timestamp 2026-10-16). The flag is not render-only for `xprin test`:
+it also sets the validate image. Render-side meaning inside the Crossplane CLI
+is not claimed from xprin sources. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-crossplane-version | `xprin test` and `xprin update-goldens` accept --crossplane-version with no default. | API | primary | direct | Not stated by selected sources; [test](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L46), [update-goldens](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L40) |
+| tools/xprin-crossplane-version | The test flag exists in v0.3.0. | release-history | primary | direct | Not stated by selected sources; [v0.3.0](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L46) |
+| tools/xprin-crossplane-version | Render gets --crossplane-version only on CLI v2.3.0 or later. | behavior | primary | direct | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L581-L586), [tiers](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L40-L45) |
+| tools/xprin-crossplane-version | Validation gets --crossplane-image=xpkg.crossplane.io/crossplane/crossplane:<value> on every tier when CRDs are supplied. | behavior | primary | direct; e2e covers the v2 tier only | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L701-L709), [e2e](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/tests/e2e/expected/testcase_012.output#L38-L40) |
+| tools/xprin-crossplane-version | Older CLIs skip the render argument with a debug message. | behavior | primary | corroborated | Not stated by selected sources; [message](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L99-L107), [tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test_test.go#L198-L240) |
+| tools/xprin-crossplane-version | update-goldens stops after render, so only render is pinned. | behavior | primary | direct | Not stated by selected sources; [stop](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L695-L697) |
+
 ## xprin v0.5.0 Crossplane CLI tier detection
 
 Selected update candidate `xprin@v0.5.0:F03`. Advanced the `xprin` lock from
