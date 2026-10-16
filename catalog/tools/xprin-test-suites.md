@@ -18,6 +18,9 @@ sources:
   - id: xr-oriented-assertion-examples
     resource: 'https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110'
     title: 'XR-oriented assertion examples'
+  - id: v0-3-0-cli-tiers
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45'
+    title: 'xprin v0.3.0 CLI tiers'
   - id: v0-3-0-artifacts-dir-flag
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47'
     title: 'xprin v0.3.0 --artifacts-dir flag'
@@ -71,7 +74,9 @@ Use the CLI directly for a fast authoring check:
 crossplane composition render example.yaml composition.yaml functions.yaml
 ```
 
-Use xprin when that render needs named, repeatable expectations. The same
+Use xprin when that render needs named, repeatable expectations. From xprin
+v0.3.0, xprin [detects the installed CLI tier](xprin-crossplane-cli-tiers.md)
+to choose its validate subcommand and render flags.[^v0-3-0-cli-tiers] The same
 observed-resource idea can model status-dependent Function behavior in both
 workflows.
 
@@ -79,5 +84,6 @@ workflows.
 [^test-suite-inputs-and-assertion-configuration]: [Test-suite inputs and assertion configuration](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/docs/testsuite-specification.md#L1-L29)
 [^execution-sequence]: [Execution sequence](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L123-L168)
 [^xr-oriented-assertion-examples]: [XR-oriented assertion examples](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110)
+[^v0-3-0-cli-tiers]: [xprin v0.3.0 CLI tiers](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45)
 [^v0-3-0-artifacts-dir-flag]: [xprin v0.3.0 --artifacts-dir flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47)
 [^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)

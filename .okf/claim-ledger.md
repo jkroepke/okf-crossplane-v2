@@ -5,6 +5,30 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.5.0 Crossplane CLI tier detection
+
+Selected update candidate `xprin@v0.5.0:F03`. Advanced the `xprin` lock from
+v0.2.0 to v0.5.0 (`eb5d7131c596e9a5663da349149184d54d704f42`), the highest stable tag. Commits 7060b7f,
+29b57f0, 9d90058, 12e46a7, 844731b and 9d662a9 are ancestors of v0.3.0 and not
+of v0.2.0, so detection is available since v0.3.0 (git ancestry; GitHub API
+unavailable, research timestamp 2026-10-16). The tier picks the validate
+subcommand and render flags, not the render subcommand. The project docs say
+v2.0+ applies the XRD-default patch and also passes `--xrd`; the v0.5.0 code
+skips the patch on `--xrd` tiers. That disagreement is kept on the page.
+Excluded as legacy: the LegacyCluster XRD rationale for `--xrd`, Claim
+conversion that reads `patches.xrd`, and the `xrd_legacy.yaml` fixture. The
+`v1` tier names a Crossplane v1.x CLI binary; v1 workflows are not described.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-crossplane-cli-tiers | Tiers v2 (>= v2.3.0), v2legacy (< v2.3.0) and v1 set the validate subcommand and render flag support. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [tiers](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L20-L46), [capabilities](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L60-L93), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/configuration.md#L49-L59) |
+| tools/xprin-crossplane-cli-tiers | Tier detection exists in v0.3.0. | release-history | primary | direct | Not stated by selected sources; [v0.3.0 tiers](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45) |
+| tools/xprin-crossplane-cli-tiers | Detection probes render --help for --xrd and resource validate --help. | behavior | primary | direct | Not stated by selected sources; [detect](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/detect.go#L26-L82) |
+| tools/xprin-crossplane-cli-tiers | Default render is `render --include-full-xr`; default validate is the tier subcommand with --error-on-missing-schemas. | behavior | primary | direct | Not stated by selected sources; [defaults](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/config/loader.go#L46-L65), [load](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/config/loader.go#L111-L166) |
+| tools/xprin-crossplane-cli-tiers | Explicit subcommands override detection; only render/beta render and resource validate/beta validate forms are accepted. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [checker](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/config/checker.go#L230-L280), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/configuration.md#L72-L80) |
+| tools/xprin-crossplane-cli-tiers | On --xrd tiers xprin passes --xrd and skips its own XRD-default patch; docs say both happen. | behavior | primary | direct (code); disagreement with docs | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L561-L604), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/configuration.md#L61-L68) |
+| tools/xprin-crossplane-cli-tiers | xprin check reports the tier; --xpcli-info prints it for e2e tests. | behavior | primary | direct | Not stated by selected sources; [check](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/config/checker.go#L217-L223), [flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/check/check.go#L31-L45), [output](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/config/checker.go#L143-L154) |
+
 ## xprin v0.5.0 test artifacts export
 
 Selected update candidate `xprin@v0.5.0:F02`. Advanced the `xprin` lock from
