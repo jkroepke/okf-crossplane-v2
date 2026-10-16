@@ -28,6 +28,12 @@ sources:
     previous_commit: 09ffaea39ccaea0f80817e35b5bbd3632b4e7e0d
     selected_by: user-requested update-discovery checkpoint and provider-development orientation; no feature selected
     resolved_at: 2026-09-05
+  crossplane-v2.4.2:
+    repository: crossplane/crossplane
+    tag: v2.4.2
+    commit: bf8ffd4048a0bb1b408b8b745e31960c717009cb
+    selected_by: latest stable Crossplane release; pipeline TTL selection for function-go-templating response TTL
+    resolved_at: 2026-10-16
   crossplane-v2.0.0:
     repository: crossplane/crossplane
     tag: v2.0.0
@@ -203,6 +209,12 @@ sources:
     previous_tag: v0.12.4
     previous_commit: fe17e68927afd64046232f39a2376e87b45e2f58
     selected_by: user-selected okf-updates candidates function-go-templating@v0.13.0:F01-F04
+    resolved_at: 2026-10-16
+  function-sdk-go-v0.7.1:
+    repository: crossplane/function-sdk-go
+    tag: v0.7.1
+    commit: 176ccd5428a608f823c8c7562ffb090ca2c166d5
+    selected_by: function-go-templating v0.13.0 go.mod; response TTL default and semantics
     resolved_at: 2026-10-16
   function-go-templating-pr-498:
     repository: crossplane-contrib/function-go-templating

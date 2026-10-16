@@ -13,6 +13,7 @@
 * [ExtraResources](extra-resources.md) - Request cluster resources by name or labels and consume them directly or through pipeline context.
 * [Connection details](connection-details.md) - Aggregate observed connection details into an explicitly composed Kubernetes Secret for v2 composite resources.
 * [Rendered output](rendered-output.md) - Name resources, report readiness, update status, and handle v2 connection details.
+* [Response TTL](response-ttl.md) - Set the v0.13.0 response TTL with the `--ttl` flag, the `ttl` input field, or an XR annotation.
 
 # Patterns and examples
 
