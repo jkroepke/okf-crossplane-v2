@@ -4,7 +4,7 @@ title: Opt in to a Crossplane control plane project
 description: Choose the Beta CLI project wrapper explicitly before scaffolding, locally running, and packaging a new Composition-backed API.
 resource: https://docs.crossplane.io/cli/latest/get-started/get-started-with-control-plane-projects/
 tags: [crossplane, cli, composition, project, authoring, packaging]
-generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T20:30:00Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T20:40:00Z" }
 sources:
   - id: project-command-beta-state
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/command-reference.md#L1095-L1103
@@ -30,6 +30,21 @@ sources:
   - id: project-build-and-push-workflow
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L1105-L1128
     title: Project build and push workflow
+  - id: xrd-generate-replace-flag
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L57-L63'
+    title: 'CLI v2.5.0 xrd generate --replace flag'
+  - id: xrd-generate-existing-file-handling
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L129-L151'
+    title: 'CLI v2.5.0 output path and existing-file handling'
+  - id: xrd-generate-replace-tests
+    resource: 'https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L837-L933'
+    title: 'CLI v2.5.0 existing-file and replace tests'
+  - id: xrd-generate-v2-5-docs
+    resource: 'https://github.com/crossplane/docs/blob/d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d/content/cli/v2.5/command-reference.md#L2755-L2823'
+    title: 'CLI v2.5 xrd generate Beta label and flags'
+  - id: xrd-generate-v2-4-existing-file-error
+    resource: 'https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/xrd/generate.go#L131'
+    title: 'CLI v2.4.0 existing-file error without --replace'
   - id: xrd-generation-boundary
     resource: https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L235-L238
     title: Example-XR XRD generation boundary
@@ -80,6 +95,17 @@ supporting_sources:
     commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
     paths:
       - apis/dev/v1alpha1/project_types.go
+  - repository: crossplane/cli
+    tag: v2.5.0
+    commit: 1acb525095a4e43c9a765954efa66a47667a432b
+    paths:
+      - cmd/crossplane/xrd/generate.go
+      - cmd/crossplane/xrd/generate_test.go
+  - repository: crossplane/docs
+    series: cli-v2.5
+    commit: d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d
+    paths:
+      - content/cli/v2.5/command-reference.md
 feature_state: Beta
 feature_state_basis: The locked CLI v2.4 command reference explicitly labels the crossplane project command workflow Beta and warns that Beta features may change.
 project_metadata_api_feature_state: Alpha
@@ -130,6 +156,16 @@ authoring lifecycle:
    requested authoring approach. The guide covers XRD generation from an
    example XR or SimpleSchema, Composition generation, dependency addition,
    and embedded Function generation.[^project-generation-workflow]
+   `crossplane xrd generate` writes `<plural>/definition.yaml`, or the `--path`
+   target, inside the project's APIs directory and refuses to overwrite an
+   existing file. From CLI v2.5.0, `--replace` overwrites it with the newly
+   generated XRD; CLI v2.4.0 required a different path or deleting the
+   file.[^xrd-generate-replace-flag][^xrd-generate-existing-file-handling][^xrd-generate-replace-tests][^xrd-generate-v2-4-existing-file-error]
+   The write replaces the whole file, so hand edits to the generated XRD are
+   lost (inferred from the full-file write). As a suggestion that follows from
+   this inference, not documented practice, keep the example XR or SimpleSchema
+   input as the source when regenerating. The `xrd generate` command is
+   Beta.[^xrd-generate-existing-file-handling][^xrd-generate-v2-5-docs]
 3. From the project directory, render the example XR and Composition. Project
    mode discovers and builds the embedded Functions, so this invocation does
    not take the standalone Functions manifest argument.[^project-render-workflow]
@@ -186,6 +222,11 @@ authoring lifecycle:
 [^xrd-generation-boundary]: [Example-XR XRD generation boundary](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L235-L238)
 [^project-api-boundary]: [Project metadata API boundary](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/apis/dev/v1alpha1/project_types.go#L69-L120)
 [^project-metadata-api-version]: [Project metadata API version](https://github.com/crossplane/docs/blob/f51137d2f8e92a167bb580be528c78b879ed406d/content/cli/v2.4/get-started/get-started-with-control-plane-projects.md#L127-L141)
+[^xrd-generate-replace-flag]: [CLI v2.5.0 `xrd generate --replace` flag](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L57-L63)
+[^xrd-generate-existing-file-handling]: [CLI v2.5.0 output path and existing-file handling](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L129-L151)
+[^xrd-generate-replace-tests]: [CLI v2.5.0 existing-file and replace tests](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L837-L933)
+[^xrd-generate-v2-5-docs]: [CLI v2.5 `xrd generate` Beta label and flags](https://github.com/crossplane/docs/blob/d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d/content/cli/v2.5/command-reference.md#L2755-L2823)
+[^xrd-generate-v2-4-existing-file-error]: [CLI v2.4.0 existing-file error without `--replace`](https://github.com/crossplane/cli/blob/ef9b974770a45e085aacee3b2cdda6284ab6cf51/cmd/crossplane/xrd/generate.go#L131)
 [^simpleschema-custom-types-input]: [CLI v2.5.0 SimpleSchema input with `customTypes`](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L324-L332)
 [^simpleschema-custom-types-conversion]: [CLI v2.5.0 `customTypes` passed to spec and status conversion](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate.go#L260-L276)
 [^simpleschema-custom-types-test]: [CLI v2.5.0 `customTypes` expansion test](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/generate_test.go#L739-L830)
