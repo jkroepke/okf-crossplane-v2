@@ -1,6 +1,7 @@
 # Crossplane development tools
 
 * [xprin test suites](xprin-test-suites.md) - Run repeatable local Composition render tests with declarative assertions.
+* [xprin function container reuse](xprin-function-container-reuse.md) - How xprin v0.5.0 reuses one Docker container per Function image across a run, and how to opt out.
 * [Pin the Crossplane version in xprin runs](xprin-crossplane-version.md) - Pin the Crossplane image tag for render and validation with `--crossplane-version`, available since xprin v0.3.0.
 * [xprin Crossplane CLI tier detection](xprin-crossplane-cli-tiers.md) - How xprin, since v0.3.0, chooses the validate subcommand and render flags for the installed Crossplane CLI.
 * [Export xprin test artifacts](xprin-test-artifacts-export.md) - Keep a persistent copy of every test case's inputs and outputs with `xprin test --artifacts-dir`, available since xprin v0.3.0.

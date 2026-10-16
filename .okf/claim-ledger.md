@@ -5,6 +5,27 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.5.0 function container reuse
+
+Selected update candidate `xprin@v0.5.0:F05`. Advanced the `xprin` lock from
+v0.2.0 to v0.5.0 (`eb5d7131c596e9a5663da349149184d54d704f42`), the highest stable tag. Commit fffb1d7
+(merged in eb5d713, PR #165) is an ancestor of v0.5.0 and not of v0.4.0; v0.4.0
+has neither the flag nor the containers package, so reuse was default-on from
+its first release (git ancestry; GitHub API unavailable, research timestamp
+2026-10-16). The reuse markers are Kubernetes annotations on the temporary
+Function copies, not Docker labels. The statelessness rationale is recorded as
+xprin project documentation only. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-function-container-reuse | Reuse is on by default for test and update-goldens; --no-container-reuse opts out. | API | primary and project-documentation | corroborated | Not stated by selected sources; [test](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L47), [update-goldens](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L41), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693) |
+| tools/xprin-function-container-reuse | v0.4.0 test flags had no container-reuse option. | release-history | primary | direct | Not stated by selected sources; [v0.4.0](https://github.com/crossplane-contrib/xprin/blob/457dfbea3570cfd1016d00838e6999243f7c6c74/cmd/xprin/test/test.go#L38-L47) |
+| tools/xprin-function-container-reuse | xprin sets runtime-docker-name and runtime-docker-cleanup: Orphan on Functions in the temporary copy and keeps user-set values. | behavior | primary | direct | Not stated by selected sources; [annotations](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/reuse.go#L33-L171), [wiring](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L466-L475), [tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/reuse_test.go#L78-L221) |
+| tools/xprin-function-container-reuse | Containers are named from the run id and image, one per image per run. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [names](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/coordinator.go#L36-L57), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693) |
+| tools/xprin-function-container-reuse | On CLI v2.3.0 or later one xprin-net network is passed as --crossplane-docker-network. | behavior | primary | direct | Not stated by selected sources; [network](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/coordinator.go#L59-L79), [render](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L588-L598), [tiers](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693) |
+| tools/xprin-function-container-reuse | Containers and the network are removed best-effort at the end of the run. | behavior | primary | direct | Not stated by selected sources; [cleanup](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/coordinator.go#L81-L92), [docker](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/docker.go#L42-L64) |
+| tools/xprin-function-container-reuse | The Crossplane controller container is not reused; abrupt kills leave resources behind. | documented-guidance | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693) |
+
 ## xprin v0.5.0 Crossplane version pinning
 
 Selected update candidate `xprin@v0.5.0:F04`. Advanced the `xprin` lock from
