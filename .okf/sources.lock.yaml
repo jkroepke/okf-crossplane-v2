@@ -106,10 +106,18 @@ sources:
     resolved_at: 2026-08-21
   crossplane-cli:
     repository: crossplane/cli
-    tag: v2.4.0
-    commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
-    selected_by: local Composition rendering and authoring layout
-    resolved_at: 2026-07-16
+    tag: v2.5.0
+    commit: 1acb525095a4e43c9a765954efa66a47667a432b
+    previous_tag: v2.4.0
+    previous_commit: ef9b974770a45e085aacee3b2cdda6284ab6cf51
+    selected_by: user-selected okf-updates candidates crossplane-cli@v2.5.0:F01-F06
+    resolved_at: 2026-10-16
+  crossplane-docs-cli-v2.5:
+    repository: crossplane/docs
+    series: cli-v2.5
+    commit: d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d
+    selected_by: user-selected okf-updates candidates for crossplane-cli@v2.5.0
+    resolved_at: 2026-10-16
   xprin:
     repository: crossplane-contrib/xprin
     tag: v0.2.0
