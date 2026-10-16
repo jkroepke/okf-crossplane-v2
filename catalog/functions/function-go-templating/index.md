@@ -5,6 +5,7 @@
 * [Package and installation](package.md) - Install and reference the selected stable function package.
 * [GoTemplate input](input.md) - Author Inline, FileSystem, or Environment input using the generated schema.
 * [Environment template source](environment-source.md) - Load template text from the reserved EnvironmentConfig pipeline-context map.
+* [Default options and receive size](runtime-options.md) - Set v0.13.0 function-wide template options and the gRPC receive-size limit.
 
 # Rendering and request data
 
