@@ -5,6 +5,27 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## Crossplane CLI v2.5.0 xrd convert JSON Schema output
+
+Selected update candidate `crossplane-cli@v2.5.0:F01`. Advanced the
+`crossplane-cli` lock from v2.4.0 to v2.5.0 (`1acb525095a4e43c9a765954efa66a47667a432b`) and added the
+`crossplane-docs-cli-v2.5` lock at `d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d`, whose `content/cli/v2.5/**` matches
+the last v2.5 docs commit `9c144a9144e97f3c77fdd50adc8aa515b8032504`. Commit
+`a92acf938afe05be77bc10551ff5f4bea901df89` (PR #142, renamed to `--format`
+before release) is an ancestor of v2.5.0 and not of v2.4.0 (git ancestry; the
+GitHub API was unavailable at research time, 2026-10-16). Existing CLI pages stay
+on v2.4. Legacy XRD and Claim CRD output, the `-o` help clause about Claim CRDs,
+and the LegacyCluster multi-schema test were excluded. Nothing was copied beyond
+two documented command lines.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| cli/xrd-convert | `xrd convert` derives the CRD Crossplane generates from an XRD; Namespaced or Cluster XRDs yield one XR CRD. | documented-guidance | official-documentation | direct | Beta; [reference](https://github.com/crossplane/docs/blob/d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d/content/cli/v2.5/command-reference.md#L2668-L2686) |
+| cli/xrd-convert | `--format` accepts `crd` (default) or `jsonschema`. | API | primary | direct | Beta; docs flag table shows only the default (partial); [flags](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/convert.go#L52-L64), [docs](https://github.com/crossplane/docs/blob/d1c9eb7fd1548d0d61ab3901781919a5b4aaf69d/content/cli/v2.5/command-reference.md#L2742-L2750) |
+| cli/xrd-convert | Each CRD version with a schema becomes one JSON Schema with `$id` and GVK metadata; files are `<group>_<version>_<kind>.json`. | behavior | primary | direct | Beta; [per version](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/internal/schemas/generator/json.go#L128-L163), [$id](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/internal/schemas/generator/json.go#L96-L126), [routing](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/convert.go#L100-L144) |
+| cli/xrd-convert | More than one schema requires `--output-dir`. | behavior | primary | direct | Beta; [writing](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/cmd/crossplane/xrd/convert.go#L146-L184) |
+| cli/xrd-convert | Objects without `additionalProperties` get `additionalProperties: false`. | behavior | primary | direct | Beta; [mutation](https://github.com/crossplane/cli/blob/1acb525095a4e43c9a765954efa66a47667a432b/internal/schemas/generator/json.go#L165-L205) |
+
 ## function-go-templating v0.13.0 default template options and receive size
 
 Selected update candidate `function-go-templating@v0.13.0:F03`. Advanced the
