@@ -1,4 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["github>jkroepke/renovate-config"]
+  "extends": ["github>jkroepke/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Hold the MCP Python at 3.14 until duckdb, pydantic-core and pyyaml publish cp315 wheels; otherwise CI compiles them from source. Remove this rule to allow 3.15.",
+      "matchManagers": ["pep621"],
+      "matchDepNames": ["python"],
+      "allowedVersions": "<3.15"
+    }
+  ]
 }
