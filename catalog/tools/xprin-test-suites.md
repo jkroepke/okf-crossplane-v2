@@ -18,6 +18,9 @@ sources:
   - id: xr-oriented-assertion-examples
     resource: 'https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110'
     title: 'XR-oriented assertion examples'
+  - id: reuse-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693'
+    title: 'xprin v0.5.0 function container reuse'
   - id: v0-3-0-cli-tiers
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45'
     title: 'xprin v0.3.0 CLI tiers'
@@ -42,7 +45,9 @@ feature_state: Not stated by selected sources
 xprin is a Crossplane ecosystem test tool that orchestrates local CLI render
 and validation commands, then evaluates declarative assertions. It does not
 need a Kubernetes cluster, but rendering Composition Functions still requires
-Docker.[^xprin-purpose-local-prerequisites-and-cli-integration] This concept describes xprin's own test framework; it does not change
+Docker.[^xprin-purpose-local-prerequisites-and-cli-integration] From xprin v0.5.0, xprin
+[reuses Function containers](xprin-function-container-reuse.md) across a run by
+default.[^reuse-docs] This concept describes xprin's own test framework; it does not change
 the Crossplane CLI contract described in [local Composition rendering](/cli/local-composition-rendering.md).
 
 # Suite inputs
@@ -84,6 +89,7 @@ workflows.
 [^test-suite-inputs-and-assertion-configuration]: [Test-suite inputs and assertion configuration](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/docs/testsuite-specification.md#L1-L29)
 [^execution-sequence]: [Execution sequence](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/README.md#L123-L168)
 [^xr-oriented-assertion-examples]: [XR-oriented assertion examples](https://github.com/crossplane-contrib/xprin/blob/b5a100aa3e7118c1acdd2096b7993929939624b2/examples/mytests/6_assertions/example1_assertions_xprin.yaml#L1-L110)
+[^reuse-docs]: [xprin v0.5.0 function container reuse](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L673-L693)
 [^v0-3-0-cli-tiers]: [xprin v0.3.0 CLI tiers](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45)
 [^v0-3-0-artifacts-dir-flag]: [xprin v0.3.0 --artifacts-dir flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47)
 [^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)

@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-10-16
+* **Creation**: Added xprin v0.5.0 function container reuse, on by default with `--no-container-reuse` to opt out.
 * **Creation**: Added xprin `--crossplane-version` pinning, available since xprin v0.3.0, for render and validation image tags.
 * **Creation**: Added xprin Crossplane CLI tier detection, available since xprin v0.3.0, which chooses the validate subcommand and render flags.
 * **Creation**: Added the `xprin test --artifacts-dir` export, available since xprin v0.3.0, and distinguished it from `id`-based test chaining.
