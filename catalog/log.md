@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-10-16
+* **Update**: Recorded that function-go-templating v0.13.0 accepts `Unknown` as an alias for `Unspecified` in the ready annotation.
+
 ## 2026-09-05
 * **Correction**: Distinguished the Beta `crossplane project` command workflow from the Alpha `dev.crossplane.io/v1alpha1` Project metadata API, and made the project-versus-standalone question explicit in the agent-facing Crossplane skill.
 

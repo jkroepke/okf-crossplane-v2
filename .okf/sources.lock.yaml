@@ -198,12 +198,12 @@ sources:
     resolved_at: 2026-08-21
   function-go-templating:
     repository: crossplane-contrib/function-go-templating
-    tag: v0.12.4
-    commit: fe17e68927afd64046232f39a2376e87b45e2f58
-    previous_tag: v0.12.2
-    previous_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
-    selected_by: user-requested update-discovery checkpoint; no feature selected
-    resolved_at: 2026-09-05
+    tag: v0.13.0
+    commit: 9b7ea49394a7cef38fe517d2b60f55d64c4c8511
+    previous_tag: v0.12.4
+    previous_commit: fe17e68927afd64046232f39a2376e87b45e2f58
+    selected_by: user-selected okf-updates candidates function-go-templating@v0.13.0:F01-F04
+    resolved_at: 2026-10-16
   function-go-templating-pr-498:
     repository: crossplane-contrib/function-go-templating
     commit: fba11b570e75660b1ff52b05979ba805baae1a51

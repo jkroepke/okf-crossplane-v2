@@ -5,6 +5,22 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## function-go-templating v0.13.0 Unknown ready-annotation alias
+
+Selected update candidate `function-go-templating@v0.13.0:F04`. Advanced the
+`function-go-templating` lock from v0.12.4 to v0.13.0 (`9b7ea49394a7cef38fe517d2b60f55d64c4c8511`). Commit
+`599edc93f52ba112a61c8449bdaa03a40da1e07a` is an ancestor of v0.13.0 and not of
+v0.12.6 (git ancestry; the GitHub API was unavailable at research time,
+2026-10-16). The README readiness section lists no values, so the code and test
+are the evidence. Only the composite path has an `Unknown` test; the composed
+path shares the same parsing code. The Claim-conditions branch was excluded as
+legacy.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-go-templating/patterns/manual-readiness | From v0.13.0 the ready annotation accepts exact `Unknown`, treated as `Unspecified`; the error text still lists three values. | behavior | primary | corroborated | Beta pattern ceiling unchanged; [alias](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258), [test](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1439-L1470) |
+| functions/function-go-templating/rendered-output | The alias applies to composed and composite resources. | behavior | primary | direct | Not stated by selected sources; [alias](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L238-L258), [composite apply](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L302-L305), [composed apply](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L377-L380) |
+
 ## Optional Crossplane control plane projects for new Compositions
 
 Reused the existing `crossplane-docs-v2.4` lock at
