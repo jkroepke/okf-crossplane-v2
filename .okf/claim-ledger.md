@@ -5,6 +5,28 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.5.0 update-goldens command
+
+Selected update candidate `xprin@v0.5.0:F01`. Advanced the `xprin` lock from
+v0.2.0 to v0.5.0 (`eb5d7131c596e9a5663da349149184d54d704f42`), the highest stable tag. Commit
+`60189256d1c80ea463a2699dd83952e50cb74aab` (merged through PR #157) is an ancestor of v0.3.0, v0.4.0 and
+v0.5.0 and not of v0.2.0, so the command is available since v0.3.0 (git
+ancestry; GitHub API unavailable, research timestamp 2026-10-16). The existing
+suite page stays pinned to v0.2.0 and gains one cross-link. The Claim-to-XR
+conversion step and Claim-name golden reuse were excluded as legacy. Nothing
+was copied beyond one command line.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-update-goldens | The command is registered in v0.3.0. | release-history | primary | direct | Not stated by selected sources; [v0.3.0 registration](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42) |
+| tools/xprin-update-goldens | `xprin update-goldens` regenerates expected files for diff and dyff assertions. | API | primary | corroborated | Not stated by selected sources; [registration](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/main.go#L42), [flags](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L35-L41) |
+| tools/xprin-update-goldens | Targets match `xprin test`; at v0.5.0 flags are -v, -q, --debug, --color, --crossplane-version and --no-container-reuse; no --show-* or artifact export. | API | primary | direct | Not stated by selected sources; [flags](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L35-L41), [options](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L77-L98) |
+| tools/xprin-update-goldens | Test cases without diff or dyff assertions are skipped. | behavior | primary | corroborated | Not stated by selected sources; [runner](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L224-L228), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L596-L628) |
+| tools/xprin-update-goldens | Render runs; validation, assertions and post-test hooks do not. | behavior | primary | corroborated | Not stated by selected sources; [stop](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L695-L697), [docs](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L596-L628) |
+| tools/xprin-update-goldens | Render output is written to each expected path, full or per resource; a missing resource fails. | behavior | primary | direct | Not stated by selected sources; [writes](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/update_goldens.go#L27-L76), [tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/update_goldens_test.go#L39-L135) |
+| tools/xprin-update-goldens | Commit regenerated goldens as the test baseline. | documented-guidance | project-documentation | direct | Not stated by selected sources; [guide](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/getting-started.md#L98-L123) |
+| tools/xprin-update-goldens | Review regenerated files before committing because writes are unconditional. | guidance | primary | inferred | Not stated by selected sources; [writes](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/update_goldens.go#L27-L76) |
+
 ## Crossplane CLI v2.5.0 resource validate Kubernetes built-ins
 
 Selected update candidate `crossplane-cli@v2.5.0:F06`. Advanced the
