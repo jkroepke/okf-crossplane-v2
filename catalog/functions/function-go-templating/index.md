@@ -5,6 +5,7 @@
 * [Package and installation](package.md) - Install and reference the selected stable function package.
 * [GoTemplate input](input.md) - Author Inline, FileSystem, or Environment input using the generated schema.
 * [Environment template source](environment-source.md) - Load template text from the reserved EnvironmentConfig pipeline-context map.
+* [Default options and receive size](runtime-options.md) - Set v0.13.0 function-wide template options and the gRPC receive-size limit.
 
 # Rendering and request data
 
@@ -13,6 +14,7 @@
 * [ExtraResources](extra-resources.md) - Request cluster resources by name or labels and consume them directly or through pipeline context.
 * [Connection details](connection-details.md) - Aggregate observed connection details into an explicitly composed Kubernetes Secret for v2 composite resources.
 * [Rendered output](rendered-output.md) - Name resources, report readiness, update status, and handle v2 connection details.
+* [Response TTL](response-ttl.md) - Set the v0.13.0 response TTL with the `--ttl` flag, the `ttl` input field, or an XR annotation.
 
 # Patterns and examples
 

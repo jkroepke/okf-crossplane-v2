@@ -5,6 +5,50 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## function-go-templating v0.13.0 default template options and receive size
+
+Selected update candidate `function-go-templating@v0.13.0:F03`. Advanced the
+`function-go-templating` lock from v0.12.4 to v0.13.0 (`9b7ea49394a7cef38fe517d2b60f55d64c4c8511`). Commit
+`ee0dd5d8bd99b9e341ed2ccdeec655e44e4fb33d` (PR #563, `--default-options`),
+`cd51c130161746d5ed7a6dd7c67b3b71ffbd8e32` (PR #592) and merge commit
+`8495fe5735358bf6e76816b35d1c9c36596f0b0d` (PR #593, final name
+`MAX_RECV_MESSAGE_SIZE`) are ancestors of v0.13.0 and not of v0.12.6. The
+`--max-recv-message-size` flag itself predates v0.12.2. Containment was
+established with git ancestry because the GitHub API was unavailable at research
+time (2026-10-16); the dated project-history note is labelled accordingly.
+Nothing was copied. No legacy material was involved.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-go-templating/runtime-options | `--default-options` / `FUNCTION_GO_TEMPLATING_DEFAULT_OPTIONS` supply comma-separated options used only when input `options` is unset. | behavior | primary | corroborated | Not stated by selected sources; [flags](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L22-L24), [selection](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1249-L1339) |
+| functions/function-go-templating/runtime-options | The value is split on commas without trimming; invalid options produce a fatal result. | behavior | primary | direct | Not stated by selected sources; [selection](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125), [recovery](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L454-L463) |
+| functions/function-go-templating/runtime-options | The README describes `missingkey=default` as the effective default; `missingkey=error` makes missing keys fatal. | documented-guidance | supporting | corroborated | Not stated by selected sources; [README](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/README.md#L75-L82), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1249-L1339) |
+| functions/function-go-templating/runtime-options | `MAX_RECV_MESSAGE_SIZE` sets the existing `--max-recv-message-size` flag (MB, default 4) from v0.13.0. | behavior | primary | direct | Not stated by selected sources; [flags](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L22-L24), [v0.12.2 flag](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/main.go#L18) |
+| functions/function-go-templating/project-history | PR #593's merge commit is contained in v0.13.0. | release-history | project-history | direct | git ancestry; [merge commit](https://github.com/crossplane-contrib/function-go-templating/commit/8495fe5735358bf6e76816b35d1c9c36596f0b0d) |
+
+## function-go-templating v0.13.0 response TTL
+
+Selected update candidate `function-go-templating@v0.13.0:F02`. Advanced the
+`function-go-templating` lock from v0.12.4 to v0.13.0 (`9b7ea49394a7cef38fe517d2b60f55d64c4c8511`). Commit
+`2171d4a597835dea79639e55daa3017395696303` (PR #426) is an ancestor of v0.13.0
+and not of v0.12.6; v0.12.4 hard-coded `response.DefaultTTL`. Containment was
+established with git ancestry because the GitHub API was unavailable at research
+time (2026-10-16). Supporting sources: function-sdk-go v0.7.1
+(`176ccd5428a608f823c8c7562ffb090ca2c166d5`, selected by go.mod) for the default
+and the TTL semantics, and Crossplane v2.4.2 (`bf8ffd4048a0bb1b408b8b745e31960c717009cb`)
+for pipeline TTL selection. No README or example documents the feature; nothing
+was copied. No legacy material was involved.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| functions/function-go-templating/response-ttl | `--ttl` defaults to the SDK DefaultTTL of one minute and an invalid value stops startup. | behavior | primary | corroborated | Not stated by selected sources; [flag](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L21), [parsing](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/main.go#L34-L45), [SDK default](https://github.com/crossplane/function-sdk-go/blob/176ccd5428a608f823c8c7562ffb090ca2c166d5/response/response.go#L34-L48) |
+| functions/function-go-templating/response-ttl | A parseable non-empty input `ttl` replaces the flag value; an unparseable one is ignored. | behavior | primary | direct | Beta (v1beta1 input field); [precedence](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L78-L96), [CRD](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L90-L98) |
+| functions/function-go-templating/response-ttl | The observed-XR annotation `gotemplating.fn.crossplane.io/ttl` overrides flag and input; the desired XR keeps the annotation. | behavior | primary | corroborated | Not stated by selected sources; [override](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L220-L229), [tests](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn_test.go#L1995-L2072) |
+| functions/function-go-templating/response-ttl | An unparseable annotation sets TTL zero despite the "Ignoring" debug log. | behavior | primary | inferred | Not stated by selected sources; [override](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L220-L229) |
+| functions/function-go-templating/response-ttl | v0.12.4 returned the fixed SDK default TTL and had no TTL flag. | release-history | primary | direct | [v0.12.4 fn.go](https://github.com/crossplane-contrib/function-go-templating/blob/fe17e68927afd64046232f39a2376e87b45e2f58/fn.go#L68) |
+| functions/function-go-templating/response-ttl | A response TTL tells Crossplane when to call the function again and how long it may cache the response. | API | supporting | direct | [ResponseMeta](https://github.com/crossplane/function-sdk-go/blob/176ccd5428a608f823c8c7562ffb090ca2c166d5/proto/v1/run_function.proto#L274-L277) |
+| functions/function-go-templating/response-ttl | Crossplane v2.4.2 uses the smallest non-zero step TTL. | behavior | supporting | direct | Core implementation; [pipeline TTL](https://github.com/crossplane/crossplane/blob/bf8ffd4048a0bb1b408b8b745e31960c717009cb/internal/controller/apiextensions/composite/composition_functions.go#L471-L476) |
+
 ## function-go-templating v0.13.0 Unknown ready-annotation alias
 
 Selected update candidate `function-go-templating@v0.13.0:F04`. Advanced the

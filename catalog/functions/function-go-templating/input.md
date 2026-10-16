@@ -4,7 +4,7 @@ title: GoTemplate input
 description: Schema and source modes for gotemplating.fn.crossplane.io/v1beta1 GoTemplate input.
 resource: https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml
 tags: [crossplane, composition-function, schema]
-generated: { by: "process:okf-v0.2-migration", at: "2026-08-20T06:45:13Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T19:45:00Z" }
 sources:
   - id: generated-gotemplate-crd
     resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L8-L94'
@@ -18,6 +18,12 @@ sources:
   - id: readme-source-modes
     resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L46-L59'
     title: 'README source modes'
+  - id: v0-13-0-option-selection
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125'
+    title: 'v0.13.0 default and per-input option selection'
+  - id: v0-13-0-ttl-field
+    resource: 'https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L90-L96'
+    title: 'v0.13.0 ttl property'
 source_repository: crossplane-contrib/function-go-templating
 source_tag: v0.12.2
 source_commit: 0a1e6d386f4363fae257ddbfb5b497416370e830
@@ -27,7 +33,7 @@ feature_state_basis: The generated CRD serves and stores only gotemplating.fn.cr
 
 # Schema
 
-The generated CRD serves and stores `gotemplating.fn.crossplane.io/v1beta1`. Its accepted fields are `source`, `inline`, `fileSystem`, `environment`, `delims`, and `options`; only `source` is globally required.[^generated-gotemplate-crd]
+The generated CRD serves and stores `gotemplating.fn.crossplane.io/v1beta1`. Its accepted fields are `source`, `inline`, `fileSystem`, `environment`, `delims`, and `options`; only `source` is globally required.[^generated-gotemplate-crd] v0.13.0 adds an optional `ttl` field.[^v0-13-0-ttl-field]
 
 | Field | Shape and constraint |
 |---|---|
@@ -37,7 +43,8 @@ The generated CRD serves and stores `gotemplating.fn.crossplane.io/v1beta1`. Its
 | `fileSystem.dirPath` | Directory whose files supply templates. |
 | `environment.key` | Context key whose value supplies templates. |
 | `delims.left`, `delims.right` | Custom delimiters; defaults are `{{` and `}}`.[^delimiter-schema-and-defaults] |
-| `options` | Top-level array of Go `text/template` option strings.[^generated-gotemplate-crd] |
+| `options` | Top-level array of Go `text/template` option strings.[^generated-gotemplate-crd] From v0.13.0, a set list replaces any function-wide [default options](runtime-options.md).[^v0-13-0-option-selection] |
+| `ttl` | v0.13.0 and later. Optional Go duration string for the response TTL; generated default `1m0s`. See [response TTL](response-ttl.md).[^v0-13-0-ttl-field] |
 
 # Source modes
 
@@ -55,3 +62,5 @@ The overall input is Beta because its only served and stored version is `v1beta1
 [^inline-validation-rules]: [Inline validation rules](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L56-L69)
 [^delimiter-schema-and-defaults]: [Delimiter schema and defaults](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L31-L42)
 [^readme-source-modes]: [README source modes](https://github.com/crossplane-contrib/function-go-templating/blob/0a1e6d386f4363fae257ddbfb5b497416370e830/README.md#L46-L59)
+[^v0-13-0-option-selection]: [v0.13.0 default and per-input option selection](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/fn.go#L112-L125)
+[^v0-13-0-ttl-field]: [v0.13.0 `ttl` property](https://github.com/crossplane-contrib/function-go-templating/blob/9b7ea49394a7cef38fe517d2b60f55d64c4c8511/package/input/gotemplating.fn.crossplane.io_gotemplates.yaml#L90-L96)
