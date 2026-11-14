@@ -28,7 +28,7 @@ jobs:
 
   super-lint:
     name: Super Linter
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     permissions:
       contents: read
     steps:
@@ -67,7 +67,7 @@ jobs:
   pages:
     name: Deploy to pages
     environment: pages
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     if: github.repository_owner == 'jkroepke' && github.ref_name == 'main'
     permissions:
       contents: read
