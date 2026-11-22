@@ -19,8 +19,9 @@ sources:
     repository: travisjakel/okf-ingest
     package: pypi:okf-ingest
     version: 0.13.1
+    commit: 0ff7152a792b64fe2c32cccc307e0fa598155fd6
     source_path: py/okf/okf.py
-    selected_by: catalog validation, pinned in mise.toml (the MCP server ingests through okf-mcp, which locks its own okf-ingest version in mcp/uv.lock); implements the OKF v0.2 rules that v0.3 keeps (the upstream repository has no release tags to pin a commit)
+    selected_by: catalog validation, pinned in mise.toml (the MCP server ingests through okf-mcp, which locks its own okf-ingest version in mcp/uv.lock); implements the OKF v0.2 rules that v0.3 keeps; commit is the untagged 0.13.1 release commit
     resolved_at: 2026-11-22
   upbound-docs:
     repository: upbound/docs

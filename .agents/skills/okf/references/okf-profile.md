@@ -67,7 +67,8 @@ move a concept, keep a short `status: deprecated` concept at the old path with
 ## Links and path fields
 
 A link target or path field (`resource`, `sources[].resource`,
-`superseded_by`) without a leading `/` resolves from the directory of the file
+`superseded_by`, and for an Attested Computation `computation`,
+`executor.resource`, and `attester.resource`) without a leading `/` resolves from the directory of the file
 that contains it. A leading `/` resolves from the bundle root (`catalog/`).
 Prefer relative links such as `../core/composition.md`. Never write a
 bundle-root path without the leading `/`. Use only `[text](target)` links;
