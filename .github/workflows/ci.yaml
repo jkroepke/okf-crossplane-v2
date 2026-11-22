@@ -28,7 +28,7 @@ jobs:
 
   super-lint:
     name: Super Linter
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
     steps:
@@ -44,7 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MULTI_STATUS: false
           LINTER_RULES_PATH: .
-          GITHUB_ACTIONS_CONFIG_FILE: ./.github/actionlint.yaml
           GITHUB_ACTIONS_ZIZMOR_CONFIG_FILE: ./.github/zizmor.yml
           ENABLE_GITHUB_ACTIONS_STEP_SUMMARY: true
           ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT: false
@@ -68,7 +67,7 @@ jobs:
   pages:
     name: Deploy to pages
     environment: pages
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-24.04
     if: github.repository_owner == 'jkroepke' && github.ref_name == 'main'
     permissions:
       contents: read

@@ -1,7 +1,0 @@
----
-# ubuntu-26.04 runner images are newer than the label list bundled with
-# actionlint, so declare them here until actionlint knows them natively.
-self-hosted-runner:
-  labels:
-    - ubuntu-26.04
-    - ubuntu-26.04-arm
