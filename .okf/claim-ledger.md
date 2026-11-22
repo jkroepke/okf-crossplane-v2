@@ -5,6 +5,21 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.7.0 graceful stop
+
+Selected update candidate `xprin@v0.7.0:F05`. Uses the `xprin` v0.7.0 lock.
+Commit 1a85cb9 (stop gracefully on Ctrl-C and SIGTERM) is an ancestor of v0.7.0
+and not of v0.6.0, and v0.6.0 `cmd/xprin/test/test.go` has no interrupt handling
+(git ancestry and file inspection; research timestamp 2026-11-22). Folded into
+the container-reuse concept as an update because the behavior is about run
+cleanup. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-function-container-reuse | First SIGINT/SIGTERM lets running test cases finish, starts no more, and cleans up; a second exits 130 without cleanup. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [interrupt](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/interrupt/interrupt.go#L34-L69), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704) |
+| tools/xprin-function-container-reuse | Both `xprin test` and `xprin update-goldens` install the handler. | behavior | primary | direct | Not stated by selected sources; [test](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L105-L109), [update-goldens](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/updategoldens/update_goldens.go#L74) |
+| tools/xprin-function-container-reuse | Files with unstarted test cases print `FAIL <file> [interrupted]`; unstarted cases are not SKIP. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [summary](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/testsuiteresult.go#L156-L160), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704) |
+
 ## xprin v0.7.0 parallel test runs and container annotations
 
 Selected update candidate `xprin@v0.7.0:F04`. Uses the `xprin` v0.7.0 lock.

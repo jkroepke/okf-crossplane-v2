@@ -66,7 +66,8 @@ The example is taken from the project's documentation.[^parallel-docs]
   [`needs`](xprin-test-case-needs.md). Any other test case, including one from
   another file, may run at the same time.[^parallel-scheduler][^parallel-docs]
 - A failure does not stop the run. A test case whose `needs` failed or was
-  skipped is still skipped.[^parallel-docs]
+  skipped is still skipped.[^parallel-docs] Ctrl-C lets running test cases
+  finish and [stops the run gracefully](xprin-function-container-reuse.md#stopping-a-run).
 - Output matches a serial run except for timings. Results print in serial-run
   order. With `--debug`, each test case's debug lines print together just
   before its result.[^parallel-scheduler][^parallel-docs]
