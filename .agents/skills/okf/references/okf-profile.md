@@ -1,6 +1,7 @@
 # Crossplane OKF profile
 
-This profile adds authoring guidance without narrowing OKF v0.3 conformance.
+This profile adds authoring guidance on top of OKF v0.3. Where it is stricter
+than the specification, the stricter rule applies to this catalog.
 
 ## Required by OKF v0.3
 

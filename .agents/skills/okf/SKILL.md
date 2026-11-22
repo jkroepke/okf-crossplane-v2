@@ -238,7 +238,7 @@ Also check:
 - historical-design citations pin the selected Crossplane commit and record document status and accuracy warnings
 - design documents are not used for general feature discovery, current facts without corroboration, or feature-state classification
 - cited files and line anchors resolve when network access is available
-- internal Markdown links are valid and resolve from the directory of their file, or from the bundle root with a leading `/`; OKF permits broken links, but the strict validator fails on a missing in-bundle target, so link only to concepts that exist and use external URLs for everything else
+- internal Markdown links are valid and resolve from the directory of their file, or from the bundle root with a leading `/`; OKF permits broken links, but the strict validator fails on a missing in-bundle target, so link only to files that exist in the bundle and use external URLs for everything else
 - no concept contains unresolved placeholders presented as facts
 - Core concepts record the selected stable release and matching documentation series
 - function concepts record the dynamically selected stable function tag and commit
