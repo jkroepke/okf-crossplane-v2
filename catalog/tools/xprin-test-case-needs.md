@@ -120,8 +120,8 @@ The example is adapted from the project's documentation.[^needs-docs][^tests-out
 
 The table summarizes the project's migration notes.[^needs-migration-docs] The
 project suggests migrating on v0.6.0, where both forms run, and checking the
-files with `xprin-helpers check-testsuite-needs` before moving to
-v0.7.0.[^needs-migration-docs]
+files with [`xprin-helpers check-testsuite-needs`](xprin-check-testsuite-needs.md)
+before moving to v0.7.0.[^needs-migration-docs]
 
 # Limitations
 
@@ -141,6 +141,10 @@ v0.7.0.[^needs-migration-docs]
   are temporary.
 - [Regenerate xprin golden files](xprin-update-goldens.md) runs the needed test
   cases of golden-asserting test cases.
+- [Show xprin test-case dependencies](xprin-dependency-graph.md) prints the
+  `needs` tree of each file without running it.
+- [Check xprin testsuite needs](xprin-check-testsuite-needs.md) finds `.Tests`
+  use that is missing from `needs`.
 
 [^needs-field]: [TestCase needs field](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/api/api.go#L84-L93)
 [^needs-schema]: [Testsuite JSON schema for needs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/data/xprin-testsuite.json#L262-L268)
