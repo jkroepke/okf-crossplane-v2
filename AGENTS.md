@@ -84,12 +84,15 @@ This repository contains an Open Knowledge Format (OKF) knowledge bundle for the
 ## Output rules
 
 - Generated knowledge belongs under `catalog/`.
-- Target OKF v0.2. Declare `okf_version: "0.2"` only in the bundle-root `catalog/index.md` frontmatter.
+- Target OKF v0.3 (`.agents/skills/okf/references/okf-spec.md`). Only the bundle-root `catalog/index.md` has frontmatter among the reserved files: `okf_version: "0.3"`, `title`, `description`, and `license`. Keep these keys when you change the root index.
 - Every non-reserved OKF Markdown document must contain parseable YAML frontmatter with a non-empty `type` field.
-- `index.md` and `log.md` follow the OKF reserved-file rules.
-- Record the current representation with `generated.by` and `generated.at`; do not emit the superseded v0.1 `timestamp` field.
+- `index.md` and `log.md` follow the OKF reserved-file rules. Subdirectory `index.md` files and every `log.md` have no frontmatter.
+- Links and path fields without a leading `/` resolve from the directory of the file that contains them. Use relative links such as `../core/composition.md`, or `/core/composition.md` from the bundle root. Never write a bundle-root path without the leading `/`.
+- Write every OKF timestamp (`generated.at`, `verified[].at`, `stale_after`, `sources[].last_modified`) as a quoted RFC 3339 date-time with an offset, for example `"2026-11-22T00:00:00Z"`.
+- Record the current representation with `generated.by` and `generated.at`; do not emit the superseded v0.1 `timestamp` field. `generated.at` is the time of the last meaningful content change; do not change it for formatting, whitespace, or link repairs.
 - Put provenance in frontmatter `sources`. Give each claim-bearing source a stable `id`, cite claims with matching keyed Markdown footnotes, and do not add the superseded v0.1 `# Citations` list.
-- Add `verified` only for an actual verification event. Do not infer human review from authorship, commits, pull requests, or reviewer execution.
+- Add `verified` only for an actual verification event, with both `by` and `at`. Do not infer human review from authorship, commits, pull requests, or reviewer execution. A verification counts only while its `at` is not older than `generated.at`.
+- To retire a concept, set `status: deprecated`; when it moves or has a replacement, keep a short deprecated concept at the old path with `superseded_by` set to the new path.
 - Prefer small concept documents, structural Markdown, progressive disclosure, and citations over broad narrative pages.
 
 ## Catalog example convention

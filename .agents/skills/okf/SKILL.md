@@ -213,26 +213,30 @@ When any link is missing, record the mapping as unresolved. Do not infer it from
 
 ### 9. Validate deterministically
 
-Validate the three OKF v0.2 conformance rules:
+Run `mise run validate` (or `uv run --project mcp python scripts/okf-validate.py --strict catalog/`
+and `okf validate catalog/`). The vendored OKF v0.3 reference validator fails on any warning.
+It checks the OKF v0.3 conformance rules:
 
-1. Every non-reserved Markdown file has parseable YAML frontmatter.
-2. Every concept frontmatter has a non-empty `type`.
-3. Reserved `index.md` and `log.md` files follow their specified structures.
+1. Every frontmatter block parses as a YAML mapping without duplicate keys.
+2. Reserved `index.md` and `log.md` files follow their specified structures: only the bundle-root `index.md` has frontmatter.
+
+It also checks timestamps, actors, `verified` events, `status` values, footnote ids, and that links and path fields resolve under the v0.3 rules.
 
 Also check:
 
-- the bundle-root `catalog/index.md` declares `okf_version: "0.2"`
+- every non-reserved Markdown file is a concept with a non-empty `type` (the validator only warns)
+- the bundle-root `catalog/index.md` declares `okf_version: "0.3"`, `title`, `description`, and `license`
 - no concept uses the superseded v0.1 `timestamp` field or `# Citations` body section
 - every source cited by a keyed body footnote has a matching stable `sources[].id`
 - every `sources` entry contains a non-empty `resource`
-- every `generated` mapping contains a valid actor in `by`; every present `at` value is an ISO 8601 datetime
+- every `generated` mapping contains a valid actor in `by`; every present `at` value is a quoted RFC 3339 date-time with an offset
 - `verified` records only actual verification events and uses the OKF actor convention
 - source lock entries exist for all generated released-source concepts
 - released-source evidence citations contain immutable commit SHAs
 - historical-design citations pin the selected Crossplane commit and record document status and accuracy warnings
 - design documents are not used for general feature discovery, current facts without corroboration, or feature-state classification
 - cited files and line anchors resolve when network access is available
-- internal Markdown links are valid; report broken links as warnings because OKF permits them
+- internal Markdown links are valid and resolve from the directory of their file, or from the bundle root with a leading `/`; report broken links as warnings because OKF permits them
 - no concept contains unresolved placeholders presented as facts
 - Core concepts record the selected stable release and matching documentation series
 - function concepts record the dynamically selected stable function tag and commit

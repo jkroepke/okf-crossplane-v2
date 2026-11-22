@@ -1,12 +1,20 @@
 version: 1
 sources:
-  okf-spec-v0.2:
-    repository: GoogleCloudPlatform/knowledge-catalog
+  okf-spec-v0.3:
+    repository: open-knowledge-format/open-knowledge-format
     branch: main
-    commit: 8e389230b1056946cbf98825da29ec75e5748b73
-    source_path: okf/SPEC.md
-    selected_by: user-requested OKF v0.2 migration
-    resolved_at: 2026-08-20
+    commit: 527e81aff55992be21507e97004286789126f88c
+    source_path: SPEC.md
+    selected_by: user-requested OKF v0.3 migration
+    resolved_at: 2026-11-22
+  okf-validator-v0.3:
+    repository: open-knowledge-format/open-knowledge-format
+    branch: main
+    commit: 527e81aff55992be21507e97004286789126f88c
+    source_path: skills/okf-generate/scripts/validate.py
+    vendored_path: scripts/okf-validate.py
+    selected_by: OKF v0.3 conformance and field-shape validation
+    resolved_at: 2026-11-22
   okf-ingest-v0.11.0:
     repository: travisjakel/okf-ingest
     version: 0.11.0
