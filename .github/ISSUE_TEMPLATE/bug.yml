@@ -1,0 +1,45 @@
+name: Bug report
+description: Report wrong or outdated catalog content, or a problem with the MCP server or skill.
+title: "[Bug]: "
+type: Bug
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a problem. Please include enough detail to reproduce or verify it.
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      description: Which part of the project is affected?
+      options:
+        - Catalog content (catalog/)
+        - MCP server (mcp/)
+        - Skill or plugin (skills/, .plugin/, .codex-plugin/)
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: location
+    attributes:
+      label: Affected file or tool
+      description: Path of the concept file, or the name of the MCP tool.
+      placeholder: catalog/core/composition.md
+  - type: textarea
+    id: description
+    attributes:
+      label: What is wrong?
+      description: Describe the problem and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Links to upstream docs, source code, releases, or logs that show the correct behavior.
+  - type: input
+    id: version
+    attributes:
+      label: Crossplane or component version
+      description: The Crossplane, function, or provider version the report applies to.
+      placeholder: v2.4.0

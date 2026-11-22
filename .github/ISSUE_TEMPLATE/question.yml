@@ -1,0 +1,17 @@
+name: Question
+description: Ask a question about the catalog, the MCP server, or the skill.
+title: "[Question]: "
+type: Question
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What do you want to know?
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What you tried, which catalog pages you read, and any relevant versions.
