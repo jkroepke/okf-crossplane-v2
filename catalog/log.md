@@ -1,5 +1,8 @@
 # Catalog Update Log
 
+## 2026-11-22
+* **Migration**: Moved the catalog to OKF v0.3. The bundle-root index now declares `okf_version: "0.3"` with bundle `title`, `description`, and `license` metadata. All links, path fields, timestamps, and reserved files already met the v0.3 rules, so no concept content changed.
+
 ## 2026-10-16
 * **Creation**: Added xprin v0.5.0 function container reuse, on by default with `--no-container-reuse` to opt out.
 * **Creation**: Added xprin `--crossplane-version` pinning, available since xprin v0.3.0, for render and validation image tags.

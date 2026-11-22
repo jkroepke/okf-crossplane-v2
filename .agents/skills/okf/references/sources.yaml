@@ -2,8 +2,8 @@ version: 2
 
 normative_sources:
   - id: okf-spec
-    version: "0.2"
-    url: https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md
+    version: "0.3"
+    url: https://github.com/open-knowledge-format/open-knowledge-format/blob/main/SPEC.md
 
 reference_sources:
   - id: okf-demo-catalog

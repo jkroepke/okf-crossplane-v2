@@ -1,12 +1,24 @@
 # Crossplane OKF profile
 
-This profile adds authoring guidance without narrowing OKF v0.2 conformance.
+This profile adds authoring guidance on top of OKF v0.3. Where it is stricter
+than the specification, the stricter rule applies to this catalog.
 
-## Required by OKF v0.2
+## Required by OKF v0.3
 
-- Every non-reserved Markdown concept has parseable YAML frontmatter.
-- Every concept has a non-empty `type`.
-- `index.md` and `log.md` follow their reserved roles.
+- Every frontmatter block parses as a YAML 1.2 mapping. Producers must not
+  write duplicate keys (§4).
+- `index.md` and `log.md` follow their reserved roles: only the bundle-root
+  `index.md` has frontmatter, and `log.md` never has frontmatter.
+
+OKF v0.3 treats a `.md` file without frontmatter or without `type` as a
+non-concept, not as an error. This catalog is stricter: every non-reserved
+Markdown file under `catalog/` is a concept with a non-empty `type`.
+
+## Bundle metadata
+
+The bundle-root `catalog/index.md` frontmatter holds `okf_version: "0.3"`,
+`title`, `description`, and `license: Apache-2.0`. Keep these keys when you
+regenerate or edit the root index.
 
 ## Recommended frontmatter
 
@@ -30,12 +42,42 @@ source_paths:
 ```
 
 Use extension fields only when populated by evidence. Preserve unknown fields.
+Existing extension keys such as `source_commit` and `feature_state` keep their
+names. OKF v0.3 recommends `x-<producer>-<name>` for producer keys, because future
+OKF versions will not define keys that start with `x-`, and the validator reports unprefixed keys as
+info only.
 
-Use the OKF actor convention for `generated.by` and `verified[].by`:
-`<producer>/<version>` for tools or agents, `process:<id>` for automated
-processes, and `human:<id>` for people. Omit `verified` unless the recorded
-verification actually occurred. An absent `status` means `stable`; do not add
-lifecycle or staleness metadata without evidence.
+Use the OKF actor convention for `generated.by`, `verified[].by`, and
+`sources[].author`: `<producer>/<version>` for tools or agents,
+`process:<id>` for automated processes, `team:<id>` for groups, and
+`human:<id>` for people. Omit `verified` unless the recorded verification
+actually occurred; each event needs both `by` and `at`, and it counts only
+while its `at` is not older than `generated.at`.
+
+`generated.at` is the last meaningful change to the content. Do not change it
+for formatting, whitespace, or link repairs. Quote every OKF timestamp and
+write it as an RFC 3339 date-time with an offset, for example
+`"2026-11-22T00:00:00Z"`.
+
+An absent `status` means `stable`; do not add lifecycle or staleness metadata
+without evidence. Use only `draft`, `stable`, or `deprecated`. To retire or
+move a concept, keep a short `status: deprecated` concept at the old path with
+`superseded_by` set to the replacement path.
+
+## Links and path fields
+
+A link target or path field (`resource`, `sources[].resource`,
+`superseded_by`, and for an Attested Computation `computation`,
+`executor.resource`, and `attester.resource`) without a leading `/` resolves from the directory of the file
+that contains it. A leading `/` resolves from the bundle root (`catalog/`).
+Prefer relative links such as `../core/composition.md`. Never write a
+bundle-root path without the leading `/`. Use only `[text](target)` links;
+`[[wikilinks]]` are not OKF links.
+
+## Body dialect
+
+Write CommonMark with GFM tables and `[^label]` footnotes. Do not depend on
+other Markdown extensions.
 
 ## Preferred concept types
 

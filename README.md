@@ -5,7 +5,7 @@
 
 # Open Knowledge Format for Crossplane v2
 
-This repository provides a structured knowledge catalog for the Crossplane v2 ecosystem using [Open Knowledge Format v0.2](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md).
+This repository provides a structured knowledge catalog for the Crossplane v2 ecosystem using [Open Knowledge Format v0.3](https://github.com/open-knowledge-format/open-knowledge-format/blob/main/SPEC.md).
 
 The goal is to make Crossplane concepts, APIs, providers, composition functions, documentation, and practical examples easier to discover and understand. The catalog is designed for both humans and knowledge-aware tools.
 
@@ -99,7 +99,7 @@ This repository connects these sources in one versioned catalog without replacin
 
 Knowledge is stored as small Markdown documents under [`catalog/`](catalog/index.md). Each document represents an independently useful concept and includes OKF metadata, provenance in `sources`, keyed claim footnotes, and relationships to related concepts.
 
-Repository validation pins `okf-ingest` 0.11.0, which adds OKF v0.2 core support, including `generated.at` freshness fallback and preservation of the new frontmatter families ([upstream support commit](https://github.com/travisjakel/okf-ingest/commit/f3b58994e54870dde37b2d42a7bff1c0ddbe17b0)).
+Repository validation runs two checks. [`scripts/okf-validate.py`](scripts/okf-validate.py) is the OKF v0.3 reference validator, vendored from the [specification repository](https://github.com/open-knowledge-format/open-knowledge-format/blob/527e81aff55992be21507e97004286789126f88c/skills/okf-generate/scripts/validate.py) and run in strict mode, so any warning fails the build. `okf-ingest` also validates the catalog; it implements the v0.2 rules that v0.3 keeps, and it ingests the catalog for the MCP server.
 
 If the task is to build a Crossplane v2 Composition, start with the
 [Composition developer route](catalog/composition-developer-starter.md).

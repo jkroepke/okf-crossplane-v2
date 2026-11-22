@@ -1,5 +1,8 @@
 ---
-okf_version: "0.2"
+okf_version: "0.3"
+title: Crossplane v2 knowledge catalog
+description: Source-pinned concepts for Crossplane v2 Core, composition functions, providers, the SDK, the CLI, and test tooling. Use it for Crossplane v2 API, composition, and provider questions.
+license: Apache-2.0
 ---
 
 # Crossplane Knowledge Catalog
