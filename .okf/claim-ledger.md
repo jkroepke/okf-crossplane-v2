@@ -5,6 +5,20 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.7.0 dependency graph command
+
+Selected update candidate `xprin@v0.7.0:F02`. Uses the `xprin` v0.7.0 lock and
+the v0.6.0 boundary. Commit c1ed76c (`xprin graph`) is an ancestor of v0.6.0
+(git ancestry; research timestamp 2026-11-22). No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-dependency-graph | `xprin graph <targets>` prints the needs tree without running tests and without a config file. | API | primary and project-documentation | corroborated | Not stated by selected sources; [main](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/main.go#L38-L51), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L606-L634) |
+| tools/xprin-dependency-graph | The command exists in v0.6.0. | release-history | primary | direct | Not stated by selected sources; [v0.6.0](https://github.com/crossplane-contrib/xprin/blob/76fbb80af158f8b10a6b707399c7c87e54f442d4/cmd/xprin/main.go#L42) |
+| tools/xprin-dependency-graph | Targets match `xprin test`; `-q` suppresses empty-target messages. | API | primary | direct | Not stated by selected sources; [cmd](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/graph/graph.go#L31-L76) |
+| tools/xprin-dependency-graph | A test case with several needs is listed under each, marked `(*)` after the first. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [tree](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/graph/render/tree.go#L28-L90), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L606-L634) |
+| tools/xprin-dependency-graph | The graph uses only `needs`; undeclared dependencies are not shown. | documented-guidance | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L606-L634) |
+
 ## xprin v0.7.0 test-case needs
 
 Selected update candidate `xprin@v0.7.0:F01`. Advanced the `xprin` lock from

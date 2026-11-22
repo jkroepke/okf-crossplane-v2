@@ -141,6 +141,8 @@ v0.7.0.[^needs-migration-docs]
   are temporary.
 - [Regenerate xprin golden files](xprin-update-goldens.md) runs the needed test
   cases of golden-asserting test cases.
+- [Show xprin test-case dependencies](xprin-dependency-graph.md) prints the
+  `needs` tree of each file without running it.
 
 [^needs-field]: [TestCase needs field](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/api/api.go#L84-L93)
 [^needs-schema]: [Testsuite JSON schema for needs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/data/xprin-testsuite.json#L262-L268)

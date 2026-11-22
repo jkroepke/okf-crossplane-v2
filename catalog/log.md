@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-11-22
+* **Creation**: Added the `xprin graph` command, available since xprin v0.6.0, which prints the `needs` dependency tree of each testsuite file without running tests.
 * **Creation**: Added xprin `needs` for ordering test cases, available since xprin v0.6.0 and required since v0.7.0 for any test case that reads another test case's outputs, and updated the xprin suite, artifact export and update-goldens pages to match.
 * **Migration**: Moved the catalog to OKF v0.3. The bundle-root index now declares `okf_version: "0.3"` with bundle `title`, `description`, and `license` metadata. All links, path fields, timestamps, and reserved files already met the v0.3 rules, so no concept content changed.
 

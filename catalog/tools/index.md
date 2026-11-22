@@ -2,6 +2,7 @@
 
 * [xprin test suites](xprin-test-suites.md) - Run repeatable local Composition render tests with declarative assertions.
 * [Order xprin test cases with needs](xprin-test-case-needs.md) - Declare dependencies between test cases with `needs`, available since xprin v0.6.0 and required since v0.7.0 for `.Tests` outputs.
+* [Show xprin test-case dependencies](xprin-dependency-graph.md) - Print the `needs` dependency tree of each testsuite file with `xprin graph`, available since xprin v0.6.0.
 * [xprin function container reuse](xprin-function-container-reuse.md) - How xprin v0.5.0 reuses one Docker container per Function image across a run, and how to opt out.
 * [Pin the Crossplane version in xprin runs](xprin-crossplane-version.md) - Pin the Crossplane image tag for render and validation with `--crossplane-version`, available since xprin v0.3.0.
 * [xprin Crossplane CLI tier detection](xprin-crossplane-cli-tiers.md) - How xprin, since v0.3.0, chooses the validate subcommand and render flags for the installed Crossplane CLI.
