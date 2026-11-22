@@ -5,6 +5,22 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.7.0 check-testsuite-needs helper
+
+Selected update candidate `xprin@v0.7.0:F03`. Uses the `xprin` v0.7.0 lock and
+the v0.6.0 boundary. Commit 0cdd811 (`check-testsuite-needs`) is an ancestor of
+v0.6.0 (git ancestry; research timestamp 2026-11-22). The Claim conversion
+helper in the same binary is excluded as legacy content.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-check-testsuite-needs | `xprin-helpers check-testsuite-needs <targets>` with `-v` and `-q` checks `.Tests` use against `needs`. | API | primary and project-documentation | corroborated | Not stated by selected sources; [registration](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin-helpers/main.go#L24-L34), [cmd](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin-helpers/testsuiteneeds/cmd.go#L33-L103), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/xprin-helpers/check-testsuite-needs.md#L1-L34) |
+| tools/xprin-check-testsuite-needs | The helper exists in v0.6.0. | release-history | primary | direct | Not stated by selected sources; [v0.6.0](https://github.com/crossplane-contrib/xprin/blob/76fbb80af158f8b10a6b707399c7c87e54f442d4/cmd/xprin-helpers/main.go#L32) |
+| tools/xprin-check-testsuite-needs | Exit code 1 when anything is missing or needs a person. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [cmd](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin-helpers/testsuiteneeds/cmd.go#L33-L103), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/xprin-helpers/check-testsuite-needs.md#L1-L34) |
+| tools/xprin-check-testsuite-needs | It checks fields, inherited `common` and hooks of every test case; unused `needs` are fine. | behavior | project-documentation and primary | corroborated | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/xprin-helpers/check-testsuite-needs.md#L1-L34), [help](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin-helpers/testsuiteneeds/cmd.go#L33-L103) |
+| tools/xprin-check-testsuite-needs | PASS, SKIP and FAIL results; `[x]` missing ids; `[!]` for untraceable use, unknown ids, self-use and cycles. | behavior | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/xprin-helpers/check-testsuite-needs.md#L35-L90) |
+| tools/xprin-check-testsuite-needs | Suggested migration: move to v0.6.0, run the helper, fix, then move to v0.7.0. | documented-guidance | project-documentation | direct | Not stated by selected sources; [migration](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L489-L512) |
+
 ## xprin v0.7.0 dependency graph command
 
 Selected update candidate `xprin@v0.7.0:F02`. Uses the `xprin` v0.7.0 lock and
