@@ -1,10 +1,10 @@
 ---
 type: Crossplane Test Tool
 title: xprin function container reuse
-description: Understand how xprin v0.5.0 reuses one Docker container per Composition Function image across a run, and how --no-container-reuse opts out.
+description: Understand how xprin, since v0.5.0, reuses one Docker container per Composition Function image across a run, how v0.7.0 overrides user-set container annotations, and how --no-container-reuse opts out.
 resource: https://github.com/crossplane-contrib/xprin
 tags: [crossplane, testing, docker, functions, xprin]
-generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T23:30:00Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-11-22T14:30:00Z" }
 sources:
   - id: no-container-reuse-test-flag
     resource: 'https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L47'
@@ -48,6 +48,30 @@ sources:
   - id: render-version-tier
     resource: 'https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84'
     title: 'CLI tiers: render version support only at v2.3.0 or later'
+  - id: v0-7-0-annotation-override
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186'
+    title: 'xprin v0.7.0 replaces user-set container annotations'
+  - id: v0-7-0-annotation-migration-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726'
+    title: 'Migrating from user-set container annotations'
+  - id: v0-7-0-interrupt
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/interrupt/interrupt.go#L34-L69'
+    title: 'xprin v0.7.0 SIGINT and SIGTERM handling'
+  - id: v0-7-0-interrupt-wiring
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L105-L109'
+    title: 'xprin test installs the interrupt handler'
+  - id: v0-7-0-interrupt-update-goldens
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/updategoldens/update_goldens.go#L74'
+    title: 'xprin update-goldens installs the interrupt handler'
+  - id: v0-7-0-interrupted-summary
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/testsuiteresult.go#L156-L160'
+    title: 'FAIL <file> [interrupted] summary'
+  - id: v0-7-0-stop-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704'
+    title: 'Stopping a run and the known edge case'
+  - id: v0-7-0-interrupted-run
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/processor/processor.go#L117-L122'
+    title: 'An interrupted run fails'
 source_repository: crossplane-contrib/xprin
 source_tag: v0.5.0
 source_commit: eb5d7131c596e9a5663da349149184d54d704f42
@@ -75,8 +99,14 @@ xprin test --no-container-reuse tests/...
 - xprin edits only the temporary copy of each test case's functions file. On
   every `Function` with a `spec.package`, it sets
   `render.crossplane.io/runtime-docker-name` and
-  `render.crossplane.io/runtime-docker-cleanup: Orphan`, and leaves either
-  annotation alone if the user already set it.[^reuse-annotation-wiring][^reuse-annotations][^reuse-tests]
+  `render.crossplane.io/runtime-docker-cleanup: Orphan`. At v0.5.0 it leaves
+  either annotation alone if the user already set it.[^reuse-annotation-wiring][^reuse-annotations][^reuse-tests]
+- Since xprin v0.7.0, with reuse on, xprin replaces user-set
+  `runtime-docker-name` and `runtime-docker-cleanup` annotations and removes a
+  user-set `render.crossplane.io/runtime-docker-network` annotation, without a
+  warning. v0.6.0 kept them and printed a deprecation warning. With
+  `--no-container-reuse`, xprin never touches these
+  annotations.[^v0-7-0-annotation-override][^v0-7-0-annotation-migration-docs]
 - Container names are derived from a run id and the image reference, as
   `xprin-<run-id>-<hash>`, so one image maps to one container across all suites
   in the run.[^container-names][^reuse-docs]
@@ -85,17 +115,37 @@ xprin test --no-container-reuse tests/...
   `--crossplane-docker-network`.[^reuse-network][^reuse-network-flag][^render-version-tier][^reuse-docs]
 - At the end of the run, whether it passed or failed, xprin force-removes the
   tracked containers and the network on a best-effort
-  basis. Containers named by a user-set annotation are not tracked and are not
-  removed.[^reuse-cleanup][^docker-client][^reuse-annotations]
+  basis. Up to v0.6.0, containers named by a user-set annotation are not
+  tracked and are not removed.[^reuse-cleanup][^docker-client][^reuse-annotations][^v0-7-0-annotation-migration-docs]
 - The Crossplane controller container that `crossplane render` starts on CLI
   v2.3.0 or later is not reused.[^reuse-docs]
 - xprin talks to Docker through the Docker API client from the environment; if
   it cannot create that client, the run fails.[^reuse-setup][^docker-client]
 
+# Stopping a run
+
+Since xprin v0.7.0, the first Ctrl-C (`SIGINT`) or `SIGTERM` stops `xprin test`
+and `xprin update-goldens` gracefully. Running test cases finish, test cases
+that have not started are not run, and the containers, the network and the
+temporary directories are removed.[^v0-7-0-interrupt][^v0-7-0-interrupt-wiring][^v0-7-0-interrupt-update-goldens][^v0-7-0-stop-docs]
+Unstarted test cases are not reported as `SKIP`; a file that has them prints
+`FAIL <file> [interrupted]`, and the run fails.[^v0-7-0-interrupted-summary][^v0-7-0-stop-docs][^v0-7-0-interrupted-run]
+A second signal exits at once with code 130 and skips the
+cleanup.[^v0-7-0-interrupt]
+
+# Migrating user-set container annotations
+
+To keep a container you manage yourself, for example a Function that runs
+locally while you debug it, keep the annotations and run with
+`--no-container-reuse`. Otherwise remove them and let xprin name the container
+after its image.[^v0-7-0-annotation-migration-docs]
+
 # Limitations
 
-- If xprin is killed abruptly, containers and the network are left behind; the
-  project documents removing them by name.[^reuse-docs]
+- If xprin is killed abruptly, for example with `SIGKILL`, out of memory, or a
+  second Ctrl-C on v0.7.0, containers and the network are left behind. Their
+  names start with `xprin-`, and the project documents removing them by
+  name.[^reuse-docs][^v0-7-0-stop-docs]
 - The project's safety rationale is that Functions are stateless by contract;
   use `--no-container-reuse` when a Function under test may keep state. That
   rationale is xprin's own documentation, not a Crossplane Core
@@ -109,6 +159,8 @@ xprin test --no-container-reuse tests/...
 
 - [xprin test suites](xprin-test-suites.md) describes the runs whose Function
   containers are reused.
+- [Run xprin test cases in parallel](xprin-parallel-test-runs.md) shares these
+  containers between renders that run at the same time.
 
 [^no-container-reuse-test-flag]: [xprin test --no-container-reuse flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L47)
 [^no-container-reuse-update-goldens-flag]: [xprin update-goldens --no-container-reuse flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L41)
@@ -124,3 +176,11 @@ xprin test --no-container-reuse tests/...
 [^reuse-cleanup]: [Cleanup at the end of the run](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/coordinator.go#L81-L92)
 [^reuse-tests]: [Container reuse annotation tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/reuse_test.go#L78-L221)
 [^render-version-tier]: [CLI tiers: render version support only at v2.3.0 or later](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84)
+[^v0-7-0-annotation-override]: [xprin v0.7.0 replaces user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186)
+[^v0-7-0-annotation-migration-docs]: [Migrating from user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726)
+[^v0-7-0-interrupt]: [xprin v0.7.0 SIGINT and SIGTERM handling](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/interrupt/interrupt.go#L34-L69)
+[^v0-7-0-interrupt-wiring]: [xprin test installs the interrupt handler](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L105-L109)
+[^v0-7-0-interrupt-update-goldens]: [xprin update-goldens installs the interrupt handler](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/updategoldens/update_goldens.go#L74)
+[^v0-7-0-interrupted-summary]: [FAIL <file> [interrupted] summary](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/testsuiteresult.go#L156-L160)
+[^v0-7-0-stop-docs]: [Stopping a run and the known edge case](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704)
+[^v0-7-0-interrupted-run]: [An interrupted run fails](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/processor/processor.go#L117-L122)

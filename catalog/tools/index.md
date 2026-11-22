@@ -4,7 +4,8 @@
 * [Order xprin test cases with needs](xprin-test-case-needs.md) - Declare dependencies between test cases with `needs`, available since xprin v0.6.0 and required since v0.7.0 for `.Tests` outputs.
 * [Show xprin test-case dependencies](xprin-dependency-graph.md) - Print the `needs` dependency tree of each testsuite file with `xprin graph`, available since xprin v0.6.0.
 * [Check xprin testsuite needs](xprin-check-testsuite-needs.md) - Find `.Tests` use missing from `needs` with `xprin-helpers check-testsuite-needs`, available since xprin v0.6.0, before upgrading to v0.7.0.
-* [xprin function container reuse](xprin-function-container-reuse.md) - How xprin v0.5.0 reuses one Docker container per Function image across a run, and how to opt out.
+* [Run xprin test cases in parallel](xprin-parallel-test-runs.md) - Run up to N test cases at once with `xprin test --parallel`, available since xprin v0.7.0.
+* [xprin function container reuse](xprin-function-container-reuse.md) - How xprin, since v0.5.0, reuses one Docker container per Function image across a run, how v0.7.0 overrides user-set container annotations and stops runs gracefully, and how to opt out.
 * [Pin the Crossplane version in xprin runs](xprin-crossplane-version.md) - Pin the Crossplane image tag for render and validation with `--crossplane-version`, available since xprin v0.3.0.
 * [xprin Crossplane CLI tier detection](xprin-crossplane-cli-tiers.md) - How xprin, since v0.3.0, chooses the validate subcommand and render flags for the installed Crossplane CLI.
 * [Export xprin test artifacts](xprin-test-artifacts-export.md) - Keep a persistent copy of every test case's inputs and outputs with `xprin test --artifacts-dir`, available since xprin v0.3.0.
