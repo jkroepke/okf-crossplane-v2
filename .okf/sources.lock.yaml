@@ -15,13 +15,13 @@ sources:
     vendored_path: scripts/okf-validate.py
     selected_by: OKF v0.3 conformance and field-shape validation
     resolved_at: 2026-11-22
-  okf-ingest-v0.11.0:
+  okf-ingest-v0.13.1:
     repository: travisjakel/okf-ingest
-    version: 0.11.0
-    commit: f3b58994e54870dde37b2d42a7bff1c0ddbe17b0
+    package: pypi:okf-ingest
+    version: 0.13.1
     source_path: py/okf/okf.py
-    selected_by: OKF v0.2 validation support
-    resolved_at: 2026-08-20
+    selected_by: catalog validation and ingestion, pinned in mise.toml; implements the OKF v0.2 rules that v0.3 keeps (the upstream repository has no release tags to pin a commit)
+    resolved_at: 2026-11-22
   upbound-docs:
     repository: upbound/docs
     commit: 889d144d40620e05129a935824c592aece77657a

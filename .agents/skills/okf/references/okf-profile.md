@@ -4,7 +4,8 @@ This profile adds authoring guidance without narrowing OKF v0.3 conformance.
 
 ## Required by OKF v0.3
 
-- Every frontmatter block parses as a YAML 1.2 mapping without duplicate keys.
+- Every frontmatter block parses as a YAML 1.2 mapping. Producers must not
+  write duplicate keys (§4).
 - `index.md` and `log.md` follow their reserved roles: only the bundle-root
   `index.md` has frontmatter, and `log.md` never has frontmatter.
 
@@ -41,8 +42,8 @@ source_paths:
 
 Use extension fields only when populated by evidence. Preserve unknown fields.
 Existing extension keys such as `source_commit` and `feature_state` keep their
-names. OKF v0.3 reserves no names that start with `x-`; it recommends that
-prefix for new producer keys, and the validator reports unprefixed keys as
+names. OKF v0.3 recommends `x-<producer>-<name>` for producer keys, because future
+OKF versions will not define keys that start with `x-`, and the validator reports unprefixed keys as
 info only.
 
 Use the OKF actor convention for `generated.by`, `verified[].by`, and
