@@ -5,6 +5,25 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.7.0 parallel test runs and container annotations
+
+Selected update candidate `xprin@v0.7.0:F04`. Uses the `xprin` v0.7.0 lock.
+Commit 7b489cd (`--parallel`) and commit 7f1236b (ignore user-defined function
+container annotations) are ancestors of v0.7.0 and not of v0.6.0 (git ancestry;
+research timestamp 2026-11-22). The container-reuse page said xprin keeps
+user-set annotations; that remains true for v0.5.0 and v0.6.0 and is corrected
+for v0.7.0. Performance figures are xprin project documentation only and are not
+repeated. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-parallel-test-runs | `xprin test -p/--parallel` runs up to N test cases at once; N >= 1, default 1; bare flag uses GOMAXPROCS. | API | primary and project-documentation | corroborated | Not stated by selected sources; [flag](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L50), [value](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/parallelism.go#L27-L75), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L636-L657) |
+| tools/xprin-parallel-test-runs | v0.6.0 test flags have no `--parallel`. | release-history | primary | direct | Not stated by selected sources; [v0.6.0](https://github.com/crossplane-contrib/xprin/blob/76fbb80af158f8b10a6b707399c7c87e54f442d4/cmd/xprin/test/test.go#L35-L52) |
+| tools/xprin-parallel-test-runs | Test cases wait only for their needs, across files; results print in serial-run order. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [scheduler](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/scheduler/scheduler.go#L17-L59), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L636-L657) |
+| tools/xprin-parallel-test-runs | First use of a function image is serialized under reuse. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [acquire](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/acquire.go#L24-L28), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L698) |
+| tools/xprin-parallel-test-runs | Independence is assumed apart from needs; `--no-container-reuse` with high N can exhaust Docker address pools. | documented-guidance | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L636-L657) |
+| tools/xprin-function-container-reuse | Since v0.7.0 with reuse on, user-set runtime-docker-name/cleanup are replaced and runtime-docker-network is removed; v0.6.0 warned; `--no-container-reuse` leaves them. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [annotate](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726) |
+
 ## xprin v0.7.0 check-testsuite-needs helper
 
 Selected update candidate `xprin@v0.7.0:F03`. Uses the `xprin` v0.7.0 lock and

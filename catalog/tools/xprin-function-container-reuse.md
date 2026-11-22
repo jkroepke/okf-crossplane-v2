@@ -1,10 +1,10 @@
 ---
 type: Crossplane Test Tool
 title: xprin function container reuse
-description: Understand how xprin v0.5.0 reuses one Docker container per Composition Function image across a run, and how --no-container-reuse opts out.
+description: Understand how xprin, since v0.5.0, reuses one Docker container per Composition Function image across a run, how v0.7.0 overrides user-set container annotations, and how --no-container-reuse opts out.
 resource: https://github.com/crossplane-contrib/xprin
 tags: [crossplane, testing, docker, functions, xprin]
-generated: { by: "process:crossplane-okf-generation", at: "2026-10-16T23:30:00Z" }
+generated: { by: "process:crossplane-okf-generation", at: "2026-11-22T14:30:00Z" }
 sources:
   - id: no-container-reuse-test-flag
     resource: 'https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L47'
@@ -48,6 +48,12 @@ sources:
   - id: render-version-tier
     resource: 'https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84'
     title: 'CLI tiers: render version support only at v2.3.0 or later'
+  - id: v0-7-0-annotation-override
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186'
+    title: 'xprin v0.7.0 replaces user-set container annotations'
+  - id: v0-7-0-annotation-migration-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726'
+    title: 'Migrating from user-set container annotations'
 source_repository: crossplane-contrib/xprin
 source_tag: v0.5.0
 source_commit: eb5d7131c596e9a5663da349149184d54d704f42
@@ -75,8 +81,14 @@ xprin test --no-container-reuse tests/...
 - xprin edits only the temporary copy of each test case's functions file. On
   every `Function` with a `spec.package`, it sets
   `render.crossplane.io/runtime-docker-name` and
-  `render.crossplane.io/runtime-docker-cleanup: Orphan`, and leaves either
-  annotation alone if the user already set it.[^reuse-annotation-wiring][^reuse-annotations][^reuse-tests]
+  `render.crossplane.io/runtime-docker-cleanup: Orphan`. At v0.5.0 it leaves
+  either annotation alone if the user already set it.[^reuse-annotation-wiring][^reuse-annotations][^reuse-tests]
+- Since xprin v0.7.0, with reuse on, xprin replaces user-set
+  `runtime-docker-name` and `runtime-docker-cleanup` annotations and removes a
+  user-set `render.crossplane.io/runtime-docker-network` annotation, without a
+  warning. v0.6.0 kept them and printed a deprecation warning. With
+  `--no-container-reuse`, xprin never touches these
+  annotations.[^v0-7-0-annotation-override][^v0-7-0-annotation-migration-docs]
 - Container names are derived from a run id and the image reference, as
   `xprin-<run-id>-<hash>`, so one image maps to one container across all suites
   in the run.[^container-names][^reuse-docs]
@@ -85,12 +97,19 @@ xprin test --no-container-reuse tests/...
   `--crossplane-docker-network`.[^reuse-network][^reuse-network-flag][^render-version-tier][^reuse-docs]
 - At the end of the run, whether it passed or failed, xprin force-removes the
   tracked containers and the network on a best-effort
-  basis. Containers named by a user-set annotation are not tracked and are not
-  removed.[^reuse-cleanup][^docker-client][^reuse-annotations]
+  basis. Up to v0.6.0, containers named by a user-set annotation are not
+  tracked and are not removed.[^reuse-cleanup][^docker-client][^reuse-annotations][^v0-7-0-annotation-migration-docs]
 - The Crossplane controller container that `crossplane render` starts on CLI
   v2.3.0 or later is not reused.[^reuse-docs]
 - xprin talks to Docker through the Docker API client from the environment; if
   it cannot create that client, the run fails.[^reuse-setup][^docker-client]
+
+# Migrating user-set container annotations
+
+To keep a container you manage yourself, for example a Function that runs
+locally while you debug it, keep the annotations and run with
+`--no-container-reuse`. Otherwise remove them and let xprin name the container
+after its image.[^v0-7-0-annotation-migration-docs]
 
 # Limitations
 
@@ -109,6 +128,8 @@ xprin test --no-container-reuse tests/...
 
 - [xprin test suites](xprin-test-suites.md) describes the runs whose Function
   containers are reused.
+- [Run xprin test cases in parallel](xprin-parallel-test-runs.md) shares these
+  containers between renders that run at the same time.
 
 [^no-container-reuse-test-flag]: [xprin test --no-container-reuse flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/test/test.go#L47)
 [^no-container-reuse-update-goldens-flag]: [xprin update-goldens --no-container-reuse flag](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/cmd/xprin/updategoldens/update_goldens.go#L41)
@@ -124,3 +145,5 @@ xprin test --no-container-reuse tests/...
 [^reuse-cleanup]: [Cleanup at the end of the run](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/coordinator.go#L81-L92)
 [^reuse-tests]: [Container reuse annotation tests](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/containers/reuse_test.go#L78-L221)
 [^render-version-tier]: [CLI tiers: render version support only at v2.3.0 or later](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84)
+[^v0-7-0-annotation-override]: [xprin v0.7.0 replaces user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186)
+[^v0-7-0-annotation-migration-docs]: [Migrating from user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726)

@@ -1,6 +1,8 @@
 # Catalog Update Log
 
 ## 2026-11-22
+* **Creation**: Added `xprin test --parallel`, available since xprin v0.7.0, which runs up to N test cases at once while each waits only for its `needs`.
+* **Correction**: Recorded that xprin v0.7.0, with container reuse on, replaces user-set Function container annotations instead of keeping them.
 * **Creation**: Added the `xprin-helpers check-testsuite-needs` migration check, available since xprin v0.6.0, which fails test cases that read `.Tests` outputs without listing them in `needs`.
 * **Creation**: Added the `xprin graph` command, available since xprin v0.6.0, which prints the `needs` dependency tree of each testsuite file without running tests.
 * **Creation**: Added xprin `needs` for ordering test cases, available since xprin v0.6.0 and required since v0.7.0 for any test case that reads another test case's outputs, and updated the xprin suite, artifact export and update-goldens pages to match.
