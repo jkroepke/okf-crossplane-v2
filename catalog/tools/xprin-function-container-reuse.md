@@ -54,6 +54,24 @@ sources:
   - id: v0-7-0-annotation-migration-docs
     resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726'
     title: 'Migrating from user-set container annotations'
+  - id: v0-7-0-interrupt
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/interrupt/interrupt.go#L34-L69'
+    title: 'xprin v0.7.0 SIGINT and SIGTERM handling'
+  - id: v0-7-0-interrupt-wiring
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L105-L109'
+    title: 'xprin test installs the interrupt handler'
+  - id: v0-7-0-interrupt-update-goldens
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/updategoldens/update_goldens.go#L74'
+    title: 'xprin update-goldens installs the interrupt handler'
+  - id: v0-7-0-interrupted-summary
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/testsuiteresult.go#L156-L160'
+    title: 'FAIL <file> [interrupted] summary'
+  - id: v0-7-0-stop-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704'
+    title: 'Stopping a run and the known edge case'
+  - id: v0-7-0-interrupted-run
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/processor/processor.go#L117-L122'
+    title: 'An interrupted run fails'
 source_repository: crossplane-contrib/xprin
 source_tag: v0.5.0
 source_commit: eb5d7131c596e9a5663da349149184d54d704f42
@@ -104,6 +122,17 @@ xprin test --no-container-reuse tests/...
 - xprin talks to Docker through the Docker API client from the environment; if
   it cannot create that client, the run fails.[^reuse-setup][^docker-client]
 
+# Stopping a run
+
+Since xprin v0.7.0, the first Ctrl-C (`SIGINT`) or `SIGTERM` stops `xprin test`
+and `xprin update-goldens` gracefully. Running test cases finish, test cases
+that have not started are not run, and the containers, the network and the
+temporary directories are removed.[^v0-7-0-interrupt][^v0-7-0-interrupt-wiring][^v0-7-0-interrupt-update-goldens][^v0-7-0-stop-docs]
+Unstarted test cases are not reported as `SKIP`; a file that has them prints
+`FAIL <file> [interrupted]`, and the run fails.[^v0-7-0-interrupted-summary][^v0-7-0-stop-docs][^v0-7-0-interrupted-run]
+A second signal exits at once with code 130 and skips the
+cleanup.[^v0-7-0-interrupt]
+
 # Migrating user-set container annotations
 
 To keep a container you manage yourself, for example a Function that runs
@@ -113,8 +142,10 @@ after its image.[^v0-7-0-annotation-migration-docs]
 
 # Limitations
 
-- If xprin is killed abruptly, containers and the network are left behind; the
-  project documents removing them by name.[^reuse-docs]
+- If xprin is killed abruptly, for example with `SIGKILL`, out of memory, or a
+  second Ctrl-C on v0.7.0, containers and the network are left behind. Their
+  names start with `xprin-`, and the project documents removing them by
+  name.[^reuse-docs][^v0-7-0-stop-docs]
 - The project's safety rationale is that Functions are stateless by contract;
   use `--no-container-reuse` when a Function under test may keep state. That
   rationale is xprin's own documentation, not a Crossplane Core
@@ -147,3 +178,9 @@ after its image.[^v0-7-0-annotation-migration-docs]
 [^render-version-tier]: [CLI tiers: render version support only at v2.3.0 or later](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/xpcli/tier.go#L39-L84)
 [^v0-7-0-annotation-override]: [xprin v0.7.0 replaces user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/containers/annotate.go#L154-L186)
 [^v0-7-0-annotation-migration-docs]: [Migrating from user-set container annotations](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L706-L726)
+[^v0-7-0-interrupt]: [xprin v0.7.0 SIGINT and SIGTERM handling](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/interrupt/interrupt.go#L34-L69)
+[^v0-7-0-interrupt-wiring]: [xprin test installs the interrupt handler](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/test/test.go#L105-L109)
+[^v0-7-0-interrupt-update-goldens]: [xprin update-goldens installs the interrupt handler](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/cmd/xprin/updategoldens/update_goldens.go#L74)
+[^v0-7-0-interrupted-summary]: [FAIL <file> [interrupted] summary](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/testsuiteresult.go#L156-L160)
+[^v0-7-0-stop-docs]: [Stopping a run and the known edge case](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L702-L704)
+[^v0-7-0-interrupted-run]: [An interrupted run fails](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/processor/processor.go#L117-L122)

@@ -1,6 +1,7 @@
 # Catalog Update Log
 
 ## 2026-11-22
+* **Update**: Documented the graceful stop of xprin v0.7.0 runs on Ctrl-C or SIGTERM, which finishes running test cases and removes containers, the network and temporary directories.
 * **Creation**: Added `xprin test --parallel`, available since xprin v0.7.0, which runs up to N test cases at once while each waits only for its `needs`.
 * **Correction**: Recorded that xprin v0.7.0, with container reuse on, replaces user-set Function container annotations instead of keeping them.
 * **Creation**: Added the `xprin-helpers check-testsuite-needs` migration check, available since xprin v0.6.0, which fails test cases that read `.Tests` outputs without listing them in `needs`.
