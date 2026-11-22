@@ -36,6 +36,9 @@ sources:
   - id: v0-3-0-update-goldens
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42'
     title: 'xprin v0.3.0 registers update-goldens'
+  - id: v0-7-0-update-goldens-needs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L596'
+    title: 'xprin v0.7.0 update-goldens runs needed test cases'
 source_repository: crossplane-contrib/xprin
 source_tag: v0.5.0
 source_commit: eb5d7131c596e9a5663da349149184d54d704f42
@@ -69,6 +72,9 @@ after v0.3.0; it has no `--show-*` flags and no artifact export.[^update-goldens
 # Behavior
 
 - A test case with no `diff` or `dyff` assertion is skipped.[^skip-without-golden-assertions][^update-goldens-flow-docs]
+  At xprin v0.7.0, a test case that a golden-asserting test case lists in
+  [`needs`](xprin-test-case-needs.md), directly or through others, still runs
+  so that its outputs exist, and writes no golden files.[^v0-7-0-update-goldens-needs]
 - Setup, pre-test hooks, XR patching, and render run as in `xprin test`. Validation,
   all assertions, and post-test hooks do not run.[^stop-after-render][^update-goldens-flow-docs]
 - For each `diff` entry and then each `dyff` entry, the render output is written
@@ -105,3 +111,4 @@ after v0.3.0; it has no `--show-*` flags and no artifact export.[^update-goldens
 [^update-goldens-flow-docs]: [update-goldens flow documentation](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L596-L628)
 [^update-goldens-guidance]: [Bootstrapping golden files guidance](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/getting-started.md#L98-L123)
 [^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)
+[^v0-7-0-update-goldens-needs]: [xprin v0.7.0 update-goldens runs needed test cases](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L596)

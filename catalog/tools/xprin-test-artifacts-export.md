@@ -51,6 +51,9 @@ sources:
   - id: v0-3-0-artifacts-dir-flag
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47'
     title: 'xprin v0.3.0 --artifacts-dir flag'
+  - id: v0-7-0-tests-outputs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L446-L488'
+    title: 'xprin v0.7.0 outputs of needed test cases'
 source_repository: crossplane-contrib/xprin
 source_tag: v0.5.0
 source_commit: eb5d7131c596e9a5663da349149184d54d704f42
@@ -105,7 +108,9 @@ absolute path.[^artifacts-layout][^artifacts-tests]
 
 Test chaining is a separate feature: a test case with an `id` exposes its
 outputs to later test cases through `.Tests.<id>.Outputs`, and those temporary
-artifacts are cleaned up after the run.[^test-chaining] `--artifacts-dir` keeps
+artifacts are removed when the testsuite file finishes.[^test-chaining] Since xprin v0.7.0, only
+test cases that list that `id` in [`needs`](xprin-test-case-needs.md) can read
+those outputs.[^v0-7-0-tests-outputs] `--artifacts-dir` keeps
 a persistent copy of every test case, with or without an `id`.[^artifacts-copy]
 
 # Limitations
@@ -135,3 +140,4 @@ a persistent copy of every test case, with or without an `id`.[^artifacts-copy]
 [^assertions-output]: [assertions.txt output](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/internal/testexecution/runner/runner.go#L770-L793)
 [^test-chaining]: [Test chaining artifacts](https://github.com/crossplane-contrib/xprin/blob/eb5d7131c596e9a5663da349149184d54d704f42/docs/how-it-works.md#L456-L492)
 [^v0-3-0-artifacts-dir-flag]: [xprin v0.3.0 --artifacts-dir flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47)
+[^v0-7-0-tests-outputs]: [xprin v0.7.0 outputs of needed test cases](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L446-L488)

@@ -5,6 +5,30 @@ title: Crossplane catalog claim ledger
 
 # Scope
 
+## xprin v0.7.0 test-case needs
+
+Selected update candidate `xprin@v0.7.0:F01`. Advanced the `xprin` lock from
+v0.5.0 to v0.7.0 (`891c1bf6de72c0978a695a02b854e15ae9a76350`), the highest stable
+tag, and pinned v0.6.0 (`76fbb80af158f8b10a6b707399c7c87e54f442d4`) as the
+release boundary. Commit c412dab (`needs`) is an ancestor of v0.6.0; commit
+ab98755 (removal of automatic `.Tests` detection) is an ancestor of v0.7.0 and
+not of v0.6.0 (git ancestry; GitHub API unavailable, research timestamp
+2026-11-22). Migration guidance is xprin project documentation only. The
+upstream example also uses `patches.xrd`; the catalog example is adapted from
+the documentation block instead. No legacy content applies.
+
+| Concept | Exact claim | Class | Source role | Confidence | Feature state / evidence |
+|---|---|---|---|---|---|
+| tools/xprin-test-case-needs | Test cases accept an optional `needs` list of at least one test-case id. | API | primary | direct | Not stated by selected sources; [api](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/api/api.go#L84-L93), [schema](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/data/xprin-testsuite.json#L262-L268) |
+| tools/xprin-test-case-needs | `needs` exists in v0.6.0. | release-history | primary | direct | Not stated by selected sources; [v0.6.0](https://github.com/crossplane-contrib/xprin/blob/76fbb80af158f8b10a6b707399c7c87e54f442d4/internal/api/api.go#L88) |
+| tools/xprin-test-case-needs | Unknown ids, empty `needs` and cycles invalidate the file; cycles are reported as `needs cycle: a -> b -> a`. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [checks](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/discovery/check.go#L70-L91), [cycles](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/graph/graph.go#L218-L249), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L406-L445) |
+| tools/xprin-test-case-needs | Test cases run in dependency order, ties broken by file order. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [graph](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/graph/graph.go#L218-L249), [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L406-L445) |
+| tools/xprin-test-case-needs | Dependents of a failed or skipped test case are skipped with one reason per need. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [skip](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/engine/needsresults.go#L21-L45), [example](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/examples/mytests/5_chained_tests/example2_needs-failure_xprin.yaml#L1-L37) |
+| tools/xprin-test-case-needs | Since v0.7.0, `.Tests.<id>` without `needs` fails with `one or more test cases are used but are not listed in needs`. | behavior | primary and project-documentation | corroborated | Not stated by selected sources; [error](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/internal/testexecution/runner/templates.go#L134-L148), [migration](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L489-L512) |
+| tools/xprin-test-case-needs | v0.6.0 supported both forms with a deprecation warning; v0.5.0 and earlier only detected `.Tests`. | release-history | project-documentation | direct | Not stated by selected sources; [migration](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L489-L512) |
+| tools/xprin-update-goldens | At v0.7.0, update-goldens runs needed test cases of golden-asserting test cases without writing their goldens. | behavior | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L596) |
+| tools/xprin-test-artifacts-export | Since v0.7.0 only test cases listing the id in `needs` can read `.Tests` outputs. | behavior | project-documentation | direct | Not stated by selected sources; [docs](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L446-L488) |
+
 ## xprin v0.5.0 function container reuse
 
 Selected update candidate `xprin@v0.5.0:F05`. Advanced the `xprin` lock from

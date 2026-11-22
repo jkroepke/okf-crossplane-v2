@@ -30,6 +30,9 @@ sources:
   - id: v0-3-0-update-goldens
     resource: 'https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42'
     title: 'xprin v0.3.0 registers update-goldens'
+  - id: v0-7-0-needs-docs
+    resource: 'https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L406-L445'
+    title: 'xprin v0.7.0 dependencies between test cases'
 source_repository: crossplane-contrib/xprin
 source_commit: b5a100aa3e7118c1acdd2096b7993929939624b2
 source_paths:
@@ -66,7 +69,10 @@ assertions are another optional check.[^xr-oriented-assertion-examples] From xpr
 
 The suite sequence is setup; optional XR patching; rendering; optional
 validation; optional assertions; hooks; and optional artifact export for
-`id`-based test chaining.[^execution-sequence] From xprin v0.3.0, a separate
+`id`-based test chaining.[^execution-sequence] Since xprin v0.7.0, a test case
+that uses another test case's outputs must list its `id` in
+[`needs`](xprin-test-case-needs.md), which also orders the test
+cases.[^v0-7-0-needs-docs] From xprin v0.3.0, a separate
 [`--artifacts-dir` export](xprin-test-artifacts-export.md) keeps a persistent
 copy of every test case for inspection.[^v0-3-0-artifacts-dir-flag] Treat assertions as a repeatable test suite around a known input,
 not proof that providers will successfully reconcile the generated resources.
@@ -93,3 +99,4 @@ workflows.
 [^v0-3-0-cli-tiers]: [xprin v0.3.0 CLI tiers](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/internal/xpcli/tier.go#L40-L45)
 [^v0-3-0-artifacts-dir-flag]: [xprin v0.3.0 --artifacts-dir flag](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/test/test.go#L47)
 [^v0-3-0-update-goldens]: [xprin v0.3.0 registers update-goldens](https://github.com/crossplane-contrib/xprin/blob/92a24a66e5e243b67c22b9d58bd9e8d857bc85a4/cmd/xprin/main.go#L42)
+[^v0-7-0-needs-docs]: [xprin v0.7.0 dependencies between test cases](https://github.com/crossplane-contrib/xprin/blob/891c1bf6de72c0978a695a02b854e15ae9a76350/docs/how-it-works.md#L406-L445)
